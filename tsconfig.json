@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "outDir": "lib",
+    "declaration": true,
+    "strictNullChecks": true,
+    "esModuleInterop": true,
+    "module": "CommonJS",
+    "target": "ES6",
+    "moduleResolution": "Node"
+  },
+  "include": ["src"],
+  "exclude": ["src/**/template-*"]
+}

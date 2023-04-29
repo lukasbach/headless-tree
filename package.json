@@ -1,0 +1,22 @@
+{
+  "name": "root",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "lint": "eslint . --fix",
+    "lint:test": "eslint ."
+  },
+  "devDependencies": {
+    "lerna": "^6.6.1"
+  },
+  "volta": {
+    "node": "18.16.0",
+    "yarn": "3.5.0"
+  },
+  "dependencies": {
+    "@lukasbach/eslint-config-deps": "^1.0.3",
+    "eslint": "^8.39.0"
+  }
+}
