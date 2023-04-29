@@ -6,7 +6,12 @@
   ],
   "scripts": {
     "lint": "eslint . --fix",
-    "lint:test": "eslint ."
+    "lint:test": "eslint .",
+    "build": "lerna run build"
+  },
+  "dependencies": {
+    "@lukasbach/eslint-config-deps": "^1.0.3",
+    "eslint": "^8.39.0"
   },
   "devDependencies": {
     "lerna": "^6.6.1"
@@ -15,8 +20,14 @@
     "node": "18.16.0",
     "yarn": "3.5.0"
   },
-  "dependencies": {
-    "@lukasbach/eslint-config-deps": "^1.0.3",
-    "eslint": "^8.39.0"
+  "eslintConfig": {
+    "extends": "@lukasbach/base",
+    "parserOptions": {
+      "project": "./tsconfig.json"
+    },
+    "ignorePatterns": [
+      "lib",
+      "*.js"
+    ]
   }
 }
