@@ -49,5 +49,7 @@ export type TreeFeatureDef<T> = {
     expand: () => void;
     collapse: () => void;
     isExpanded: () => boolean;
+    isFocused: () => boolean;
+    setFocused: () => void;
   };
 };

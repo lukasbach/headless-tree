@@ -99,18 +99,33 @@ export const treeFeature: FeatureImplementation<
         "aria-selected": false,
         "aria-label": "",
         "aria-level": itemMeta.level,
-        tabIndex: tree.getState().focusedItem === itemMeta.itemId ? 0 : -1,
-        onClick: () =>
-          instance.isExpanded() ? instance.collapse() : instance.expand(),
+        tabIndex: instance.isFocused() ? 0 : -1,
+        onClick: () => {
+          instance.setFocused();
+          if (instance.isExpanded()) {
+            instance.collapse();
+          } else {
+            instance.expand();
+          }
+        },
       };
     },
     expand: () => tree.expandItem(itemMeta.itemId),
     collapse: () => tree.collapseItem(itemMeta.itemId),
     isExpanded: () => tree.getState().expandedItems.includes(itemMeta.itemId),
+    isFocused: () =>
+      tree.getState().focusedItem === itemMeta.itemId ||
+      (tree.getState().focusedItem === null && itemMeta.index === 0),
     getItemName: () => {
       const config = tree.getConfig();
       return config.getItemName(config.dataLoader.getItem(itemMeta.itemId));
     },
     getItemMeta: () => itemMeta,
+    setFocused: () => {
+      tree.setState((state) => ({
+        ...state,
+        focusedItem: itemMeta.itemId,
+      }));
+    },
   }),
 };
