@@ -22,9 +22,11 @@ export const createTree = <T>(
   ) as TreeConfig<T>;
 
   const treeInstance: TreeInstance<T> = {} as any;
+  let treeElement: HTMLElement | undefined | null;
 
   const itemInstancesMap: Record<string, ItemInstance<T>> = {};
   let itemInstances: ItemInstance<T>[] = [];
+  const itemElementsMap: Record<string, HTMLElement | undefined | null> = {};
 
   const rebuildItemInstances = () => {
     itemInstances = [];
@@ -46,9 +48,10 @@ export const createTree = <T>(
     }
   };
 
-  const mainFeature: FeatureImplementation<MainFeatureDef<T>> = {
+  const mainFeature: FeatureImplementation<T, MainFeatureDef<T>> = {
     key: "main",
-    createTreeInstance: () => ({
+    createTreeInstance: (prev) => ({
+      ...prev,
       getState: () => state,
       setState: (updater) => {
         state = typeof updater === "function" ? updater(state) : updater;
@@ -61,6 +64,17 @@ export const createTree = <T>(
       },
       getItemInstance: (itemId) => itemInstancesMap[itemId],
       getItems: () => itemInstances,
+      registerElement: (element) => {
+        treeElement = element;
+      },
+      getElement: () => treeElement,
+    }),
+    createItemInstance: (prev, instance, itemMeta) => ({
+      ...prev,
+      registerElement: (element) => {
+        itemElementsMap[itemMeta.itemId] = element;
+      },
+      getElement: () => itemElementsMap[itemMeta.itemId],
     }),
   };
 

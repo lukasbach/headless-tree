@@ -24,10 +24,11 @@ export const Example = () => {
   });
 
   return (
-    <div>
+    <div ref={tree.registerElement}>
       {tree.getItems().map((item) => (
         <div
           key={item.getId()}
+          ref={item.registerElement}
           style={{ marginLeft: `${item.getItemMeta().level * 20}px` }}
         >
           <button {...item.getProps()}>

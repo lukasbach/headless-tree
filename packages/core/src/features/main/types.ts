@@ -20,6 +20,11 @@ export type MainFeatureDef<T = any> = {
     getConfig: () => TreeConfig<T>;
     getItemInstance: (itemId: string) => ItemInstance<T>;
     getItems: () => ItemInstance<T>[];
+    registerElement: (element: HTMLElement | null) => void;
+    getElement: () => HTMLElement | undefined | null;
   };
-  itemInstance: {};
+  itemInstance: {
+    registerElement: (element: HTMLElement | null) => void;
+    getElement: () => HTMLElement | undefined | null;
+  };
 };
