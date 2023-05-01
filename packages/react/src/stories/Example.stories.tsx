@@ -21,7 +21,7 @@ export const Example = () => {
       getItem: (itemId) => itemId,
       getChildren: (itemId) => [`${itemId}-1`, `${itemId}-2`, `${itemId}-3`],
     },
-  });
+  } as any);
 
   return (
     <div>

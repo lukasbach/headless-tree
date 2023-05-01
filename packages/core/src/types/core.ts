@@ -1,4 +1,3 @@
-import { TMerged } from "./deep-merge";
 import { DragAndDropFeature } from "../features/drag-and-drop/types";
 import { MainFeature } from "../features/main/types";
 import { SelectionFeature } from "../features/selection/types";
@@ -21,24 +20,54 @@ type Features<T> = [
   DragAndDropFeature<T>
 ];
 
-export type TreeState<T> = TMerged<Features<T>[number]>["state"];
-export type TreeConfig<T> = TMerged<Features<T>[number]>["config"];
-export type TreeInstance<T> = TMerged<Features<T>[number]>["treeInstance"];
-export type ItemInstance<T> = TMerged<Features<T>[number]>["itemInstance"];
+type Feature = {
+  state: object;
+  config: object;
+  treeInstance: object;
+  itemInstance: object;
+};
 
-export type FeatureDef<D extends FeatureTypeDef, T = any> = {
+type MergeArr<T extends any[], Alt = never> = T extends []
+  ? Alt
+  : T extends [infer A, infer B, ...infer R]
+  ? MergeArr<[A & B, ...R]>
+  : T extends [infer A, infer B]
+  ? A & B
+  : T extends [infer A]
+  ? A
+  : T[number];
+
+type MergedFeatures<F extends Feature[]> = {
+  state: MergeArr<F, { state: {} }>["state"];
+  config: MergeArr<F, { config: {} }>["config"];
+  treeInstance: MergeArr<F, { treeInstance: {} }>["treeInstance"];
+  itemInstance: MergeArr<F, { itemInstance: {} }>["itemInstance"];
+};
+
+export type TreeState<T> = MergedFeatures<Features<T>>["state"];
+export type TreeConfig<T> = MergedFeatures<Features<T>>["config"];
+export type TreeInstance<T> = MergedFeatures<Features<T>>["treeInstance"];
+export type ItemInstance<T> = MergedFeatures<Features<T>>["itemInstance"];
+
+export type FeatureDef<
+  T = any,
+  D extends FeatureTypeDef = any,
+  F extends Feature[] = []
+> = {
   getInitialState?: (
-    initialState: Partial<TreeState<T>>
-  ) => Partial<D["state"]>;
+    initialState: Partial<MergedFeatures<F>["state"]>
+  ) => Partial<D["state"] & MergedFeatures<F>["state"]>;
   getDefaultConfig?: (
-    defaultConfig: Partial<TreeConfig<T>>
-  ) => Partial<D["config"]>;
-  createTreeInstance?: (instance: TreeInstance<T>) => D["treeInstance"];
+    defaultConfig: Partial<MergedFeatures<F>["config"]>
+  ) => Partial<D["config"] & MergedFeatures<F>["config"]>;
+  createTreeInstance?: (
+    instance: MergedFeatures<F>["treeInstance"]
+  ) => D["treeInstance"] & MergedFeatures<F>["treeInstance"];
   createItemInstance?: (
-    instance: ItemInstance<T>,
+    instance: MergedFeatures<F>["itemInstance"],
     itemMeta: ItemMeta<T>,
-    tree: TreeInstance<T>
-  ) => D["itemInstance"];
+    tree: MergedFeatures<F>["treeInstance"]
+  ) => D["itemInstance"] & MergedFeatures<F>["itemInstance"];
 
-  overrides?: FeatureDef<any>[];
+  dependingFeatures?: FeatureDef<T, F[number]>[];
 };

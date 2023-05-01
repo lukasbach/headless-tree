@@ -10,7 +10,7 @@
     "start": "lerna run start",
     "build": "lerna run build",
     "storybook": "lerna run storybook",
-    "docs": "typedoc ./packages/core/src/index.ts --excludeInternal"
+    "docs": "typedoc ./packages/core/src/docs-entry.ts --excludeInternal"
   },
   "dependencies": {
     "@lukasbach/eslint-config-deps": "^1.0.3",

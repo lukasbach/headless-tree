@@ -1,8 +1,15 @@
 import { FeatureDef } from "../../types/core";
 import { ItemMeta, TreeFeature } from "./types";
 import { memo } from "../../utils";
+import { MainFeature } from "../main/types";
 
-export const treeFeature: FeatureDef<TreeFeature<any>> = {
+export const treeFeature: FeatureDef<
+  any,
+  TreeFeature<any>,
+  [MainFeature, TreeFeature<any>]
+> = {
+  // dependingFeatures: [mainFeature],
+
   getInitialState: (initialState) => ({
     expandedItems: [],
     focusedItem: null,
