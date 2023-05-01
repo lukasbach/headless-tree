@@ -69,17 +69,46 @@ export type FeatureImplementation<
   getInitialState?: (
     initialState: Partial<MergedFeatures<F>["state"]>
   ) => Partial<D["state"] & MergedFeatures<F>["state"]>;
+
   getDefaultConfig?: (
     defaultConfig: Partial<MergedFeatures<F>["config"]>
   ) => Partial<D["config"] & MergedFeatures<F>["config"]>;
+
   createTreeInstance?: (
     prev: MergedFeatures<F>["treeInstance"],
     instance: MergedFeatures<F>["treeInstance"]
   ) => D["treeInstance"] & MergedFeatures<F>["treeInstance"];
+
   createItemInstance?: (
     prev: MergedFeatures<F>["itemInstance"],
     instance: MergedFeatures<F>["itemInstance"],
     itemMeta: ItemMeta<T>,
     tree: MergedFeatures<F>["treeInstance"]
   ) => D["itemInstance"] & MergedFeatures<F>["itemInstance"];
+
+  onTreeMount?: (
+    instance: MergedFeatures<F>["treeInstance"],
+    treeElement: HTMLElement
+  ) => void;
+
+  onTreeUnmount?: (
+    instance: MergedFeatures<F>["treeInstance"],
+    treeElement: HTMLElement
+  ) => void;
+
+  onItemMount?: (
+    instance: MergedFeatures<F>["itemInstance"],
+    itemElement: HTMLElement,
+    tree: MergedFeatures<F>["treeInstance"]
+  ) => void;
+
+  onItemUnmount?: (
+    instance: MergedFeatures<F>["itemInstance"],
+    itemElement: HTMLElement,
+    tree: MergedFeatures<F>["treeInstance"]
+  ) => void;
+
+  onStateChange?: (instance: MergedFeatures<F>["treeInstance"]) => void;
+  onConfigChange?: (instance: MergedFeatures<F>["treeInstance"]) => void;
+  onStateOrConfigChange?: (instance: MergedFeatures<F>["treeInstance"]) => void;
 };

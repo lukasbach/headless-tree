@@ -48,6 +48,12 @@ export const createTree = <T>(
     }
   };
 
+  const eachFeature = (fn: (feature: FeatureImplementation<any>) => void) => {
+    for (const feature of additionalFeatures) {
+      fn(feature);
+    }
+  };
+
   const mainFeature: FeatureImplementation<T, MainFeatureDef<T>> = {
     key: "main",
     createTreeInstance: (prev) => ({
@@ -57,14 +63,27 @@ export const createTree = <T>(
         state = typeof updater === "function" ? updater(state) : updater;
         config.onStateChange?.(state);
         rebuildItemInstances();
+        eachFeature((feature) => feature.onStateChange?.(treeInstance));
+        eachFeature((feature) => feature.onStateOrConfigChange?.(treeInstance));
       },
       getConfig: () => config,
       setConfig: (updater) => {
         config = typeof updater === "function" ? updater(config) : updater;
+        eachFeature((feature) => feature.onConfigChange?.(treeInstance));
+        eachFeature((feature) => feature.onStateOrConfigChange?.(treeInstance));
       },
       getItemInstance: (itemId) => itemInstancesMap[itemId],
       getItems: () => itemInstances,
       registerElement: (element) => {
+        if (treeElement && !element) {
+          eachFeature((feature) =>
+            feature.onTreeUnmount?.(treeInstance, treeElement!)
+          );
+        } else if (!treeElement && element) {
+          eachFeature((feature) =>
+            feature.onTreeMount?.(treeInstance, element)
+          );
+        }
         treeElement = element;
       },
       getElement: () => treeElement,
@@ -72,6 +91,16 @@ export const createTree = <T>(
     createItemInstance: (prev, instance, itemMeta) => ({
       ...prev,
       registerElement: (element) => {
+        const oldElement = itemElementsMap[itemMeta.itemId];
+        if (oldElement && !element) {
+          eachFeature((feature) =>
+            feature.onItemUnmount?.(instance, oldElement!, treeInstance)
+          );
+        } else if (!oldElement && element) {
+          eachFeature((feature) =>
+            feature.onItemMount?.(instance, element!, treeInstance)
+          );
+        }
         itemElementsMap[itemMeta.itemId] = element;
       },
       getElement: () => itemElementsMap[itemMeta.itemId],
