@@ -40,6 +40,7 @@ export const createTree = <T>(initialConfig: TreeConfig<T>) => {
   };
 
   const mainFeature: FeatureImplementation<MainFeatureDef<T>> = {
+    key: "main",
     createTreeInstance: () => ({
       getState: () => state,
       setState: (updater) => {

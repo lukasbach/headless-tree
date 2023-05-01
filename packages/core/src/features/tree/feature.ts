@@ -1,4 +1,4 @@
-import { FeatureImplementation, ResolveFeatureDefs } from "../../types/core";
+import { FeatureImplementation } from "../../types/core";
 import { ItemMeta, TreeFeatureDef } from "./types";
 import { memo } from "../../utils";
 import { MainFeatureDef } from "../main/types";
@@ -6,10 +6,10 @@ import { MainFeatureDef } from "../main/types";
 export const treeFeature: FeatureImplementation<
   any,
   TreeFeatureDef<any>,
-  // [MainFeatureDef, TreeFeatureDef<any>]
-  ResolveFeatureDefs<["main", "tree"]>
+  MainFeatureDef | TreeFeatureDef<any>
 > = {
-  // dependingFeatures: [mainFeature],
+  key: "tree",
+  dependingFeatures: ["main"],
 
   getInitialState: (initialState) => ({
     expandedItems: [],
