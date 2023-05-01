@@ -1,5 +1,6 @@
 import type { Meta } from "@storybook/react";
 import React, { useState } from "react";
+import { selectionFeature } from "@headless-tree/core";
 import { useTree } from "../index";
 
 const meta = {
@@ -19,6 +20,7 @@ export const Example = () => {
       getItem: (itemId) => itemId,
       getChildren: (itemId) => [`${itemId}-1`, `${itemId}-2`, `${itemId}-3`],
     },
+    features: [selectionFeature],
   });
 
   return (

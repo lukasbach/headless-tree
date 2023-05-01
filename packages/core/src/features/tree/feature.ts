@@ -17,8 +17,8 @@ export const treeFeature: FeatureImplementation<
     ...initialState,
   }),
 
-  createTreeInstance: (instance) => ({
-    ...instance,
+  createTreeInstance: (prev, instance) => ({
+    ...prev,
 
     isItemExpanded: (itemId) =>
       instance.getState().expandedItems.includes(itemId),
@@ -79,20 +79,20 @@ export const treeFeature: FeatureImplementation<
     },
 
     getContainerProps: () => ({
-      ...instance.getContainerProps?.(),
+      ...prev.getContainerProps?.(),
       role: "tree",
       ariaLabel: "",
       ariaActivedescendant: "",
     }),
   }),
 
-  createItemInstance: (instance, itemMeta, tree) => ({
-    ...instance,
+  createItemInstance: (prev, instance, itemMeta, tree) => ({
+    ...prev,
     getId: () => itemMeta.itemId,
     getProps: () => {
       const itemMeta = instance.getItemMeta();
       return {
-        ...instance.getProps?.(),
+        ...prev.getProps?.(),
         role: "treeitem",
         "aria-setsize": itemMeta.setSize,
         "aria-posinset": itemMeta.posInSet,

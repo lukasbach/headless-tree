@@ -73,9 +73,11 @@ export type FeatureImplementation<
     defaultConfig: Partial<MergedFeatures<F>["config"]>
   ) => Partial<D["config"] & MergedFeatures<F>["config"]>;
   createTreeInstance?: (
+    prev: MergedFeatures<F>["treeInstance"],
     instance: MergedFeatures<F>["treeInstance"]
   ) => D["treeInstance"] & MergedFeatures<F>["treeInstance"];
   createItemInstance?: (
+    prev: MergedFeatures<F>["itemInstance"],
     instance: MergedFeatures<F>["itemInstance"],
     itemMeta: ItemMeta<T>,
     tree: MergedFeatures<F>["treeInstance"]

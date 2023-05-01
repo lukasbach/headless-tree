@@ -21,7 +21,7 @@ export const createTree = <T>(
     initialConfig
   ) as TreeConfig<T>;
 
-  let treeInstance: TreeInstance<T> = {} as any;
+  const treeInstance: TreeInstance<T> = {} as any;
 
   const itemInstancesMap: Record<string, ItemInstance<T>> = {};
   let itemInstances: ItemInstance<T>[] = [];
@@ -33,7 +33,12 @@ export const createTree = <T>(
       for (const feature of additionalFeatures) {
         Object.assign(
           itemInstance,
-          feature.createItemInstance?.(itemInstance, item, treeInstance) ?? {}
+          feature.createItemInstance?.(
+            { ...itemInstance },
+            itemInstance,
+            item,
+            treeInstance
+          ) ?? {}
         );
       }
       itemInstancesMap[item.itemId] = itemInstance;
@@ -54,9 +59,7 @@ export const createTree = <T>(
       setConfig: (updater) => {
         config = typeof updater === "function" ? updater(config) : updater;
       },
-
       getItemInstance: (itemId) => itemInstancesMap[itemId],
-
       getItems: () => itemInstances,
     }),
   };
@@ -64,10 +67,12 @@ export const createTree = <T>(
   // todo sort features
   const features = [mainFeature, ...additionalFeatures];
 
-  treeInstance = features.reduce(
-    (acc, feature) => feature.createTreeInstance?.(acc) ?? acc,
-    {} as TreeInstance<T>
-  ) as TreeInstance<T>;
+  for (const feature of features) {
+    Object.assign(
+      treeInstance,
+      feature.createTreeInstance?.({ ...treeInstance }, treeInstance) ?? {}
+    );
+  }
 
   rebuildItemInstances();
 
