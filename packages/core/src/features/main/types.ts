@@ -1,5 +1,4 @@
 import {
-  FeatureImplementation,
   ItemInstance,
   OnChangeFn,
   TreeConfig,
@@ -9,7 +8,6 @@ import {
 export type MainFeatureDef<T = any> = {
   state: {};
   config: {
-    features?: FeatureImplementation<any>[];
     state?: Partial<TreeState<T>>;
     onStateChange?: OnChangeFn<TreeState<T>>;
   };
