@@ -62,11 +62,9 @@ export const createTree = <T>(initialConfig: TreeConfig<T>) => {
   const features = [mainFeature, ...additionalFeatures];
 
   treeInstance = features.reduce(
-    (acc, feature) => feature.createTreeInstance?.(acc, config, state) ?? acc,
+    (acc, feature) => feature.createTreeInstance?.(acc) ?? acc,
     {} as TreeInstance<T>
   ) as TreeInstance<T>;
-
-  console.log("!!2", treeInstance);
 
   rebuildItemInstances();
 

@@ -9,13 +9,15 @@ export const treeFeature: FeatureDef<TreeFeature<any>> = {
     ...initialState,
   }),
 
-  createTreeInstance: (instance, config, state) => ({
+  createTreeInstance: (instance) => ({
     ...instance,
 
-    isItemExpanded: (itemId) => state.expandedItems.includes(itemId),
+    isItemExpanded: (itemId) =>
+      instance.getState().expandedItems.includes(itemId),
 
     getItemsMeta: memo(
       (rootItemId, expandedItems) => {
+        const config = instance.getConfig();
         const flatItems: ItemMeta<any>[] = [];
 
         const recursiveAdd = (
@@ -80,7 +82,7 @@ export const treeFeature: FeatureDef<TreeFeature<any>> = {
         "aria-selected": false,
         "aria-label": "",
         "aria-level": itemMeta.level,
-        tabIndex: state.focusedItem === itemMeta.itemId ? 0 : -1,
+        tabIndex: instance.getState().focusedItem === itemMeta.itemId ? 0 : -1,
         onClick: () => (item.isExpanded() ? item.collapse() : item.expand()),
       };
     },

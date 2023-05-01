@@ -33,11 +33,7 @@ export type FeatureDef<D extends FeatureTypeDef, T = any> = {
   getDefaultConfig?: (
     defaultConfig: Partial<TreeConfig<T>>
   ) => Partial<D["config"]>;
-  createTreeInstance?: (
-    instance: TreeInstance<T>,
-    config: D["config"],
-    state: D["state"]
-  ) => D["treeInstance"];
+  createTreeInstance?: (instance: TreeInstance<T>) => D["treeInstance"];
   createItemInstance?: (
     instance: ItemInstance<T>,
     itemMeta: ItemMeta<T>,
