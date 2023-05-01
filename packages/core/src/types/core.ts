@@ -1,31 +1,37 @@
-import { DragAndDropFeature } from "../features/drag-and-drop/types";
-import { MainFeature } from "../features/main/types";
-import { SelectionFeature } from "../features/selection/types";
-import { ItemMeta, TreeFeature } from "../features/tree/types";
+import { DragAndDropFeatureDef } from "../features/drag-and-drop/types";
+import { MainFeatureDef } from "../features/main/types";
+import { SelectionFeatureDef } from "../features/selection/types";
+import { ItemMeta, TreeFeatureDef } from "../features/tree/types";
 
 export type Updater<T> = T | ((old: T) => T);
 export type OnChangeFn<T> = (updaterOrValue: Updater<T>) => void;
 
-export type FeatureTypeDef = {
-  state: any;
-  config: any;
-  treeInstance: any;
-  itemInstance: any;
-};
-
-type Features<T> = [
-  MainFeature<T>,
-  TreeFeature<T>,
-  SelectionFeature<T>,
-  DragAndDropFeature<T>
-];
-
-type Feature = {
+export type FeatureDef = {
   state: object;
   config: object;
   treeInstance: object;
   itemInstance: object;
 };
+
+export type FeatureDefsMap<T> = {
+  main: MainFeatureDef;
+  tree: TreeFeatureDef<T>;
+  selection: SelectionFeatureDef<T>;
+  dragAndDrop: DragAndDropFeatureDef<T>;
+};
+
+export type DefaultFeatures = ["main", "tree"];
+
+export type ResolveFeatureDefs<T extends (keyof FeatureDefsMap<any>)[]> = {
+  [K in keyof T]: FeatureDefsMap<any>[T[K]];
+};
+
+type FeatureDefs<T> = [
+  MainFeatureDef,
+  TreeFeatureDef<T>,
+  SelectionFeatureDef<T>,
+  DragAndDropFeatureDef<T>
+];
 
 type MergeArr<T extends any[], Alt = never> = T extends []
   ? Alt
@@ -37,22 +43,22 @@ type MergeArr<T extends any[], Alt = never> = T extends []
   ? A
   : T[number];
 
-type MergedFeatures<F extends Feature[]> = {
+type MergedFeatures<F extends FeatureDef[]> = {
   state: MergeArr<F, { state: {} }>["state"];
   config: MergeArr<F, { config: {} }>["config"];
   treeInstance: MergeArr<F, { treeInstance: {} }>["treeInstance"];
   itemInstance: MergeArr<F, { itemInstance: {} }>["itemInstance"];
 };
 
-export type TreeState<T> = MergedFeatures<Features<T>>["state"];
-export type TreeConfig<T> = MergedFeatures<Features<T>>["config"];
-export type TreeInstance<T> = MergedFeatures<Features<T>>["treeInstance"];
-export type ItemInstance<T> = MergedFeatures<Features<T>>["itemInstance"];
+export type TreeState<T> = MergedFeatures<FeatureDefs<T>>["state"];
+export type TreeConfig<T> = MergedFeatures<FeatureDefs<T>>["config"];
+export type TreeInstance<T> = MergedFeatures<FeatureDefs<T>>["treeInstance"];
+export type ItemInstance<T> = MergedFeatures<FeatureDefs<T>>["itemInstance"];
 
-export type FeatureDef<
+export type FeatureImplementation<
   T = any,
-  D extends FeatureTypeDef = any,
-  F extends Feature[] = []
+  D extends FeatureDef = any,
+  F extends FeatureDef[] = []
 > = {
   getInitialState?: (
     initialState: Partial<MergedFeatures<F>["state"]>
@@ -69,5 +75,5 @@ export type FeatureDef<
     tree: MergedFeatures<F>["treeInstance"]
   ) => D["itemInstance"] & MergedFeatures<F>["itemInstance"];
 
-  dependingFeatures?: FeatureDef<T, F[number]>[];
+  dependingFeatures?: FeatureImplementation<T, F[number]>[];
 };

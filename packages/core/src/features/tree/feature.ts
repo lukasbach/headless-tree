@@ -1,12 +1,13 @@
-import { FeatureDef } from "../../types/core";
-import { ItemMeta, TreeFeature } from "./types";
+import { FeatureImplementation, ResolveFeatureDefs } from "../../types/core";
+import { ItemMeta, TreeFeatureDef } from "./types";
 import { memo } from "../../utils";
-import { MainFeature } from "../main/types";
+import { MainFeatureDef } from "../main/types";
 
-export const treeFeature: FeatureDef<
+export const treeFeature: FeatureImplementation<
   any,
-  TreeFeature<any>,
-  [MainFeature, TreeFeature<any>]
+  TreeFeatureDef<any>,
+  // [MainFeatureDef, TreeFeatureDef<any>]
+  ResolveFeatureDefs<["main", "tree"]>
 > = {
   // dependingFeatures: [mainFeature],
 

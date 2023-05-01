@@ -17,7 +17,7 @@ export type ItemMeta<T> = {
   posInSet: number;
 };
 
-export type TreeFeature<T> = {
+export type TreeFeatureDef<T> = {
   state: {
     rootItemId: string;
     expandedItems: string[];

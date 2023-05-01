@@ -1,11 +1,11 @@
 import {
-  FeatureDef,
+  FeatureImplementation,
   ItemInstance,
   TreeConfig,
   TreeInstance,
   TreeState,
 } from "../types/core";
-import { MainFeature } from "../features/main/types";
+import { MainFeatureDef } from "../features/main/types";
 import { treeFeature } from "../features/tree/feature";
 
 export const createTree = <T>(initialConfig: TreeConfig<T>) => {
@@ -39,7 +39,7 @@ export const createTree = <T>(initialConfig: TreeConfig<T>) => {
     }
   };
 
-  const mainFeature: FeatureDef<MainFeature<T>> = {
+  const mainFeature: FeatureImplementation<MainFeatureDef<T>> = {
     createTreeInstance: () => ({
       getState: () => state,
       setState: (updater) => {

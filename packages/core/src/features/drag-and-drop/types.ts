@@ -1,4 +1,4 @@
-export type DragAndDropFeature<T> = {
+export type DragAndDropFeatureDef<T> = {
   state: {};
   config: {};
   treeInstance: {};

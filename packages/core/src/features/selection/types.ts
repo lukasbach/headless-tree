@@ -1,6 +1,6 @@
 import { OnChangeFn } from "../../types/core";
 
-export type SelectionFeature<T> = {
+export type SelectionFeatureDef<T> = {
   state: {
     selectedItems: string[];
   };

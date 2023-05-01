@@ -1,15 +1,15 @@
 import {
-  FeatureDef,
+  FeatureImplementation,
   ItemInstance,
   OnChangeFn,
   TreeConfig,
   TreeState,
 } from "../../types/core";
 
-export type MainFeature<T = any> = {
+export type MainFeatureDef<T = any> = {
   state: {};
   config: {
-    features?: FeatureDef<any>[];
+    features?: FeatureImplementation<any>[];
     state?: Partial<TreeState<T>>;
     onStateChange?: OnChangeFn<TreeState<T>>;
   };

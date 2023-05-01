@@ -1,4 +1,4 @@
-import { FeatureDef } from "../../types/core";
-import { MainFeature } from "./types";
+import { FeatureImplementation } from "../../types/core";
+import { MainFeatureDef } from "./types";
 
-export const mainFeature: FeatureDef<MainFeature> = {};
+export const mainFeature: FeatureImplementation<MainFeatureDef> = {};
