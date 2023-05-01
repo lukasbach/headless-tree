@@ -6,11 +6,11 @@ import {
   TreeState,
 } from "../../types/core";
 
-export type MainFeature<T> = {
+export type MainFeature<T = any> = {
   state: {};
   config: {
     features?: FeatureDef<any>[];
-    state?: TreeState<T>;
+    state?: Partial<TreeState<T>>;
     onStateChange?: OnChangeFn<TreeState<T>>;
   };
   treeInstance: {
@@ -19,6 +19,7 @@ export type MainFeature<T> = {
     setConfig: OnChangeFn<TreeConfig<T>>;
     getConfig: () => TreeConfig<T>;
     getItemInstance: (itemId: string) => ItemInstance<T>;
+    getItems: () => ItemInstance<T>[];
   };
   itemInstance: {};
 };

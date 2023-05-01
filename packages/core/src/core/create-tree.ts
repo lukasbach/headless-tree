@@ -9,43 +9,52 @@ import { MainFeature } from "../features/main/types";
 import { treeFeature } from "../features/tree/feature";
 
 export const createTree = <T>(initialConfig: TreeConfig<T>) => {
-  let state: TreeState<T> = initialConfig.features?.reduce(
+  const additionalFeatures = [treeFeature, ...(initialConfig.features ?? [])];
+  let state = additionalFeatures.reduce(
     (acc, feature) => feature.getInitialState?.(acc) ?? acc,
     initialConfig.state ?? {}
-  );
-  let config: TreeConfig<T> = initialConfig.features?.reduce(
+  ) as TreeState<T>;
+  let config = additionalFeatures.reduce(
     (acc, feature) => feature.getDefaultConfig?.(acc) ?? acc,
     initialConfig
-  );
+  ) as TreeConfig<T>;
 
   let treeInstance: TreeInstance<T> = {} as any;
 
-  const itemInstances: Record<string, ItemInstance<T>> = {};
+  const itemInstancesMap: Record<string, ItemInstance<T>> = {};
+  let itemInstances: ItemInstance<T>[] = [];
 
-  const additionalFeatures = [treeFeature, ...(initialConfig.features ?? [])];
+  const rebuildItemInstances = () => {
+    itemInstances = [];
+    for (const item of treeInstance.getItemsMeta()) {
+      const itemInstance = {} as ItemInstance<T>;
+      for (const feature of additionalFeatures) {
+        Object.assign(
+          itemInstance,
+          feature.createItemInstance?.(itemInstance, item, treeInstance) ?? {}
+        );
+      }
+      itemInstancesMap[item.itemId] = itemInstance;
+      itemInstances.push(itemInstance);
+    }
+  };
 
   const mainFeature: FeatureDef<MainFeature<T>> = {
     createTreeInstance: () => ({
       getState: () => state,
       setState: (updater) => {
-        config.onStateChange?.(updater);
         state = typeof updater === "function" ? updater(state) : updater;
-
-        for (const item of treeInstance.getFlatItems()) {
-          itemInstances[item.itemId] = additionalFeatures.reduce(
-            (acc, feature) =>
-              feature.createItemInstance?.(acc, item, config, treeInstance) ??
-              acc,
-            {} as ItemInstance<T>
-          );
-        }
+        config.onStateChange?.(state);
+        rebuildItemInstances();
       },
       getConfig: () => config,
       setConfig: (updater) => {
         config = typeof updater === "function" ? updater(config) : updater;
       },
 
-      getItemInstance: (itemId) => itemInstances[itemId],
+      getItemInstance: (itemId) => itemInstancesMap[itemId],
+
+      getItems: () => itemInstances,
     }),
   };
 
@@ -55,7 +64,11 @@ export const createTree = <T>(initialConfig: TreeConfig<T>) => {
   treeInstance = features.reduce(
     (acc, feature) => feature.createTreeInstance?.(acc, config, state) ?? acc,
     {} as TreeInstance<T>
-  );
+  ) as TreeInstance<T>;
+
+  console.log("!!2", treeInstance);
+
+  rebuildItemInstances();
 
   return treeInstance;
 };

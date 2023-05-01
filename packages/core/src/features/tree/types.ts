@@ -1,4 +1,4 @@
-import { OnChangeFn } from "../../types/core";
+import { ItemInstance, OnChangeFn, TreeInstance } from "../../types/core";
 
 export type TreeDataLoader<T> = {
   // TODO async interfaces with asyncFeature
@@ -8,12 +8,13 @@ export type TreeDataLoader<T> = {
   childrenChangeSignal?: any;
 };
 
-export type FlatTreeItem<T> = {
+export type ItemMeta<T> = {
   itemId: string;
   parentId: string;
-  depth: number;
+  level: number;
   index: number;
-  isLoading: boolean;
+  setSize: number;
+  posInSet: number;
 };
 
 export type TreeFeature<T> = {
@@ -31,7 +32,24 @@ export type TreeFeature<T> = {
     onChangeFocusedItem: OnChangeFn<string | null>;
   };
   treeInstance: {
-    getFlatItems: () => FlatTreeItem<T>[];
+    /** @internal */
+    getItemsMeta: () => ItemMeta<T>[];
+
+    expandItem: (itemId: string) => void;
+    collapseItem: (itemId: string) => void;
+    isItemExpanded: (itemId: string) => boolean;
+
+    /** @internal */
+    getItemProps: (item: ItemInstance<T>) => Record<string, any>;
+    getContainerProps: () => Record<string, any>;
   };
-  itemInstance: {};
+  itemInstance: {
+    getItemMeta: () => ItemMeta<T>;
+    getId: () => string;
+    getProps: () => Record<string, any>;
+    getItemName: () => string;
+    expand: () => void;
+    collapse: () => void;
+    isExpanded: () => boolean;
+  };
 };
