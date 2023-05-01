@@ -1,7 +1,4 @@
 import {
-  DefaultFeatures,
-  EmptyFeatureDef,
-  FeatureDef,
   FeatureImplementation,
   ItemInstance,
   TreeConfig,
@@ -10,19 +7,15 @@ import {
 } from "../types/core";
 import { MainFeatureDef } from "../features/main/types";
 import { treeFeature } from "../features/tree/feature";
-import { selectionFeature } from "../features/selection/feature";
 
-export const createTree = <T = any, F extends FeatureDef = EmptyFeatureDef>(
-  features: FeatureImplementation<T, F>[],
-  initialConfig: TreeConfig<T, F | DefaultFeatures<T>>
-): TreeInstance<T, F | DefaultFeatures<T>> => {
-  const additionalFeatures = [treeFeature, ...features];
+export const createTree = <T>(initialConfig: TreeConfig<T>) => {
+  const additionalFeatures = [treeFeature, ...(initialConfig.features ?? [])];
   let state = additionalFeatures.reduce(
     (acc, feature) => feature.getInitialState?.(acc) ?? acc,
-    (initialConfig as any).state ?? {}
+    initialConfig.state ?? {}
   ) as TreeState<T>;
   let config = additionalFeatures.reduce(
-    (acc, feature) => feature.getDefaultConfig?.(acc as any) ?? acc,
+    (acc, feature) => feature.getDefaultConfig?.(acc) ?? acc,
     initialConfig
   ) as TreeConfig<T>;
 
@@ -67,16 +60,14 @@ export const createTree = <T = any, F extends FeatureDef = EmptyFeatureDef>(
   };
 
   // todo sort features
-  const allFeatures = [mainFeature, ...additionalFeatures];
+  const features = [mainFeature, ...additionalFeatures];
 
-  treeInstance = allFeatures.reduce(
+  treeInstance = features.reduce(
     (acc, feature) => feature.createTreeInstance?.(acc) ?? acc,
     {} as TreeInstance<T>
   ) as TreeInstance<T>;
 
   rebuildItemInstances();
 
-  return treeInstance as any;
+  return treeInstance;
 };
-
-const x = createTree([selectionFeature], {});
