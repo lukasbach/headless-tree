@@ -28,8 +28,8 @@ export type TreeFeatureDef<T> = {
     isItemFolder: (item: T) => boolean;
     getItemName: (item: T) => string;
 
-    onChangeExpandedItems: OnChangeFn<string[]>;
-    onChangeFocusedItem: OnChangeFn<string | null>;
+    onChangeExpandedItems?: OnChangeFn<string[]>;
+    onChangeFocusedItem?: OnChangeFn<string | null>;
   };
   treeInstance: {
     /** @internal */
@@ -39,8 +39,6 @@ export type TreeFeatureDef<T> = {
     collapseItem: (itemId: string) => void;
     isItemExpanded: (itemId: string) => boolean;
 
-    /** @internal */
-    getItemProps: (item: ItemInstance<T>) => Record<string, any>;
     getContainerProps: () => Record<string, any>;
   };
   itemInstance: {

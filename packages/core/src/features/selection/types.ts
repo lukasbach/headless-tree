@@ -5,7 +5,7 @@ export type SelectionFeatureDef<T> = {
     selectedItems: string[];
   };
   config: {
-    onChangeSelectedItems: OnChangeFn<string[]>;
+    onChangeSelectedItems?: OnChangeFn<string[]>;
   };
   treeInstance: {};
   itemInstance: {};

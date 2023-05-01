@@ -59,8 +59,6 @@ export const treeFeature: FeatureImplementation<
           recursiveAdd(itemId, rootItemId, 0, children.length, i++);
         }
 
-        console.log("FLAT ITEMS", flatItems, expandedItems);
-
         return flatItems;
       },
       () => [instance.getState().rootItemId, instance.getState().expandedItems]
@@ -80,21 +78,6 @@ export const treeFeature: FeatureImplementation<
       }));
     },
 
-    getItemProps: (item) => {
-      const itemMeta = item.getItemMeta();
-      return {
-        ...instance.getItemProps?.(item),
-        role: "treeitem",
-        "aria-setsize": itemMeta.setSize,
-        "aria-posinset": itemMeta.posInSet,
-        "aria-selected": false,
-        "aria-label": "",
-        "aria-level": itemMeta.level,
-        tabIndex: instance.getState().focusedItem === itemMeta.itemId ? 0 : -1,
-        onClick: () => (item.isExpanded() ? item.collapse() : item.expand()),
-      };
-    },
-
     getContainerProps: () => ({
       ...instance.getContainerProps?.(),
       role: "tree",
@@ -106,7 +89,21 @@ export const treeFeature: FeatureImplementation<
   createItemInstance: (instance, itemMeta, tree) => ({
     ...instance,
     getId: () => itemMeta.itemId,
-    getProps: () => tree.getItemProps(instance),
+    getProps: () => {
+      const itemMeta = instance.getItemMeta();
+      return {
+        ...instance.getProps?.(),
+        role: "treeitem",
+        "aria-setsize": itemMeta.setSize,
+        "aria-posinset": itemMeta.posInSet,
+        "aria-selected": false,
+        "aria-label": "",
+        "aria-level": itemMeta.level,
+        tabIndex: tree.getState().focusedItem === itemMeta.itemId ? 0 : -1,
+        onClick: () =>
+          instance.isExpanded() ? instance.collapse() : instance.expand(),
+      };
+    },
     expand: () => tree.expandItem(itemMeta.itemId),
     collapse: () => tree.collapseItem(itemMeta.itemId),
     isExpanded: () => tree.getState().expandedItems.includes(itemMeta.itemId),

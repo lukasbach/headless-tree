@@ -8,7 +8,9 @@ import {
 import { MainFeatureDef } from "../features/main/types";
 import { treeFeature } from "../features/tree/feature";
 
-export const createTree = <T>(initialConfig: TreeConfig<T>) => {
+export const createTree = <T>(
+  initialConfig: TreeConfig<T>
+): TreeInstance<T> => {
   const additionalFeatures = [treeFeature, ...(initialConfig.features ?? [])];
   let state = additionalFeatures.reduce(
     (acc, feature) => feature.getInitialState?.(acc) ?? acc,

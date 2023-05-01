@@ -3,25 +3,23 @@ import React, { useState } from "react";
 import { useTree } from "../index";
 
 const meta = {
-  title: "React/Basic Example",
+  title: "React/Example",
 } satisfies Meta;
 
 export default meta;
 
 export const Example = () => {
   const [state, setState] = useState({ rootItemId: "root" });
-
-  console.log("STATE", state);
-
   const tree = useTree<string>({
     state,
     onStateChange: setState,
     getItemName: (item) => item,
+    isItemFolder: () => true,
     dataLoader: {
       getItem: (itemId) => itemId,
       getChildren: (itemId) => [`${itemId}-1`, `${itemId}-2`, `${itemId}-3`],
     },
-  } as any);
+  });
 
   return (
     <div>
