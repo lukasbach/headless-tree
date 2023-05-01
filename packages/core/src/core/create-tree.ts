@@ -23,16 +23,18 @@ export const createTree = <T>(
 
   const treeInstance: TreeInstance<T> = {} as any;
   let treeElement: HTMLElement | undefined | null;
+  const treeDataRef: { current: any } = { current: {} };
 
   const itemInstancesMap: Record<string, ItemInstance<T>> = {};
   let itemInstances: ItemInstance<T>[] = [];
   const itemElementsMap: Record<string, HTMLElement | undefined | null> = {};
+  const itemDataRefs: Record<string, { current: any }> = {};
 
-  const rebuildItemInstances = () => {
+  const rebuildItemInstances = (main: FeatureImplementation) => {
     itemInstances = [];
     for (const item of treeInstance.getItemsMeta()) {
       const itemInstance = {} as ItemInstance<T>;
-      for (const feature of additionalFeatures) {
+      for (const feature of [main, ...additionalFeatures]) {
         Object.assign(
           itemInstance,
           feature.createItemInstance?.(
@@ -62,7 +64,7 @@ export const createTree = <T>(
       setState: (updater) => {
         state = typeof updater === "function" ? updater(state) : updater;
         config.onStateChange?.(state);
-        rebuildItemInstances();
+        rebuildItemInstances(mainFeature);
         eachFeature((feature) => feature.onStateChange?.(treeInstance));
         eachFeature((feature) => feature.onStateOrConfigChange?.(treeInstance));
       },
@@ -87,6 +89,7 @@ export const createTree = <T>(
         treeElement = element;
       },
       getElement: () => treeElement,
+      getDataRef: () => treeDataRef,
     }),
     createItemInstance: (prev, instance, itemMeta) => ({
       ...prev,
@@ -104,6 +107,8 @@ export const createTree = <T>(
         itemElementsMap[itemMeta.itemId] = element;
       },
       getElement: () => itemElementsMap[itemMeta.itemId],
+      // eslint-disable-next-line no-return-assign
+      getDataRef: () => (itemDataRefs[itemMeta.itemId] ??= { current: {} }),
     }),
   };
 
@@ -117,7 +122,7 @@ export const createTree = <T>(
     );
   }
 
-  rebuildItemInstances();
+  rebuildItemInstances(mainFeature);
 
   return treeInstance;
 };

@@ -6,3 +6,4 @@ export * from "./features/drag-and-drop/types";
 export * from "./features/selection/types";
 
 export * from "./features/selection/feature";
+export * from "./features/hotkeys-core/feature";

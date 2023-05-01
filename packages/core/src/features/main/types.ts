@@ -22,9 +22,13 @@ export type MainFeatureDef<T = any> = {
     getItems: () => ItemInstance<T>[];
     registerElement: (element: HTMLElement | null) => void;
     getElement: () => HTMLElement | undefined | null;
+    /** @internal */
+    getDataRef: <D>() => { current: D };
   };
   itemInstance: {
     registerElement: (element: HTMLElement | null) => void;
     getElement: () => HTMLElement | undefined | null;
+    /** @internal */
+    getDataRef: <D>() => { current: D };
   };
 };

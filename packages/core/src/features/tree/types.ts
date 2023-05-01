@@ -39,6 +39,12 @@ export type TreeFeatureDef<T> = {
     collapseItem: (itemId: string) => void;
     isItemExpanded: (itemId: string) => boolean;
 
+    focusItem: (itemId: string) => void;
+    getFocusedItem: () => ItemInstance<any>;
+    focusNextItem: () => void;
+    focusPreviousItem: () => void;
+    updateDomFocus: (scrollIntoView?: boolean) => void;
+
     getContainerProps: () => Record<string, any>;
   };
   itemInstance: {

@@ -2,11 +2,12 @@ import { FeatureImplementation } from "../../types/core";
 import { ItemMeta, TreeFeatureDef } from "./types";
 import { memo } from "../../utils";
 import { MainFeatureDef } from "../main/types";
+import { HotkeysCoreFeatureDef } from "../hotkeys-core/types";
 
 export const treeFeature: FeatureImplementation<
   any,
   TreeFeatureDef<any>,
-  MainFeatureDef | TreeFeatureDef<any>
+  MainFeatureDef | TreeFeatureDef<any> | HotkeysCoreFeatureDef<any>
 > = {
   key: "tree",
   dependingFeatures: ["main"],
@@ -78,6 +79,46 @@ export const treeFeature: FeatureImplementation<
       }));
     },
 
+    getFocusedItem: () => {
+      return (
+        instance
+          .getItems()
+          .find((item) => item.getId() === instance.getState().focusedItem) ??
+        instance.getItems()[0]
+      );
+    },
+
+    focusItem: (itemId) => {
+      instance.setState((state) => ({
+        ...state,
+        focusedItem: itemId,
+      }));
+    },
+
+    focusNextItem: () => {
+      const { index } = instance.getFocusedItem().getItemMeta();
+      const nextIndex = Math.min(index + 1, instance.getItems().length - 1);
+      instance.focusItem(instance.getItems()[nextIndex].getId());
+      console.log("FOCUS NEXT", index, nextIndex);
+    },
+
+    focusPreviousItem: () => {
+      const { index } = instance.getFocusedItem().getItemMeta();
+      const nextIndex = Math.max(index - 1, 0);
+      instance.focusItem(instance.getItems()[nextIndex].getId());
+    },
+
+    updateDomFocus: (scrollIntoView) => {
+      const focusedItem = instance.getFocusedItem();
+      console.log(focusedItem.getElement(), "!!");
+      const focusedElement = focusedItem.getElement();
+      if (!focusedElement) return;
+      focusedElement.focus();
+      if (scrollIntoView) {
+        focusedElement.scrollIntoView();
+      }
+    },
+
     getContainerProps: () => ({
       ...prev.getContainerProps?.(),
       role: "tree",
@@ -121,11 +162,27 @@ export const treeFeature: FeatureImplementation<
       return config.getItemName(config.dataLoader.getItem(itemMeta.itemId));
     },
     getItemMeta: () => itemMeta,
-    setFocused: () => {
-      tree.setState((state) => ({
-        ...state,
-        focusedItem: itemMeta.itemId,
-      }));
-    },
+    setFocused: () => tree.focusItem(itemMeta.itemId),
   }),
+
+  onTreeMount: (tree) => {
+    tree.registerHotkey({
+      name: "focusNextItem",
+      hotkey: "ArrowDown",
+      canRepeat: true,
+      handler: () => {
+        tree.focusNextItem();
+        tree.updateDomFocus();
+      },
+    });
+    tree.registerHotkey({
+      name: "focusPreviousItem",
+      hotkey: "ArrowUp",
+      canRepeat: true,
+      handler: () => {
+        tree.focusPreviousItem();
+        tree.updateDomFocus();
+      },
+    });
+  },
 };
