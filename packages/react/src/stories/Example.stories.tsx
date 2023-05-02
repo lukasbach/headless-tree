@@ -17,10 +17,6 @@ export const Example = () => {
     getItemName: (item) => item,
     isItemFolder: () => true,
     hotkeys: {
-      focusNextItem: {
-        hotkey: "ArrowRight",
-        canRepeat: false,
-      },
       customEvent: {
         hotkey: "Escape",
         handler: () => alert("Hello!"),

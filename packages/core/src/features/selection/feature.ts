@@ -72,6 +72,14 @@ export const selectionFeature: FeatureImplementation<
       tree.setSelectedItems(uniqueSelectedItems);
     },
 
+    toggleSelect: () => {
+      if (item.isSelected()) {
+        item.deselect();
+      } else {
+        item.select();
+      }
+    },
+
     getProps: () => {
       return {
         ...prev.getProps(),
@@ -79,11 +87,7 @@ export const selectionFeature: FeatureImplementation<
           if (e.shiftKey) {
             item.selectUpTo(e.ctrlKey || e.metaKey);
           } else if (e.ctrlKey || e.metaKey) {
-            if (item.isSelected()) {
-              item.deselect();
-            } else {
-              item.select();
-            }
+            item.toggleSelect();
           } else {
             tree.setSelectedItems([itemMeta.itemId]);
           }
@@ -93,4 +97,43 @@ export const selectionFeature: FeatureImplementation<
       };
     },
   }),
+
+  hotkeys: {
+    // setSelectedItem: {
+    //   hotkey: "space",
+    //   handler: (e, tree) => {
+    //     tree.setSelectedItems([tree.getFocusedItem().getId()]);
+    //   },
+    // },
+    toggleSelectItem: {
+      hotkey: "ctrl+space",
+      handler: (e, tree) => {
+        tree.getFocusedItem().toggleSelect();
+      },
+    },
+    selectUpwards: {
+      hotkey: "shift+ArrowUp",
+      handler: () => {
+        // TODO
+      },
+    },
+    selectDownwards: {
+      hotkey: "shift+ArrowDown",
+      handler: () => {
+        // TODO
+      },
+    },
+    selectUpwardsCtrl: {
+      hotkey: "shift+ctrl+ArrowUp",
+      handler: () => {
+        // TODO
+      },
+    },
+    selectDownwardsCtrl: {
+      hotkey: "shift+ctrl+ArrowUp",
+      handler: () => {
+        // TODO
+      },
+    },
+  },
 };

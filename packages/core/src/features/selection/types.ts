@@ -13,8 +13,14 @@ export type SelectionFeatureDef<T> = {
   itemInstance: {
     select: () => void;
     deselect: () => void;
+    toggleSelect: () => void;
     isSelected: () => boolean;
     selectUpTo: (ctrl: boolean) => void;
   };
-  hotkeys: never;
+  hotkeys:
+    | "toggleSelectItem"
+    | "selectUpwards"
+    | "selectDownwards"
+    | "selectUpwardsCtrl"
+    | "selectDownwardsCtrl";
 };
