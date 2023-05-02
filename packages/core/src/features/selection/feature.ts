@@ -80,22 +80,20 @@ export const selectionFeature: FeatureImplementation<
       }
     },
 
-    getProps: () => {
-      return {
-        ...prev.getProps(),
-        onClick: (e) => {
-          if (e.shiftKey) {
-            item.selectUpTo(e.ctrlKey || e.metaKey);
-          } else if (e.ctrlKey || e.metaKey) {
-            item.toggleSelect();
-          } else {
-            tree.setSelectedItems([itemMeta.itemId]);
-          }
+    getProps: () => ({
+      ...prev.getProps(),
+      onClick: (e) => {
+        if (e.shiftKey) {
+          item.selectUpTo(e.ctrlKey || e.metaKey);
+        } else if (e.ctrlKey || e.metaKey) {
+          item.toggleSelect();
+        } else {
+          tree.setSelectedItems([itemMeta.itemId]);
+        }
 
-          prev.getProps().onClick?.(e);
-        },
-      };
-    },
+        prev.getProps().onClick?.(e);
+      },
+    }),
   }),
 
   hotkeys: {

@@ -12,4 +12,6 @@ const preview: Preview = {
   },
 };
 
+import "./style.css";
+
 export default preview;

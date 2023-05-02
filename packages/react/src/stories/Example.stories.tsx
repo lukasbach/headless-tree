@@ -30,16 +30,22 @@ export const Example = () => {
   });
 
   return (
-    <div ref={tree.registerElement}>
+    <div ref={tree.registerElement} className="tree">
       {tree.getItems().map((item) => (
         <div
           key={item.getId()}
           style={{ marginLeft: `${item.getItemMeta().level * 20}px` }}
         >
-          <button {...item.getProps()} ref={item.registerElement}>
-            {item.isExpanded() ? "v" : ">"}
+          <button
+            {...item.getProps()}
+            ref={item.registerElement}
+            className="treeitem"
+            data-focused={item.isFocused()}
+            data-expanded={item.isExpanded()}
+            data-selected={item.isSelected()}
+          >
+            {item.isExpanded() ? "v " : "> "}
             {item.getItemName()}
-            {item.isSelected() ? "*" : ""}
           </button>
         </div>
       ))}
