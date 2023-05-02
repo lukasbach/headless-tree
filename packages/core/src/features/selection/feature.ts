@@ -11,12 +11,85 @@ export const selectionFeature: FeatureImplementation<
   key: "selection",
   dependingFeatures: ["main", "tree"],
 
-  createItemInstance: (prev) => ({
+  getInitialState: (initialState) => ({
+    selectedItems: [],
+    ...initialState,
+  }),
+
+  createTreeInstance: (prev, instance) => ({
     ...prev,
+
+    setSelectedItems: (selectedItems) => {
+      instance.setState((state) => ({
+        ...state,
+        selectedItems,
+      }));
+    },
+  }),
+
+  createItemInstance: (prev, item, itemMeta, tree) => ({
+    ...prev,
+
+    select: () => {
+      const { selectedItems } = tree.getState();
+      tree.setSelectedItems(
+        selectedItems.includes(itemMeta.itemId)
+          ? selectedItems
+          : [...selectedItems, itemMeta.itemId]
+      );
+    },
+
+    deselect: () => {
+      const { selectedItems } = tree.getState();
+      tree.setSelectedItems(
+        selectedItems.filter((id) => id !== itemMeta.itemId)
+      );
+    },
+
+    isSelected: () => {
+      const { selectedItems } = tree.getState();
+      return selectedItems.includes(itemMeta.itemId);
+    },
+
+    selectUpTo: (ctrl: boolean) => {
+      const indexA = itemMeta.index;
+      const indexB = tree.getFocusedItem().getItemMeta().index;
+      const [a, b] = indexA < indexB ? [indexA, indexB] : [indexB, indexA];
+      const newSelectedItems = tree
+        .getItems()
+        .slice(a, b + 1)
+        .map((item) => item.getItemMeta().itemId);
+
+      if (!ctrl) {
+        tree.setSelectedItems(newSelectedItems);
+        return;
+      }
+
+      const { selectedItems } = tree.getState();
+      const uniqueSelectedItems = [
+        ...new Set([...selectedItems, ...newSelectedItems]),
+      ];
+      tree.setSelectedItems(uniqueSelectedItems);
+    },
+
     getProps: () => {
       return {
         ...prev.getProps(),
-        "data-selection": 123,
+        onClick: (e) => {
+          if (e.shiftKey) {
+            item.selectUpTo(e.ctrlKey || e.metaKey);
+          } else if (e.ctrlKey || e.metaKey) {
+            if (item.isSelected()) {
+              item.deselect();
+            } else {
+              item.select();
+            }
+          } else {
+            tree.setSelectedItems([itemMeta.itemId]);
+          }
+
+          prev.getProps().onClick?.(e);
+        },
       };
     },
   }),

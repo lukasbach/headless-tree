@@ -43,6 +43,7 @@ export const Example = () => {
           <button {...item.getProps()} ref={item.registerElement}>
             {item.isExpanded() ? "v" : ">"}
             {item.getItemName()}
+            {item.isSelected() ? "*" : ""}
           </button>
         </div>
       ))}

@@ -141,8 +141,13 @@ export const treeFeature: FeatureImplementation<
         "aria-label": "",
         "aria-level": itemMeta.level,
         tabIndex: instance.isFocused() ? 0 : -1,
-        onClick: () => {
+        onClick: (e) => {
           instance.setFocused();
+
+          if (e.ctrlKey || e.shiftKey || e.metaKey) {
+            return;
+          }
+
           if (instance.isExpanded()) {
             instance.collapse();
           } else {

@@ -7,7 +7,14 @@ export type SelectionFeatureDef<T> = {
   config: {
     onChangeSelectedItems?: OnChangeFn<string[]>;
   };
-  treeInstance: {};
-  itemInstance: {};
+  treeInstance: {
+    setSelectedItems: (selectedItems: string[]) => void;
+  };
+  itemInstance: {
+    select: () => void;
+    deselect: () => void;
+    isSelected: () => boolean;
+    selectUpTo: (ctrl: boolean) => void;
+  };
   hotkeys: never;
 };
