@@ -29,6 +29,7 @@ export const selectionFeature: FeatureImplementation<
       instance.getConfig().onChangeSelectedItems?.(selectedItems);
     },
 
+    // TODO memo
     getSelectedItems: () => {
       return instance.getState().selectedItems.map(instance.getItemInstance);
     },

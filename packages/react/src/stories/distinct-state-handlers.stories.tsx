@@ -33,6 +33,7 @@ export const DistinctStateHandlers = () => {
       {tree.getItems().map((item) => (
         <div
           key={item.getId()}
+          className="treeitem-parent"
           style={{ marginLeft: `${item.getItemMeta().level * 20}px` }}
         >
           <button

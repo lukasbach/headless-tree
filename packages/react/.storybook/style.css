@@ -2,13 +2,16 @@
     max-width: 300px;
 }
 
+.treeitem-parent {
+    margin-bottom: 2px;
+}
+
 .treeitem {
     width: 100%;
     text-align: left;
     background-color: white;
     border: 1px solid #aaa;
     padding: 4px 6px;
-    margin-bottom: 2px;
 }
 
 .treeitem[data-selected=true] {

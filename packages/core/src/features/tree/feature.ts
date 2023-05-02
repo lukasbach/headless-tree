@@ -85,6 +85,7 @@ export const treeFeature: FeatureImplementation<
         );
     },
 
+    // TODO memo
     getFocusedItem: () => {
       return (
         instance
@@ -175,6 +176,20 @@ export const treeFeature: FeatureImplementation<
     },
     getItemMeta: () => itemMeta,
     setFocused: () => tree.focusItem(itemMeta.itemId),
+    getParent: memo(
+      () => {
+        for (let i = itemMeta.index - 1; i >= 0; i--) {
+          const item = tree.getItems()[i];
+          if (item.getItemMeta().level < itemMeta.level) {
+            return item;
+          }
+        }
+        return tree.getItemInstance(tree.getState().rootItemId);
+      },
+      () => []
+    ),
+    getIndexInParent: () =>
+      itemMeta.index - instance.getParent().getItemMeta().index,
   }),
 
   hotkeys: {

@@ -24,7 +24,6 @@ export const memo = <D extends readonly any[], R>(
       !oldDeps.some((dep, i) => dep !== newDeps[i]);
 
     if (match) {
-      console.log("MEMO MATCH", oldDeps, newDeps);
       return value;
     }
 
