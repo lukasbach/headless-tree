@@ -89,11 +89,13 @@ export type FeatureImplementation<
   dependingFeatures?: string[];
 
   getInitialState?: (
-    initialState: Partial<MergedFeatures<F>["state"]>
+    initialState: Partial<MergedFeatures<F>["state"]>,
+    tree: MergedFeatures<F>["treeInstance"]
   ) => Partial<D["state"] & MergedFeatures<F>["state"]>;
 
   getDefaultConfig?: (
-    defaultConfig: Partial<MergedFeatures<F>["config"]>
+    defaultConfig: Partial<MergedFeatures<F>["config"]>,
+    tree: MergedFeatures<F>["treeInstance"]
   ) => Partial<D["config"] & MergedFeatures<F>["config"]>;
 
   createTreeInstance?: (

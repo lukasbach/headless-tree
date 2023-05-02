@@ -1,3 +1,5 @@
+import { TreeState, Updater } from "./types/core";
+
 export type NoInfer<T> = [T][T extends any ? 0 : never];
 
 export const memo = <D extends readonly any[], R>(
@@ -31,6 +33,26 @@ export const memo = <D extends readonly any[], R>(
     return value;
   };
 };
+
+export function functionalUpdate<T>(updater: Updater<T>, input: T): T {
+  console.log("functionalUpdate", updater, input);
+  return typeof updater === "function"
+    ? (updater as (input: T) => T)(input)
+    : updater;
+}
+export function makeStateUpdater<K extends keyof TreeState<any>>(
+  key: K,
+  instance: unknown
+) {
+  return (updater: Updater<TreeState<any>[K]>) => {
+    (instance as any).setState(<TTableState>(old: TTableState) => {
+      return {
+        ...old,
+        [key]: functionalUpdate(updater, (old as any)[key]),
+      };
+    });
+  };
+}
 
 export const scrollIntoView = (element: Element | undefined | null) => {
   if (!element) {

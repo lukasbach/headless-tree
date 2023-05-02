@@ -2,6 +2,7 @@ import { FeatureImplementation } from "../../types/core";
 import { SelectionFeatureDef } from "./types";
 import { MainFeatureDef } from "../main/types";
 import { TreeFeatureDef } from "../tree/types";
+import { makeStateUpdater } from "../../utils";
 
 export const selectionFeature: FeatureImplementation<
   any,
@@ -16,14 +17,16 @@ export const selectionFeature: FeatureImplementation<
     ...initialState,
   }),
 
+  getDefaultConfig: (defaultConfig, tree) => ({
+    onChangeSelectedItems: makeStateUpdater("selectedItems", tree),
+    ...defaultConfig,
+  }),
+
   createTreeInstance: (prev, instance) => ({
     ...prev,
 
     setSelectedItems: (selectedItems) => {
-      instance.setState((state) => ({
-        ...state,
-        selectedItems,
-      }));
+      instance.getConfig().onChangeSelectedItems?.(selectedItems);
     },
   }),
 

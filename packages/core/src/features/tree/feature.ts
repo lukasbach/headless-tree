@@ -1,6 +1,6 @@
 import { FeatureImplementation } from "../../types/core";
 import { ItemMeta, TreeFeatureDef } from "./types";
-import { memo } from "../../utils";
+import { makeStateUpdater, memo } from "../../utils";
 import { MainFeatureDef } from "../main/types";
 import { HotkeysCoreFeatureDef } from "../hotkeys-core/types";
 
@@ -16,6 +16,12 @@ export const treeFeature: FeatureImplementation<
     expandedItems: [],
     focusedItem: null,
     ...initialState,
+  }),
+
+  getDefaultConfig: (defaultConfig, tree) => ({
+    onChangeExpandedItems: makeStateUpdater("expandedItems", tree),
+    onChangeFocusedItem: makeStateUpdater("focusedItem", tree),
+    ...defaultConfig,
   }),
 
   createTreeInstance: (prev, instance) => ({
@@ -66,17 +72,17 @@ export const treeFeature: FeatureImplementation<
     ),
 
     expandItem: (itemId) => {
-      instance.setState((state) => ({
-        ...state,
-        expandedItems: [...state.expandedItems, itemId],
-      }));
+      instance
+        .getConfig()
+        .onChangeExpandedItems?.((expandedItems) => [...expandedItems, itemId]);
     },
 
     collapseItem: (itemId) => {
-      instance.setState((state) => ({
-        ...state,
-        expandedItems: state.expandedItems.filter((id) => id !== itemId),
-      }));
+      instance
+        .getConfig()
+        .onChangeExpandedItems?.((expandedItems) =>
+          expandedItems.filter((id) => id !== itemId)
+        );
     },
 
     getFocusedItem: () => {
@@ -89,10 +95,7 @@ export const treeFeature: FeatureImplementation<
     },
 
     focusItem: (itemId) => {
-      instance.setState((state) => ({
-        ...state,
-        focusedItem: itemId,
-      }));
+      instance.getConfig().onChangeFocusedItem?.(itemId);
     },
 
     focusNextItem: () => {
@@ -109,14 +112,18 @@ export const treeFeature: FeatureImplementation<
     },
 
     updateDomFocus: (scrollIntoView) => {
-      const focusedItem = instance.getFocusedItem();
-      console.log(focusedItem.getElement(), "!!");
-      const focusedElement = focusedItem.getElement();
-      if (!focusedElement) return;
-      focusedElement.focus();
-      if (scrollIntoView) {
-        focusedElement.scrollIntoView();
-      }
+      // TODO maybe find a better way?
+      // Required because if the state is managed outside in react, the state only updated during next render
+      setTimeout(() => {
+        const focusedItem = instance.getFocusedItem();
+        console.log(focusedItem.getElement(), "!!");
+        const focusedElement = focusedItem.getElement();
+        if (!focusedElement) return;
+        focusedElement.focus();
+        if (scrollIntoView) {
+          focusedElement.scrollIntoView();
+        }
+      });
     },
 
     getContainerProps: () => ({

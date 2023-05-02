@@ -12,17 +12,18 @@ import { treeFeature } from "../features/tree/feature";
 export const createTree = <T>(
   initialConfig: TreeConfig<T>
 ): TreeInstance<T> => {
+  const treeInstance: TreeInstance<T> = {} as any;
+
   const additionalFeatures = [treeFeature, ...(initialConfig.features ?? [])];
   let state = additionalFeatures.reduce(
-    (acc, feature) => feature.getInitialState?.(acc) ?? acc,
+    (acc, feature) => feature.getInitialState?.(acc, treeInstance) ?? acc,
     initialConfig.state ?? {}
   ) as TreeState<T>;
   let config = additionalFeatures.reduce(
-    (acc, feature) => feature.getDefaultConfig?.(acc) ?? acc,
+    (acc, feature) => feature.getDefaultConfig?.(acc, treeInstance) ?? acc,
     initialConfig
   ) as TreeConfig<T>;
 
-  const treeInstance: TreeInstance<T> = {} as any;
   let treeElement: HTMLElement | undefined | null;
   const treeDataRef: { current: any } = { current: {} };
 
@@ -74,6 +75,13 @@ export const createTree = <T>(
       getConfig: () => config,
       setConfig: (updater) => {
         config = typeof updater === "function" ? updater(config) : updater;
+
+        if (config.state) {
+          state = { ...state, ...config.state };
+          rebuildItemInstances(mainFeature);
+          eachFeature((feature) => feature.onStateChange?.(treeInstance));
+        }
+
         eachFeature((feature) => feature.onConfigChange?.(treeInstance));
         eachFeature((feature) => feature.onStateOrConfigChange?.(treeInstance));
       },
