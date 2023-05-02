@@ -58,4 +58,5 @@ export type TreeFeatureDef<T> = {
     isFocused: () => boolean;
     setFocused: () => void;
   };
+  hotkeys: "focusNextItem" | "focusPreviousItem";
 };

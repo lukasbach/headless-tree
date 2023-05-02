@@ -9,4 +9,5 @@ export type SelectionFeatureDef<T> = {
   };
   treeInstance: {};
   itemInstance: {};
+  hotkeys: never;
 };

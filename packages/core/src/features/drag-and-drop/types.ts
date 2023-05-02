@@ -3,4 +3,5 @@ export type DragAndDropFeatureDef<T> = {
   config: {};
   treeInstance: {};
   itemInstance: {};
+  hotkeys: never;
 };

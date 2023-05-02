@@ -165,24 +165,22 @@ export const treeFeature: FeatureImplementation<
     setFocused: () => tree.focusItem(itemMeta.itemId),
   }),
 
-  onTreeMount: (tree) => {
-    tree.registerHotkey({
-      name: "focusNextItem",
+  hotkeys: {
+    focusNextItem: {
       hotkey: "ArrowDown",
       canRepeat: true,
-      handler: () => {
+      handler: (e, tree) => {
         tree.focusNextItem();
         tree.updateDomFocus();
       },
-    });
-    tree.registerHotkey({
-      name: "focusPreviousItem",
+    },
+    focusPreviousItem: {
       hotkey: "ArrowUp",
       canRepeat: true,
-      handler: () => {
+      handler: (e, tree) => {
         tree.focusPreviousItem();
         tree.updateDomFocus();
       },
-    });
+    },
   },
 };

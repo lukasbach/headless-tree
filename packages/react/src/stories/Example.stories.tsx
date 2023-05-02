@@ -16,6 +16,16 @@ export const Example = () => {
     onStateChange: setState,
     getItemName: (item) => item,
     isItemFolder: () => true,
+    hotkeys: {
+      focusNextItem: {
+        hotkey: "ArrowRight",
+        canRepeat: false,
+      },
+      customEvent: {
+        hotkey: "Escape",
+        handler: () => alert("Hello!"),
+      },
+    },
     dataLoader: {
       getItem: (itemId) => itemId,
       getChildren: (itemId) => [`${itemId}-1`, `${itemId}-2`, `${itemId}-3`],

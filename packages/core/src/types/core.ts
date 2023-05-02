@@ -2,6 +2,10 @@ import { DragAndDropFeatureDef } from "../features/drag-and-drop/types";
 import { MainFeatureDef } from "../features/main/types";
 import { SelectionFeatureDef } from "../features/selection/types";
 import { ItemMeta, TreeFeatureDef } from "../features/tree/types";
+import {
+  HotkeyConfig,
+  HotkeysCoreFeatureDef,
+} from "../features/hotkeys-core/types";
 
 export type Updater<T> = T | ((old: T) => T);
 export type OnChangeFn<T> = (updaterOrValue: Updater<T>) => void;
@@ -11,6 +15,7 @@ export type FeatureDef = {
   config: object;
   treeInstance: object;
   itemInstance: object;
+  hotkeys: string;
 };
 
 export type EmptyFeatureDef = {
@@ -18,6 +23,7 @@ export type EmptyFeatureDef = {
   config: {};
   treeInstance: {};
   itemInstance: {};
+  hotkeys: never;
 };
 
 type UnionToIntersection<T> = (T extends any ? (x: T) => any : never) extends (
@@ -32,13 +38,15 @@ type FeatureDefs<T> =
   | MainFeatureDef
   | TreeFeatureDef<T>
   | SelectionFeatureDef<T>
-  | DragAndDropFeatureDef<T>;
+  | DragAndDropFeatureDef<T>
+  | HotkeysCoreFeatureDef<T>;
 
 type MergedFeatures<F extends FeatureDef> = {
   state: UnionToIntersection<F["state"]>;
   config: UnionToIntersection<F["config"]>;
   treeInstance: UnionToIntersection<F["treeInstance"]>;
   itemInstance: UnionToIntersection<F["itemInstance"]>;
+  hotkeys: F["hotkeys"];
 };
 
 export type TreeState<
@@ -57,6 +65,20 @@ export type ItemInstance<
   T,
   F extends FeatureDef = FeatureDefs<T>
 > = MergedFeatures<F>["itemInstance"];
+export type HotkeyName<F extends FeatureDef = FeatureDefs<any>> =
+  MergedFeatures<F>["hotkeys"];
+
+export type HotkeysConfig<T, F extends FeatureDef = FeatureDefs<T>> = Record<
+  HotkeyName<F>,
+  HotkeyConfig<T>
+>;
+
+export type CustomHotkeysConfig<
+  T,
+  F extends FeatureDef = FeatureDefs<T>
+> = Partial<
+  Record<HotkeyName<F> | `custom${string}`, Partial<HotkeyConfig<T>>>
+>;
 
 export type FeatureImplementation<
   T = any,
@@ -111,4 +133,6 @@ export type FeatureImplementation<
   onStateChange?: (instance: MergedFeatures<F>["treeInstance"]) => void;
   onConfigChange?: (instance: MergedFeatures<F>["treeInstance"]) => void;
   onStateOrConfigChange?: (instance: MergedFeatures<F>["treeInstance"]) => void;
+
+  hotkeys?: HotkeysConfig<T, D>;
 };

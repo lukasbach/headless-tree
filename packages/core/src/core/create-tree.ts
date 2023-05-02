@@ -1,5 +1,6 @@
 import {
   FeatureImplementation,
+  HotkeysConfig,
   ItemInstance,
   TreeConfig,
   TreeInstance,
@@ -29,6 +30,8 @@ export const createTree = <T>(
   let itemInstances: ItemInstance<T>[] = [];
   const itemElementsMap: Record<string, HTMLElement | undefined | null> = {};
   const itemDataRefs: Record<string, { current: any }> = {};
+
+  const hotkeyPresets = {} as HotkeysConfig<T>;
 
   const rebuildItemInstances = (main: FeatureImplementation) => {
     itemInstances = [];
@@ -90,6 +93,7 @@ export const createTree = <T>(
       },
       getElement: () => treeElement,
       getDataRef: () => treeDataRef,
+      getHotkeyPresets: () => hotkeyPresets,
     }),
     createItemInstance: (prev, instance, itemMeta) => ({
       ...prev,
@@ -120,6 +124,7 @@ export const createTree = <T>(
       treeInstance,
       feature.createTreeInstance?.({ ...treeInstance }, treeInstance) ?? {}
     );
+    Object.assign(hotkeyPresets, feature.hotkeys ?? {});
   }
 
   rebuildItemInstances(mainFeature);

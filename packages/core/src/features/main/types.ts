@@ -1,5 +1,6 @@
 import {
   FeatureImplementation,
+  HotkeysConfig,
   ItemInstance,
   OnChangeFn,
   TreeConfig,
@@ -24,6 +25,8 @@ export type MainFeatureDef<T = any> = {
     getElement: () => HTMLElement | undefined | null;
     /** @internal */
     getDataRef: <D>() => { current: D };
+    /* @internal */
+    getHotkeyPresets: () => HotkeysConfig<T>;
   };
   itemInstance: {
     registerElement: (element: HTMLElement | null) => void;
@@ -31,4 +34,5 @@ export type MainFeatureDef<T = any> = {
     /** @internal */
     getDataRef: <D>() => { current: D };
   };
+  hotkeys: never;
 };
