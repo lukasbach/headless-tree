@@ -56,6 +56,7 @@ export const selectionFeature: FeatureImplementation<
 
     selectUpTo: (ctrl: boolean) => {
       const indexA = itemMeta.index;
+      // TODO dont use focused item as anchor, but last primary-clicked item
       const indexB = tree.getFocusedItem().getItemMeta().index;
       const [a, b] = indexA < indexB ? [indexA, indexB] : [indexB, indexA];
       const newSelectedItems = tree
