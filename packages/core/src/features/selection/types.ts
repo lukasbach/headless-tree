@@ -1,4 +1,4 @@
-import { OnChangeFn } from "../../types/core";
+import { ItemInstance, OnChangeFn } from "../../types/core";
 
 export type SelectionFeatureDef<T> = {
   state: {
@@ -9,6 +9,7 @@ export type SelectionFeatureDef<T> = {
   };
   treeInstance: {
     setSelectedItems: (selectedItems: string[]) => void;
+    getSelectedItems: () => ItemInstance<T>[];
   };
   itemInstance: {
     select: () => void;

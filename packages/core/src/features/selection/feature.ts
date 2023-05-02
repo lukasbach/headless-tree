@@ -28,6 +28,10 @@ export const selectionFeature: FeatureImplementation<
     setSelectedItems: (selectedItems) => {
       instance.getConfig().onChangeSelectedItems?.(selectedItems);
     },
+
+    getSelectedItems: () => {
+      return instance.getState().selectedItems.map(instance.getItemInstance);
+    },
   }),
 
   createItemInstance: (prev, item, itemMeta, tree) => ({

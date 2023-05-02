@@ -1,24 +1,17 @@
 import type { Meta } from "@storybook/react";
-import React, { useState } from "react";
+import React from "react";
 import { hotkeysCoreFeature, selectionFeature } from "@headless-tree/core";
 import { useTree } from "../index";
 
 const meta = {
-  title: "React/Distinct State Handlers",
+  title: "React/No State Handlers",
 } satisfies Meta;
 
 export default meta;
 
-export const DistinctStateHandlers = () => {
-  const [selectedItems, onChangeSelectedItems] = useState([]);
-  const [expandedItems, onChangeExpandedItems] = useState([]);
-  const [focusedItem, onChangeFocusedItem] = useState(null);
-
+export const NoStateHandlers = () => {
   const tree = useTree<string>({
-    state: { selectedItems, expandedItems, focusedItem, rootItemId: "root" },
-    onChangeSelectedItems,
-    onChangeExpandedItems,
-    onChangeFocusedItem,
+    state: { rootItemId: "root" },
     getItemName: (item) => item,
     isItemFolder: () => true,
     dataLoader: {

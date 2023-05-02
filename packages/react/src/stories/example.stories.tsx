@@ -1,6 +1,7 @@
 import type { Meta } from "@storybook/react";
 import React, { useState } from "react";
 import { hotkeysCoreFeature, selectionFeature } from "@headless-tree/core";
+import { dragAndDropFeature } from "@headless-tree/core/lib/features/drag-and-drop/feature";
 import { useTree } from "../index";
 
 const meta = {
@@ -26,7 +27,7 @@ export const Example = () => {
       getItem: (itemId) => itemId,
       getChildren: (itemId) => [`${itemId}-1`, `${itemId}-2`, `${itemId}-3`],
     },
-    features: [selectionFeature, hotkeysCoreFeature],
+    features: [selectionFeature, hotkeysCoreFeature, dragAndDropFeature],
   });
 
   return (
