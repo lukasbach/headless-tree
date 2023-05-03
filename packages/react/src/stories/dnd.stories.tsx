@@ -30,7 +30,14 @@ export const Dnd = () => {
     }),
     dataLoader: {
       getItem: (itemId) => itemId,
-      getChildren: (itemId) => [`${itemId}-1`, `${itemId}-2`, `${itemId}-3`],
+      getChildren: (itemId) => [
+        `${itemId}-1`,
+        `${itemId}-2`,
+        `${itemId}-3`,
+        `${itemId}-4`,
+        `${itemId}-5`,
+        `${itemId}-6`,
+      ],
     },
     features: [selectionFeature, hotkeysCoreFeature, dragAndDropFeature],
   });

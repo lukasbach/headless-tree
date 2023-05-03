@@ -8,7 +8,7 @@ export type DndDataRef<T> = {
 };
 
 export type DropTarget<T> = {
-  item: ItemInstance<T>;
+  item: ItemInstance<T> | "root";
   index: number | null;
 };
 

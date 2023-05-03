@@ -56,15 +56,17 @@ export const dragAndDropFeature: FeatureImplementation<
       },
 
       onDragOver: (e) => {
+        const target = getDropTarget(e, item, tree);
         const dataRef = tree.getDataRef<DndDataRef<any>>();
 
+        console.log("dragover", canDrop(e, target, tree), getDragCode(target));
+
         // TODO factor out target
-        if (!canDrop(e, item, tree)) {
+        if (!canDrop(e, target, tree)) {
           return;
         }
 
         e.preventDefault();
-        const target = getDropTarget(e, item, tree);
         const nextDragCode = getDragCode(target);
 
         if (nextDragCode === dataRef.current.lastDragCode) {
@@ -78,15 +80,15 @@ export const dragAndDropFeature: FeatureImplementation<
 
       onDrop: (e) => {
         const dataRef = tree.getDataRef<DndDataRef<any>>();
+        const target = getDropTarget(e, item, tree);
 
-        if (!canDrop(e, item, tree)) {
+        if (!canDrop(e, target, tree)) {
           return;
         }
 
         e.preventDefault();
         const config = tree.getConfig();
         const { draggedItems } = tree.getDataRef<DndDataRef<any>>().current;
-        const target = getDropTarget(e, item, tree);
 
         dataRef.current.lastDragCode = undefined;
         dataRef.current.dragTarget = undefined;
@@ -102,22 +104,28 @@ export const dragAndDropFeature: FeatureImplementation<
 
     isDropTarget: () => {
       const target = tree.getDropTarget();
-      return target ? target.item.getId() === item.getId() : false;
+      return target && target.item !== "root"
+        ? target.item.getId() === item.getId()
+        : false;
     },
 
     isDropTargetAbove: () => {
       const target = tree.getDropTarget();
 
       if (!target || target.index === null) return false;
+      const targetIndex =
+        target.item === "root" ? 0 : target.item.getItemMeta().index;
 
-      return (
-        target.item.getItemMeta().index + target.index + 1 === itemMeta.index
-      );
+      // TODO rename target.index to target.childIndex
+      return targetIndex + target.index + 1 === itemMeta.index;
     },
 
     isDropTargetBelow: () => {
       const target = tree.getDropTarget();
-      if (!target || target.index === null) return false;
+
+      if (!target || target.index === null || target.item === "root") {
+        return false;
+      }
 
       return target.item.getItemMeta().index + target.index === itemMeta.index;
     },

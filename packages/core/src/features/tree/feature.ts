@@ -184,12 +184,12 @@ export const treeFeature: FeatureImplementation<
             return item;
           }
         }
-        return tree.getItemInstance(tree.getState().rootItemId);
+        return null;
       },
       () => [itemMeta]
     ),
     getIndexInParent: () =>
-      itemMeta.index - instance.getParent().getItemMeta().index - 1,
+      itemMeta.index - (instance.getParent()?.getItemMeta().index ?? 0) - 1,
   }),
 
   hotkeys: {

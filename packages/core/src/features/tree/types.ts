@@ -57,7 +57,7 @@ export type TreeFeatureDef<T> = {
     isExpanded: () => boolean;
     isFocused: () => boolean;
     setFocused: () => void;
-    getParent: () => ItemInstance<T>;
+    getParent: () => ItemInstance<T> | null;
     getIndexInParent: () => number;
   };
   hotkeys: "focusNextItem" | "focusPreviousItem";
