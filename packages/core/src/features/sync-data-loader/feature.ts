@@ -13,15 +13,11 @@ export const syncDataLoaderFeature: FeatureImplementation<
   createTreeInstance: (prev, instance) => ({
     ...prev,
 
-    retrieveItemData: (itemId) => {
-      const config = instance.getConfig();
-      return config.dataLoader.getItem(itemId);
-    },
+    retrieveItemData: (itemId) =>
+      instance.getConfig().dataLoader.getItem(itemId),
 
-    retrieveChildrenIds: (itemId) => {
-      const config = instance.getConfig();
-      return config.dataLoader.getChildren(itemId);
-    },
+    retrieveChildrenIds: (itemId) =>
+      instance.getConfig().dataLoader.getChildren(itemId),
   }),
 
   createItemInstance: (prev) => ({

@@ -1,15 +1,12 @@
 export type SyncTreeDataLoader<T> = {
-  // TODO async interfaces with asyncFeature
   getItem: (itemId: string) => T;
   getChildren: (itemId: string) => string[];
-  itemChangeSignal?: any;
-  childrenChangeSignal?: any;
+  // ? itemChangeSignal?: any;
+  // ? childrenChangeSignal?: any;
 };
 
 export type SyncDataLoaderFeatureDef<T> = {
-  state: {
-    // loadingItems: string[];
-  };
+  state: {};
   config: {
     rootItemId: string;
     dataLoader: SyncTreeDataLoader<T>;

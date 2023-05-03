@@ -1,8 +1,11 @@
 import type { Meta } from "@storybook/react";
 import React, { useState } from "react";
-import { hotkeysCoreFeature, selectionFeature } from "@headless-tree/core";
-import { dragAndDropFeature } from "@headless-tree/core/lib/features/drag-and-drop/feature";
-import { syncDataLoaderFeature } from "@headless-tree/core/lib/features/sync-data-loader/feature";
+import {
+  hotkeysCoreFeature,
+  selectionFeature,
+  dragAndDropFeature,
+  syncDataLoaderFeature,
+} from "@headless-tree/core";
 import { useTree } from "../index";
 
 const meta = {

@@ -1,17 +1,11 @@
-import { FeatureImplementation } from "../../types/core";
+import { FeatureDefs, FeatureImplementation } from "../../types/core";
 import { DndDataRef, DragAndDropFeatureDef } from "./types";
-import { MainFeatureDef } from "../main/types";
-import { TreeFeatureDef } from "../tree/types";
-import { SelectionFeatureDef } from "../selection/types";
 import { canDrop, getDragCode, getDropTarget } from "./utils";
 
 export const dragAndDropFeature: FeatureImplementation<
   any,
   DragAndDropFeatureDef<any>,
-  | MainFeatureDef
-  | TreeFeatureDef<any>
-  | SelectionFeatureDef<any>
-  | DragAndDropFeatureDef<any>
+  FeatureDefs<any>
 > = {
   key: "dragAndDrop",
   dependingFeatures: ["main", "tree", "selection"],

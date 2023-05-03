@@ -44,6 +44,7 @@ export const treeFeature: FeatureImplementation<
 
     getItemsMeta: memo(
       (rootItemId, expandedItems) => {
+        // console.log("!", instance.getConfig());
         const flatItems: ItemMeta<any>[] = [];
 
         const recursiveAdd = (
@@ -79,7 +80,11 @@ export const treeFeature: FeatureImplementation<
 
         return flatItems;
       },
-      () => [instance.getConfig().rootItemId, instance.getState().expandedItems]
+      () => [
+        instance.getConfig().rootItemId,
+        instance.getState().expandedItems,
+        instance.getState().loadingItems,
+      ]
     ),
 
     expandItem: (itemId) => {
@@ -186,7 +191,7 @@ export const treeFeature: FeatureImplementation<
       (tree.getState().focusedItem === null && itemMeta.index === 0),
     getItemName: () => {
       const config = tree.getConfig();
-      return config.getItemName(config.dataLoader.getItem(itemMeta.itemId));
+      return config.getItemName(tree.retrieveItemData(itemMeta.itemId));
     },
     getItemMeta: () => itemMeta,
     setFocused: () => tree.focusItem(itemMeta.itemId),

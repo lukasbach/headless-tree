@@ -7,6 +7,7 @@ import {
   HotkeysCoreFeatureDef,
 } from "../features/hotkeys-core/types";
 import { SyncDataLoaderFeatureDef } from "../features/sync-data-loader/types";
+import { AsyncDataLoaderFeatureDef } from "../features/async-data-loader/types";
 
 export type Updater<T> = T | ((old: T) => T);
 export type OnChangeFn<T> = (updaterOrValue: Updater<T>) => void;
@@ -35,13 +36,14 @@ type UnionToIntersection<T> = (T extends any ? (x: T) => any : never) extends (
 
 export type DefaultFeatures<T> = MainFeatureDef | TreeFeatureDef<T>;
 
-type FeatureDefs<T> =
+export type FeatureDefs<T> =
   | MainFeatureDef
   | TreeFeatureDef<T>
   | SelectionFeatureDef<T>
   | DragAndDropFeatureDef<T>
   | HotkeysCoreFeatureDef<T>
-  | SyncDataLoaderFeatureDef<T>;
+  | SyncDataLoaderFeatureDef<T>
+  | AsyncDataLoaderFeatureDef<T>;
 
 type MergedFeatures<F extends FeatureDef> = {
   state: UnionToIntersection<F["state"]>;

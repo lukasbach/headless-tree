@@ -4,6 +4,7 @@
 
 .treeitem-parent {
     margin-bottom: 2px;
+    display: flex;
 }
 
 .treeitem {
