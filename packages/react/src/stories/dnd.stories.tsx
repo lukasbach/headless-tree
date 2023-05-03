@@ -15,7 +15,7 @@ const meta = {
 export default meta;
 
 export const Dnd = () => {
-  const [dnd, setDnd] = useState<DropTarget<any>>();
+  const [dnd, setDnd] = useState<DropTarget<any> | null>(null);
   const [state, setState] = useState({ rootItemId: "root" });
   const tree = useTree<string>({
     state,
@@ -23,6 +23,7 @@ export const Dnd = () => {
     getItemName: (item) => item,
     isItemFolder: () => true,
     onUpdateDragPosition: setDnd,
+    canDropInbetween: true,
     createForeignDragObject: (items) => ({
       format: "text/plain",
       data: items.map((item) => item.getId()).join(","),

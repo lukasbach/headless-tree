@@ -26,23 +26,24 @@ const getDropTarget = <T>(
   const verticalPos = bb ? (e.pageY - bb.top) / bb.height : 0.5;
   const pos =
     // eslint-disable-next-line no-nested-ternary
-    verticalPos < (config.topLinePercentage ?? 0.2)
+    verticalPos < (config.topLinePercentage ?? 0.3)
       ? DropTargetPosition.Top
-      : verticalPos > (config.bottomLinePercentage ?? 0.8)
+      : verticalPos > (config.bottomLinePercentage ?? 0.7)
       ? DropTargetPosition.Bottom
       : DropTargetPosition.Item;
 
-  if (config.canDropInbetween) {
+  if (!config.canDropInbetween) {
+    return { item, index: null };
+  }
+
+  if (pos === DropTargetPosition.Item) {
     return { item, index: null };
   }
 
   // TODO it's much more complicated than this..
   return {
-    item: pos === DropTargetPosition.Item ? item : item.getParent(),
-    index:
-      pos === DropTargetPosition.Item
-        ? null
-        : item.getIndexInParent() + (pos === DropTargetPosition.Top ? 0 : 1),
+    item: item.getParent(),
+    index: item.getIndexInParent() + (pos === DropTargetPosition.Top ? 0 : 1),
   };
 };
 
@@ -130,16 +131,15 @@ export const dragAndDropFeature: FeatureImplementation<
         if (nextDragCode === dataRef.current.lastDragCode) {
           return;
         }
-        console.log(nextDragCode, dataRef.current.lastDragCode);
 
         dataRef.current.lastDragCode = nextDragCode;
         dataRef.current.dragTarget = target;
         tree.getConfig().onUpdateDragPosition?.(target);
-
-        // TODO store drag position, but only if actual drag position changed
       },
 
       onDrop: (e) => {
+        const dataRef = tree.getDataRef<DndDataRef<any>>();
+
         if (!canDrop(e, item, tree)) {
           return;
         }
@@ -148,7 +148,10 @@ export const dragAndDropFeature: FeatureImplementation<
         const config = tree.getConfig();
         const { draggedItems } = tree.getDataRef<DndDataRef<any>>().current;
         const target = getDropTarget(e, item, tree);
-        console.log(target);
+
+        dataRef.current.lastDragCode = undefined;
+        dataRef.current.dragTarget = undefined;
+        tree.getConfig().onUpdateDragPosition?.(null);
 
         if (draggedItems) {
           config.onDrop?.(draggedItems, target);
@@ -160,27 +163,24 @@ export const dragAndDropFeature: FeatureImplementation<
 
     isDropTarget: () => {
       const target = tree.getDropTarget();
-      return target ? target.item === item : false;
+      return target ? target.item.getId() === item.getId() : false;
     },
 
     isDropTargetAbove: () => {
       const target = tree.getDropTarget();
+
+      if (!target || target.index === null) return false;
+
       return (
-        (target &&
-          target.item.getItemMeta().index + 1 === itemMeta.index &&
-          target.index === null) ??
-        false
+        target.item.getItemMeta().index + target.index + 1 === itemMeta.index
       );
     },
 
     isDropTargetBelow: () => {
       const target = tree.getDropTarget();
-      return (
-        (target &&
-          target.item.getItemMeta().index - 1 === itemMeta.index &&
-          target.index === null) ??
-        false
-      );
+      if (!target || target.index === null) return false;
+
+      return target.item.getItemMeta().index + target.index === itemMeta.index;
     },
   }),
 };

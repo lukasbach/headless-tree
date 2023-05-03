@@ -38,7 +38,7 @@ export type DragAndDropFeatureDef<T> = {
       target: DropTarget<T>
     ) => boolean;
 
-    onUpdateDragPosition?: (target: DropTarget<T>) => void;
+    onUpdateDragPosition?: (target: DropTarget<T> | null) => void;
 
     onDrop?: (items: ItemInstance<T>[], target: DropTarget<T>) => void;
     onDropForeignDragObject?: (

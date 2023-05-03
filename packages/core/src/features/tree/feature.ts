@@ -189,7 +189,7 @@ export const treeFeature: FeatureImplementation<
       () => [itemMeta]
     ),
     getIndexInParent: () =>
-      itemMeta.index - instance.getParent().getItemMeta().index,
+      itemMeta.index - instance.getParent().getItemMeta().index - 1,
   }),
 
   hotkeys: {
