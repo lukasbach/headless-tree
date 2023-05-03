@@ -1,70 +1,9 @@
-import {
-  FeatureImplementation,
-  ItemInstance,
-  TreeInstance,
-} from "../../types/core";
-import {
-  DndDataRef,
-  DragAndDropFeatureDef,
-  DropTarget,
-  DropTargetPosition,
-} from "./types";
+import { FeatureImplementation } from "../../types/core";
+import { DndDataRef, DragAndDropFeatureDef } from "./types";
 import { MainFeatureDef } from "../main/types";
 import { TreeFeatureDef } from "../tree/types";
 import { SelectionFeatureDef } from "../selection/types";
-
-const getDragCode = ({ item, index }: DropTarget<any>) =>
-  `${item.getId()}__${index ?? "none"}`;
-
-const getDropTarget = <T>(
-  e: any,
-  item: ItemInstance<any>,
-  tree: TreeInstance<any>
-): DropTarget<T> => {
-  const config = tree.getConfig();
-  const bb = item.getElement()?.getBoundingClientRect();
-  const verticalPos = bb ? (e.pageY - bb.top) / bb.height : 0.5;
-  const pos =
-    // eslint-disable-next-line no-nested-ternary
-    verticalPos < (config.topLinePercentage ?? 0.3)
-      ? DropTargetPosition.Top
-      : verticalPos > (config.bottomLinePercentage ?? 0.7)
-      ? DropTargetPosition.Bottom
-      : DropTargetPosition.Item;
-
-  if (!config.canDropInbetween) {
-    return { item, index: null };
-  }
-
-  if (pos === DropTargetPosition.Item) {
-    return { item, index: null };
-  }
-
-  // TODO it's much more complicated than this..
-  return {
-    item: item.getParent(),
-    index: item.getIndexInParent() + (pos === DropTargetPosition.Top ? 0 : 1),
-  };
-};
-
-const canDrop = (e: any, item: ItemInstance<any>, tree: TreeInstance<any>) => {
-  const { draggedItems } = tree.getDataRef<DndDataRef<any>>().current;
-  const config = tree.getConfig();
-  const target = getDropTarget(e, item, tree);
-
-  if (draggedItems && !(config.canDrop?.(draggedItems, target) ?? true)) {
-    return false;
-  }
-
-  if (
-    !draggedItems &&
-    !config.canDropForeignDragObject?.(e.dataTransfer, target)
-  ) {
-    return false;
-  }
-
-  return true;
-};
+import { canDrop, getDragCode, getDropTarget } from "./utils";
 
 export const dragAndDropFeature: FeatureImplementation<
   any,
