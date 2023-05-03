@@ -59,8 +59,6 @@ export const dragAndDropFeature: FeatureImplementation<
         const target = getDropTarget(e, item, tree);
         const dataRef = tree.getDataRef<DndDataRef<any>>();
 
-        console.log("dragover", canDrop(e, target, tree), getDragCode(target));
-
         // TODO factor out target
         if (!canDrop(e, target, tree)) {
           return;
@@ -112,22 +110,23 @@ export const dragAndDropFeature: FeatureImplementation<
     isDropTargetAbove: () => {
       const target = tree.getDropTarget();
 
-      if (!target || target.index === null) return false;
+      if (!target || target.childIndex === null) return false;
       const targetIndex =
         target.item === "root" ? 0 : target.item.getItemMeta().index;
 
-      // TODO rename target.index to target.childIndex
-      return targetIndex + target.index + 1 === itemMeta.index;
+      return targetIndex + target.childIndex + 1 === itemMeta.index;
     },
 
     isDropTargetBelow: () => {
       const target = tree.getDropTarget();
 
-      if (!target || target.index === null || target.item === "root") {
+      if (!target || target.childIndex === null || target.item === "root") {
         return false;
       }
 
-      return target.item.getItemMeta().index + target.index === itemMeta.index;
+      return (
+        target.item.getItemMeta().index + target.childIndex === itemMeta.index
+      );
     },
   }),
 };

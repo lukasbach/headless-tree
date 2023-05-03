@@ -34,7 +34,6 @@ export const memo = <D extends readonly any[], R>(
 };
 
 export function functionalUpdate<T>(updater: Updater<T>, input: T): T {
-  console.log("functionalUpdate", updater, input);
   return typeof updater === "function"
     ? (updater as (input: T) => T)(input)
     : updater;

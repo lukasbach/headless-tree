@@ -24,10 +24,13 @@ export const Dnd = () => {
     isItemFolder: () => true,
     onUpdateDragPosition: setDnd,
     canDropInbetween: true,
+    onDrop: console.log,
+    onDropForeignDragObject: console.log,
     createForeignDragObject: (items) => ({
       format: "text/plain",
       data: items.map((item) => item.getId()).join(","),
     }),
+    canDropForeignDragObject: () => true,
     dataLoader: {
       getItem: (itemId) => itemId,
       getChildren: (itemId) => [
@@ -75,6 +78,21 @@ export const Dnd = () => {
       >
         Drop items here!
       </div>
+      <div
+        style={{ marginTop: "10px" }}
+        draggable={true}
+        onDragStart={(e) => {
+          e.dataTransfer.setData("text/plain", "hello world");
+        }}
+      >
+        Or drag me into the tree!
+      </div>
+      <pre>
+        {JSON.stringify({
+          ...dnd,
+          item: dnd?.item === "root" ? "root" : dnd?.item.getItemName(),
+        })}
+      </pre>
     </>
   );
 };
