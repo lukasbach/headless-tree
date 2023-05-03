@@ -1,12 +1,4 @@
-import { ItemInstance, OnChangeFn, TreeInstance } from "../../types/core";
-
-export type TreeDataLoader<T> = {
-  // TODO async interfaces with asyncFeature
-  getItem: (itemId: string) => T;
-  getChildren: (itemId: string) => string[];
-  itemChangeSignal?: any;
-  childrenChangeSignal?: any;
-};
+import { ItemInstance, OnChangeFn } from "../../types/core";
 
 export type ItemMeta<T> = {
   itemId: string;
@@ -19,12 +11,10 @@ export type ItemMeta<T> = {
 
 export type TreeFeatureDef<T> = {
   state: {
-    rootItemId: string;
     expandedItems: string[];
     focusedItem: string | null;
   };
   config: {
-    dataLoader: TreeDataLoader<T>;
     isItemFolder: (item: T) => boolean;
     getItemName: (item: T) => string;
 

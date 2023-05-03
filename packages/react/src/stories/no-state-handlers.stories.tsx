@@ -1,6 +1,7 @@
 import type { Meta } from "@storybook/react";
 import React from "react";
 import { hotkeysCoreFeature, selectionFeature } from "@headless-tree/core";
+import { syncDataLoaderFeature } from "@headless-tree/core/lib/features/sync-data-loader/feature";
 import { useTree } from "../index";
 
 const meta = {
@@ -11,14 +12,15 @@ export default meta;
 
 export const NoStateHandlers = () => {
   const tree = useTree<string>({
-    state: { rootItemId: "root" },
+    state: {},
+    rootItemId: "root",
     getItemName: (item) => item,
     isItemFolder: () => true,
     dataLoader: {
       getItem: (itemId) => itemId,
       getChildren: (itemId) => [`${itemId}-1`, `${itemId}-2`, `${itemId}-3`],
     },
-    features: [selectionFeature, hotkeysCoreFeature],
+    features: [syncDataLoaderFeature, selectionFeature, hotkeysCoreFeature],
   });
 
   return (

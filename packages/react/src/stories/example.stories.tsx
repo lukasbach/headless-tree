@@ -2,6 +2,7 @@ import type { Meta } from "@storybook/react";
 import React, { useState } from "react";
 import { hotkeysCoreFeature, selectionFeature } from "@headless-tree/core";
 import { dragAndDropFeature } from "@headless-tree/core/lib/features/drag-and-drop/feature";
+import { syncDataLoaderFeature } from "@headless-tree/core/lib/features/sync-data-loader/feature";
 import { useTree } from "../index";
 
 const meta = {
@@ -11,10 +12,11 @@ const meta = {
 export default meta;
 
 export const Example = () => {
-  const [state, setState] = useState({ rootItemId: "root" });
+  const [state, setState] = useState({});
   const tree = useTree<string>({
     state,
     onStateChange: setState,
+    rootItemId: "root",
     getItemName: (item) => item,
     isItemFolder: () => true,
     hotkeys: {
@@ -27,7 +29,12 @@ export const Example = () => {
       getItem: (itemId) => itemId,
       getChildren: (itemId) => [`${itemId}-1`, `${itemId}-2`, `${itemId}-3`],
     },
-    features: [selectionFeature, hotkeysCoreFeature, dragAndDropFeature],
+    features: [
+      syncDataLoaderFeature,
+      selectionFeature,
+      hotkeysCoreFeature,
+      dragAndDropFeature,
+    ],
   });
 
   return (

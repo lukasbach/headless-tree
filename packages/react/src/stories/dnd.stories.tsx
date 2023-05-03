@@ -6,6 +6,7 @@ import {
   selectionFeature,
 } from "@headless-tree/core";
 import { dragAndDropFeature } from "@headless-tree/core/lib/features/drag-and-drop/feature";
+import { syncDataLoaderFeature } from "@headless-tree/core/lib/features/sync-data-loader/feature";
 import { useTree } from "../index";
 
 const meta = {
@@ -16,10 +17,11 @@ export default meta;
 
 export const Dnd = () => {
   const [dnd, setDnd] = useState<DropTarget<any> | null>(null);
-  const [state, setState] = useState({ rootItemId: "root" });
+  const [state, setState] = useState({});
   const tree = useTree<string>({
     state,
     onStateChange: setState,
+    rootItemId: "root",
     getItemName: (item) => item,
     isItemFolder: () => true,
     onUpdateDragPosition: setDnd,
@@ -42,7 +44,12 @@ export const Dnd = () => {
         `${itemId}-6`,
       ],
     },
-    features: [selectionFeature, hotkeysCoreFeature, dragAndDropFeature],
+    features: [
+      syncDataLoaderFeature,
+      selectionFeature,
+      hotkeysCoreFeature,
+      dragAndDropFeature,
+    ],
   });
 
   return (

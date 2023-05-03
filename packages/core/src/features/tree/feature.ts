@@ -3,11 +3,15 @@ import { ItemMeta, TreeFeatureDef } from "./types";
 import { makeStateUpdater, memo } from "../../utils";
 import { MainFeatureDef } from "../main/types";
 import { HotkeysCoreFeatureDef } from "../hotkeys-core/types";
+import { SyncDataLoaderFeatureDef } from "../sync-data-loader/types";
 
 export const treeFeature: FeatureImplementation<
   any,
   TreeFeatureDef<any>,
-  MainFeatureDef | TreeFeatureDef<any> | HotkeysCoreFeatureDef<any>
+  | MainFeatureDef
+  | TreeFeatureDef<any>
+  | HotkeysCoreFeatureDef<any>
+  | SyncDataLoaderFeatureDef<any>
 > = {
   key: "tree",
   dependingFeatures: ["main"],
@@ -27,12 +31,19 @@ export const treeFeature: FeatureImplementation<
   createTreeInstance: (prev, instance) => ({
     ...prev,
 
+    retrieveItemData: () => {
+      throw new Error("No data-loader registered");
+    },
+
+    retrieveChildrenIds: () => {
+      throw new Error("No data-loader registered");
+    },
+
     isItemExpanded: (itemId) =>
       instance.getState().expandedItems.includes(itemId),
 
     getItemsMeta: memo(
       (rootItemId, expandedItems) => {
-        const config = instance.getConfig();
         const flatItems: ItemMeta<any>[] = [];
 
         const recursiveAdd = (
@@ -52,7 +63,7 @@ export const treeFeature: FeatureImplementation<
           });
 
           if (expandedItems.includes(itemId)) {
-            const children = config.dataLoader.getChildren(itemId) ?? [];
+            const children = instance.retrieveChildrenIds(itemId) ?? [];
             let i = 0;
             for (const childId of children) {
               recursiveAdd(childId, itemId, level + 1, children.length, i++);
@@ -60,7 +71,7 @@ export const treeFeature: FeatureImplementation<
           }
         };
 
-        const children = config.dataLoader.getChildren(rootItemId);
+        const children = instance.retrieveChildrenIds(rootItemId);
         let i = 0;
         for (const itemId of children) {
           recursiveAdd(itemId, rootItemId, 0, children.length, i++);
@@ -68,7 +79,7 @@ export const treeFeature: FeatureImplementation<
 
         return flatItems;
       },
-      () => [instance.getState().rootItemId, instance.getState().expandedItems]
+      () => [instance.getConfig().rootItemId, instance.getState().expandedItems]
     ),
 
     expandItem: (itemId) => {
@@ -137,6 +148,9 @@ export const treeFeature: FeatureImplementation<
 
   createItemInstance: (prev, instance, itemMeta, tree) => ({
     ...prev,
+    isLoading: () => {
+      throw new Error("No data-loader registered");
+    },
     getId: () => itemMeta.itemId,
     getProps: () => {
       const itemMeta = instance.getItemMeta();

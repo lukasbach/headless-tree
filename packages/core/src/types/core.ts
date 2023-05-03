@@ -6,6 +6,7 @@ import {
   HotkeyConfig,
   HotkeysCoreFeatureDef,
 } from "../features/hotkeys-core/types";
+import { SyncDataLoaderFeatureDef } from "../features/sync-data-loader/types";
 
 export type Updater<T> = T | ((old: T) => T);
 export type OnChangeFn<T> = (updaterOrValue: Updater<T>) => void;
@@ -39,7 +40,8 @@ type FeatureDefs<T> =
   | TreeFeatureDef<T>
   | SelectionFeatureDef<T>
   | DragAndDropFeatureDef<T>
-  | HotkeysCoreFeatureDef<T>;
+  | HotkeysCoreFeatureDef<T>
+  | SyncDataLoaderFeatureDef<T>;
 
 type MergedFeatures<F extends FeatureDef> = {
   state: UnionToIntersection<F["state"]>;
