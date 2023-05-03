@@ -1,6 +1,10 @@
 import type { Meta } from "@storybook/react";
 import React, { useState } from "react";
-import { hotkeysCoreFeature, selectionFeature } from "@headless-tree/core";
+import {
+  DropTarget,
+  hotkeysCoreFeature,
+  selectionFeature,
+} from "@headless-tree/core";
 import { dragAndDropFeature } from "@headless-tree/core/lib/features/drag-and-drop/feature";
 import { useTree } from "../index";
 
@@ -11,12 +15,14 @@ const meta = {
 export default meta;
 
 export const Dnd = () => {
+  const [dnd, setDnd] = useState<DropTarget<any>>();
   const [state, setState] = useState({ rootItemId: "root" });
   const tree = useTree<string>({
     state,
     onStateChange: setState,
     getItemName: (item) => item,
     isItemFolder: () => true,
+    onUpdateDragPosition: setDnd,
     createForeignDragObject: (items) => ({
       format: "text/plain",
       data: items.map((item) => item.getId()).join(","),
@@ -44,6 +50,9 @@ export const Dnd = () => {
               data-focused={item.isFocused()}
               data-expanded={item.isExpanded()}
               data-selected={item.isSelected()}
+              data-drop={item.isDropTarget()}
+              data-dropabove={item.isDropTargetAbove()}
+              data-dropbelow={item.isDropTargetBelow()}
             >
               {item.isExpanded() ? "v " : "> "}
               {item.getItemName()}

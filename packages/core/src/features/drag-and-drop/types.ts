@@ -3,9 +3,16 @@ import { ItemInstance } from "../../types/core";
 export type DndDataRef<T> = {
   draggedItems?: ItemInstance<T>[];
   draggedForeignObject?: any;
+  lastDragCode?: string;
+  dragTarget?: DropTarget<T>;
 };
 
-export enum DropTarget {
+export type DropTarget<T> = {
+  item: ItemInstance<T>;
+  index: number | null;
+};
+
+export enum DropTargetPosition {
   Top = "top",
   Bottom = "bottom",
   Item = "item",
@@ -20,11 +27,7 @@ export type DragAndDropFeatureDef<T> = {
 
     isItemDraggable?: (item: ItemInstance<T>) => boolean;
     canDrag?: (items: ItemInstance<T>[]) => boolean;
-    canDrop?: (
-      items: ItemInstance<T>[],
-      target: ItemInstance<T>,
-      index: number | null
-    ) => boolean;
+    canDrop?: (items: ItemInstance<T>[], target: DropTarget<T>) => boolean;
 
     createForeignDragObject?: (items: ItemInstance<T>[]) => {
       format: string;
@@ -32,21 +35,24 @@ export type DragAndDropFeatureDef<T> = {
     };
     canDropForeignDragObject?: (
       dataTransfer: DataTransfer,
-      target: ItemInstance<T>
+      target: DropTarget<T>
     ) => boolean;
 
-    onDrop?: (
-      items: ItemInstance<T>[],
-      target: ItemInstance<T>,
-      index: number | null
-    ) => void;
+    onUpdateDragPosition?: (target: DropTarget<T>) => void;
+
+    onDrop?: (items: ItemInstance<T>[], target: DropTarget<T>) => void;
     onDropForeignDragObject?: (
       dataTransfer: DataTransfer,
-      target: ItemInstance<T>,
-      index: number | null
+      target: DropTarget<T>
     ) => void;
   };
-  treeInstance: {};
-  itemInstance: {};
+  treeInstance: {
+    getDropTarget: () => DropTarget<T> | null;
+  };
+  itemInstance: {
+    isDropTarget: () => boolean;
+    isDropTargetAbove: () => boolean;
+    isDropTargetBelow: () => boolean;
+  };
   hotkeys: never;
 };

@@ -22,3 +22,14 @@
     border-color: black;
 }
 
+.treeitem[data-drop=true] {
+    border-color: red;
+}
+
+.treeitem[data-dropabove=true] {
+    border-top: 1px solid red;
+}
+
+.treeitem[data-dropbelow=true] {
+    border-bottom: 1px solid red;
+}

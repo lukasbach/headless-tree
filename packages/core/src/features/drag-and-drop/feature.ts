@@ -3,26 +3,34 @@ import {
   ItemInstance,
   TreeInstance,
 } from "../../types/core";
-import { DndDataRef, DragAndDropFeatureDef, DropTarget } from "./types";
+import {
+  DndDataRef,
+  DragAndDropFeatureDef,
+  DropTarget,
+  DropTargetPosition,
+} from "./types";
 import { MainFeatureDef } from "../main/types";
 import { TreeFeatureDef } from "../tree/types";
 import { SelectionFeatureDef } from "../selection/types";
 
-const getDropTarget = (
+const getDragCode = ({ item, index }: DropTarget<any>) =>
+  `${item.getId()}__${index ?? "none"}`;
+
+const getDropTarget = <T>(
   e: any,
   item: ItemInstance<any>,
   tree: TreeInstance<any>
-) => {
+): DropTarget<T> => {
   const config = tree.getConfig();
   const bb = item.getElement()?.getBoundingClientRect();
   const verticalPos = bb ? (e.pageY - bb.top) / bb.height : 0.5;
   const pos =
     // eslint-disable-next-line no-nested-ternary
     verticalPos < (config.topLinePercentage ?? 0.2)
-      ? DropTarget.Top
+      ? DropTargetPosition.Top
       : verticalPos > (config.bottomLinePercentage ?? 0.8)
-      ? DropTarget.Bottom
-      : DropTarget.Item;
+      ? DropTargetPosition.Bottom
+      : DropTargetPosition.Item;
 
   if (config.canDropInbetween) {
     return { item, index: null };
@@ -30,11 +38,11 @@ const getDropTarget = (
 
   // TODO it's much more complicated than this..
   return {
-    item: pos === DropTarget.Item ? item : item.getParent(),
+    item: pos === DropTargetPosition.Item ? item : item.getParent(),
     index:
-      pos === DropTarget.Item
+      pos === DropTargetPosition.Item
         ? null
-        : item.getIndexInParent() + (pos === DropTarget.Top ? 0 : 1),
+        : item.getIndexInParent() + (pos === DropTargetPosition.Top ? 0 : 1),
   };
 };
 
@@ -43,16 +51,13 @@ const canDrop = (e: any, item: ItemInstance<any>, tree: TreeInstance<any>) => {
   const config = tree.getConfig();
   const target = getDropTarget(e, item, tree);
 
-  if (
-    draggedItems &&
-    !(config.canDrop?.(draggedItems, target.item, target.index) ?? true)
-  ) {
+  if (draggedItems && !(config.canDrop?.(draggedItems, target) ?? true)) {
     return false;
   }
 
   if (
     !draggedItems &&
-    !config.canDropForeignDragObject?.(e.dataTransfer, item)
+    !config.canDropForeignDragObject?.(e.dataTransfer, target)
   ) {
     return false;
   }
@@ -70,6 +75,14 @@ export const dragAndDropFeature: FeatureImplementation<
 > = {
   key: "dragAndDrop",
   dependingFeatures: ["main", "tree", "selection"],
+
+  createTreeInstance: (prev, tree) => ({
+    ...prev,
+
+    getDropTarget: () => {
+      return tree.getDataRef<DndDataRef<any>>().current.dragTarget ?? null;
+    },
+  }),
 
   createItemInstance: (prev, item, itemMeta, tree) => ({
     ...prev,
@@ -103,11 +116,25 @@ export const dragAndDropFeature: FeatureImplementation<
       },
 
       onDragOver: (e) => {
+        const dataRef = tree.getDataRef<DndDataRef<any>>();
+
+        // TODO factor out target
         if (!canDrop(e, item, tree)) {
           return;
         }
 
         e.preventDefault();
+        const target = getDropTarget(e, item, tree);
+        const nextDragCode = getDragCode(target);
+
+        if (nextDragCode === dataRef.current.lastDragCode) {
+          return;
+        }
+        console.log(nextDragCode, dataRef.current.lastDragCode);
+
+        dataRef.current.lastDragCode = nextDragCode;
+        dataRef.current.dragTarget = target;
+        tree.getConfig().onUpdateDragPosition?.(target);
 
         // TODO store drag position, but only if actual drag position changed
       },
@@ -124,15 +151,36 @@ export const dragAndDropFeature: FeatureImplementation<
         console.log(target);
 
         if (draggedItems) {
-          config.onDrop?.(draggedItems, target.item, target.index);
+          config.onDrop?.(draggedItems, target);
         } else {
-          config.onDropForeignDragObject?.(
-            e.dataTransfer,
-            target.item,
-            target.index
-          );
+          config.onDropForeignDragObject?.(e.dataTransfer, target);
         }
       },
     }),
+
+    isDropTarget: () => {
+      const target = tree.getDropTarget();
+      return target ? target.item === item : false;
+    },
+
+    isDropTargetAbove: () => {
+      const target = tree.getDropTarget();
+      return (
+        (target &&
+          target.item.getItemMeta().index + 1 === itemMeta.index &&
+          target.index === null) ??
+        false
+      );
+    },
+
+    isDropTargetBelow: () => {
+      const target = tree.getDropTarget();
+      return (
+        (target &&
+          target.item.getItemMeta().index - 1 === itemMeta.index &&
+          target.index === null) ??
+        false
+      );
+    },
   }),
 };
