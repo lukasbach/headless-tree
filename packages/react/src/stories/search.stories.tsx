@@ -1,9 +1,8 @@
 import type { Meta } from "@storybook/react";
-import React, { useState } from "react";
+import React from "react";
 import {
   hotkeysCoreFeature,
   selectionFeature,
-  dragAndDropFeature,
   syncDataLoaderFeature,
   searchFeature,
 } from "@headless-tree/core";
@@ -64,6 +63,9 @@ export const Search = () => {
       </div>
       <button onClick={() => tree.openSearch()}>Open Search</button> or press
       any letter keys while focusing the tree to search.
+      {tree.isSearchOpen() && (
+        <p>Navigate between search results with ArrowUp and ArrowDown.</p>
+      )}
     </>
   );
 };

@@ -42,13 +42,19 @@ export type TreeFeatureDef<T> = {
     getId: () => string;
     getProps: () => Record<string, any>;
     getItemName: () => string;
+    getItemData: () => T;
     expand: () => void;
     collapse: () => void;
     isExpanded: () => boolean;
     isFocused: () => boolean;
+    isFolder: () => boolean;
     setFocused: () => void;
     getParent: () => ItemInstance<T> | null;
     getIndexInParent: () => number;
   };
-  hotkeys: "focusNextItem" | "focusPreviousItem";
+  hotkeys:
+    | "focusNextItem"
+    | "focusPreviousItem"
+    | "expandOrDown"
+    | "collapseOrUp";
 };

@@ -184,10 +184,12 @@ export const treeFeature: FeatureImplementation<
     },
     expand: () => tree.expandItem(itemMeta.itemId),
     collapse: () => tree.collapseItem(itemMeta.itemId),
+    getItemData: () => tree.retrieveItemData(itemMeta.itemId),
     isExpanded: () => tree.getState().expandedItems.includes(itemMeta.itemId),
     isFocused: () =>
       tree.getState().focusedItem === itemMeta.itemId ||
       (tree.getState().focusedItem === null && itemMeta.index === 0),
+    isFolder: () => tree.getConfig().isItemFolder(instance.getItemData()),
     getItemName: () => {
       const config = tree.getConfig();
       return config.getItemName(tree.retrieveItemData(itemMeta.itemId));
@@ -227,6 +229,32 @@ export const treeFeature: FeatureImplementation<
       handler: (e, tree) => {
         tree.focusPreviousItem();
         tree.updateDomFocus();
+      },
+    },
+    expandOrDown: {
+      hotkey: "ArrowRight",
+      canRepeat: true,
+      handler: (e, tree) => {
+        const item = tree.getFocusedItem();
+        if (item.isExpanded() || !item.isFolder()) {
+          tree.focusNextItem();
+          tree.updateDomFocus();
+        } else {
+          item.expand();
+        }
+      },
+    },
+    collapseOrUp: {
+      hotkey: "ArrowLeft",
+      canRepeat: true,
+      handler: (e, tree) => {
+        const item = tree.getFocusedItem();
+        if (!item.isExpanded() || !item.isFolder()) {
+          item.getParent()?.setFocused();
+          tree.updateDomFocus(true);
+        } else {
+          item.collapse();
+        }
       },
     },
   },
