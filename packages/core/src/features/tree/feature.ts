@@ -157,14 +157,13 @@ export const treeFeature: FeatureImplementation<
     },
     getId: () => itemMeta.itemId,
     getProps: () => {
-      const itemMeta = instance.getItemMeta();
       return {
         ...prev.getProps?.(),
         role: "treeitem",
         "aria-setsize": itemMeta.setSize,
         "aria-posinset": itemMeta.posInSet,
         "aria-selected": false,
-        "aria-label": "",
+        "aria-label": instance.getItemName(),
         "aria-level": itemMeta.level,
         tabIndex: instance.isFocused() ? 0 : -1,
         onClick: (e) => {

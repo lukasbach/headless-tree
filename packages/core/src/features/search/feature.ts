@@ -1,4 +1,3 @@
-import * as inspector from "inspector";
 import { FeatureImplementation } from "../../types/core";
 import { SearchFeatureDataRef, SearchFeatureDef } from "./types";
 import { MainFeatureDef } from "../main/types";

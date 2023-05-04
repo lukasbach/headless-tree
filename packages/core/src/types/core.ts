@@ -9,6 +9,7 @@ import {
 import { SyncDataLoaderFeatureDef } from "../features/sync-data-loader/types";
 import { AsyncDataLoaderFeatureDef } from "../features/async-data-loader/types";
 import { SearchFeatureDef } from "../features/search/types";
+import { RenamingFeatureDef } from "../features/renaming/types";
 
 export type Updater<T> = T | ((old: T) => T);
 export type OnChangeFn<T> = (updaterOrValue: Updater<T>) => void;
@@ -45,7 +46,8 @@ export type FeatureDefs<T> =
   | HotkeysCoreFeatureDef<T>
   | SyncDataLoaderFeatureDef<T>
   | AsyncDataLoaderFeatureDef<T>
-  | SearchFeatureDef<T>;
+  | SearchFeatureDef<T>
+  | RenamingFeatureDef<T>;
 
 type MergedFeatures<F extends FeatureDef> = {
   state: UnionToIntersection<F["state"]>;
