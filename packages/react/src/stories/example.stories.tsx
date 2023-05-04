@@ -19,9 +19,9 @@ export const Example = () => {
   const tree = useTree<string>({
     state,
     onStateChange: setState,
-    rootItemId: "root",
+    rootItemId: "folder",
     getItemName: (item) => item,
-    isItemFolder: () => true,
+    isItemFolder: (item) => !item.endsWith("item"),
     hotkeys: {
       customEvent: {
         hotkey: "Escape",
@@ -30,7 +30,14 @@ export const Example = () => {
     },
     dataLoader: {
       getItem: (itemId) => itemId,
-      getChildren: (itemId) => [`${itemId}-1`, `${itemId}-2`, `${itemId}-3`],
+      getChildren: (itemId) => [
+        `${itemId}-1`,
+        `${itemId}-2`,
+        `${itemId}-3`,
+        `${itemId}-1item`,
+        `${itemId}-2item`,
+        `${itemId}-3item`,
+      ],
     },
     features: [
       syncDataLoaderFeature,
@@ -56,7 +63,8 @@ export const Example = () => {
             data-expanded={item.isExpanded()}
             data-selected={item.isSelected()}
           >
-            {item.isExpanded() ? "v " : "> "}
+            {item.isFolder() && item.isExpanded() ? "v " : ""}
+            {item.isFolder() && !item.isExpanded() ? "> " : ""}
             {item.getItemName()}
           </button>
         </div>

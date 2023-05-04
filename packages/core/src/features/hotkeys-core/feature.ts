@@ -20,17 +20,15 @@ const testHotkeyMatch = (
   tree: TreeInstance<any>,
   hotkey: HotkeyConfig<any>
 ) => {
-  const doKeysMatch = hotkey.hotkey
-    .split("+")
-    .every((key) =>
-      key in specialKeys
-        ? [...pressedKeys].some((pressedKey) =>
-            specialKeys[key].test(pressedKey)
-          )
-        : pressedKeys.has(key)
-    );
+  const supposedKeys = hotkey.hotkey.split("+");
+  const doKeysMatch = supposedKeys.every((key) =>
+    key in specialKeys
+      ? [...pressedKeys].some((pressedKey) => specialKeys[key].test(pressedKey))
+      : pressedKeys.has(key)
+  );
   const isEnabled = !hotkey.isEnabled || hotkey.isEnabled(tree);
-  return doKeysMatch && isEnabled;
+  const equalCounts = pressedKeys.size === supposedKeys.length;
+  return doKeysMatch && isEnabled && equalCounts;
 };
 
 const findHotkeyMatch = (

@@ -176,6 +176,10 @@ export const treeFeature: FeatureImplementation<
             return;
           }
 
+          if (!instance.isFolder()) {
+            return;
+          }
+
           if (instance.isExpanded()) {
             instance.collapse();
           } else {
