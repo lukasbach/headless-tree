@@ -23,5 +23,6 @@ export type SelectionFeatureDef<T> = {
     | "selectUpwards"
     | "selectDownwards"
     | "selectUpwardsCtrl"
-    | "selectDownwardsCtrl";
+    | "selectDownwardsCtrl"
+    | "selectAll";
 };

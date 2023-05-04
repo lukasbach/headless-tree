@@ -56,5 +56,7 @@ export type TreeFeatureDef<T> = {
     | "focusNextItem"
     | "focusPreviousItem"
     | "expandOrDown"
-    | "collapseOrUp";
+    | "collapseOrUp"
+    | "focusFirstItem"
+    | "focusLastItem";
 };

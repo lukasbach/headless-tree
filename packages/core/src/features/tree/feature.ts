@@ -128,6 +128,9 @@ export const treeFeature: FeatureImplementation<
     },
 
     updateDomFocus: (scrollIntoView) => {
+      // TODO replace with a replaceable focusItem/scrollToItem method that can be replaced
+      // TODO by a virtualized support feature
+
       // TODO maybe find a better way?
       // Required because if the state is managed outside in react, the state only updated during next render
       setTimeout(() => {
@@ -254,6 +257,20 @@ export const treeFeature: FeatureImplementation<
         } else {
           item.collapse();
         }
+      },
+    },
+    focusFirstItem: {
+      hotkey: "Home",
+      handler: (e, tree) => {
+        tree.focusItem(tree.getItems()[0].getId());
+        tree.updateDomFocus();
+      },
+    },
+    focusLastItem: {
+      hotkey: "End",
+      handler: (e, tree) => {
+        tree.focusItem(tree.getItems()[tree.getItems().length - 1].getId());
+        tree.updateDomFocus();
       },
     },
   },

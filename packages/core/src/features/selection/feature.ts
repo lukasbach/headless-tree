@@ -142,5 +142,12 @@ export const selectionFeature: FeatureImplementation<
         // TODO
       },
     },
+    selectAll: {
+      hotkey: "Control+a",
+      preventDefault: true,
+      handler: (e, tree) => {
+        tree.setSelectedItems(tree.getItems().map((item) => item.getId()));
+      },
+    },
   },
 };

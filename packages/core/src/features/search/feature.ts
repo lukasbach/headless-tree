@@ -47,7 +47,10 @@ export const searchFeature: FeatureImplementation<
           .current.searchInput?.focus();
       });
     },
-    closeSearch: () => instance.setSearch(null),
+    closeSearch: () => {
+      instance.setSearch(null);
+      instance.updateDomFocus();
+    },
     isSearchOpen: () => instance.getState().search !== null,
     getSearchValue: () => instance.getState().search || "",
     registerSearchInputElement: (element) => {
@@ -84,14 +87,16 @@ export const searchFeature: FeatureImplementation<
   hotkeys: {
     openSearch: {
       hotkey: "LetterOrNumber",
-      preventDefault: true,
+      preventDefault: true, // TODO make true default
       isEnabled: (tree) => !tree.isSearchOpen(),
       handler: (e, tree) => {
+        e.stopPropagation();
         tree.openSearch(e.key);
       },
     },
 
     closeSearch: {
+      // TODO allow multiple, i.e. Enter
       hotkey: "Escape",
       allowWhenInputFocused: true,
       isEnabled: (tree) => tree.isSearchOpen(),

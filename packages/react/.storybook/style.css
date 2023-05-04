@@ -11,8 +11,16 @@
     width: 100%;
     text-align: left;
     background-color: white;
-    border: 1px solid #aaa;
+    border: 1px solid #ccc;
     padding: 4px 6px;
+}
+
+.treeitem:hover {
+    border-color: black;
+}
+
+.treeitem:focus {
+    outline: none;
 }
 
 .treeitem[data-selected=true] {

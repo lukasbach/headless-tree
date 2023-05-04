@@ -34,10 +34,13 @@ export const Search = () => {
   return (
     <>
       {tree.isSearchOpen() && (
-        <input
-          {...tree.getSearchInputElementProps()}
-          ref={tree.registerSearchInputElement}
-        />
+        <>
+          <input
+            {...tree.getSearchInputElementProps()}
+            ref={tree.registerSearchInputElement}
+          />{" "}
+          ({tree.getSearchMatchingItems().length} matches)
+        </>
       )}{" "}
       <div ref={tree.registerElement} className="tree">
         {tree.getItems().map((item) => (
