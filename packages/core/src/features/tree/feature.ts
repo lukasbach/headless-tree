@@ -119,7 +119,6 @@ export const treeFeature: FeatureImplementation<
       const { index } = instance.getFocusedItem().getItemMeta();
       const nextIndex = Math.min(index + 1, instance.getItems().length - 1);
       instance.focusItem(instance.getItems()[nextIndex].getId());
-      console.log("FOCUS NEXT", index, nextIndex);
     },
 
     focusPreviousItem: () => {
@@ -215,6 +214,7 @@ export const treeFeature: FeatureImplementation<
     focusNextItem: {
       hotkey: "ArrowDown",
       canRepeat: true,
+      isEnabled: (tree) => !(tree.isSearchOpen?.() ?? false),
       handler: (e, tree) => {
         tree.focusNextItem();
         tree.updateDomFocus();
@@ -223,6 +223,7 @@ export const treeFeature: FeatureImplementation<
     focusPreviousItem: {
       hotkey: "ArrowUp",
       canRepeat: true,
+      isEnabled: (tree) => !(tree.isSearchOpen?.() ?? false),
       handler: (e, tree) => {
         tree.focusPreviousItem();
         tree.updateDomFocus();

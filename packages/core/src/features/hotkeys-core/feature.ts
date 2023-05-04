@@ -1,21 +1,48 @@
-import { FeatureImplementation, HotkeysConfig } from "../../types/core";
-import { HotkeysCoreFeatureDef } from "./types";
+import {
+  FeatureImplementation,
+  HotkeysConfig,
+  TreeInstance,
+} from "../../types/core";
+import {
+  HotkeyConfig,
+  HotkeysCoreDataRef,
+  HotkeysCoreFeatureDef,
+} from "./types";
 import { MainFeatureDef } from "../main/types";
 
-type TreeDataRef = {
-  keydownHandler?: (e: KeyboardEvent) => void;
-  keyupHandler?: (e: KeyboardEvent) => void;
-  pressedKeys: Set<string>;
+const specialKeys: Record<string, RegExp> = {
+  Letter: /^[a-z]$/,
+  LetterOrNumber: /^[a-z0-9]$/,
+};
+
+const testHotkeyMatch = (
+  pressedKeys: Set<string>,
+  tree: TreeInstance<any>,
+  hotkey: HotkeyConfig<any>
+) => {
+  const doKeysMatch = hotkey.hotkey
+    .split("+")
+    .every((key) =>
+      key in specialKeys
+        ? [...pressedKeys].some((pressedKey) =>
+            specialKeys[key].test(pressedKey)
+          )
+        : pressedKeys.has(key)
+    );
+  const isEnabled = !hotkey.isEnabled || hotkey.isEnabled(tree);
+  return doKeysMatch && isEnabled;
 };
 
 const findHotkeyMatch = (
   pressedKeys: Set<string>,
+  tree: TreeInstance<any>,
   config1: HotkeysConfig<any, any>,
   config2: HotkeysConfig<any, any>
-) =>
-  Object.entries({ ...config1, ...config2 }).find(([, { hotkey }]) =>
-    hotkey.split("+").every((key) => pressedKeys.has(key))
+) => {
+  return Object.entries({ ...config1, ...config2 }).find(([, hotkey]) =>
+    testHotkeyMatch(pressedKeys, tree, hotkey)
   )?.[0];
+};
 
 export const hotkeysCoreFeature: FeatureImplementation<
   any,
@@ -26,7 +53,7 @@ export const hotkeysCoreFeature: FeatureImplementation<
   dependingFeatures: ["main", "tree"],
 
   onTreeMount: (tree, element) => {
-    const data = tree.getDataRef<TreeDataRef>();
+    const data = tree.getDataRef<HotkeysCoreDataRef>();
     const keydown = (e: KeyboardEvent) => {
       data.current.pressedKeys ??= new Set();
       const newMatch = !data.current.pressedKeys.has(e.key);
@@ -34,19 +61,19 @@ export const hotkeysCoreFeature: FeatureImplementation<
 
       const hotkeyName = findHotkeyMatch(
         data.current.pressedKeys,
+        tree as any,
         tree.getHotkeyPresets(),
         tree.getConfig().hotkeys as HotkeysConfig<any>
       );
 
       if (!hotkeyName) return;
 
-      const hotkeyConfig = {
+      const hotkeyConfig: HotkeyConfig<any> = {
         ...tree.getHotkeyPresets()[hotkeyName],
         ...tree.getConfig().hotkeys?.[hotkeyName],
       };
 
       if (!hotkeyConfig) return;
-      if (hotkeyConfig.isEnabled && !hotkeyConfig.isEnabled()) return;
       if (
         !hotkeyConfig.allowWhenInputFocused &&
         e.target instanceof HTMLInputElement
@@ -63,16 +90,19 @@ export const hotkeysCoreFeature: FeatureImplementation<
       data.current.pressedKeys.delete(e.key);
     };
 
+    // keyup is registered on document, because some hotkeys shift
+    // the focus away from the tree (i.e. search)
+    // and then we wouldn't get the keyup event anymore
     element.addEventListener("keydown", keydown);
-    element.addEventListener("keyup", keyup);
+    document.addEventListener("keyup", keyup);
     data.current.keydownHandler = keydown;
     data.current.keyupHandler = keyup;
   },
 
   onTreeUnmount: (tree, element) => {
-    const data = tree.getDataRef<TreeDataRef>();
+    const data = tree.getDataRef<HotkeysCoreDataRef>();
     if (data.current.keyupHandler) {
-      element.removeEventListener("keyup", data.current.keyupHandler);
+      document.removeEventListener("keyup", data.current.keyupHandler);
       delete data.current.keyupHandler;
     }
     if (data.current.keydownHandler) {

@@ -1,7 +1,8 @@
 import { ItemInstance, OnChangeFn } from "../../types/core";
+import { HotkeysCoreDataRef } from "../hotkeys-core/types";
 
-export type SearchFeatureDataRef<T = any> = {
-  matchingItems: ItemInstance<any>[];
+export type SearchFeatureDataRef<T = any> = HotkeysCoreDataRef & {
+  matchingItems: ItemInstance<T>[];
   searchInput: HTMLInputElement | null;
 };
 
@@ -14,11 +15,11 @@ export type SearchFeatureDef<T> = {
     onOpenSearch?: () => void;
     onCloseSearch?: () => void;
     onSearchMatchesItems?: (search: string, items: ItemInstance<T>[]) => void;
-    isSearchMatchingItem?: (search: string, item: T) => boolean;
+    isSearchMatchingItem?: (search: string, item: ItemInstance<T>) => boolean;
   };
   treeInstance: {
     setSearch: (search: string | null) => void;
-    openSearch: () => void;
+    openSearch: (initialValue?: string) => void;
     closeSearch: () => void;
     isSearchOpen: () => boolean;
     getSearchValue: () => string;

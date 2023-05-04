@@ -20,13 +20,9 @@ export const searchFeature: FeatureImplementation<
 
   getDefaultConfig: (defaultConfig, tree) => ({
     onChangeSearch: makeStateUpdater("search", tree),
-    onSearchMatchesItems: (search, item) => {
-      return tree
-        .getConfig()
-        .getItemName(item)
-        .toLowerCase()
-        .includes(search.toLowerCase());
-    },
+    isSearchMatchingItem: (search, item) =>
+      search.length > 0 &&
+      item.getItemName().toLowerCase().includes(search.toLowerCase()),
     ...defaultConfig,
   }),
 
@@ -35,9 +31,17 @@ export const searchFeature: FeatureImplementation<
 
     setSearch: (search) => {
       instance.getConfig().onChangeSearch?.(search);
+      instance
+        .getItems()
+        .find((item) =>
+          instance
+            .getConfig()
+            .isSearchMatchingItem?.(instance.getSearchValue(), item)
+        )
+        ?.setFocused();
     },
-    openSearch: () => {
-      instance.setSearch("");
+    openSearch: (initialValue = "") => {
+      instance.setSearch(initialValue);
       setTimeout(() => {
         instance
           .getDataRef<SearchFeatureDataRef>()
@@ -48,7 +52,11 @@ export const searchFeature: FeatureImplementation<
     isSearchOpen: () => instance.getState().search !== null,
     getSearchValue: () => instance.getState().search || "",
     registerSearchInputElement: (element) => {
-      instance.getDataRef<SearchFeatureDataRef>().current.searchInput = element;
+      const dataRef = instance.getDataRef<SearchFeatureDataRef>();
+      dataRef.current.searchInput = element;
+      if (element && dataRef.current.keydownHandler) {
+        element.addEventListener("keydown", dataRef.current.keydownHandler);
+      }
     },
     getSearchInputElement: () =>
       instance.getDataRef<SearchFeatureDataRef>().current.searchInput ?? null,
@@ -73,4 +81,56 @@ export const searchFeature: FeatureImplementation<
     isMatchingSearch: () =>
       tree.getSearchMatchingItems().some((i) => i.getId() === item.getId()),
   }),
+
+  hotkeys: {
+    openSearch: {
+      hotkey: "LetterOrNumber",
+      preventDefault: true,
+      isEnabled: (tree) => !tree.isSearchOpen(),
+      handler: (e, tree) => {
+        tree.openSearch(e.key);
+      },
+    },
+
+    closeSearch: {
+      hotkey: "Escape",
+      allowWhenInputFocused: true,
+      isEnabled: (tree) => tree.isSearchOpen(),
+      handler: (e, tree) => {
+        tree.closeSearch();
+      },
+    },
+
+    nextSearchItem: {
+      hotkey: "ArrowDown",
+      allowWhenInputFocused: true,
+      isEnabled: (tree) => tree.isSearchOpen(),
+      handler: (e, tree) => {
+        const focusItem = tree
+          .getSearchMatchingItems()
+          .find(
+            (item) =>
+              item.getItemMeta().index >
+              tree.getFocusedItem().getItemMeta().index
+          );
+        focusItem?.setFocused();
+      },
+    },
+
+    previousSearchItem: {
+      hotkey: "ArrowUp",
+      allowWhenInputFocused: true,
+      isEnabled: (tree) => tree.isSearchOpen(),
+      handler: (e, tree) => {
+        const focusItem = [...tree.getSearchMatchingItems()]
+          .reverse()
+          .find(
+            (item) =>
+              item.getItemMeta().index <
+              tree.getFocusedItem().getItemMeta().index
+          );
+        focusItem?.setFocused();
+      },
+    },
+  },
 };

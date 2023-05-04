@@ -8,10 +8,16 @@ export interface HotkeyConfig<T> {
   hotkey: string;
   canRepeat?: boolean;
   allowWhenInputFocused?: boolean;
-  isEnabled?: () => boolean;
+  isEnabled?: (tree: TreeInstance<T>) => boolean;
   preventDefault?: boolean;
   handler: (e: KeyboardEvent, tree: TreeInstance<T>) => void;
 }
+
+export type HotkeysCoreDataRef = {
+  keydownHandler?: (e: KeyboardEvent) => void;
+  keyupHandler?: (e: KeyboardEvent) => void;
+  pressedKeys: Set<string>;
+};
 
 export type HotkeysCoreFeatureDef<T> = {
   state: {};
