@@ -28,9 +28,9 @@ export const AsyncDataLoading = () => {
     isItemFolder: () => true,
     createLoadingItemData: () => loaderName,
     asyncDataLoader: {
-      getItem: (itemId) => wait(500).then(() => itemId),
+      getItem: (itemId) => wait(800).then(() => itemId),
       getChildren: (itemId) =>
-        wait(500).then(() => [`${itemId}-1`, `${itemId}-2`, `${itemId}-3`]),
+        wait(800).then(() => [`${itemId}-1`, `${itemId}-2`, `${itemId}-3`]),
     },
     dataLoader: null as any,
     features: [

@@ -1,6 +1,5 @@
-import { ItemInstance, OnChangeFn } from "../../types/core";
+import { OnChangeFn } from "../../types/core";
 import { SyncDataLoaderFeatureDef } from "../sync-data-loader/types";
-import { DropTarget } from "../drag-and-drop/types";
 
 export type AsyncTreeDataLoader<T> = {
   getItem: (itemId: string) => Promise<T>;
