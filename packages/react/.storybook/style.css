@@ -34,3 +34,7 @@
 .treeitem[data-dropbelow=true] {
     border-bottom: 1px solid red;
 }
+
+.treeitem[data-searchmatch=true] {
+    background-color: #ffffcd;
+}

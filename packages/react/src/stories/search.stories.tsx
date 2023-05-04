@@ -54,15 +54,16 @@ export const Search = () => {
               data-focused={item.isFocused()}
               data-expanded={item.isExpanded()}
               data-selected={item.isSelected()}
+              data-searchmatch={item.isMatchingSearch()}
             >
               {item.isExpanded() ? "v " : "> "}
               {item.getItemName()}
-              {item.isMatchingSearch() && " (matching search)"}
             </button>
           </div>
         ))}
       </div>
-      <button onClick={() => tree.openSearch()}>Open Search</button>
+      <button onClick={() => tree.openSearch()}>Open Search</button> or press
+      any letter keys while focusing the tree to search.
     </>
   );
 };

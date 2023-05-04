@@ -106,6 +106,7 @@ export const searchFeature: FeatureImplementation<
       allowWhenInputFocused: true,
       isEnabled: (tree) => tree.isSearchOpen(),
       handler: (e, tree) => {
+        // TODO scroll into view
         const focusItem = tree
           .getSearchMatchingItems()
           .find(
@@ -122,6 +123,7 @@ export const searchFeature: FeatureImplementation<
       allowWhenInputFocused: true,
       isEnabled: (tree) => tree.isSearchOpen(),
       handler: (e, tree) => {
+        // TODO scroll into view
         const focusItem = [...tree.getSearchMatchingItems()]
           .reverse()
           .find(
