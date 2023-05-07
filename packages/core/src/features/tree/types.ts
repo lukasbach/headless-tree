@@ -15,8 +15,11 @@ export type TreeFeatureDef<T> = {
     focusedItem: string | null;
   };
   config: {
+    // TODO use item instance instead of item data
     isItemFolder: (item: T) => boolean;
     getItemName: (item: T) => string;
+
+    onPrimaryAction?: (item: ItemInstance<T>) => void;
 
     onChangeExpandedItems?: OnChangeFn<string[]>;
     onChangeFocusedItem?: OnChangeFn<string | null>;
@@ -51,6 +54,7 @@ export type TreeFeatureDef<T> = {
     setFocused: () => void;
     getParent: () => ItemInstance<T> | null;
     getIndexInParent: () => number;
+    primaryAction: () => void;
   };
   hotkeys:
     | "focusNextItem"

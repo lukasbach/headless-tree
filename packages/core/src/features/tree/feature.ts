@@ -1,4 +1,4 @@
-import { FeatureImplementation } from "../../types/core";
+import { FeatureImplementation, ItemInstance } from "../../types/core";
 import { ItemMeta, TreeFeatureDef } from "./types";
 import { makeStateUpdater, memo } from "../../utils";
 import { MainFeatureDef } from "../main/types";
@@ -171,6 +171,7 @@ export const treeFeature: FeatureImplementation<
         tabIndex: instance.isFocused() ? 0 : -1,
         onClick: (e) => {
           instance.setFocused();
+          instance.primaryAction();
 
           if (e.ctrlKey || e.shiftKey || e.metaKey) {
             return;
@@ -202,6 +203,8 @@ export const treeFeature: FeatureImplementation<
     },
     getItemMeta: () => itemMeta,
     setFocused: () => tree.focusItem(itemMeta.itemId),
+    primaryAction: () =>
+      tree.getConfig().onPrimaryAction?.(instance as ItemInstance<any>),
     getParent: memo(
       (itemMeta) => {
         for (let i = itemMeta.index - 1; i >= 0; i--) {
