@@ -10,6 +10,7 @@ import { useTree } from "../index";
 
 const meta = {
   title: "React/Async Data Loading",
+  tags: ["tag 1", "tag 2"],
 } satisfies Meta;
 
 export default meta;

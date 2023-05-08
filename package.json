@@ -10,13 +10,22 @@
     "start": "lerna run start",
     "build": "lerna run build",
     "storybook": "lerna run storybook",
-    "docs": "typedoc ./packages/core/src/docs-entry.ts --excludeInternal"
+    "docs": "typedoc ./packages/core/src/docs-entry.ts --excludeInternal",
+    "docs:md": "typedoc ./packages/core/src/docs-entry.ts --plugin typedoc-plugin-markdown --out packages/docs/apidocs"
   },
   "dependencies": {
     "@lukasbach/eslint-config-deps": "^1.0.3",
+    "@types/node": "18.16.1",
+    "@types/react": "18.2.1",
+    "@types/react-dom": "18.2.1",
     "eslint": "^8.39.0",
     "lerna": "^6.6.1",
-    "typedoc": "^0.24.6"
+    "typedoc": "^0.24.6",
+    "typedoc-plugin-markdown": "^3.15.3"
+  },
+  "overrides": {
+    "@typescript-eslint/eslint-plugin": "5.59.1",
+    "@typescript-eslint/parser": "5.59.1"
   },
   "volta": {
     "node": "18.16.0",
