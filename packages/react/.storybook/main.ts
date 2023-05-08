@@ -13,6 +13,9 @@ const config: StorybookConfig = {
   docs: {
     autodocs: "tag",
   },
+  features: {
+    buildStoriesJson: true
+  },
   // core: {
   //   builder: '@storybook/builder-vite',
   // },
