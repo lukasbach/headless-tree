@@ -1,0 +1,11 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": [
+    "packages/core",
+    "packages/react"
+  ],
+  "name": "Headless Tree",
+  "entryPointStrategy": "packages",
+  "out": "docs",
+  "extends": ["./typedoc.base.json"]
+}
