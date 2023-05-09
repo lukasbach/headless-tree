@@ -10,8 +10,8 @@
     "start": "lerna run start",
     "build": "lerna run build",
     "storybook": "lerna run storybook",
-    "docs": "typedoc ./packages/core/src/docs-entry.ts --excludeInternal",
-    "docs:md": "typedoc ./packages/core/src/docs-entry.ts --plugin typedoc-plugin-markdown --out packages/docs/apidocs"
+    "docs": "typedoc",
+    "docs:md": "typedoc --plugin typedoc-plugin-markdown --out packages/docs/apidocs"
   },
   "dependencies": {
     "@lukasbach/eslint-config-deps": "^1.0.3",
