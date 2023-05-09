@@ -12,7 +12,16 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.0",
+    "@emotion/server": "^11.11.0",
+    "@mantine/core": "^6.0.10",
+    "@mantine/hooks": "^6.0.10",
+    "@mantine/prism": "^6.0.10",
+    "@mdx-js/react": "^2.3.0",
+    "fs-extra": "^11.1.1",
     "gatsby": "^5.9.0",
+    "gatsby-plugin-mantine": "^5.0.0",
+    "gatsby-plugin-mdx": "^5.9.0",
     "gatsby-source-filesystem": "^5.9.0",
     "gatsby-transformer-remark": "^6.9.0",
     "react": "^18.2.0",

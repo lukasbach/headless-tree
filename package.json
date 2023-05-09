@@ -11,7 +11,7 @@
     "build": "lerna run build",
     "storybook": "lerna run storybook",
     "docs": "typedoc",
-    "docs:md": "typedoc --plugin typedoc-plugin-markdown --out packages/docs/apidocs"
+    "docs:md": "typedoc ./packages/core/src/mddocs-entry.ts --entryPointStrategy resolve --plugin typedoc-plugin-markdown --out packages/docs/apidocs"
   },
   "dependencies": {
     "@lukasbach/eslint-config-deps": "^1.0.3",

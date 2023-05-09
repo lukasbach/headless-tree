@@ -1,19 +1,30 @@
 import type { GatsbyConfig } from "gatsby";
 
 const config: GatsbyConfig = {
-  // Since `gatsby-plugin-typescript` is automatically included in Gatsby you
-  // don't need to define it here (just if you need to change the options)
   plugins: [
     {
-      resolve: `gatsby-source-filesystem`,
+      resolve: `gatsby-plugin-mdx`,
       options: {
-        name: `content`,
+        extensions: [`.md`, `.mdx`],
+      },
+    },
+    "gatsby-plugin-mantine",
+    {
+      resolve: "gatsby-source-filesystem",
+      options: {
+        name: "apidocs",
         path: `${__dirname}/apidocs`,
       },
     },
-    `gatsby-transformer-remark`,
+    {
+      resolve: "gatsby-source-filesystem",
+      options: {
+        name: "docs",
+        path: `${__dirname}/docs`,
+      },
+    },
   ],
-  jsxRuntime: `automatic`,
+  jsxRuntime: "automatic",
 };
 
 export default config;

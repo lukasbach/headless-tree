@@ -10,7 +10,7 @@ import { useTree } from "@headless-tree/react";
 
 const meta = {
   title: "React/Async Data Loading",
-  tags: ["tag 1", "tag 2"],
+  tags: ["tag 1", "feature/main"],
 } satisfies Meta;
 
 export default meta;
