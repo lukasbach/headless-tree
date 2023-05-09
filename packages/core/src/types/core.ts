@@ -57,22 +57,50 @@ type MergedFeatures<F extends FeatureDef> = {
   hotkeys: F["hotkeys"];
 };
 
-export type TreeState<
-  T,
-  F extends FeatureDef = FeatureDefs<T>
-> = MergedFeatures<F>["state"];
-export type TreeConfig<
-  T,
-  F extends FeatureDef = FeatureDefs<T>
-> = MergedFeatures<F>["config"];
-export type TreeInstance<
-  T,
-  F extends FeatureDef = FeatureDefs<T>
-> = MergedFeatures<F>["treeInstance"];
-export type ItemInstance<
-  T,
-  F extends FeatureDef = FeatureDefs<T>
-> = MergedFeatures<F>["itemInstance"];
+type TreeStateType<T> = MainFeatureDef["state"] &
+  TreeFeatureDef<T>["state"] &
+  SelectionFeatureDef<T>["state"] &
+  DragAndDropFeatureDef<T>["state"] &
+  HotkeysCoreFeatureDef<T>["state"] &
+  SyncDataLoaderFeatureDef<T>["state"] &
+  AsyncDataLoaderFeatureDef<T>["state"] &
+  SearchFeatureDef<T>["state"] &
+  RenamingFeatureDef<T>["state"];
+export interface TreeState<T> extends TreeStateType<T> {}
+
+type TreeConfigType<T> = MainFeatureDef["config"] &
+  TreeFeatureDef<T>["config"] &
+  SelectionFeatureDef<T>["config"] &
+  DragAndDropFeatureDef<T>["config"] &
+  HotkeysCoreFeatureDef<T>["config"] &
+  SyncDataLoaderFeatureDef<T>["config"] &
+  AsyncDataLoaderFeatureDef<T>["config"] &
+  SearchFeatureDef<T>["config"] &
+  RenamingFeatureDef<T>["config"];
+export interface TreeConfig<T> extends TreeConfigType<T> {}
+
+type TreeInstanceType<T> = MainFeatureDef["treeInstance"] &
+  TreeFeatureDef<T>["treeInstance"] &
+  SelectionFeatureDef<T>["treeInstance"] &
+  DragAndDropFeatureDef<T>["treeInstance"] &
+  HotkeysCoreFeatureDef<T>["treeInstance"] &
+  SyncDataLoaderFeatureDef<T>["treeInstance"] &
+  AsyncDataLoaderFeatureDef<T>["treeInstance"] &
+  SearchFeatureDef<T>["treeInstance"] &
+  RenamingFeatureDef<T>["treeInstance"];
+export interface TreeInstance<T> extends TreeInstanceType<T> {}
+
+type ItemInstanceType<T> = MainFeatureDef["itemInstance"] &
+  TreeFeatureDef<T>["itemInstance"] &
+  SelectionFeatureDef<T>["itemInstance"] &
+  DragAndDropFeatureDef<T>["itemInstance"] &
+  HotkeysCoreFeatureDef<T>["itemInstance"] &
+  SyncDataLoaderFeatureDef<T>["itemInstance"] &
+  AsyncDataLoaderFeatureDef<T>["itemInstance"] &
+  SearchFeatureDef<T>["itemInstance"] &
+  RenamingFeatureDef<T>["itemInstance"];
+export interface ItemInstance<T> extends ItemInstanceType<T> {}
+
 export type HotkeyName<F extends FeatureDef = FeatureDefs<any>> =
   MergedFeatures<F>["hotkeys"];
 

@@ -13,6 +13,8 @@
   },
   "dependencies": {
     "gatsby": "^5.9.0",
+    "gatsby-source-filesystem": "^5.9.0",
+    "gatsby-transformer-remark": "^6.9.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "tsconfig-paths-webpack-plugin": "4.0.1"
