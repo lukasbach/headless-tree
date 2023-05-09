@@ -32,6 +32,7 @@ type ApiDoc = Node & {
   readonly file: Maybe<Scalars['String']>;
   readonly id: Scalars['ID'];
   readonly internal: Internal;
+  readonly markdown: Maybe<Scalars['String']>;
   readonly parent: Maybe<Node>;
 };
 
@@ -85,6 +86,7 @@ type ApiDocFieldSelector = {
   readonly file: InputMaybe<FieldSelectorEnum>;
   readonly id: InputMaybe<FieldSelectorEnum>;
   readonly internal: InputMaybe<InternalFieldSelector>;
+  readonly markdown: InputMaybe<FieldSelectorEnum>;
   readonly parent: InputMaybe<NodeFieldSelector>;
 };
 
@@ -93,6 +95,7 @@ type ApiDocFilterInput = {
   readonly file: InputMaybe<StringQueryOperatorInput>;
   readonly id: InputMaybe<StringQueryOperatorInput>;
   readonly internal: InputMaybe<InternalFilterInput>;
+  readonly markdown: InputMaybe<StringQueryOperatorInput>;
   readonly parent: InputMaybe<NodeFilterInput>;
 };
 
@@ -142,6 +145,7 @@ type ApiDocSortInput = {
   readonly file: InputMaybe<SortOrderEnum>;
   readonly id: InputMaybe<SortOrderEnum>;
   readonly internal: InputMaybe<InternalSortInput>;
+  readonly markdown: InputMaybe<SortOrderEnum>;
   readonly parent: InputMaybe<NodeSortInput>;
 };
 
@@ -962,6 +966,8 @@ type MdxFilterListInput = {
 
 type MdxFrontmatter = {
   readonly api: Maybe<MdxFrontmatterApi>;
+  readonly category: Maybe<Scalars['String']>;
+  readonly import: Maybe<Scalars['String']>;
   readonly slug: Maybe<Scalars['String']>;
   readonly storybook: Maybe<Scalars['String']>;
   readonly template: Maybe<Scalars['String']>;
@@ -1002,6 +1008,8 @@ type MdxFrontmatterApiSortInput = {
 
 type MdxFrontmatterFieldSelector = {
   readonly api: InputMaybe<MdxFrontmatterApiFieldSelector>;
+  readonly category: InputMaybe<FieldSelectorEnum>;
+  readonly import: InputMaybe<FieldSelectorEnum>;
   readonly slug: InputMaybe<FieldSelectorEnum>;
   readonly storybook: InputMaybe<FieldSelectorEnum>;
   readonly template: InputMaybe<FieldSelectorEnum>;
@@ -1010,6 +1018,8 @@ type MdxFrontmatterFieldSelector = {
 
 type MdxFrontmatterFilterInput = {
   readonly api: InputMaybe<MdxFrontmatterApiFilterInput>;
+  readonly category: InputMaybe<StringQueryOperatorInput>;
+  readonly import: InputMaybe<StringQueryOperatorInput>;
   readonly slug: InputMaybe<StringQueryOperatorInput>;
   readonly storybook: InputMaybe<StringQueryOperatorInput>;
   readonly template: InputMaybe<StringQueryOperatorInput>;
@@ -1018,6 +1028,8 @@ type MdxFrontmatterFilterInput = {
 
 type MdxFrontmatterSortInput = {
   readonly api: InputMaybe<MdxFrontmatterApiSortInput>;
+  readonly category: InputMaybe<SortOrderEnum>;
+  readonly import: InputMaybe<SortOrderEnum>;
   readonly slug: InputMaybe<SortOrderEnum>;
   readonly storybook: InputMaybe<SortOrderEnum>;
   readonly template: InputMaybe<SortOrderEnum>;
@@ -1229,6 +1241,7 @@ type Query_apiDocArgs = {
   file: InputMaybe<StringQueryOperatorInput>;
   id: InputMaybe<StringQueryOperatorInput>;
   internal: InputMaybe<InternalFilterInput>;
+  markdown: InputMaybe<StringQueryOperatorInput>;
   parent: InputMaybe<NodeFilterInput>;
 };
 
@@ -2377,12 +2390,27 @@ type StringQueryOperatorInput = {
   readonly regex: InputMaybe<Scalars['String']>;
 };
 
+type AllApiDocsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type AllApiDocsQuery = { readonly allApiDoc: { readonly nodes: ReadonlyArray<{ readonly file: string | null, readonly markdown: string | null }> } };
+
+type AllStoriesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type AllStoriesQuery = { readonly allStory: { readonly nodes: ReadonlyArray<{ readonly embed: string | null, readonly kind: string | null, readonly name: string | null, readonly source: string | null, readonly sourcePath: string | null, readonly story: string | null, readonly tags: ReadonlyArray<string | null> | null, readonly title: string | null }> } };
+
 type DocByIdQueryVariables = Exact<{
   id: InputMaybe<Scalars['String']>;
 }>;
 
 
-type DocByIdQuery = { readonly mdx: { readonly tableOfContents: Record<string, unknown> | null, readonly frontmatter: { readonly slug: string | null, readonly title: string | null, readonly storybook: string | null, readonly template: string | null, readonly api: { readonly config: string | null, readonly hotkeys: string | null, readonly itemInstance: string | null, readonly state: string | null, readonly treeInstance: string | null } | null } | null } | null };
+type DocByIdQuery = { readonly mdx: { readonly tableOfContents: Record<string, unknown> | null, readonly frontmatter: { readonly slug: string | null, readonly title: string | null, readonly import: string | null, readonly storybook: string | null, readonly template: string | null, readonly api: { readonly config: string | null, readonly hotkeys: string | null, readonly itemInstance: string | null, readonly state: string | null, readonly treeInstance: string | null } | null } | null } | null };
+
+type NavbarDataQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type NavbarDataQuery = { readonly allMdx: { readonly nodes: ReadonlyArray<{ readonly frontmatter: { readonly category: string | null, readonly slug: string | null, readonly title: string | null } | null }> } };
 
 
 }

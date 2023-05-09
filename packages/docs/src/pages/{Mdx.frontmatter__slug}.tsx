@@ -1,5 +1,7 @@
 import React from "react";
 import { graphql, PageProps } from "gatsby";
+import { LayoutContainer } from "../components/layout/layout-container";
+import { FeaturePage } from "../components/feature-page/feature-page";
 
 export default function DocPage({
   data,
@@ -7,10 +9,12 @@ export default function DocPage({
   children,
 }: PageProps<Queries.DocByIdQuery>) {
   return (
-    <article>
-      <pre>{JSON.stringify(data, null, 2)}</pre>
-      {children}
-    </article>
+    <LayoutContainer location={location.pathname}>
+      <FeaturePage data={data}>{children}</FeaturePage>
+      <article>
+        <pre>{JSON.stringify(data, null, 2)}</pre>
+      </article>
+    </LayoutContainer>
   );
 }
 
@@ -31,6 +35,7 @@ export const query = graphql`
           state
           treeInstance
         }
+        import
         storybook
         template
       }

@@ -14,7 +14,6 @@ export type AsyncDataLoaderRef<T = any> = {
 
 /**
  * @category Async Data Loader/General
- * @interface
  * */
 export type AsyncDataLoaderFeatureDef<T> = {
   state: {

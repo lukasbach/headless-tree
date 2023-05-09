@@ -11,5 +11,5 @@
     "skipLibCheck": true
   },
   "include": ["packages"],
-  "exclude": ["src/**/template-*"]
+  "exclude": ["src/**/template-*", "packages/docs"]
 }

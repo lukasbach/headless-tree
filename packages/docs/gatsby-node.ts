@@ -42,7 +42,7 @@ export const sourceNodes: GatsbyNode["sourceNodes"] = async ({
       sourcePath,
       source,
       // eslint-disable-next-line no-underscore-dangle
-      embed: `/storybook/react/iframe.html?id=${story.parameters._xid}&viewMode=story`,
+      embed: `/storybook/react/iframe.html?id=${story.id}&viewMode=story`,
       sbSource: "react",
       id: createNodeId(story.id),
       parent: null,
@@ -57,17 +57,24 @@ export const sourceNodes: GatsbyNode["sourceNodes"] = async ({
 
   const apidocs = await fs.readdir("./apidocs/interfaces");
   for (const file of apidocs) {
-    const content = await fs.readFile(path.join("./apidocs/interfaces", file));
-    actions.createNode({
-      id: createNodeId(file),
-      content,
+    const content = await fs.readFile(
+      path.join("./apidocs/interfaces", file),
+      "utf-8"
+    );
+    const data = {
+      markdown: content,
       file,
+    };
+    console.log("data", file, data);
+    actions.createNode({
+      ...data,
+      id: createNodeId(file),
       parent: null,
       children: [],
       internal: {
         type: "ApiDoc",
-        contentDigest: createContentDigest(file),
-        content: JSON.stringify(content),
+        contentDigest: createContentDigest(data),
+        content: JSON.stringify(data),
       },
     });
   }

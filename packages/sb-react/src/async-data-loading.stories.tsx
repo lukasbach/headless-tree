@@ -15,6 +15,7 @@ const meta = {
 
 export default meta;
 
+// story-start
 // eslint-disable-next-line no-promise-executor-return
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
