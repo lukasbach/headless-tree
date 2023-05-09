@@ -3,6 +3,7 @@ import TsconfigPathsPlugin from "tsconfig-paths-webpack-plugin";
 import * as fs from "fs-extra";
 import * as path from "path";
 import * as express from "express";
+import { createFilePath } from "gatsby-source-filesystem";
 
 export const onCreateWebpackConfig: GatsbyNode["onCreateWebpackConfig"] = ({
   actions,
@@ -50,6 +51,23 @@ export const sourceNodes: GatsbyNode["sourceNodes"] = async ({
         type: "Story",
         contentDigest: createContentDigest(story),
         content: JSON.stringify(story),
+      },
+    });
+  }
+
+  const apidocs = await fs.readdir("./apidocs/interfaces");
+  for (const file of apidocs) {
+    const content = await fs.readFile(path.join("./apidocs/interfaces", file));
+    actions.createNode({
+      id: createNodeId(file),
+      content,
+      file,
+      parent: null,
+      children: [],
+      internal: {
+        type: "ApiDoc",
+        contentDigest: createContentDigest(file),
+        content: JSON.stringify(content),
       },
     });
   }

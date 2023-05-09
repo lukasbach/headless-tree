@@ -2273,6 +2273,7 @@ __metadata:
     "@mantine/hooks": ^6.0.10
     "@mantine/prism": ^6.0.10
     "@mdx-js/react": ^2.3.0
+    "@types/node": ^20.1.1
     babel-preset-gatsby: 3.9.0
     fs-extra: ^11.1.1
     gatsby: ^5.9.0
@@ -6003,7 +6004,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:>=10.0.0":
+"@types/node@npm:*, @types/node@npm:>=10.0.0, @types/node@npm:^20.1.1":
   version: 20.1.1
   resolution: "@types/node@npm:20.1.1"
   checksum: 47961ee23f873c14c3f6045422ff3059f3bfb10231ef3080a7a72d7215cc8c2623fa8cedb7b246305962fa9c1e0c9e381e04b12eb3e9ec5d076025c6231ac8da
