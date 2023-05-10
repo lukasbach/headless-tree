@@ -8,6 +8,7 @@ export type SidebarProps = { location: string };
 const categories = [
   { key: "intro", name: "Intro" },
   { key: "feature", name: "Features" },
+  { key: "demos", name: "Demos" },
 ];
 
 const useStyles = createStyles((theme) => ({
@@ -28,10 +29,10 @@ export const Sidebar: FC<SidebarProps> = ({ location }) => {
             <Box>{name}</Box>
             {items.map((item) => (
               <NavLink
-                key={item.frontmatter?.slug ?? "#"}
+                key={item.frontmatter?.href ?? item.frontmatter?.slug ?? "#"}
                 classNames={styles.classes}
                 component={Link}
-                to={item.frontmatter?.slug ?? "#"}
+                to={item.frontmatter?.href ?? item.frontmatter?.slug ?? "#"}
                 label={item.frontmatter?.title}
                 active={
                   location.replaceAll("/", " ").trim().replaceAll(" ", "/") ===

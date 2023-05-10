@@ -9,6 +9,7 @@ export const useNavbarData = () =>
             category
             slug
             title
+            href
           }
         }
       }

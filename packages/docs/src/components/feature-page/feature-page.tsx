@@ -5,8 +5,10 @@ import {
   IoDocumentTextOutline,
   IoFlaskOutline,
 } from "react-icons/all";
+import { Prism } from "@mantine/prism";
 import { DemoBox } from "./demo-box";
 import { ApiDocs } from "./api-docs";
+import { FeatureLink } from "@/components/feature-page/feature-link";
 
 export type FeaturePageProps = {
   children: ReactNode;
@@ -17,6 +19,9 @@ const useTabStyles = createStyles((theme) => ({
   tabsList: {
     border: "none",
     marginBottom: "2px",
+  },
+  panel: {
+    paddingTop: "0px !important",
   },
 }));
 
@@ -34,9 +39,35 @@ export const FeaturePage: FC<FeaturePageProps> = ({ children, data }) => {
         })}
       >
         <Container>
-          <Title order={1}>{data.mdx?.frontmatter?.title}</Title>
-          <Text fz="lg">Subtitle</Text>
-          <Tabs.List>
+          <Title order={1} mt="40px">
+            {data.mdx?.frontmatter?.title}
+          </Title>
+          <Text fz="lg" mb="20px">
+            {data.mdx?.frontmatter?.subtitle}
+          </Text>
+          <FeatureLink
+            label="Import"
+            value={
+              data.mdx?.frontmatter?.import && (
+                <Prism
+                  language="typescript"
+                  children={data.mdx?.frontmatter?.import ?? ""}
+                />
+              )
+            }
+          />
+          <FeatureLink
+            label="Source"
+            href={data.mdx?.frontmatter?.sourceImplementation}
+            linkText="View source"
+          />
+          <FeatureLink
+            label="Types"
+            href={data.mdx?.frontmatter?.sourceTypes}
+            linkText="View Types Source"
+          />
+          <FeatureLink label="TypeDoc" href="#" linkText="View Documentation" />
+          <Tabs.List mt="sm">
             <Tabs.Tab value="page" icon={<IoDocumentTextOutline />}>
               Guide
             </Tabs.Tab>
@@ -51,8 +82,24 @@ export const FeaturePage: FC<FeaturePageProps> = ({ children, data }) => {
       </Box>
 
       <Tabs.Panel value="page" pt="xs">
-        <DemoBox data={data} />
-        <Container>{children}</Container>
+        <DemoBox
+          storybookTag={data.mdx?.frontmatter?.storybook}
+          height="400px"
+        />
+        <Container>
+          {children}
+          <DemoBox
+            storybookTag={data.mdx?.frontmatter?.storybook}
+            height="200px"
+          />
+        </Container>
+      </Tabs.Panel>
+
+      <Tabs.Panel value="demo" pt="xs">
+        <DemoBox
+          storybookTag={data.mdx?.frontmatter?.storybook}
+          height="calc(100vh - 100px)"
+        />
       </Tabs.Panel>
 
       <Tabs.Panel value="api" pt="xs">

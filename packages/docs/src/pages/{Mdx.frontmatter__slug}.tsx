@@ -8,13 +8,15 @@ export default function DocPage({
   location,
   children,
 }: PageProps<Queries.DocByIdQuery>) {
+  if (data.mdx?.frontmatter?.template === "feature") {
+    return (
+      <LayoutContainer location={location.pathname}>
+        <FeaturePage data={data}>{children}</FeaturePage>
+      </LayoutContainer>
+    );
+  }
   return (
-    <LayoutContainer location={location.pathname}>
-      <FeaturePage data={data}>{children}</FeaturePage>
-      <article>
-        <pre>{JSON.stringify(data, null, 2)}</pre>
-      </article>
-    </LayoutContainer>
+    <LayoutContainer location={location.pathname}>{children}</LayoutContainer>
   );
 }
 
@@ -28,6 +30,7 @@ export const query = graphql`
       frontmatter {
         slug
         title
+        subtitle
         api {
           config
           hotkeys
@@ -38,6 +41,8 @@ export const query = graphql`
         import
         storybook
         template
+        sourceTypes
+        sourceImplementation
       }
       tableOfContents(maxDepth: 1)
     }
