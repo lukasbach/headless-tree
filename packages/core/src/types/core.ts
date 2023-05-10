@@ -10,6 +10,7 @@ import { SyncDataLoaderFeatureDef } from "../features/sync-data-loader/types";
 import { AsyncDataLoaderFeatureDef } from "../features/async-data-loader/types";
 import { SearchFeatureDef } from "../features/search/types";
 import { RenamingFeatureDef } from "../features/renaming/types";
+import { ExpandAllFeatureDef } from "../features/expand-all/types";
 
 export type Updater<T> = T | ((old: T) => T);
 export type OnChangeFn<T> = (updaterOrValue: Updater<T>) => void;
@@ -47,7 +48,8 @@ export type FeatureDefs<T> =
   | SyncDataLoaderFeatureDef<T>
   | AsyncDataLoaderFeatureDef<T>
   | SearchFeatureDef<T>
-  | RenamingFeatureDef<T>;
+  | RenamingFeatureDef<T>
+  | ExpandAllFeatureDef;
 
 type MergedFeatures<F extends FeatureDef> = {
   state: UnionToIntersection<F["state"]>;
@@ -65,7 +67,8 @@ type TreeStateType<T> = MainFeatureDef["state"] &
   SyncDataLoaderFeatureDef<T>["state"] &
   AsyncDataLoaderFeatureDef<T>["state"] &
   SearchFeatureDef<T>["state"] &
-  RenamingFeatureDef<T>["state"];
+  RenamingFeatureDef<T>["state"] &
+  ExpandAllFeatureDef["state"];
 export interface TreeState<T> extends TreeStateType<T> {}
 
 type TreeConfigType<T> = MainFeatureDef["config"] &
@@ -76,7 +79,8 @@ type TreeConfigType<T> = MainFeatureDef["config"] &
   SyncDataLoaderFeatureDef<T>["config"] &
   AsyncDataLoaderFeatureDef<T>["config"] &
   SearchFeatureDef<T>["config"] &
-  RenamingFeatureDef<T>["config"];
+  RenamingFeatureDef<T>["config"] &
+  ExpandAllFeatureDef["config"];
 export interface TreeConfig<T> extends TreeConfigType<T> {}
 
 type TreeInstanceType<T> = MainFeatureDef["treeInstance"] &
@@ -87,7 +91,8 @@ type TreeInstanceType<T> = MainFeatureDef["treeInstance"] &
   SyncDataLoaderFeatureDef<T>["treeInstance"] &
   AsyncDataLoaderFeatureDef<T>["treeInstance"] &
   SearchFeatureDef<T>["treeInstance"] &
-  RenamingFeatureDef<T>["treeInstance"];
+  RenamingFeatureDef<T>["treeInstance"] &
+  ExpandAllFeatureDef["treeInstance"];
 export interface TreeInstance<T> extends TreeInstanceType<T> {}
 
 type ItemInstanceType<T> = MainFeatureDef["itemInstance"] &
@@ -98,7 +103,8 @@ type ItemInstanceType<T> = MainFeatureDef["itemInstance"] &
   SyncDataLoaderFeatureDef<T>["itemInstance"] &
   AsyncDataLoaderFeatureDef<T>["itemInstance"] &
   SearchFeatureDef<T>["itemInstance"] &
-  RenamingFeatureDef<T>["itemInstance"];
+  RenamingFeatureDef<T>["itemInstance"] &
+  ExpandAllFeatureDef["itemInstance"];
 export interface ItemInstance<T> extends ItemInstanceType<T> {}
 
 export type HotkeyName<F extends FeatureDef = FeatureDefs<any>> =

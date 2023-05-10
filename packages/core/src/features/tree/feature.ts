@@ -196,10 +196,11 @@ export const treeFeature: FeatureImplementation<
     isFocused: () =>
       tree.getState().focusedItem === itemMeta.itemId ||
       (tree.getState().focusedItem === null && itemMeta.index === 0),
-    isFolder: () => tree.getConfig().isItemFolder(instance.getItemData()),
+    isFolder: () =>
+      tree.getConfig().isItemFolder(instance as ItemInstance<any>),
     getItemName: () => {
       const config = tree.getConfig();
-      return config.getItemName(tree.retrieveItemData(itemMeta.itemId));
+      return config.getItemName(instance as ItemInstance<any>);
     },
     getItemMeta: () => itemMeta,
     setFocused: () => tree.focusItem(itemMeta.itemId),

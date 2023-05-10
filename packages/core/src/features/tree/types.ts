@@ -15,9 +15,8 @@ export type TreeFeatureDef<T> = {
     focusedItem: string | null;
   };
   config: {
-    // TODO use item instance instead of item data
-    isItemFolder: (item: T) => boolean;
-    getItemName: (item: T) => string;
+    isItemFolder: (item: ItemInstance<T>) => boolean;
+    getItemName: (item: ItemInstance<T>) => string;
 
     onPrimaryAction?: (item: ItemInstance<T>) => void;
 

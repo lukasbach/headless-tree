@@ -17,7 +17,7 @@ export const NoStateHandlers = () => {
   const tree = useTree<string>({
     state: {},
     rootItemId: "root",
-    getItemName: (item) => item,
+    getItemName: (item) => item.getItemData(),
     isItemFolder: () => true,
     dataLoader: {
       getItem: (itemId) => itemId,

@@ -26,7 +26,7 @@ export const AsyncDataLoading = () => {
     state,
     onStateChange: setState,
     rootItemId: "root",
-    getItemName: (item) => item,
+    getItemName: (item) => item.getItemData(),
     isItemFolder: () => true,
     createLoadingItemData: () => loaderName,
     asyncDataLoader: {

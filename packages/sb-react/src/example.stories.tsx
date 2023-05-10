@@ -20,8 +20,8 @@ export const Example = () => {
     state,
     onStateChange: setState,
     rootItemId: "folder",
-    getItemName: (item) => item,
-    isItemFolder: (item) => !item.endsWith("item"),
+    getItemName: (item) => item.getItemData(),
+    isItemFolder: (item) => !item.getItemData().endsWith("item"),
     hotkeys: {
       customEvent: {
         hotkey: "Escape",

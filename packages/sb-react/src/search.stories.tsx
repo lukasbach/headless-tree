@@ -17,7 +17,7 @@ export default meta;
 export const Search = () => {
   const tree = useTree<string>({
     rootItemId: "root",
-    getItemName: (item) => item,
+    getItemName: (item) => item.getItemData(),
     isItemFolder: () => true,
     dataLoader: {
       getItem: (itemId) => itemId,

@@ -35,7 +35,7 @@ export const Dnd = ({ canDropInbetween, canDropForeignDragObject }) => {
     state,
     onStateChange: setState,
     rootItemId: "root",
-    getItemName: (item) => item,
+    getItemName: (item) => item.getItemData(),
     isItemFolder: () => true,
     onUpdateDragPosition: setDnd,
     canDropInbetween,

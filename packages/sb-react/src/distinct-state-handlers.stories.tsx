@@ -24,7 +24,7 @@ export const DistinctStateHandlers = () => {
     onChangeSelectedItems,
     onChangeExpandedItems,
     onChangeFocusedItem,
-    getItemName: (item) => item,
+    getItemName: (item) => item.getItemData(),
     isItemFolder: () => true,
     dataLoader: {
       getItem: (itemId) => itemId,
