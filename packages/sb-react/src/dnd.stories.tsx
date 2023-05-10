@@ -8,14 +8,27 @@ import {
   syncDataLoaderFeature,
 } from "@headless-tree/core";
 import { useTree } from "@headless-tree/react";
+import { action } from "@storybook/addon-actions";
 
 const meta = {
   title: "React/Dnd",
+  argTypes: {
+    canDropInbetween: {
+      control: "boolean",
+    },
+    canDropForeignDragObject: {
+      control: "boolean",
+    },
+  },
+  args: {
+    canDropInbetween: true,
+    canDropForeignDragObject: true,
+  },
 } satisfies Meta;
 
 export default meta;
 
-export const Dnd = () => {
+export const Dnd = ({ canDropInbetween, canDropForeignDragObject }) => {
   const [dnd, setDnd] = useState<DropTarget<any> | null>(null);
   const [state, setState] = useState({});
   const tree = useTree<string>({
@@ -25,14 +38,16 @@ export const Dnd = () => {
     getItemName: (item) => item,
     isItemFolder: () => true,
     onUpdateDragPosition: setDnd,
-    canDropInbetween: true,
-    onDrop: console.log,
-    onDropForeignDragObject: console.log,
+    canDropInbetween,
+    onDrop: action("onDrop"),
+    onDropForeignDragObject: action("onDropForeignDragObject"),
     createForeignDragObject: (items) => ({
       format: "text/plain",
-      data: items.map((item) => item.getId()).join(","),
+      data: `custom foreign drag object: ${items
+        .map((item) => item.getId())
+        .join(",")}`,
     }),
-    canDropForeignDragObject: () => true,
+    canDropForeignDragObject: () => canDropForeignDragObject,
     dataLoader: {
       getItem: (itemId) => itemId,
       getChildren: (itemId) => [
@@ -68,9 +83,9 @@ export const Dnd = () => {
               data-focused={item.isFocused()}
               data-expanded={item.isExpanded()}
               data-selected={item.isSelected()}
-              data-drop={item.isDropTarget()}
-              data-dropabove={item.isDropTargetAbove()}
-              data-dropbelow={item.isDropTargetBelow()}
+              data-drop={item.isDropTarget() && item.isDraggingOver()}
+              data-dropabove={item.isDropTargetAbove() && item.isDraggingOver()}
+              data-dropbelow={item.isDropTargetBelow() && item.isDraggingOver()}
             >
               {item.isExpanded() ? "v " : "> "}
               {item.getItemName()}
@@ -80,7 +95,9 @@ export const Dnd = () => {
       </div>
       <div
         style={{ marginTop: "40px" }}
-        onDrop={(e) => alert(e.dataTransfer.getData("text/plain"))}
+        onDrop={(e) =>
+          action("onDropExternally")(e.dataTransfer.getData("text/plain"))
+        }
         onDragOver={(e) => e.preventDefault()}
       >
         Drop items here!
@@ -94,12 +111,8 @@ export const Dnd = () => {
       >
         Or drag me into the tree!
       </div>
-      <pre>
-        {JSON.stringify({
-          ...dnd,
-          item: dnd?.item === "root" ? "root" : dnd?.item.getItemName(),
-        })}
-      </pre>
+
+      <pre>{JSON.stringify(dnd, null, 2)}</pre>
     </>
   );
 };

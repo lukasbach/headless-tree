@@ -1,4 +1,10 @@
 import type { Preview } from "@storybook/react";
+import { configureActions } from '@storybook/addon-actions';
+
+configureActions({
+  depth: 100,
+  limit: 40,
+});
 
 const preview: Preview = {
   parameters: {

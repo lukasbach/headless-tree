@@ -3,6 +3,7 @@ import { ItemInstance } from "../../types/core";
 export type DndDataRef<T> = {
   draggedItems?: ItemInstance<T>[];
   draggedForeignObject?: any;
+  draggingOverItem?: ItemInstance<T>;
   lastDragCode?: string;
   dragTarget?: DropTarget<T>;
 };
@@ -53,6 +54,7 @@ export type DragAndDropFeatureDef<T> = {
     isDropTarget: () => boolean;
     isDropTargetAbove: () => boolean;
     isDropTargetBelow: () => boolean;
+    isDraggingOver: () => boolean;
   };
   hotkeys: never;
 };

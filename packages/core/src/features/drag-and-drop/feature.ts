@@ -53,6 +53,13 @@ export const dragAndDropFeature: FeatureImplementation<
         const target = getDropTarget(e, item, tree);
         const dataRef = tree.getDataRef<DndDataRef<any>>();
 
+        if (
+          !dataRef.current.draggedItems &&
+          !tree.getConfig().canDropForeignDragObject?.(e.dataTransfer, target)
+        ) {
+          return;
+        }
+
         // TODO factor out target
         if (!canDrop(e, target, tree)) {
           return;
@@ -67,7 +74,16 @@ export const dragAndDropFeature: FeatureImplementation<
 
         dataRef.current.lastDragCode = nextDragCode;
         dataRef.current.dragTarget = target;
+        dataRef.current.draggingOverItem = item;
         tree.getConfig().onUpdateDragPosition?.(target);
+      },
+
+      onDragLeave: () => {
+        const dataRef = tree.getDataRef<DndDataRef<any>>();
+        dataRef.current.lastDragCode = "left";
+        dataRef.current.dragTarget = undefined;
+        dataRef.current.draggingOverItem = undefined;
+        tree.getConfig().onUpdateDragPosition?.(null);
       },
 
       onDrop: (e) => {
@@ -114,12 +130,17 @@ export const dragAndDropFeature: FeatureImplementation<
     isDropTargetBelow: () => {
       const target = tree.getDropTarget();
 
-      if (!target || target.childIndex === null || target.item === "root") {
-        return false;
-      }
+      if (!target || target.childIndex === null) return false;
+      const targetIndex =
+        target.item === "root" ? 0 : target.item.getItemMeta().index;
 
+      return targetIndex + target.childIndex === itemMeta.index;
+    },
+
+    isDraggingOver: () => {
       return (
-        target.item.getItemMeta().index + target.childIndex === itemMeta.index
+        tree.getDataRef<DndDataRef<any>>().current.draggingOverItem?.getId() ===
+        item.getId()
       );
     },
   }),
