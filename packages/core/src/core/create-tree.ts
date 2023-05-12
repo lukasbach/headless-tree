@@ -52,7 +52,7 @@ export const createTree = <T>(
       itemInstancesMap[item.itemId] = itemInstance;
       itemInstances.push(itemInstance);
     }
-    console.log("Rebuild instances", treeInstance.getItemsMeta());
+    // console.log("Rebuild instances", treeInstance.getItemsMeta());
   };
 
   const eachFeature = (fn: (feature: FeatureImplementation<any>) => void) => {
@@ -69,6 +69,7 @@ export const createTree = <T>(
       setState: (updater) => {
         state = typeof updater === "function" ? updater(state) : updater;
         config.onStateChange?.(state);
+        // TODO make createItemInstance stateless (remove itemMeta), then this can probbaly go
         rebuildItemInstances(mainFeature);
         eachFeature((feature) => feature.onStateChange?.(treeInstance));
         eachFeature((feature) => feature.onStateOrConfigChange?.(treeInstance));
@@ -79,6 +80,7 @@ export const createTree = <T>(
 
         if (config.state) {
           state = { ...state, ...config.state };
+          // TODO make createItemInstance stateless (remove itemMeta), then this can probbaly go
           rebuildItemInstances(mainFeature);
           eachFeature((feature) => feature.onStateChange?.(treeInstance));
         }

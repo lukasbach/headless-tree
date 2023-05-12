@@ -52,6 +52,7 @@ export type TreeFeatureDef<T> = {
     isFolder: () => boolean;
     setFocused: () => void;
     getParent: () => ItemInstance<T> | null;
+    getChildren: () => ItemInstance<T>[];
     getIndexInParent: () => number;
     primaryAction: () => void;
   };

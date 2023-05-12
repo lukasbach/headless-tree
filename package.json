@@ -7,7 +7,7 @@
   "scripts": {
     "lint": "eslint . --fix",
     "lint:test": "eslint .",
-    "start": "lerna run start",
+    "start": "lerna run start --parallel",
     "build": "lerna run build",
     "storybook": "lerna run storybook",
     "docs": "typedoc",

@@ -88,12 +88,20 @@ export const treeFeature: FeatureImplementation<
     ),
 
     expandItem: (itemId) => {
+      if (!instance.getItemInstance(itemId).isFolder()) {
+        return;
+      }
+
       instance
         .getConfig()
         .onChangeExpandedItems?.((expandedItems) => [...expandedItems, itemId]);
     },
 
     collapseItem: (itemId) => {
+      if (!instance.getItemInstance(itemId).isFolder()) {
+        return;
+      }
+
       instance
         .getConfig()
         .onChangeExpandedItems?.((expandedItems) =>
@@ -220,6 +228,10 @@ export const treeFeature: FeatureImplementation<
     ),
     getIndexInParent: () =>
       itemMeta.index - (instance.getParent()?.getItemMeta().index ?? 0) - 1,
+    getChildren: () =>
+      tree
+        .retrieveChildrenIds(itemMeta.itemId)
+        .map((id) => tree.getItemInstance(id)),
   }),
 
   hotkeys: {

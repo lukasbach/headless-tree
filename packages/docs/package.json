@@ -5,7 +5,7 @@
   "author": "Lukas Bach <npm@lukasbach.com>",
   "license": "MIT",
   "scripts": {
-    "start": "gatsby develop",
+    "start:docs": "gatsby develop",
     "build": "gatsby build",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
