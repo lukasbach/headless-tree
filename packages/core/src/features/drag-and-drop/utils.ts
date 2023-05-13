@@ -2,7 +2,7 @@ import { ItemInstance, TreeInstance } from "../../types/core";
 import { DndDataRef, DropTarget, DropTargetPosition } from "./types";
 
 export const getDragCode = ({ item, childIndex }: DropTarget<any>) =>
-  `${item === "root" ? "root" : item.getId()}__${childIndex ?? "none"}`;
+  `${item.getId()}__${childIndex ?? "none"}`;
 
 export const getDropTarget = <T>(
   e: any,
@@ -28,9 +28,11 @@ export const getDropTarget = <T>(
     return { item, childIndex: null };
   }
 
+  console.log(item.getItemMeta(), item.getIndexInParent(), pos);
+
   // TODO it's much more complicated than this..
   return {
-    item: item.getParent() ?? "root",
+    item: item.getParent(),
     childIndex:
       item.getIndexInParent() + (pos === DropTargetPosition.Top ? 0 : 1),
   };

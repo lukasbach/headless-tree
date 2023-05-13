@@ -9,7 +9,7 @@ export type DndDataRef<T> = {
 };
 
 export type DropTarget<T> = {
-  item: ItemInstance<T> | "root";
+  item: ItemInstance<T>;
   childIndex: number | null;
 };
 

@@ -33,6 +33,8 @@ export const nestedDataAdapter = <T = any>(
         props.getChildren(itemMap[itemId])?.map(props.getItemId) ?? [],
     },
     onDrop: (items: ItemInstance<T>[], target: DropTarget<T>) => {
+      // TODO extract function into exported utility "performItemsMove"
+      // TODO incorrect index when 1+ items are dragged downwards within the same folder
       if (!props.changeChildren) {
         return;
       }
@@ -50,8 +52,7 @@ export const nestedDataAdapter = <T = any>(
         }
       }
 
-      const itemToChange =
-        target.item === "root" ? props.rootItem : target.item.getItemData();
+      const itemToChange = target.item.getItemData();
       const oldChildren = props.getChildren(itemToChange) ?? [];
       const insertChildren = items.map((item) => item.getItemData());
       const newChildren =

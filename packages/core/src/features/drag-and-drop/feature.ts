@@ -11,7 +11,7 @@ export const dragAndDropFeature: FeatureImplementation<
   dependingFeatures: ["main", "tree", "selection"],
 
   getDefaultConfig: (defaultConfig) => ({
-    canDrop: (_, target) => target.item === "root" || target.item.isFolder(),
+    canDrop: (_, target) => target.item.isFolder(),
     ...defaultConfig,
   }),
 
@@ -118,17 +118,14 @@ export const dragAndDropFeature: FeatureImplementation<
 
     isDropTarget: () => {
       const target = tree.getDropTarget();
-      return target && target.item !== "root"
-        ? target.item.getId() === item.getId()
-        : false;
+      return target ? target.item.getId() === item.getId() : false;
     },
 
     isDropTargetAbove: () => {
       const target = tree.getDropTarget();
 
       if (!target || target.childIndex === null) return false;
-      const targetIndex =
-        target.item === "root" ? 0 : target.item.getItemMeta().index;
+      const targetIndex = target.item.getItemMeta().index;
 
       return targetIndex + target.childIndex + 1 === item.getItemMeta().index;
     },
@@ -137,8 +134,7 @@ export const dragAndDropFeature: FeatureImplementation<
       const target = tree.getDropTarget();
 
       if (!target || target.childIndex === null) return false;
-      const targetIndex =
-        target.item === "root" ? 0 : target.item.getItemMeta().index;
+      const targetIndex = target.item.getItemMeta().index;
 
       return targetIndex + target.childIndex === item.getItemMeta().index;
     },

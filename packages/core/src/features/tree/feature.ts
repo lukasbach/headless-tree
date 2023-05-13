@@ -203,7 +203,9 @@ export const treeFeature: FeatureImplementation<
     isFocused: () =>
       tree.getState().focusedItem === item.getItemMeta().itemId ||
       (tree.getState().focusedItem === null && item.getItemMeta().index === 0),
-    isFolder: () => tree.getConfig().isItemFolder(item as ItemInstance<any>),
+    isFolder: () =>
+      item.getItemMeta().level === -1 ||
+      tree.getConfig().isItemFolder(item as ItemInstance<any>),
     getItemName: () => {
       const config = tree.getConfig();
       return config.getItemName(item as ItemInstance<any>);
