@@ -19,3 +19,5 @@ export * from "./features/drag-and-drop/feature";
 export * from "./features/search/feature";
 export * from "./features/renaming/feature";
 export * from "./features/expand-all/feature";
+
+export * from "./data-adapters/nested-data-adapter";

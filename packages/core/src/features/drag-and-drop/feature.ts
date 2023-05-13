@@ -10,6 +10,11 @@ export const dragAndDropFeature: FeatureImplementation<
   key: "dragAndDrop",
   dependingFeatures: ["main", "tree", "selection"],
 
+  getDefaultConfig: (defaultConfig) => ({
+    canDrop: (_, target) => target.item === "root" || target.item.isFolder(),
+    ...defaultConfig,
+  }),
+
   createTreeInstance: (prev, tree) => ({
     ...prev,
 

@@ -1,8 +1,6 @@
 export type SyncTreeDataLoader<T> = {
   getItem: (itemId: string) => T;
   getChildren: (itemId: string) => string[];
-  // ? itemChangeSignal?: any;
-  // ? childrenChangeSignal?: any;
 };
 
 export type SyncDataLoaderFeatureDef<T> = {

@@ -70,6 +70,9 @@ export const createTree = <T>(
         state = typeof updater === "function" ? updater(state) : updater;
         config.onStateChange?.(state);
         // TODO make createItemInstance stateless (remove itemMeta), then this can probbaly go
+        // TODO can then be replaced with rebuildItemMeta; But this can be moved into the main feature, and only triggered
+        // TODO on structural tree changes, not every time.
+        // TODO can we find a way to only run this for the changed substructure?
         rebuildItemInstances(mainFeature);
         eachFeature((feature) => feature.onStateChange?.(treeInstance));
         eachFeature((feature) => feature.onStateOrConfigChange?.(treeInstance));
