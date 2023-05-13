@@ -1,4 +1,4 @@
-import { ItemInstance, OnChangeFn } from "../../types/core";
+import { ItemInstance, OnChangeFn, TreeInstance } from "../../types/core";
 
 export type ItemMeta<T> = {
   itemId: string;
@@ -54,6 +54,7 @@ export type TreeFeatureDef<T> = {
     getChildren: () => ItemInstance<T>[];
     getIndexInParent: () => number;
     primaryAction: () => void;
+    getTree: () => TreeInstance<T>;
   };
   hotkeys:
     | "focusNextItem"

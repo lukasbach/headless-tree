@@ -74,6 +74,10 @@ export const createTree = <T>(
       }
     }
     // TODO this triggers way too often
+    console.log(
+      "REBUILT",
+      itemInstances.map((i) => i.getId())
+    );
   };
 
   const eachFeature = (fn: (feature: FeatureImplementation<any>) => void) => {

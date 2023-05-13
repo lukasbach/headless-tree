@@ -42,51 +42,45 @@ export const treeFeature: FeatureImplementation<
     isItemExpanded: (itemId) =>
       instance.getState().expandedItems.includes(itemId),
 
-    // TODO should this really be memoized..?
-    getItemsMeta: memo(
-      (rootItemId, expandedItems) => {
-        // console.log("!", instance.getConfig());
-        const flatItems: ItemMeta<any>[] = [];
+    getItemsMeta: () => {
+      const { rootItemId } = instance.getConfig();
+      const { expandedItems } = instance.getState();
+      // console.log("!", instance.getConfig());
+      const flatItems: ItemMeta<any>[] = [];
 
-        const recursiveAdd = (
-          itemId: string,
-          parentId: string,
-          level: number,
-          setSize: number,
-          posInSet: number
-        ) => {
-          flatItems.push({
-            itemId,
-            level,
-            index: flatItems.length,
-            parentId,
-            setSize,
-            posInSet,
-          });
+      const recursiveAdd = (
+        itemId: string,
+        parentId: string,
+        level: number,
+        setSize: number,
+        posInSet: number
+      ) => {
+        flatItems.push({
+          itemId,
+          level,
+          index: flatItems.length,
+          parentId,
+          setSize,
+          posInSet,
+        });
 
-          if (expandedItems.includes(itemId)) {
-            const children = instance.retrieveChildrenIds(itemId) ?? [];
-            let i = 0;
-            for (const childId of children) {
-              recursiveAdd(childId, itemId, level + 1, children.length, i++);
-            }
+        if (expandedItems.includes(itemId)) {
+          const children = instance.retrieveChildrenIds(itemId) ?? [];
+          let i = 0;
+          for (const childId of children) {
+            recursiveAdd(childId, itemId, level + 1, children.length, i++);
           }
-        };
-
-        const children = instance.retrieveChildrenIds(rootItemId);
-        let i = 0;
-        for (const itemId of children) {
-          recursiveAdd(itemId, rootItemId, 0, children.length, i++);
         }
+      };
 
-        return flatItems;
-      },
-      () => [
-        instance.getConfig().rootItemId,
-        instance.getState().expandedItems,
-        instance.getState().loadingItems,
-      ]
-    ),
+      const children = instance.retrieveChildrenIds(rootItemId);
+      let i = 0;
+      for (const itemId of children) {
+        recursiveAdd(itemId, rootItemId, 0, children.length, i++);
+      }
+
+      return flatItems;
+    },
 
     expandItem: (itemId) => {
       if (!instance.getItemInstance(itemId).isFolder()) {
@@ -235,6 +229,7 @@ export const treeFeature: FeatureImplementation<
       tree
         .retrieveChildrenIds(item.getItemMeta().itemId)
         .map((id) => tree.getItemInstance(id)),
+    getTree: () => tree as any,
   }),
 
   hotkeys: {

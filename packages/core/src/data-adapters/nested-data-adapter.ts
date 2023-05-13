@@ -49,7 +49,19 @@ export const nestedDataAdapter = <T = any>(
               ...oldChildren.slice(target.childIndex),
             ];
       props.changeChildren(itemToChange, newChildren);
-      // TODO items[0].getTree().rebuildTree();
+
+      // TODO bulk sibling changes together
+      for (const item of items) {
+        const siblings = item.getParent()?.getChildren();
+        if (siblings) {
+          props.changeChildren(
+            item.getParent()!.getItemData(),
+            siblings
+              .filter((sibling) => sibling.getId() !== item.getId())
+              .map((i) => i.getItemData())
+          );
+        }
+      }
     },
   };
 };
