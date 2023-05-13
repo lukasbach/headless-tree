@@ -90,6 +90,7 @@ export const treeFeature: FeatureImplementation<
       instance
         .getConfig()
         .onChangeExpandedItems?.((expandedItems) => [...expandedItems, itemId]);
+      instance.rebuildTree();
     },
 
     collapseItem: (itemId) => {
@@ -102,6 +103,7 @@ export const treeFeature: FeatureImplementation<
         .onChangeExpandedItems?.((expandedItems) =>
           expandedItems.filter((id) => id !== itemId)
         );
+      instance.rebuildTree();
     },
 
     // TODO memo

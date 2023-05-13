@@ -112,6 +112,7 @@ export const dragAndDropFeature: FeatureImplementation<
         } else {
           config.onDropForeignDragObject?.(e.dataTransfer, target);
         }
+        // TODO rebuild tree?
       },
     }),
 

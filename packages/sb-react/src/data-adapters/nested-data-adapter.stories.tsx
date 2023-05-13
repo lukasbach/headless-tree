@@ -71,16 +71,13 @@ const data: Item = {
 
 export const NestedDataAdapter = ({ canDropInbetween }) => {
   const [dnd, setDnd] = useState<DropTarget<any> | null>(null);
-  const [, forceRerender] = useState(0);
 
   const dataAdapter = nestedDataAdapter<Item>({
     rootItem: data,
     getChildren: (item) => item.children,
     getItemId: (item) => item.name,
     changeChildren: (item, children) => {
-      console.log("changeChildren", item, children);
       item.children = children;
-      forceRerender((x) => x + 1);
     },
   });
 

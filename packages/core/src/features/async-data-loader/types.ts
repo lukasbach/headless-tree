@@ -22,6 +22,7 @@ export type AsyncDataLoaderFeatureDef<T> = {
   config: {
     rootItemId: string;
     createLoadingItemData?: () => T;
+    // TODO does this need to rebuild the tree?
     onChangeLoadingItems?: OnChangeFn<string[]>;
     onLoadedItem?: (itemId: string, item: T) => void;
     onLoadedChildren?: (itemId: string, childrenIds: string[]) => void;

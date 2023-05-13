@@ -61,7 +61,7 @@ export const createTree = <T>(
     itemMetaMap = {};
     for (const item of treeInstance.getItemsMeta()) {
       itemMetaMap[item.itemId] = item;
-      if (!itemElementsMap[item.itemId]) {
+      if (!itemInstancesMap[item.itemId]) {
         const instance = buildItemInstance(
           [main, ...additionalFeatures],
           treeInstance,
@@ -73,10 +73,10 @@ export const createTree = <T>(
         itemInstances.push(itemInstancesMap[item.itemId]);
       }
     }
-    // TODO this triggers way too often
     console.log(
       "REBUILT",
       itemInstances.map((i) => i.getId())
+      // new Error().stack
     );
   };
 
@@ -100,11 +100,14 @@ export const createTree = <T>(
         config.onStateChange?.(state);
         // TODO only triggered on structural tree changes, not every time.
         // TODO can we find a way to only run this for the changed substructure?
-        rebuildItemMeta(mainFeature);
+        // rebuildItemMeta(mainFeature);
         eachFeature((feature) => feature.onStateChange?.(treeInstance));
         eachFeature((feature) => feature.onStateOrConfigChange?.(treeInstance));
       },
-      rebuildTree: () => rebuildItemMeta(mainFeature),
+      rebuildTree: () => {
+        rebuildItemMeta(mainFeature);
+        config.onStateChange?.(state);
+      },
       getConfig: () => config,
       setConfig: (updater) => {
         config = typeof updater === "function" ? updater(config) : updater;
@@ -112,7 +115,7 @@ export const createTree = <T>(
         if (config.state) {
           state = { ...state, ...config.state };
           // TODO maybe remove after todo above
-          rebuildItemMeta(mainFeature);
+          // rebuildItemMeta(mainFeature);
           eachFeature((feature) => feature.onStateChange?.(treeInstance));
         }
 

@@ -36,6 +36,21 @@ export const nestedDataAdapter = <T = any>(
       if (!props.changeChildren) {
         return;
       }
+
+      // TODO bulk sibling changes together
+      for (const item of items) {
+        // TODO breaks at root item; solution: make root item an actual item?
+        const siblings = item.getParent()?.getChildren();
+        if (siblings) {
+          props.changeChildren(
+            item.getParent()!.getItemData(),
+            siblings
+              .filter((sibling) => sibling.getId() !== item.getId())
+              .map((i) => i.getItemData())
+          );
+        }
+      }
+
       const itemToChange =
         target.item === "root" ? props.rootItem : target.item.getItemData();
       const oldChildren = props.getChildren(itemToChange) ?? [];
@@ -48,20 +63,10 @@ export const nestedDataAdapter = <T = any>(
               ...insertChildren,
               ...oldChildren.slice(target.childIndex),
             ];
+
       props.changeChildren(itemToChange, newChildren);
 
-      // TODO bulk sibling changes together
-      for (const item of items) {
-        const siblings = item.getParent()?.getChildren();
-        if (siblings) {
-          props.changeChildren(
-            item.getParent()!.getItemData(),
-            siblings
-              .filter((sibling) => sibling.getId() !== item.getId())
-              .map((i) => i.getItemData())
-          );
-        }
-      }
+      items[0].getTree().rebuildTree();
     },
   };
 };
