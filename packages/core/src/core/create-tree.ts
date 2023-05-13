@@ -59,6 +59,22 @@ export const createTree = <T>(
   const rebuildItemMeta = (main: FeatureImplementation) => {
     itemInstances = [];
     itemMetaMap = {};
+
+    const rootInstance = buildItemInstance(
+      [main, ...additionalFeatures],
+      treeInstance,
+      config.rootItemId
+    );
+    itemInstancesMap[config.rootItemId] = rootInstance;
+    itemMetaMap[config.rootItemId] = {
+      itemId: config.rootItemId,
+      index: -1,
+      parentId: null!,
+      level: -1,
+      posInSet: 0,
+      setSize: 1,
+    };
+
     for (const item of treeInstance.getItemsMeta()) {
       itemMetaMap[item.itemId] = item;
       if (!itemInstancesMap[item.itemId]) {

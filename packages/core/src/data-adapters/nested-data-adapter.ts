@@ -39,7 +39,6 @@ export const nestedDataAdapter = <T = any>(
 
       // TODO bulk sibling changes together
       for (const item of items) {
-        // TODO breaks at root item; solution: make root item an actual item?
         const siblings = item.getParent()?.getChildren();
         if (siblings) {
           props.changeChildren(

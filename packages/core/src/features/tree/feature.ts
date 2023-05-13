@@ -214,12 +214,12 @@ export const treeFeature: FeatureImplementation<
     getParent: memo(
       (itemMeta) => {
         for (let i = itemMeta.index - 1; i >= 0; i--) {
-          const item = tree.getItems()[i];
-          if (item.getItemMeta().level < itemMeta.level) {
-            return item;
+          const potentialParent = tree.getItems()[i];
+          if (potentialParent.getItemMeta().level < itemMeta.level) {
+            return potentialParent;
           }
         }
-        return null;
+        return tree.getItemInstance(tree.getConfig().rootItemId);
       },
       () => [item.getItemMeta()]
     ),
