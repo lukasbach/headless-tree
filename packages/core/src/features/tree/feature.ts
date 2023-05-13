@@ -42,6 +42,7 @@ export const treeFeature: FeatureImplementation<
     isItemExpanded: (itemId) =>
       instance.getState().expandedItems.includes(itemId),
 
+    // TODO should this really be memoized..?
     getItemsMeta: memo(
       (rootItemId, expandedItems) => {
         // console.log("!", instance.getConfig());
@@ -161,59 +162,59 @@ export const treeFeature: FeatureImplementation<
     }),
   }),
 
-  createItemInstance: (prev, instance, itemMeta, tree) => ({
+  createItemInstance: (prev, item, tree) => ({
     ...prev,
     isLoading: () => {
       throw new Error("No data-loader registered");
     },
-    getId: () => itemMeta.itemId,
+    getId: () => item.getItemMeta().itemId,
     getProps: () => {
+      const itemMeta = item.getItemMeta();
       return {
         ...prev.getProps?.(),
         role: "treeitem",
         "aria-setsize": itemMeta.setSize,
         "aria-posinset": itemMeta.posInSet,
         "aria-selected": false,
-        "aria-label": instance.getItemName(),
+        "aria-label": item.getItemName(),
         "aria-level": itemMeta.level,
-        tabIndex: instance.isFocused() ? 0 : -1,
+        tabIndex: item.isFocused() ? 0 : -1,
         onClick: (e) => {
-          instance.setFocused();
-          instance.primaryAction();
+          item.setFocused();
+          item.primaryAction();
 
           if (e.ctrlKey || e.shiftKey || e.metaKey) {
             return;
           }
 
-          if (!instance.isFolder()) {
+          if (!item.isFolder()) {
             return;
           }
 
-          if (instance.isExpanded()) {
-            instance.collapse();
+          if (item.isExpanded()) {
+            item.collapse();
           } else {
-            instance.expand();
+            item.expand();
           }
         },
       };
     },
-    expand: () => tree.expandItem(itemMeta.itemId),
-    collapse: () => tree.collapseItem(itemMeta.itemId),
-    getItemData: () => tree.retrieveItemData(itemMeta.itemId),
-    isExpanded: () => tree.getState().expandedItems.includes(itemMeta.itemId),
+    expand: () => tree.expandItem(item.getItemMeta().itemId),
+    collapse: () => tree.collapseItem(item.getItemMeta().itemId),
+    getItemData: () => tree.retrieveItemData(item.getItemMeta().itemId),
+    isExpanded: () =>
+      tree.getState().expandedItems.includes(item.getItemMeta().itemId),
     isFocused: () =>
-      tree.getState().focusedItem === itemMeta.itemId ||
-      (tree.getState().focusedItem === null && itemMeta.index === 0),
-    isFolder: () =>
-      tree.getConfig().isItemFolder(instance as ItemInstance<any>),
+      tree.getState().focusedItem === item.getItemMeta().itemId ||
+      (tree.getState().focusedItem === null && item.getItemMeta().index === 0),
+    isFolder: () => tree.getConfig().isItemFolder(item as ItemInstance<any>),
     getItemName: () => {
       const config = tree.getConfig();
-      return config.getItemName(instance as ItemInstance<any>);
+      return config.getItemName(item as ItemInstance<any>);
     },
-    getItemMeta: () => itemMeta,
-    setFocused: () => tree.focusItem(itemMeta.itemId),
+    setFocused: () => tree.focusItem(item.getItemMeta().itemId),
     primaryAction: () =>
-      tree.getConfig().onPrimaryAction?.(instance as ItemInstance<any>),
+      tree.getConfig().onPrimaryAction?.(item as ItemInstance<any>),
     getParent: memo(
       (itemMeta) => {
         for (let i = itemMeta.index - 1; i >= 0; i--) {
@@ -224,13 +225,15 @@ export const treeFeature: FeatureImplementation<
         }
         return null;
       },
-      () => [itemMeta]
+      () => [item.getItemMeta()]
     ),
     getIndexInParent: () =>
-      itemMeta.index - (instance.getParent()?.getItemMeta().index ?? 0) - 1,
+      item.getItemMeta().index -
+      (item.getParent()?.getItemMeta().index ?? 0) -
+      1,
     getChildren: () =>
       tree
-        .retrieveChildrenIds(itemMeta.itemId)
+        .retrieveChildrenIds(item.getItemMeta().itemId)
         .map((id) => tree.getItemInstance(id)),
   }),
 

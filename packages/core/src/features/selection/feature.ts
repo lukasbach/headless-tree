@@ -35,32 +35,32 @@ export const selectionFeature: FeatureImplementation<
     },
   }),
 
-  createItemInstance: (prev, item, itemMeta, tree) => ({
+  createItemInstance: (prev, item, tree) => ({
     ...prev,
 
     select: () => {
       const { selectedItems } = tree.getState();
       tree.setSelectedItems(
-        selectedItems.includes(itemMeta.itemId)
+        selectedItems.includes(item.getItemMeta().itemId)
           ? selectedItems
-          : [...selectedItems, itemMeta.itemId]
+          : [...selectedItems, item.getItemMeta().itemId]
       );
     },
 
     deselect: () => {
       const { selectedItems } = tree.getState();
       tree.setSelectedItems(
-        selectedItems.filter((id) => id !== itemMeta.itemId)
+        selectedItems.filter((id) => id !== item.getItemMeta().itemId)
       );
     },
 
     isSelected: () => {
       const { selectedItems } = tree.getState();
-      return selectedItems.includes(itemMeta.itemId);
+      return selectedItems.includes(item.getItemMeta().itemId);
     },
 
     selectUpTo: (ctrl: boolean) => {
-      const indexA = itemMeta.index;
+      const indexA = item.getItemMeta().index;
       // TODO dont use focused item as anchor, but last primary-clicked item
       const indexB = tree.getFocusedItem().getItemMeta().index;
       const [a, b] = indexA < indexB ? [indexA, indexB] : [indexB, indexA];
@@ -97,7 +97,7 @@ export const selectionFeature: FeatureImplementation<
         } else if (e.ctrlKey || e.metaKey) {
           item.toggleSelect();
         } else {
-          tree.setSelectedItems([itemMeta.itemId]);
+          tree.setSelectedItems([item.getItemMeta().itemId]);
         }
 
         prev.getProps().onClick?.(e);

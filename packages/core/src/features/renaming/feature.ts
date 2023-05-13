@@ -57,7 +57,7 @@ export const renamingFeature: FeatureImplementation<
     isRenamingItem: () => !!instance.getState().renamingItem,
   }),
 
-  createItemInstance: (prev, instance, meta, tree) => ({
+  createItemInstance: (prev, instance, tree) => ({
     ...prev,
     getRenameInputProps: () => ({
       onBlur: () => tree.abortRenaming(),

@@ -8,6 +8,27 @@ import {
 } from "../types/core";
 import { MainFeatureDef } from "../features/main/types";
 import { treeFeature } from "../features/tree/feature";
+import { ItemMeta } from "../features/tree/types";
+
+const buildItemInstance = (
+  features: FeatureImplementation[],
+  tree: TreeInstance<any>,
+  itemId: string
+) => {
+  const itemInstance = {} as ItemInstance<any>;
+  for (const feature of features) {
+    Object.assign(
+      itemInstance,
+      feature.createItemInstance?.(
+        { ...itemInstance },
+        itemInstance,
+        tree,
+        itemId
+      ) ?? {}
+    );
+  }
+  return itemInstance;
+};
 
 export const createTree = <T>(
   initialConfig: TreeConfig<T>
@@ -31,28 +52,28 @@ export const createTree = <T>(
   let itemInstances: ItemInstance<T>[] = [];
   const itemElementsMap: Record<string, HTMLElement | undefined | null> = {};
   const itemDataRefs: Record<string, { current: any }> = {};
+  let itemMetaMap: Record<string, ItemMeta<T>> = {};
 
   const hotkeyPresets = {} as HotkeysConfig<T>;
 
-  const rebuildItemInstances = (main: FeatureImplementation) => {
+  const rebuildItemMeta = (main: FeatureImplementation) => {
     itemInstances = [];
+    itemMetaMap = {};
     for (const item of treeInstance.getItemsMeta()) {
-      const itemInstance = {} as ItemInstance<T>;
-      for (const feature of [main, ...additionalFeatures]) {
-        Object.assign(
-          itemInstance,
-          feature.createItemInstance?.(
-            { ...itemInstance },
-            itemInstance,
-            item,
-            treeInstance
-          ) ?? {}
+      itemMetaMap[item.itemId] = item;
+      if (!itemElementsMap[item.itemId]) {
+        const instance = buildItemInstance(
+          [main, ...additionalFeatures],
+          treeInstance,
+          item.itemId
         );
+        itemInstancesMap[item.itemId] = instance;
+        itemInstances.push(instance);
+      } else {
+        itemInstances.push(itemInstancesMap[item.itemId]);
       }
-      itemInstancesMap[item.itemId] = itemInstance;
-      itemInstances.push(itemInstance);
     }
-    // console.log("Rebuild instances", treeInstance.getItemsMeta());
+    // TODO this triggers way too often
   };
 
   const eachFeature = (fn: (feature: FeatureImplementation<any>) => void) => {
@@ -61,7 +82,11 @@ export const createTree = <T>(
     }
   };
 
-  const mainFeature: FeatureImplementation<T, MainFeatureDef<T>> = {
+  const mainFeature: FeatureImplementation<
+    T,
+    MainFeatureDef<T>,
+    MainFeatureDef<T>
+  > = {
     key: "main",
     createTreeInstance: (prev) => ({
       ...prev,
@@ -69,22 +94,21 @@ export const createTree = <T>(
       setState: (updater) => {
         state = typeof updater === "function" ? updater(state) : updater;
         config.onStateChange?.(state);
-        // TODO make createItemInstance stateless (remove itemMeta), then this can probbaly go
-        // TODO can then be replaced with rebuildItemMeta; But this can be moved into the main feature, and only triggered
-        // TODO on structural tree changes, not every time.
+        // TODO only triggered on structural tree changes, not every time.
         // TODO can we find a way to only run this for the changed substructure?
-        rebuildItemInstances(mainFeature);
+        rebuildItemMeta(mainFeature);
         eachFeature((feature) => feature.onStateChange?.(treeInstance));
         eachFeature((feature) => feature.onStateOrConfigChange?.(treeInstance));
       },
+      rebuildTree: () => rebuildItemMeta(mainFeature),
       getConfig: () => config,
       setConfig: (updater) => {
         config = typeof updater === "function" ? updater(config) : updater;
 
         if (config.state) {
           state = { ...state, ...config.state };
-          // TODO make createItemInstance stateless (remove itemMeta), then this can probbaly go
-          rebuildItemInstances(mainFeature);
+          // TODO maybe remove after todo above
+          rebuildItemMeta(mainFeature);
           eachFeature((feature) => feature.onStateChange?.(treeInstance));
         }
 
@@ -94,6 +118,7 @@ export const createTree = <T>(
       getItemInstance: (itemId) => itemInstancesMap[itemId],
       getItems: () => itemInstances,
       registerElement: (element) => {
+        // TODO only run if treeElement !== element
         if (treeElement && !element) {
           eachFeature((feature) =>
             feature.onTreeUnmount?.(treeInstance, treeElement!)
@@ -109,10 +134,11 @@ export const createTree = <T>(
       getDataRef: () => treeDataRef,
       getHotkeyPresets: () => hotkeyPresets,
     }),
-    createItemInstance: (prev, instance, itemMeta) => ({
+    createItemInstance: (prev, instance, _, itemId) => ({
       ...prev,
       registerElement: (element) => {
-        const oldElement = itemElementsMap[itemMeta.itemId];
+        // TODO only run if treeElement !== element
+        const oldElement = itemElementsMap[itemId];
         if (oldElement && !element) {
           eachFeature((feature) =>
             feature.onItemUnmount?.(instance, oldElement!, treeInstance)
@@ -122,11 +148,12 @@ export const createTree = <T>(
             feature.onItemMount?.(instance, element!, treeInstance)
           );
         }
-        itemElementsMap[itemMeta.itemId] = element;
+        itemElementsMap[itemId] = element;
       },
-      getElement: () => itemElementsMap[itemMeta.itemId],
+      getElement: () => itemElementsMap[itemId],
       // eslint-disable-next-line no-return-assign
-      getDataRef: () => (itemDataRefs[itemMeta.itemId] ??= { current: {} }),
+      getDataRef: () => (itemDataRefs[itemId] ??= { current: {} }),
+      getItemMeta: () => itemMetaMap[itemId],
     }),
   };
 
@@ -141,7 +168,7 @@ export const createTree = <T>(
     Object.assign(hotkeyPresets, feature.hotkeys ?? {});
   }
 
-  rebuildItemInstances(mainFeature);
+  rebuildItemMeta(mainFeature);
 
   return treeInstance;
 };

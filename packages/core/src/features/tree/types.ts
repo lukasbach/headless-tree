@@ -40,7 +40,6 @@ export type TreeFeatureDef<T> = {
     getContainerProps: () => Record<string, any>;
   };
   itemInstance: {
-    getItemMeta: () => ItemMeta<T>;
     getId: () => string;
     getProps: () => Record<string, any>;
     getItemName: () => string;

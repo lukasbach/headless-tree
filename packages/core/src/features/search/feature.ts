@@ -78,7 +78,7 @@ export const searchFeature: FeatureImplementation<
     ),
   }),
 
-  createItemInstance: (prev, item, itemMeta, tree) => ({
+  createItemInstance: (prev, item, tree) => ({
     ...prev,
     isMatchingSearch: () =>
       tree.getSearchMatchingItems().some((i) => i.getId() === item.getId()),

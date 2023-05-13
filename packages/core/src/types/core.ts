@@ -148,8 +148,8 @@ export type FeatureImplementation<
   createItemInstance?: (
     prev: MergedFeatures<F>["itemInstance"],
     item: MergedFeatures<F>["itemInstance"],
-    itemMeta: ItemMeta<T>,
-    tree: MergedFeatures<F>["treeInstance"]
+    tree: MergedFeatures<F>["treeInstance"],
+    itemId: string
   ) => D["itemInstance"] & MergedFeatures<F>["itemInstance"];
 
   onTreeMount?: (

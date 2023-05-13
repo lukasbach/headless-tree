@@ -39,7 +39,7 @@ export const expandAllFeature: FeatureImplementation<
     },
   }),
 
-  createItemInstance: (prev, item, meta, tree) => ({
+  createItemInstance: (prev, item, tree) => ({
     ...prev,
 
     expandAll: async (cancelToken) => {

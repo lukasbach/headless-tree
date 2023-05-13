@@ -6,6 +6,7 @@ import {
   TreeConfig,
   TreeState,
 } from "../../types/core";
+import { ItemMeta } from "../tree/types";
 
 export type MainFeatureDef<T = any> = {
   state: {};
@@ -27,9 +28,11 @@ export type MainFeatureDef<T = any> = {
     getDataRef: <D>() => { current: D };
     /* @internal */
     getHotkeyPresets: () => HotkeysConfig<T>;
+    rebuildTree: () => void;
   };
   itemInstance: {
     registerElement: (element: HTMLElement | null) => void;
+    getItemMeta: () => ItemMeta<T>;
     getElement: () => HTMLElement | undefined | null;
     /** @internal */
     getDataRef: <D>() => { current: D };

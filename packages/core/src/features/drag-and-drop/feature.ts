@@ -23,7 +23,7 @@ export const dragAndDropFeature: FeatureImplementation<
     },
   }),
 
-  createItemInstance: (prev, item, itemMeta, tree) => ({
+  createItemInstance: (prev, item, tree) => ({
     ...prev,
 
     getProps: () => ({
@@ -38,7 +38,7 @@ export const dragAndDropFeature: FeatureImplementation<
         const dataRef = tree.getDataRef<DndDataRef<any>>();
 
         if (!selectedItems.includes(item)) {
-          tree.setSelectedItems([itemMeta.itemId]);
+          tree.setSelectedItems([item.getItemMeta().itemId]);
         }
 
         if (!(config.canDrag?.(items) ?? true)) {
@@ -129,7 +129,7 @@ export const dragAndDropFeature: FeatureImplementation<
       const targetIndex =
         target.item === "root" ? 0 : target.item.getItemMeta().index;
 
-      return targetIndex + target.childIndex + 1 === itemMeta.index;
+      return targetIndex + target.childIndex + 1 === item.getItemMeta().index;
     },
 
     isDropTargetBelow: () => {
@@ -139,7 +139,7 @@ export const dragAndDropFeature: FeatureImplementation<
       const targetIndex =
         target.item === "root" ? 0 : target.item.getItemMeta().index;
 
-      return targetIndex + target.childIndex === itemMeta.index;
+      return targetIndex + target.childIndex === item.getItemMeta().index;
     },
 
     isDraggingOver: () => {

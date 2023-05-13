@@ -2,11 +2,12 @@ import { FeatureImplementation } from "../../types/core";
 import { AsyncDataLoaderFeatureDef, AsyncDataLoaderRef } from "./types";
 import { MainFeatureDef } from "../main/types";
 import { makeStateUpdater } from "../../utils";
+import { TreeFeatureDef } from "../tree/types";
 
 export const asyncDataLoaderFeature: FeatureImplementation<
   any,
   AsyncDataLoaderFeatureDef<any>,
-  MainFeatureDef | AsyncDataLoaderFeatureDef<any>
+  MainFeatureDef | TreeFeatureDef<any> | AsyncDataLoaderFeatureDef<any>
 > = {
   key: "async-data-loader",
   dependingFeatures: ["main"],
@@ -108,10 +109,13 @@ export const asyncDataLoaderFeature: FeatureImplementation<
     },
   }),
 
-  createItemInstance: (prev, item, meta, tree) => ({
+  createItemInstance: (prev, item, tree) => ({
     ...prev,
-    isLoading: () => tree.getState().loadingItems.includes(meta.itemId),
-    invalidateItemData: () => tree.invalidateItemData(meta.itemId),
-    invalidateChildrenIds: () => tree.invalidateChildrenIds(meta.itemId),
+    isLoading: () =>
+      tree.getState().loadingItems.includes(item.getItemMeta().itemId),
+    invalidateItemData: () =>
+      tree.invalidateItemData(item.getItemMeta().itemId),
+    invalidateChildrenIds: () =>
+      tree.invalidateChildrenIds(item.getItemMeta().itemId),
   }),
 };
