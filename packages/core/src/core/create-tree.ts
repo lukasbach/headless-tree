@@ -57,6 +57,7 @@ export const createTree = <T>(
   const hotkeyPresets = {} as HotkeysConfig<T>;
 
   const rebuildItemMeta = (main: FeatureImplementation) => {
+    // TODO can we find a way to only run this for the changed substructure?
     itemInstances = [];
     itemMetaMap = {};
 
@@ -114,9 +115,6 @@ export const createTree = <T>(
       setState: (updater) => {
         state = typeof updater === "function" ? updater(state) : updater;
         config.onStateChange?.(state);
-        // TODO only triggered on structural tree changes, not every time.
-        // TODO can we find a way to only run this for the changed substructure?
-        // rebuildItemMeta(mainFeature);
         eachFeature((feature) => feature.onStateChange?.(treeInstance));
         eachFeature((feature) => feature.onStateOrConfigChange?.(treeInstance));
       },
@@ -130,8 +128,6 @@ export const createTree = <T>(
 
         if (config.state) {
           state = { ...state, ...config.state };
-          // TODO maybe remove after todo above
-          // rebuildItemMeta(mainFeature);
           eachFeature((feature) => feature.onStateChange?.(treeInstance));
         }
 
@@ -141,7 +137,10 @@ export const createTree = <T>(
       getItemInstance: (itemId) => itemInstancesMap[itemId],
       getItems: () => itemInstances,
       registerElement: (element) => {
-        // TODO only run if treeElement !== element
+        if (treeElement === element) {
+          return;
+        }
+
         if (treeElement && !element) {
           eachFeature((feature) =>
             feature.onTreeUnmount?.(treeInstance, treeElement!)
@@ -160,7 +159,10 @@ export const createTree = <T>(
     createItemInstance: (prev, instance, _, itemId) => ({
       ...prev,
       registerElement: (element) => {
-        // TODO only run if treeElement !== element
+        if (itemElementsMap[itemId] === element) {
+          return;
+        }
+
         const oldElement = itemElementsMap[itemId];
         if (oldElement && !element) {
           eachFeature((feature) =>

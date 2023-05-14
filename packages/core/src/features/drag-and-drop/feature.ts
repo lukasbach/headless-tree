@@ -55,6 +55,7 @@ export const dragAndDropFeature: FeatureImplementation<
       },
 
       onDragOver: (e) => {
+        // TODO on non-folders, allow dropping on entire element as top/bottom drop target
         const target = getDropTarget(e, item, tree);
         const dataRef = tree.getDataRef<DndDataRef<any>>();
 
