@@ -83,7 +83,13 @@ export const performItemsMove = <T>(
     newChildren: ItemInstance<T>[]
   ) => void
 ) => {
-  // TODO incorrect index when 1+ items are dragged downwards within the same folder
+  const numberOfDragItemsBeforeTarget = !target.childIndex
+    ? 0
+    : target.item
+        .getChildren()
+        .slice(0, target.childIndex)
+        .filter((child) => items.some((item) => item.getId() === child.getId()))
+        .length;
 
   // TODO bulk sibling changes together
   for (const item of items) {
@@ -96,15 +102,18 @@ export const performItemsMove = <T>(
     }
   }
 
+  if (target.childIndex === null) {
+    onChangeChildren(target.item, [...target.item.getChildren(), ...items]);
+    items[0].getTree().rebuildTree();
+    return;
+  }
+
   const oldChildren = target.item.getChildren();
-  const newChildren =
-    target.childIndex === null
-      ? [...oldChildren, ...items]
-      : [
-          ...oldChildren.slice(0, target.childIndex),
-          ...items,
-          ...oldChildren.slice(target.childIndex),
-        ];
+  const newChildren = [
+    ...oldChildren.slice(0, target.childIndex - numberOfDragItemsBeforeTarget),
+    ...items,
+    ...oldChildren.slice(target.childIndex - numberOfDragItemsBeforeTarget),
+  ];
 
   onChangeChildren(target.item, newChildren);
 
