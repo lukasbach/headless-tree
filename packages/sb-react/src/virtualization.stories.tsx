@@ -142,12 +142,6 @@ export const Virtualization = ({ itemsPerLevel, openLevels }) => {
     isItemFolder: (item) => !item.getItemData().endsWith("item"),
     onUpdateDragPosition: setDnd,
     canDropInbetween: true,
-    hotkeys: {
-      customEvent: {
-        hotkey: "Escape",
-        handler: () => alert("Hello!"),
-      },
-    },
     dataLoader: {
       getItem: (itemId) => itemId,
       getChildren: (itemId) => {
@@ -164,22 +158,10 @@ export const Virtualization = ({ itemsPerLevel, openLevels }) => {
       hotkeysCoreFeature,
       dragAndDropFeature,
       {
-        createTreeInstance: (prev, tree) => ({
+        createTreeInstance: (prev) => ({
           ...prev,
-          updateDomFocus: () => {
-            setTimeout(() => {
-              const focusedItem = (tree as any).getFocusedItem();
-              console.log(focusedItem.getItemMeta());
-              virtualizer.current?.scrollToIndex(
-                focusedItem.getItemMeta().index
-              );
-              setTimeout(() => {
-                const focusedElement = focusedItem.getElement();
-                console.log(focusedElement);
-                if (!focusedElement) return;
-                focusedElement.focus();
-              }, 500);
-            });
+          scrollToItem: (item) => {
+            virtualizer.current?.scrollToIndex(item.getItemMeta().index);
           },
         }),
       },

@@ -1,6 +1,6 @@
 import { FeatureImplementation, ItemInstance } from "../../types/core";
 import { ItemMeta, TreeFeatureDef } from "./types";
-import { makeStateUpdater, memo } from "../../utils";
+import { makeStateUpdater, memo, poll } from "../../utils";
 import { MainFeatureDef } from "../main/types";
 import { HotkeysCoreFeatureDef } from "../hotkeys-core/types";
 import { SyncDataLoaderFeatureDef } from "../sync-data-loader/types";
@@ -134,14 +134,18 @@ export const treeFeature: FeatureImplementation<
       instance.focusItem(instance.getItems()[nextIndex].getId());
     },
 
-    updateDomFocus: (scrollIntoView) => {
-      // TODO replace with a replaceable focusItem/scrollToItem method that can be replaced
-      // TODO by a virtualized support feature
+    /** By default, updateDomFocus focuses the item, which automatically scrolls it into view
+     * if it is rendered, so this is a noop by default. This method serves as overwritable hook
+     * for virtualized rendering.
+     */
+    scrollToItem: () => {},
 
-      // TODO maybe find a better way?
+    updateDomFocus: (scrollIntoView) => {
       // Required because if the state is managed outside in react, the state only updated during next render
-      setTimeout(() => {
+      setTimeout(async () => {
         const focusedItem = instance.getFocusedItem();
+        instance.scrollToItem(focusedItem);
+        await poll(() => focusedItem.getElement() !== null, 20);
         const focusedElement = focusedItem.getElement();
         if (!focusedElement) return;
         focusedElement.focus();

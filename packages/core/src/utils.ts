@@ -119,3 +119,18 @@ export const performItemsMove = <T>(
 
   items[0].getTree().rebuildTree();
 };
+
+export const poll = (fn: () => boolean, interval = 100, timeout = 1000) =>
+  new Promise<void>((resolve) => {
+    let clear: ReturnType<typeof setTimeout>;
+    const i = setInterval(() => {
+      if (fn()) {
+        resolve();
+        clearInterval(i);
+        clearTimeout(clear);
+      }
+    }, interval);
+    clear = setTimeout(() => {
+      clearInterval(i);
+    }, timeout);
+  });

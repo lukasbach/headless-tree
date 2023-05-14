@@ -35,6 +35,7 @@ export type TreeFeatureDef<T> = {
     getFocusedItem: () => ItemInstance<any>;
     focusNextItem: () => void;
     focusPreviousItem: () => void;
+    scrollToItem: (item: ItemInstance<any>) => void;
     updateDomFocus: (scrollIntoView?: boolean) => void;
 
     getContainerProps: () => Record<string, any>;

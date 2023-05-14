@@ -3,16 +3,7 @@ import { ExpandAllFeatureDef } from "./types";
 import { MainFeatureDef } from "../main/types";
 import { TreeFeatureDef } from "../tree/types";
 import { SyncDataLoaderFeatureDef } from "../sync-data-loader/types";
-
-const poll = (fn: () => boolean, interval = 100) =>
-  new Promise<void>((resolve) => {
-    const i = setInterval(() => {
-      if (fn()) {
-        resolve();
-        clearInterval(i);
-      }
-    }, interval);
-  });
+import { poll } from "../../utils";
 
 export const expandAllFeature: FeatureImplementation<
   any,
