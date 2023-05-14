@@ -134,17 +134,11 @@ export const treeFeature: FeatureImplementation<
       instance.focusItem(instance.getItems()[nextIndex].getId());
     },
 
-    /** By default, updateDomFocus focuses the item, which automatically scrolls it into view
-     * if it is rendered, so this is a noop by default. This method serves as overwritable hook
-     * for virtualized rendering.
-     */
-    scrollToItem: () => {},
-
     updateDomFocus: (scrollIntoView) => {
       // Required because if the state is managed outside in react, the state only updated during next render
       setTimeout(async () => {
         const focusedItem = instance.getFocusedItem();
-        instance.scrollToItem(focusedItem);
+        instance.getConfig().scrollToItem?.(focusedItem);
         await poll(() => focusedItem.getElement() !== null, 20);
         const focusedElement = focusedItem.getElement();
         if (!focusedElement) return;

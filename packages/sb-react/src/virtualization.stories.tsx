@@ -140,6 +140,9 @@ export const Virtualization = ({ itemsPerLevel, openLevels }) => {
     rootItemId: "folder",
     getItemName: (item) => item.getItemData(),
     isItemFolder: (item) => !item.getItemData().endsWith("item"),
+    scrollToItem: (item) => {
+      virtualizer.current?.scrollToIndex(item.getItemMeta().index);
+    },
     onUpdateDragPosition: setDnd,
     canDropInbetween: true,
     dataLoader: {
@@ -157,14 +160,6 @@ export const Virtualization = ({ itemsPerLevel, openLevels }) => {
       selectionFeature,
       hotkeysCoreFeature,
       dragAndDropFeature,
-      {
-        createTreeInstance: (prev) => ({
-          ...prev,
-          scrollToItem: (item) => {
-            virtualizer.current?.scrollToIndex(item.getItemMeta().index);
-          },
-        }),
-      },
     ],
   });
 

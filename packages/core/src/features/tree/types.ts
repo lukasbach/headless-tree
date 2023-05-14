@@ -19,6 +19,7 @@ export type TreeFeatureDef<T> = {
     getItemName: (item: ItemInstance<T>) => string;
 
     onPrimaryAction?: (item: ItemInstance<T>) => void;
+    scrollToItem?: (item: ItemInstance<T>) => void;
 
     onChangeExpandedItems?: OnChangeFn<string[]>;
     onChangeFocusedItem?: OnChangeFn<string | null>;
