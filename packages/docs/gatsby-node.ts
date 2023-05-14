@@ -65,7 +65,6 @@ export const sourceNodes: GatsbyNode["sourceNodes"] = async ({
       markdown: content,
       file,
     };
-    console.log("data", file, data);
     actions.createNode({
       ...data,
       id: createNodeId(file),

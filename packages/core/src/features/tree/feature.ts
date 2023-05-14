@@ -113,9 +113,7 @@ export const treeFeature: FeatureImplementation<
     // TODO memo
     getFocusedItem: () => {
       return (
-        instance
-          .getItems()
-          .find((item) => item.getId() === instance.getState().focusedItem) ??
+        instance.getItemInstance(instance.getState().focusedItem ?? "") ??
         instance.getItems()[0]
       );
     },
@@ -144,13 +142,12 @@ export const treeFeature: FeatureImplementation<
       // Required because if the state is managed outside in react, the state only updated during next render
       setTimeout(() => {
         const focusedItem = instance.getFocusedItem();
-        console.log(focusedItem.getElement(), "!!");
         const focusedElement = focusedItem.getElement();
         if (!focusedElement) return;
         focusedElement.focus();
-        if (scrollIntoView) {
-          focusedElement.scrollIntoView();
-        }
+        // if (scrollIntoView) {
+        //   focusedElement.scrollIntoView();
+        // }
       });
     },
 
@@ -244,6 +241,7 @@ export const treeFeature: FeatureImplementation<
     focusNextItem: {
       hotkey: "ArrowDown",
       canRepeat: true,
+      preventDefault: true,
       isEnabled: (tree) => !(tree.isSearchOpen?.() ?? false),
       handler: (e, tree) => {
         tree.focusNextItem();
@@ -253,6 +251,7 @@ export const treeFeature: FeatureImplementation<
     focusPreviousItem: {
       hotkey: "ArrowUp",
       canRepeat: true,
+      preventDefault: true,
       isEnabled: (tree) => !(tree.isSearchOpen?.() ?? false),
       handler: (e, tree) => {
         tree.focusPreviousItem();
@@ -277,7 +276,10 @@ export const treeFeature: FeatureImplementation<
       canRepeat: true,
       handler: (e, tree) => {
         const item = tree.getFocusedItem();
-        if (!item.isExpanded() || !item.isFolder()) {
+        if (
+          (!item.isExpanded() || !item.isFolder()) &&
+          item.getItemMeta().level !== 0
+        ) {
           item.getParent()?.setFocused();
           tree.updateDomFocus(true);
         } else {
@@ -288,6 +290,7 @@ export const treeFeature: FeatureImplementation<
     focusFirstItem: {
       hotkey: "Home",
       handler: (e, tree) => {
+        console.log("home", tree.getItems()[0], tree.getItems());
         tree.focusItem(tree.getItems()[0].getId());
         tree.updateDomFocus();
       },
@@ -295,6 +298,7 @@ export const treeFeature: FeatureImplementation<
     focusLastItem: {
       hotkey: "End",
       handler: (e, tree) => {
+        console.log("end");
         tree.focusItem(tree.getItems()[tree.getItems().length - 1].getId());
         tree.updateDomFocus();
       },

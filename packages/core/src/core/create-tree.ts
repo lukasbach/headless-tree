@@ -90,11 +90,7 @@ export const createTree = <T>(
         itemInstances.push(itemInstancesMap[item.itemId]);
       }
     }
-    console.log(
-      "REBUILT",
-      itemInstances.map((i) => i.getId())
-      // new Error().stack
-    );
+    console.log("REBUILT");
   };
 
   const eachFeature = (fn: (feature: FeatureImplementation<any>) => void) => {

@@ -1,5 +1,10 @@
 import type { Meta } from "@storybook/react";
-import React, { useState, useRef } from "react";
+import React, {
+  useState,
+  useRef,
+  forwardRef,
+  useImperativeHandle,
+} from "react";
 import {
   hotkeysCoreFeature,
   selectionFeature,
@@ -8,7 +13,7 @@ import {
   DropTarget,
 } from "@headless-tree/core";
 import { useTree } from "@headless-tree/react";
-import { useVirtualizer } from "@tanstack/react-virtual";
+import { useVirtualizer, Virtualizer } from "@tanstack/react-virtual";
 
 const meta = {
   title: "React/Virtualization",
@@ -51,75 +56,80 @@ const getExpandedItemIds = (
   ];
 };
 
-const Inner = ({ tree }) => {
-  const parentRef = useRef<HTMLDivElement | null>(null);
+const Inner = forwardRef<Virtualizer<HTMLDivElement, Element>, any>(
+  ({ tree }, ref) => {
+    const parentRef = useRef<HTMLDivElement | null>(null);
 
-  const virtualizer = useVirtualizer({
-    count: tree.getItems().length,
-    getScrollElement: () => parentRef.current,
-    estimateSize: () => 27,
-  });
+    const virtualizer = useVirtualizer({
+      count: tree.getItems().length,
+      getScrollElement: () => parentRef.current,
+      estimateSize: () => 27,
+    });
 
-  return (
-    <div
-      ref={parentRef}
-      style={{
-        height: `400px`,
-        overflow: "auto",
-      }}
-    >
+    useImperativeHandle(ref, () => virtualizer);
+
+    return (
       <div
-        ref={tree.registerElement}
-        className="tree"
+        ref={parentRef}
         style={{
-          height: `${virtualizer.getTotalSize()}px`,
-          width: "100%",
-          position: "relative",
+          height: `400px`,
+          overflow: "auto",
         }}
       >
-        {virtualizer.getVirtualItems().map((virtualItem) => {
-          const item = tree.getItems()[virtualItem.index];
-          return (
-            <div
-              key={item.getId()}
-              className="treeitem-parent"
-              style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                width: "100%",
-                transform: `translateY(${virtualItem.start}px)`,
-                marginLeft: `${item.getItemMeta().level * 20}px`,
-              }}
-            >
-              <button
-                {...item.getProps()}
-                ref={item.registerElement}
-                className="treeitem"
-                data-focused={item.isFocused()}
-                data-expanded={item.isExpanded()}
-                data-selected={item.isSelected()}
-                data-drop={item.isDropTarget() && item.isDraggingOver()}
-                data-dropabove={
-                  item.isDropTargetAbove() && item.isDraggingOver()
-                }
-                data-dropbelow={
-                  item.isDropTargetBelow() && item.isDraggingOver()
-                }
+        <div
+          ref={tree.registerElement}
+          className="tree"
+          style={{
+            height: `${virtualizer.getTotalSize()}px`,
+            width: "100%",
+            position: "relative",
+          }}
+        >
+          {virtualizer.getVirtualItems().map((virtualItem) => {
+            const item = tree.getItems()[virtualItem.index];
+            return (
+              <div
+                key={item.getId()}
+                className="treeitem-parent"
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  transform: `translateY(${virtualItem.start}px)`,
+                  marginLeft: `${item.getItemMeta().level * 20}px`,
+                }}
               >
-                {item.isFolder() && item.isExpanded() ? "v " : ""}
-                {item.isFolder() && !item.isExpanded() ? "> " : ""}
-                {item.getItemName()}
-              </button>
-            </div>
-          );
-        })}
+                <button
+                  {...item.getProps()}
+                  ref={item.registerElement}
+                  className="treeitem"
+                  data-focused={item.isFocused()}
+                  data-expanded={item.isExpanded()}
+                  data-selected={item.isSelected()}
+                  data-drop={item.isDropTarget() && item.isDraggingOver()}
+                  data-dropabove={
+                    item.isDropTargetAbove() && item.isDraggingOver()
+                  }
+                  data-dropbelow={
+                    item.isDropTargetBelow() && item.isDraggingOver()
+                  }
+                >
+                  {item.isFolder() && item.isExpanded() ? "v " : ""}
+                  {item.isFolder() && !item.isExpanded() ? "> " : ""}
+                  {item.getItemName()}
+                </button>
+              </div>
+            );
+          })}
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+);
 
 export const Virtualization = ({ itemsPerLevel, openLevels }) => {
+  const virtualizer = useRef<Virtualizer<HTMLDivElement, Element> | null>(null);
   const [, setDnd] = useState<DropTarget<any> | null>(null);
   const [state, setState] = useState(() => ({
     expandedItems: getExpandedItemIds(itemsPerLevel, openLevels),
@@ -153,8 +163,28 @@ export const Virtualization = ({ itemsPerLevel, openLevels }) => {
       selectionFeature,
       hotkeysCoreFeature,
       dragAndDropFeature,
+      {
+        createTreeInstance: (prev, tree) => ({
+          ...prev,
+          updateDomFocus: () => {
+            setTimeout(() => {
+              const focusedItem = (tree as any).getFocusedItem();
+              console.log(focusedItem.getItemMeta());
+              virtualizer.current?.scrollToIndex(
+                focusedItem.getItemMeta().index
+              );
+              setTimeout(() => {
+                const focusedElement = focusedItem.getElement();
+                console.log(focusedElement);
+                if (!focusedElement) return;
+                focusedElement.focus();
+              }, 500);
+            });
+          },
+        }),
+      },
     ],
   });
 
-  return <Inner tree={tree} />;
+  return <Inner tree={tree} ref={virtualizer} />;
 };

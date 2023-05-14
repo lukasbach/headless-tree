@@ -127,7 +127,7 @@ export type FeatureImplementation<
   D extends FeatureDef = any,
   F extends FeatureDef = EmptyFeatureDef
 > = {
-  key: string;
+  key?: string;
   dependingFeatures?: string[];
 
   getInitialState?: (
