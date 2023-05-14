@@ -87,6 +87,10 @@ export const treeFeature: FeatureImplementation<
         return;
       }
 
+      if (instance.getState().loadingItems?.includes(itemId)) {
+        return;
+      }
+
       instance
         .getConfig()
         .onChangeExpandedItems?.((expandedItems) => [...expandedItems, itemId]);

@@ -82,6 +82,7 @@ export const asyncDataLoaderFeature: FeatureImplementation<
           config.onChangeLoadingItems?.((loadingItems) =>
             loadingItems.filter((id) => id !== itemId)
           );
+          instance.rebuildTree();
         });
       } else {
         config.asyncDataLoader?.getChildren(itemId).then((childrenIds) => {
@@ -90,6 +91,7 @@ export const asyncDataLoaderFeature: FeatureImplementation<
           config.onChangeLoadingItems?.((loadingItems) =>
             loadingItems.filter((id) => id !== itemId)
           );
+          instance.rebuildTree();
         });
       }
 
