@@ -4,38 +4,9 @@ import { DndDataRef, DropTarget, DropTargetPosition } from "./types";
 export const getDragCode = ({ item, childIndex }: DropTarget<any>) =>
   `${item.getId()}__${childIndex ?? "none"}`;
 
-export const getDropTarget = <T>(
-  e: any,
-  item: ItemInstance<any>,
-  tree: TreeInstance<any>
-): DropTarget<T> => {
-  const config = tree.getConfig();
+export const getDropOffset = (e: any, item: ItemInstance<any>): number => {
   const bb = item.getElement()?.getBoundingClientRect();
-  const verticalPos = bb ? (e.pageY - bb.top) / bb.height : 0.5;
-  const pos =
-    // eslint-disable-next-line no-nested-ternary
-    verticalPos < (config.topLinePercentage ?? 0.3)
-      ? DropTargetPosition.Top
-      : verticalPos > (config.bottomLinePercentage ?? 0.7)
-      ? DropTargetPosition.Bottom
-      : DropTargetPosition.Item;
-
-  if (!config.canDropInbetween) {
-    return { item, childIndex: null };
-  }
-
-  if (pos === DropTargetPosition.Item) {
-    return { item, childIndex: null };
-  }
-
-  console.log(item.getItemMeta(), item.getIndexInParent(), pos);
-
-  // TODO it's much more complicated than this..
-  return {
-    item: item.getParent(),
-    childIndex:
-      item.getIndexInParent() + (pos === DropTargetPosition.Top ? 0 : 1),
-  };
+  return bb ? (e.pageY - bb.top) / bb.height : 0.5;
 };
 
 export const canDrop = (
@@ -58,4 +29,59 @@ export const canDrop = (
   }
 
   return true;
+};
+
+const getDropTargetPosition = (
+  offset: number,
+  topLinePercentage: number,
+  bottomLinePercentage: number
+) => {
+  if (offset < topLinePercentage) {
+    return DropTargetPosition.Top;
+  }
+  if (offset > bottomLinePercentage) {
+    return DropTargetPosition.Bottom;
+  }
+  return DropTargetPosition.Item;
+};
+
+export const getDropTarget = (
+  e: any,
+  item: ItemInstance<any>,
+  tree: TreeInstance<any>
+): DropTarget<any> => {
+  const config = tree.getConfig();
+  const offset = getDropOffset(e, item);
+
+  const dropOnItemTarget = { item, childIndex: null };
+
+  const pos = getDropTargetPosition(
+    offset,
+    config.topLinePercentage ?? 0.3,
+    config.bottomLinePercentage ?? 0.7
+  );
+  const inbetweenPos = getDropTargetPosition(offset, 0.5, 0.5);
+
+  if (!config.canDropInbetween) {
+    return dropOnItemTarget;
+  }
+
+  if (!canDrop(e, dropOnItemTarget, tree)) {
+    return {
+      item: item.getParent(),
+      childIndex:
+        item.getIndexInParent() +
+        (inbetweenPos === DropTargetPosition.Top ? 0 : 1),
+    };
+  }
+
+  if (pos === DropTargetPosition.Item) {
+    return dropOnItemTarget;
+  }
+
+  return {
+    item: item.getParent(),
+    childIndex:
+      item.getIndexInParent() + (pos === DropTargetPosition.Top ? 0 : 1),
+  };
 };
