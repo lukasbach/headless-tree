@@ -1,6 +1,7 @@
 import { DataAdapterConfig } from "./types";
 import { ItemInstance } from "../types/core";
 import { DropTarget } from "../features/drag-and-drop/types";
+import { performItemsMove } from "../utils";
 
 interface NestedDataAdapterProps<T> {
   rootItem: T;
@@ -33,40 +34,15 @@ export const nestedDataAdapter = <T = any>(
         props.getChildren(itemMap[itemId])?.map(props.getItemId) ?? [],
     },
     onDrop: (items: ItemInstance<T>[], target: DropTarget<T>) => {
-      // TODO extract function into exported utility "performItemsMove"
-      // TODO incorrect index when 1+ items are dragged downwards within the same folder
       if (!props.changeChildren) {
         return;
       }
-
-      // TODO bulk sibling changes together
-      for (const item of items) {
-        const siblings = item.getParent()?.getChildren();
-        if (siblings) {
-          props.changeChildren(
-            item.getParent()!.getItemData(),
-            siblings
-              .filter((sibling) => sibling.getId() !== item.getId())
-              .map((i) => i.getItemData())
-          );
-        }
-      }
-
-      const itemToChange = target.item.getItemData();
-      const oldChildren = props.getChildren(itemToChange) ?? [];
-      const insertChildren = items.map((item) => item.getItemData());
-      const newChildren =
-        target.childIndex === null
-          ? [...oldChildren, ...insertChildren]
-          : [
-              ...oldChildren.slice(0, target.childIndex),
-              ...insertChildren,
-              ...oldChildren.slice(target.childIndex),
-            ];
-
-      props.changeChildren(itemToChange, newChildren);
-
-      items[0].getTree().rebuildTree();
+      performItemsMove(items, target, (item, newChildren) => {
+        props.changeChildren?.(
+          item.getItemData(),
+          newChildren.map((child) => child.getItemData())
+        );
+      });
     },
   };
 };

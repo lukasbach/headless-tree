@@ -1,4 +1,5 @@
-import { TreeState, Updater } from "./types/core";
+import { ItemInstance, TreeState, Updater } from "./types/core";
+import { DropTarget } from "./features/drag-and-drop/types";
 
 export type NoInfer<T> = [T][T extends any ? 0 : never];
 
@@ -72,4 +73,40 @@ export const scrollIntoView = (element: Element | undefined | null) => {
       element.scrollIntoView();
     }
   }
+};
+
+export const performItemsMove = <T>(
+  items: ItemInstance<T>[],
+  target: DropTarget<T>,
+  onChangeChildren: (
+    item: ItemInstance<T>,
+    newChildren: ItemInstance<T>[]
+  ) => void
+) => {
+  // TODO incorrect index when 1+ items are dragged downwards within the same folder
+
+  // TODO bulk sibling changes together
+  for (const item of items) {
+    const siblings = item.getParent()?.getChildren();
+    if (siblings) {
+      onChangeChildren(
+        item.getParent(),
+        siblings.filter((sibling) => sibling.getId() !== item.getId())
+      );
+    }
+  }
+
+  const oldChildren = target.item.getChildren();
+  const newChildren =
+    target.childIndex === null
+      ? [...oldChildren, ...items]
+      : [
+          ...oldChildren.slice(0, target.childIndex),
+          ...items,
+          ...oldChildren.slice(target.childIndex),
+        ];
+
+  onChangeChildren(target.item, newChildren);
+
+  items[0].getTree().rebuildTree();
 };
