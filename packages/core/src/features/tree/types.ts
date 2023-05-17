@@ -1,6 +1,6 @@
 import { ItemInstance, SetStateFn, TreeInstance } from "../../types/core";
 
-export type ItemMeta<T> = {
+export type ItemMeta = {
   itemId: string;
   parentId: string;
   level: number;
@@ -26,7 +26,7 @@ export type TreeFeatureDef<T> = {
   };
   treeInstance: {
     /** @internal */
-    getItemsMeta: () => ItemMeta<T>[];
+    getItemsMeta: () => ItemMeta[];
 
     expandItem: (itemId: string) => void;
     collapseItem: (itemId: string) => void;

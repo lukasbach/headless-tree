@@ -46,7 +46,7 @@ export const treeFeature: FeatureImplementation<
       const { rootItemId } = instance.getConfig();
       const { expandedItems } = instance.getState();
       // console.log("!", instance.getConfig());
-      const flatItems: ItemMeta<any>[] = [];
+      const flatItems: ItemMeta[] = [];
 
       const recursiveAdd = (
         itemId: string,

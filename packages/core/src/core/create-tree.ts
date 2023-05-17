@@ -52,7 +52,7 @@ export const createTree = <T>(
   let itemInstances: ItemInstance<T>[] = [];
   const itemElementsMap: Record<string, HTMLElement | undefined | null> = {};
   const itemDataRefs: Record<string, { current: any }> = {};
-  let itemMetaMap: Record<string, ItemMeta<T>> = {};
+  let itemMetaMap: Record<string, ItemMeta> = {};
 
   const hotkeyPresets = {} as HotkeysConfig<T>;
 

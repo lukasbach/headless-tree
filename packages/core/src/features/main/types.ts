@@ -32,7 +32,7 @@ export type MainFeatureDef<T = any> = {
   };
   itemInstance: {
     registerElement: (element: HTMLElement | null) => void;
-    getItemMeta: () => ItemMeta<T>;
+    getItemMeta: () => ItemMeta;
     getElement: () => HTMLElement | undefined | null;
     /** @internal */
     getDataRef: <D>() => { current: D };
