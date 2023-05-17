@@ -7,7 +7,7 @@
   "scripts": {
     "lint": "eslint . --fix",
     "lint:test": "eslint .",
-    "start": "lerna run start --parallel",
+    "start": "lerna run start --parallel --scope @headless-tree/core --scope @headless-tree/sb-react",
     "build": "lerna run build",
     "storybook": "lerna run storybook",
     "docs": "typedoc",

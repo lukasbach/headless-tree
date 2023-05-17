@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "storybook": "storybook dev -p 6006",
+    "start": "storybook dev -p 6006",
     "build-storybook": "storybook build -o ../docs/public/storybook/react"
   },
   "author": "Lukas Bach <npm@lukasbach.com>",
