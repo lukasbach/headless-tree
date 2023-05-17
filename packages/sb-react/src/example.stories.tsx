@@ -18,7 +18,7 @@ export const Example = () => {
   const [state, setState] = useState({});
   const tree = useTree<string>({
     state,
-    onStateChange: setState,
+    setState,
     rootItemId: "folder",
     getItemName: (item) => item.getItemData(),
     isItemFolder: (item) => !item.getItemData().endsWith("item"),

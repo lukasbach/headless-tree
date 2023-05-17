@@ -1,4 +1,4 @@
-import { ItemInstance, OnChangeFn, TreeInstance } from "../../types/core";
+import { ItemInstance, SetStateFn, TreeInstance } from "../../types/core";
 
 export type ItemMeta<T> = {
   itemId: string;
@@ -21,8 +21,8 @@ export type TreeFeatureDef<T> = {
     onPrimaryAction?: (item: ItemInstance<T>) => void;
     scrollToItem?: (item: ItemInstance<T>) => void;
 
-    onChangeExpandedItems?: OnChangeFn<string[]>;
-    onChangeFocusedItem?: OnChangeFn<string | null>;
+    setExpandedItems?: SetStateFn<string[]>;
+    setFocusedItem?: SetStateFn<string | null>;
   };
   treeInstance: {
     /** @internal */

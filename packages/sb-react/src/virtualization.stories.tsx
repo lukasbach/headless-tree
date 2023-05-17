@@ -136,7 +136,7 @@ export const Virtualization = ({ itemsPerLevel, openLevels }) => {
   }));
   const tree = useTree<string>({
     state,
-    onStateChange: setState,
+    setState,
     rootItemId: "folder",
     getItemName: (item) => item.getItemData(),
     isItemFolder: (item) => !item.getItemData().endsWith("item"),

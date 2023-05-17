@@ -33,7 +33,7 @@ export const Dnd = ({ canDropInbetween, canDropForeignDragObject }) => {
   const [state, setState] = useState({});
   const tree = useTree<string>({
     state,
-    onStateChange: setState,
+    setState,
     rootItemId: "root",
     getItemName: (item) => item.getItemData(),
     isItemFolder: () => true,

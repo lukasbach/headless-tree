@@ -2,7 +2,7 @@ import {
   FeatureImplementation,
   HotkeysConfig,
   ItemInstance,
-  OnChangeFn,
+  SetStateFn,
   TreeConfig,
   TreeState,
 } from "../../types/core";
@@ -13,12 +13,12 @@ export type MainFeatureDef<T = any> = {
   config: {
     features?: FeatureImplementation<any>[];
     state?: Partial<TreeState<T>>;
-    onStateChange?: OnChangeFn<TreeState<T>>;
+    setState?: SetStateFn<TreeState<T>>;
   };
   treeInstance: {
-    setState: OnChangeFn<TreeState<T>>;
+    setState: SetStateFn<TreeState<T>>;
     getState: () => TreeState<T>;
-    setConfig: OnChangeFn<TreeConfig<T>>;
+    setConfig: SetStateFn<TreeConfig<T>>;
     getConfig: () => TreeConfig<T>;
     getItemInstance: (itemId: string) => ItemInstance<T>;
     getItems: () => ItemInstance<T>[];

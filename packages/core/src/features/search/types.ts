@@ -1,4 +1,4 @@
-import { ItemInstance, OnChangeFn } from "../../types/core";
+import { ItemInstance, SetStateFn } from "../../types/core";
 import { HotkeysCoreDataRef } from "../hotkeys-core/types";
 
 export type SearchFeatureDataRef<T = any> = HotkeysCoreDataRef & {
@@ -11,7 +11,7 @@ export type SearchFeatureDef<T> = {
     search: string | null;
   };
   config: {
-    onChangeSearch?: OnChangeFn<string | null>;
+    setSearch?: SetStateFn<string | null>;
     onOpenSearch?: () => void;
     onCloseSearch?: () => void;
     onSearchMatchesItems?: (search: string, items: ItemInstance<T>[]) => void;

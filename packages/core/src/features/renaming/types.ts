@@ -1,4 +1,4 @@
-import { ItemInstance, OnChangeFn } from "../../types/core";
+import { ItemInstance, SetStateFn } from "../../types/core";
 
 export type RenamingFeatureDef<T> = {
   state: {
@@ -6,8 +6,8 @@ export type RenamingFeatureDef<T> = {
     renamingValue?: string;
   };
   config: {
-    onChangeRenamingItem?: OnChangeFn<string | null>;
-    onChangeRenamingValue?: OnChangeFn<string | undefined>;
+    setRenamingItem?: SetStateFn<string | null>;
+    setRenamingValue?: SetStateFn<string | undefined>;
     canRename?: (item: ItemInstance<T>) => boolean;
     onRename?: (item: ItemInstance<T>, value: string) => void;
   };

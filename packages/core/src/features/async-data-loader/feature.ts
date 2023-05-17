@@ -18,7 +18,7 @@ export const asyncDataLoaderFeature: FeatureImplementation<
   }),
 
   getDefaultConfig: (defaultConfig, tree) => ({
-    onChangeLoadingItems: makeStateUpdater("loadingItems", tree),
+    setLoadingItems: makeStateUpdater("loadingItems", tree),
     ...defaultConfig,
   }),
 
@@ -36,14 +36,11 @@ export const asyncDataLoaderFeature: FeatureImplementation<
       }
 
       if (!instance.getState().loadingItems.includes(itemId)) {
-        config.onChangeLoadingItems?.((loadingItems) => [
-          ...loadingItems,
-          itemId,
-        ]);
+        config.setLoadingItems?.((loadingItems) => [...loadingItems, itemId]);
         config.asyncDataLoader?.getItem(itemId).then((item) => {
           dataRef.current.itemData[itemId] = item;
           config.onLoadedItem?.(itemId, item);
-          config.onChangeLoadingItems?.((loadingItems) =>
+          config.setLoadingItems?.((loadingItems) =>
             loadingItems.filter((id) => id !== itemId)
           );
         });
@@ -65,10 +62,7 @@ export const asyncDataLoaderFeature: FeatureImplementation<
         return [];
       }
 
-      config.onChangeLoadingItems?.((loadingItems) => [
-        ...loadingItems,
-        itemId,
-      ]);
+      config.setLoadingItems?.((loadingItems) => [...loadingItems, itemId]);
 
       if (config.asyncDataLoader?.getChildrenWithData) {
         config.asyncDataLoader?.getChildrenWithData(itemId).then((children) => {
@@ -79,7 +73,7 @@ export const asyncDataLoaderFeature: FeatureImplementation<
           const childrenIds = children.map(({ id }) => id);
           dataRef.current.childrenIds[itemId] = childrenIds;
           config.onLoadedChildren?.(itemId, childrenIds);
-          config.onChangeLoadingItems?.((loadingItems) =>
+          config.setLoadingItems?.((loadingItems) =>
             loadingItems.filter((id) => id !== itemId)
           );
           instance.rebuildTree();
@@ -88,7 +82,7 @@ export const asyncDataLoaderFeature: FeatureImplementation<
         config.asyncDataLoader?.getChildren(itemId).then((childrenIds) => {
           dataRef.current.childrenIds[itemId] = childrenIds;
           config.onLoadedChildren?.(itemId, childrenIds);
-          config.onChangeLoadingItems?.((loadingItems) =>
+          config.setLoadingItems?.((loadingItems) =>
             loadingItems.filter((id) => id !== itemId)
           );
           instance.rebuildTree();

@@ -26,7 +26,7 @@ export const expandAllFeature: FeatureImplementation<
     },
 
     collapseAll: async () => {
-      tree.getConfig().onChangeExpandedItems?.([]);
+      tree.getConfig().setExpandedItems?.([]);
     },
   }),
 

@@ -1,4 +1,4 @@
-import { OnChangeFn } from "../../types/core";
+import { SetStateFn } from "../../types/core";
 import { SyncDataLoaderFeatureDef } from "../sync-data-loader/types";
 
 export type AsyncTreeDataLoader<T> = {
@@ -22,7 +22,7 @@ export type AsyncDataLoaderFeatureDef<T> = {
   config: {
     rootItemId: string;
     createLoadingItemData?: () => T;
-    onChangeLoadingItems?: OnChangeFn<string[]>;
+    setLoadingItems?: SetStateFn<string[]>;
     onLoadedItem?: (itemId: string, item: T) => void;
     onLoadedChildren?: (itemId: string, childrenIds: string[]) => void;
     asyncDataLoader?: AsyncTreeDataLoader<T>;

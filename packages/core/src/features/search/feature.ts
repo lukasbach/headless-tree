@@ -18,7 +18,7 @@ export const searchFeature: FeatureImplementation<
   }),
 
   getDefaultConfig: (defaultConfig, tree) => ({
-    onChangeSearch: makeStateUpdater("search", tree),
+    setSearch: makeStateUpdater("search", tree),
     isSearchMatchingItem: (search, item) =>
       search.length > 0 &&
       item.getItemName().toLowerCase().includes(search.toLowerCase()),
@@ -29,7 +29,7 @@ export const searchFeature: FeatureImplementation<
     ...prev,
 
     setSearch: (search) => {
-      instance.getConfig().onChangeSearch?.(search);
+      instance.getConfig().setSearch?.(search);
       instance
         .getItems()
         .find((item) =>

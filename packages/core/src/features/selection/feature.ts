@@ -18,7 +18,7 @@ export const selectionFeature: FeatureImplementation<
   }),
 
   getDefaultConfig: (defaultConfig, tree) => ({
-    onChangeSelectedItems: makeStateUpdater("selectedItems", tree),
+    setSelectedItems: makeStateUpdater("selectedItems", tree),
     ...defaultConfig,
   }),
 
@@ -26,7 +26,7 @@ export const selectionFeature: FeatureImplementation<
     ...prev,
 
     setSelectedItems: (selectedItems) => {
-      instance.getConfig().onChangeSelectedItems?.(selectedItems);
+      instance.getConfig().setSelectedItems?.(selectedItems);
     },
 
     // TODO memo

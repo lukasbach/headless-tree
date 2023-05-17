@@ -110,13 +110,13 @@ export const createTree = <T>(
       getState: () => state,
       setState: (updater) => {
         state = typeof updater === "function" ? updater(state) : updater;
-        config.onStateChange?.(state);
-        eachFeature((feature) => feature.onStateChange?.(treeInstance));
+        config.setState?.(state);
+        eachFeature((feature) => feature.setState?.(treeInstance));
         eachFeature((feature) => feature.onStateOrConfigChange?.(treeInstance));
       },
       rebuildTree: () => {
         rebuildItemMeta(mainFeature);
-        config.onStateChange?.(state);
+        config.setState?.(state);
       },
       getConfig: () => config,
       setConfig: (updater) => {
@@ -124,7 +124,7 @@ export const createTree = <T>(
 
         if (config.state) {
           state = { ...state, ...config.state };
-          eachFeature((feature) => feature.onStateChange?.(treeInstance));
+          eachFeature((feature) => feature.setState?.(treeInstance));
         }
 
         eachFeature((feature) => feature.onConfigChange?.(treeInstance));

@@ -1,11 +1,11 @@
-import { ItemInstance, OnChangeFn } from "../../types/core";
+import { ItemInstance, SetStateFn } from "../../types/core";
 
 export type SelectionFeatureDef<T> = {
   state: {
     selectedItems: string[];
   };
   config: {
-    onChangeSelectedItems?: OnChangeFn<string[]>;
+    setSelectedItems?: SetStateFn<string[]>;
   };
   treeInstance: {
     setSelectedItems: (selectedItems: string[]) => void;

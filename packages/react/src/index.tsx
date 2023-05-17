@@ -14,9 +14,9 @@ export const useTree = <T,>(config: TreeConfig<T>) => {
       ...state,
       ...config.state,
     },
-    onStateChange: (state) => {
+    setState: (state) => {
       setState(state);
-      config.onStateChange?.(state);
+      config.setState?.(state);
     },
   }));
 

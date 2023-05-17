@@ -23,8 +23,8 @@ export const treeFeature: FeatureImplementation<
   }),
 
   getDefaultConfig: (defaultConfig, tree) => ({
-    onChangeExpandedItems: makeStateUpdater("expandedItems", tree),
-    onChangeFocusedItem: makeStateUpdater("focusedItem", tree),
+    setExpandedItems: makeStateUpdater("expandedItems", tree),
+    setFocusedItem: makeStateUpdater("focusedItem", tree),
     ...defaultConfig,
   }),
 
@@ -93,7 +93,7 @@ export const treeFeature: FeatureImplementation<
 
       instance
         .getConfig()
-        .onChangeExpandedItems?.((expandedItems) => [...expandedItems, itemId]);
+        .setExpandedItems?.((expandedItems) => [...expandedItems, itemId]);
       instance.rebuildTree();
     },
 
@@ -104,7 +104,7 @@ export const treeFeature: FeatureImplementation<
 
       instance
         .getConfig()
-        .onChangeExpandedItems?.((expandedItems) =>
+        .setExpandedItems?.((expandedItems) =>
           expandedItems.filter((id) => id !== itemId)
         );
       instance.rebuildTree();
@@ -119,7 +119,7 @@ export const treeFeature: FeatureImplementation<
     },
 
     focusItem: (itemId) => {
-      instance.getConfig().onChangeFocusedItem?.(itemId);
+      instance.getConfig().setFocusedItem?.(itemId);
     },
 
     focusNextItem: () => {

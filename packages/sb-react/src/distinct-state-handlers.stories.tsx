@@ -14,16 +14,16 @@ const meta = {
 export default meta;
 
 export const DistinctStateHandlers = () => {
-  const [selectedItems, onChangeSelectedItems] = useState([]);
-  const [expandedItems, onChangeExpandedItems] = useState([]);
-  const [focusedItem, onChangeFocusedItem] = useState(null);
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [expandedItems, setExpandedItems] = useState([]);
+  const [focusedItem, setFocusedItem] = useState(null);
 
   const tree = useTree<string>({
     state: { selectedItems, expandedItems, focusedItem },
     rootItemId: "root",
-    onChangeSelectedItems,
-    onChangeExpandedItems,
-    onChangeFocusedItem,
+    setSelectedItems,
+    setExpandedItems,
+    setFocusedItem,
     getItemName: (item) => item.getItemData(),
     isItemFolder: () => true,
     dataLoader: {

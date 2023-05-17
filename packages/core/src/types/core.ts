@@ -1,7 +1,7 @@
 import { DragAndDropFeatureDef } from "../features/drag-and-drop/types";
 import { MainFeatureDef } from "../features/main/types";
 import { SelectionFeatureDef } from "../features/selection/types";
-import { ItemMeta, TreeFeatureDef } from "../features/tree/types";
+import { TreeFeatureDef } from "../features/tree/types";
 import {
   HotkeyConfig,
   HotkeysCoreFeatureDef,
@@ -13,7 +13,7 @@ import { RenamingFeatureDef } from "../features/renaming/types";
 import { ExpandAllFeatureDef } from "../features/expand-all/types";
 
 export type Updater<T> = T | ((old: T) => T);
-export type OnChangeFn<T> = (updaterOrValue: Updater<T>) => void;
+export type SetStateFn<T> = (updaterOrValue: Updater<T>) => void;
 
 export type FeatureDef = {
   state: object;
@@ -174,7 +174,7 @@ export type FeatureImplementation<
     tree: MergedFeatures<F>["treeInstance"]
   ) => void;
 
-  onStateChange?: (instance: MergedFeatures<F>["treeInstance"]) => void;
+  setState?: (instance: MergedFeatures<F>["treeInstance"]) => void;
   onConfigChange?: (instance: MergedFeatures<F>["treeInstance"]) => void;
   onStateOrConfigChange?: (instance: MergedFeatures<F>["treeInstance"]) => void;
 
