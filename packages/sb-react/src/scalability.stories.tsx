@@ -5,7 +5,6 @@ import {
   selectionFeature,
   dragAndDropFeature,
   syncDataLoaderFeature,
-  DropTarget,
 } from "@headless-tree/core";
 import { useTree } from "@headless-tree/react";
 
@@ -51,7 +50,6 @@ const getExpandedItemIds = (
 };
 
 export const Scalability = ({ itemsPerLevel, openLevels }) => {
-  const [, setDnd] = useState<DropTarget<any> | null>(null);
   const [state, setState] = useState(() => ({
     expandedItems: getExpandedItemIds(itemsPerLevel, openLevels),
   }));
@@ -61,7 +59,6 @@ export const Scalability = ({ itemsPerLevel, openLevels }) => {
     rootItemId: "folder",
     getItemName: (item) => item.getItemData(),
     isItemFolder: (item) => !item.getItemData().endsWith("item"),
-    onUpdateDragPosition: setDnd,
     canDropInbetween: true,
     hotkeys: {
       customEvent: {

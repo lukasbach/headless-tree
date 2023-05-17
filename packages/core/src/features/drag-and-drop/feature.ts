@@ -1,6 +1,7 @@
 import { FeatureDefs, FeatureImplementation } from "../../types/core";
 import { DndDataRef, DragAndDropFeatureDef } from "./types";
 import { canDrop, getDragCode, getDropTarget } from "./utils";
+import { makeStateUpdater } from "../../utils";
 
 export const dragAndDropFeature: FeatureImplementation<
   any,
@@ -10,8 +11,9 @@ export const dragAndDropFeature: FeatureImplementation<
   key: "dragAndDrop",
   dependingFeatures: ["main", "tree", "selection"],
 
-  getDefaultConfig: (defaultConfig) => ({
+  getDefaultConfig: (defaultConfig, tree) => ({
     canDrop: (_, target) => target.item.isFolder(),
+    setDndState: makeStateUpdater("dnd", tree),
     ...defaultConfig,
   }),
 
@@ -19,7 +21,7 @@ export const dragAndDropFeature: FeatureImplementation<
     ...prev,
 
     getDropTarget: () => {
-      return tree.getDataRef<DndDataRef<any>>().current.dragTarget ?? null;
+      return tree.getState().dnd?.dragTarget ?? null;
     },
   }),
 
@@ -35,7 +37,6 @@ export const dragAndDropFeature: FeatureImplementation<
         const selectedItems = tree.getSelectedItems();
         const items = selectedItems.includes(item) ? selectedItems : [item];
         const config = tree.getConfig();
-        const dataRef = tree.getDataRef<DndDataRef<any>>();
 
         if (!selectedItems.includes(item)) {
           tree.setSelectedItems([item.getItemMeta().itemId]);
@@ -51,15 +52,18 @@ export const dragAndDropFeature: FeatureImplementation<
           e.dataTransfer?.setData(format, data);
         }
 
-        dataRef.current.draggedItems = items;
+        tree.getConfig().setDndState?.({
+          draggedItems: items,
+          draggingOverItem: tree.getFocusedItem(),
+        });
       },
 
       onDragOver: (e) => {
         const target = getDropTarget(e, item, tree);
-        const dataRef = tree.getDataRef<DndDataRef<any>>();
+        const dataRef = tree.getDataRef<DndDataRef>();
 
         if (
-          !dataRef.current.draggedItems &&
+          !tree.getState().dnd?.draggedItems &&
           !tree.getConfig().canDropForeignDragObject?.(e.dataTransfer, target)
         ) {
           return;
@@ -77,21 +81,26 @@ export const dragAndDropFeature: FeatureImplementation<
         }
 
         dataRef.current.lastDragCode = nextDragCode;
-        dataRef.current.dragTarget = target;
-        dataRef.current.draggingOverItem = item;
-        tree.getConfig().onUpdateDragPosition?.(target);
+
+        tree.getConfig().setDndState?.((state) => ({
+          ...state,
+          dragTarget: target,
+          draggingOverItem: item,
+        }));
       },
 
       onDragLeave: () => {
-        const dataRef = tree.getDataRef<DndDataRef<any>>();
-        dataRef.current.lastDragCode = "left";
-        dataRef.current.dragTarget = undefined;
-        dataRef.current.draggingOverItem = undefined;
-        tree.getConfig().onUpdateDragPosition?.(null);
+        const dataRef = tree.getDataRef<DndDataRef>();
+        dataRef.current.lastDragCode = "no-drag";
+        tree.getConfig().setDndState?.((state) => ({
+          ...state,
+          draggingOverItem: undefined,
+          dragTarget: undefined,
+        }));
       },
 
       onDrop: (e) => {
-        const dataRef = tree.getDataRef<DndDataRef<any>>();
+        const dataRef = tree.getDataRef<DndDataRef>();
         const target = getDropTarget(e, item, tree);
 
         if (!canDrop(e, target, tree)) {
@@ -100,11 +109,10 @@ export const dragAndDropFeature: FeatureImplementation<
 
         e.preventDefault();
         const config = tree.getConfig();
-        const { draggedItems } = tree.getDataRef<DndDataRef<any>>().current;
+        const draggedItems = tree.getState().dnd?.draggedItems;
 
         dataRef.current.lastDragCode = undefined;
-        dataRef.current.dragTarget = undefined;
-        tree.getConfig().onUpdateDragPosition?.(null);
+        tree.getConfig().setDndState?.(null);
 
         if (draggedItems) {
           config.onDrop?.(draggedItems, target);
@@ -139,10 +147,7 @@ export const dragAndDropFeature: FeatureImplementation<
     },
 
     isDraggingOver: () => {
-      return (
-        tree.getDataRef<DndDataRef<any>>().current.draggingOverItem?.getId() ===
-        item.getId()
-      );
+      return tree.getState().dnd?.draggingOverItem?.getId() === item.getId();
     },
   }),
 };

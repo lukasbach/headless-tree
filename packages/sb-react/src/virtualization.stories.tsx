@@ -10,7 +10,6 @@ import {
   selectionFeature,
   dragAndDropFeature,
   syncDataLoaderFeature,
-  DropTarget,
 } from "@headless-tree/core";
 import { useTree } from "@headless-tree/react";
 import { useVirtualizer, Virtualizer } from "@tanstack/react-virtual";
@@ -130,7 +129,6 @@ const Inner = forwardRef<Virtualizer<HTMLDivElement, Element>, any>(
 
 export const Virtualization = ({ itemsPerLevel, openLevels }) => {
   const virtualizer = useRef<Virtualizer<HTMLDivElement, Element> | null>(null);
-  const [, setDnd] = useState<DropTarget<any> | null>(null);
   const [state, setState] = useState(() => ({
     expandedItems: getExpandedItemIds(itemsPerLevel, openLevels),
   }));
@@ -143,7 +141,6 @@ export const Virtualization = ({ itemsPerLevel, openLevels }) => {
     scrollToItem: (item) => {
       virtualizer.current?.scrollToIndex(item.getItemMeta().index);
     },
-    onUpdateDragPosition: setDnd,
     canDropInbetween: true,
     dataLoader: {
       getItem: (itemId) => itemId,

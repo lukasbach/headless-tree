@@ -1,10 +1,12 @@
-import { ItemInstance } from "../../types/core";
+import { ItemInstance, SetStateFn } from "../../types/core";
 
-export type DndDataRef<T> = {
-  draggedItems?: ItemInstance<T>[];
-  draggedForeignObject?: any;
-  draggingOverItem?: ItemInstance<T>;
+export type DndDataRef = {
   lastDragCode?: string;
+};
+
+export type DndState<T> = {
+  draggedItems?: ItemInstance<T>[];
+  draggingOverItem?: ItemInstance<T>;
   dragTarget?: DropTarget<T>;
 };
 
@@ -20,8 +22,12 @@ export enum DropTargetPosition {
 }
 
 export type DragAndDropFeatureDef<T> = {
-  state: {};
+  state: {
+    dnd?: DndState<T> | null;
+  };
   config: {
+    setDndState?: SetStateFn<DndState<T> | null>;
+
     topLinePercentage?: number;
     bottomLinePercentage?: number;
     canDropInbetween?: boolean;
@@ -38,8 +44,6 @@ export type DragAndDropFeatureDef<T> = {
       dataTransfer: DataTransfer,
       target: DropTarget<T>
     ) => boolean;
-
-    onUpdateDragPosition?: (target: DropTarget<T> | null) => void;
 
     onDrop?: (items: ItemInstance<T>[], target: DropTarget<T>) => void;
     onDropForeignDragObject?: (

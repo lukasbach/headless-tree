@@ -1,5 +1,5 @@
 import { ItemInstance, TreeInstance } from "../../types/core";
-import { DndDataRef, DropTarget, DropTargetPosition } from "./types";
+import { DropTarget, DropTargetPosition } from "./types";
 
 export const getDragCode = ({ item, childIndex }: DropTarget<any>) =>
   `${item.getId()}__${childIndex ?? "none"}`;
@@ -14,7 +14,7 @@ export const canDrop = (
   target: DropTarget<any>,
   tree: TreeInstance<any>
 ) => {
-  const { draggedItems } = tree.getDataRef<DndDataRef<any>>().current;
+  const draggedItems = tree.getState().dnd?.draggedItems;
   const config = tree.getConfig();
 
   if (draggedItems && !(config.canDrop?.(draggedItems, target) ?? true)) {

@@ -1,7 +1,6 @@
 import type { Meta } from "@storybook/react";
-import React, { useState, useMemo } from "react";
+import React from "react";
 import {
-  DropTarget,
   hotkeysCoreFeature,
   selectionFeature,
   dragAndDropFeature,
@@ -9,7 +8,6 @@ import {
   nestedDataAdapter,
 } from "@headless-tree/core";
 import { useTree } from "@headless-tree/react";
-import { action } from "@storybook/addon-actions";
 
 const meta = {
   title: "React/Data Adapters/Nested Data Adapter",
@@ -70,8 +68,6 @@ const data: Item = {
 };
 
 export const NestedDataAdapter = ({ canDropInbetween }) => {
-  const [dnd, setDnd] = useState<DropTarget<any> | null>(null);
-
   const dataAdapter = nestedDataAdapter<Item>({
     rootItem: data,
     getChildren: (item) => item.children,
@@ -85,7 +81,6 @@ export const NestedDataAdapter = ({ canDropInbetween }) => {
     ...dataAdapter,
     getItemName: (item) => item.getItemData().name,
     isItemFolder: (item) => item.getItemData().children !== undefined,
-    onUpdateDragPosition: setDnd,
     canDropInbetween,
     features: [
       syncDataLoaderFeature,

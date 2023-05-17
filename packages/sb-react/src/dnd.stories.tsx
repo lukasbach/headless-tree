@@ -1,7 +1,6 @@
 import type { Meta } from "@storybook/react";
 import React, { useState } from "react";
 import {
-  DropTarget,
   hotkeysCoreFeature,
   selectionFeature,
   dragAndDropFeature,
@@ -29,7 +28,6 @@ const meta = {
 export default meta;
 
 export const Dnd = ({ canDropInbetween, canDropForeignDragObject }) => {
-  const [dnd, setDnd] = useState<DropTarget<any> | null>(null);
   const [state, setState] = useState({});
   const tree = useTree<string>({
     state,
@@ -37,7 +35,6 @@ export const Dnd = ({ canDropInbetween, canDropForeignDragObject }) => {
     rootItemId: "root",
     getItemName: (item) => item.getItemData(),
     isItemFolder: () => true,
-    onUpdateDragPosition: setDnd,
     canDropInbetween,
     onDrop: action("onDrop"),
     onDropForeignDragObject: action("onDropForeignDragObject"),
@@ -111,8 +108,6 @@ export const Dnd = ({ canDropInbetween, canDropForeignDragObject }) => {
       >
         Or drag me into the tree!
       </div>
-
-      <pre>{JSON.stringify(dnd, null, 2)}</pre>
     </>
   );
 };
