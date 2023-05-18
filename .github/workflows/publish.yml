@@ -23,7 +23,7 @@ jobs:
       - run: yarn build:web
       - run: yarn changeset version
       - name: Set NPM Publish Token
-        run: npm set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
+        run: npm set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
       - run: yarn changeset publish
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
