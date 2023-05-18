@@ -22,7 +22,7 @@ jobs:
         id: changesets
         uses: changesets/action@v1.4.0
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: publish
         if: steps.changesets.outputs.hasChangesets == 'false'
