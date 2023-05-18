@@ -29,7 +29,7 @@ jobs:
       - run: yarn docs:md
       - run: yarn build:web
       - run: yarn changeset version
-      - run: cat ./npmrc
+      - run: cat ./.npmrc
       - run: cat $NPM_CONFIG_USERCONFIG
       - run: yarn changeset publish
         env:
