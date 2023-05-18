@@ -12,8 +12,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
-          fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
+          persist-credentials: false
+          fetch-depth: 0
       - uses: volta-cli/action@v3
       - run: yarn
       - run: yarn lint
@@ -21,14 +21,19 @@ jobs:
       - run: yarn docs
       - run: yarn docs:md
       - run: yarn build:web
-      - name: changesets
-        id: changesets
-        uses: changesets/action@v1.4.0
-        with:
-          publish: yarn changeset publish
+      - run: yarn changeset version
+      - run: yarn changeset publish
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      # - uses: changesets/action@v1.4.0
+      #   id: changesets
+      #   with:
+      #     publish: yarn changeset publish
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+      #     NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       # - name: publish
       #   if: steps.changesets.outputs.hasChangesets == 'false'
       #   run: yarn changeset publish
