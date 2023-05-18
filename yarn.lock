@@ -2505,6 +2505,9 @@ __metadata:
     "@babel/preset-typescript": ^7.21.5
     "@emotion/react": ^11.11.0
     "@emotion/server": ^11.11.0
+    "@headless-tree/core": "workspace:*"
+    "@headless-tree/react": "workspace:*"
+    "@headless-tree/sb-react": "workspace:*"
     "@mantine/core": ^6.0.10
     "@mantine/hooks": ^6.0.10
     "@mantine/prism": ^6.0.10
@@ -2547,7 +2550,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@headless-tree/sb-react@workspace:packages/sb-react":
+"@headless-tree/sb-react@workspace:*, @headless-tree/sb-react@workspace:packages/sb-react":
   version: 0.0.0-use.local
   resolution: "@headless-tree/sb-react@workspace:packages/sb-react"
   dependencies:
