@@ -14,12 +14,14 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 0
-      - uses: actions/setup-node@v2.5.2
+      - uses: volta-cli/action@v3
+        with:
+          always-auth: true
+          registry-url: https://registry.npmjs.org/
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - uses: volta-cli/action@v3
       - run: yarn
       - run: yarn lint
       - run: yarn build:core
