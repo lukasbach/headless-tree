@@ -9,6 +9,8 @@
     "lint:test": "eslint .",
     "start": "lerna run start --parallel --scope @headless-tree/core --scope @headless-tree/sb-react",
     "build": "lerna run build,build:cjs,build:esm,build:docs,build:sb --concurrency 1",
+    "build:core": "lerna run build,build:cjs,build:esm --concurrency 1",
+    "build:web": "lerna run build:docs,build:sb --concurrency 1",
     "storybook": "lerna run storybook",
     "docs": "typedoc",
     "docs:md": "typedoc ./packages/core/src/mddocs-entry.ts --entryPointStrategy resolve --plugin typedoc-plugin-markdown --out packages/docs/apidocs"

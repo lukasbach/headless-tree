@@ -13,6 +13,7 @@ jobs:
       - uses: volta-cli/action@v3
       - run: yarn
       - run: yarn lint
+      - run: yarn build:core
       - run: yarn docs
       - run: yarn docs:md
-      - run: yarn build
+      - run: yarn build:web
