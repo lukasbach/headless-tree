@@ -14,6 +14,7 @@
     "docs:md": "typedoc ./packages/core/src/mddocs-entry.ts --entryPointStrategy resolve --plugin typedoc-plugin-markdown --out packages/docs/apidocs"
   },
   "dependencies": {
+    "@changesets/cli": "^2.26.1",
     "@lukasbach/eslint-config-deps": "^1.0.3",
     "@types/node": "18.16.1",
     "@types/react": "18.2.1",
