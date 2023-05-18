@@ -34,7 +34,8 @@
   },
   "volta": {
     "node": "18.16.0",
-    "yarn": "3.5.0"
+    "yarn": "3.5.0",
+    "npm": "9.6.7"
   },
   "eslintConfig": {
     "extends": "@lukasbach/base",
