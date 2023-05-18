@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "start:docs": "gatsby develop",
-    "build": "gatsby build",
+    "build:docs": "gatsby build",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
     "typecheck": "tsc --noEmit"
