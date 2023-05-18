@@ -69,7 +69,7 @@ export const dragAndDropFeature: FeatureImplementation<
           return;
         }
 
-        if (!canDrop(e, target, tree)) {
+        if (!canDrop(e.dataTransfer, target, tree)) {
           return;
         }
 
@@ -103,7 +103,7 @@ export const dragAndDropFeature: FeatureImplementation<
         const dataRef = tree.getDataRef<DndDataRef>();
         const target = getDropTarget(e, item, tree);
 
-        if (!canDrop(e, target, tree)) {
+        if (!canDrop(e.dataTransfer, target, tree)) {
           return;
         }
 

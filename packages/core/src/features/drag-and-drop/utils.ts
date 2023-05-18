@@ -10,7 +10,7 @@ export const getDropOffset = (e: any, item: ItemInstance<any>): number => {
 };
 
 export const canDrop = (
-  e: any,
+  dataTransfer: DataTransfer | null,
   target: DropTarget<any>,
   tree: TreeInstance<any>
 ) => {
@@ -23,7 +23,8 @@ export const canDrop = (
 
   if (
     !draggedItems &&
-    !config.canDropForeignDragObject?.(e.dataTransfer, target)
+    dataTransfer &&
+    !config.canDropForeignDragObject?.(dataTransfer, target)
   ) {
     return false;
   }
@@ -66,7 +67,7 @@ export const getDropTarget = (
     return dropOnItemTarget;
   }
 
-  if (!canDrop(e, dropOnItemTarget, tree)) {
+  if (!canDrop(e.dataTransfer, dropOnItemTarget, tree)) {
     return {
       item: item.getParent(),
       childIndex:

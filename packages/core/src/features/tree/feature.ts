@@ -233,6 +233,8 @@ export const treeFeature: FeatureImplementation<
         .retrieveChildrenIds(item.getItemMeta().itemId)
         .map((id) => tree.getItemInstance(id)),
     getTree: () => tree as any,
+    getItemAbove: () => tree.getItems()[item.getItemMeta().index - 1],
+    getItemBelow: () => tree.getItems()[item.getItemMeta().index + 1],
   }),
 
   hotkeys: {
@@ -240,7 +242,8 @@ export const treeFeature: FeatureImplementation<
       hotkey: "ArrowDown",
       canRepeat: true,
       preventDefault: true,
-      isEnabled: (tree) => !(tree.isSearchOpen?.() ?? false),
+      isEnabled: (tree) =>
+        !(tree.isSearchOpen?.() ?? false) && !tree.getState().dnd,
       handler: (e, tree) => {
         tree.focusNextItem();
         tree.updateDomFocus();
@@ -250,7 +253,8 @@ export const treeFeature: FeatureImplementation<
       hotkey: "ArrowUp",
       canRepeat: true,
       preventDefault: true,
-      isEnabled: (tree) => !(tree.isSearchOpen?.() ?? false),
+      isEnabled: (tree) =>
+        !(tree.isSearchOpen?.() ?? false) && !tree.getState().dnd,
       handler: (e, tree) => {
         tree.focusPreviousItem();
         tree.updateDomFocus();
@@ -288,7 +292,6 @@ export const treeFeature: FeatureImplementation<
     focusFirstItem: {
       hotkey: "Home",
       handler: (e, tree) => {
-        console.log("home", tree.getItems()[0], tree.getItems());
         tree.focusItem(tree.getItems()[0].getId());
         tree.updateDomFocus();
       },
@@ -296,7 +299,6 @@ export const treeFeature: FeatureImplementation<
     focusLastItem: {
       hotkey: "End",
       handler: (e, tree) => {
-        console.log("end");
         tree.focusItem(tree.getItems()[tree.getItems().length - 1].getId());
         tree.updateDomFocus();
       },

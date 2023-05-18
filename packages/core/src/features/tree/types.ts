@@ -57,6 +57,8 @@ export type TreeFeatureDef<T> = {
     getIndexInParent: () => number;
     primaryAction: () => void;
     getTree: () => TreeInstance<T>;
+    getItemAbove: () => ItemInstance<T> | null;
+    getItemBelow: () => ItemInstance<T> | null;
   };
   hotkeys:
     | "focusNextItem"
