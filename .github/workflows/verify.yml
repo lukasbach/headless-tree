@@ -1,0 +1,16 @@
+name: Verify
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    name: Verify
+    steps:
+      - uses: actions/checkout@v3
+      - uses: volta-cli/action@v3
+      - run: yarn
+      - run: yarn lint
+      - run: yarn build
