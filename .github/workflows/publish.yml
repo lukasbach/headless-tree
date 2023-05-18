@@ -1,0 +1,26 @@
+name: Verify
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    name: Verify
+    steps:
+      - uses: actions/checkout@v3
+      - uses: volta-cli/action@v3
+      - run: yarn
+      - run: yarn lint
+      - run: yarn build
+      - name: changesets
+        id: changesets
+        uses: changesets/action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: publish
+        if: steps.changesets.outputs.hasChangesets == 'false'
+        run: yarn changeset publish
