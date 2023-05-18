@@ -30,7 +30,10 @@
     "react-icons": "^4.8.0",
     "react-markdown": "^8.0.7",
     "remark-gfm": "^3.0.1",
-    "tsconfig-paths-webpack-plugin": "4.0.1"
+    "tsconfig-paths-webpack-plugin": "4.0.1",
+    "@headless-tree/sb-react": "workspace:*",
+    "@headless-tree/react": "workspace:*",
+    "@headless-tree/core": "workspace:*"
   },
   "devDependencies": {
     "@babel/preset-react": "^7.18.6",
