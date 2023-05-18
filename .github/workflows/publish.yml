@@ -24,9 +24,11 @@ jobs:
       - name: changesets
         id: changesets
         uses: changesets/action@v1.4.0
+        with:
+          publish: yarn changeset publish
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - name: publish
-        if: steps.changesets.outputs.hasChangesets == 'false'
-        run: yarn changeset publish
+      # - name: publish
+      #   if: steps.changesets.outputs.hasChangesets == 'false'
+      #   run: yarn changeset publish
