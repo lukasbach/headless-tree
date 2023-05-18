@@ -2,8 +2,8 @@ import type { GatsbyNode } from "gatsby";
 import TsconfigPathsPlugin from "tsconfig-paths-webpack-plugin";
 import * as fs from "fs-extra";
 import * as path from "path";
+// eslint-disable-next-line import/no-extraneous-dependencies
 import * as express from "express";
-import { createFilePath } from "gatsby-source-filesystem";
 
 export const onCreateWebpackConfig: GatsbyNode["onCreateWebpackConfig"] = ({
   actions,
