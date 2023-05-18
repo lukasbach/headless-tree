@@ -23,7 +23,7 @@ jobs:
       - run: yarn build:web
       - name: Set NPM Publish Token
         run: npm set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
-      - uses: changesets/action@v1.4.0
+      - uses: changesets/action@v1
         id: changesets
         with:
           commit: "chore: release"
