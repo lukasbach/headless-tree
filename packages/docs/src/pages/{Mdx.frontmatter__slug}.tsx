@@ -1,7 +1,7 @@
 import React from "react";
 import { graphql, PageProps } from "gatsby";
-import { LayoutContainer } from "../components/layout/layout-container";
-import { FeaturePage } from "../components/feature-page/feature-page";
+import { LayoutContainer } from "@/components/layout/layout-container";
+import { FeaturePage } from "@/components/feature-page/feature-page";
 
 export default function DocPage({
   data,
@@ -44,7 +44,7 @@ export const query = graphql`
         sourceTypes
         sourceImplementation
       }
-      tableOfContents(maxDepth: 1)
+      tableOfContents(maxDepth: 3)
     }
   }
 `;

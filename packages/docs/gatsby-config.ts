@@ -1,15 +1,34 @@
 import type { GatsbyConfig } from "gatsby";
+import * as RehypeSlug from "rehype-slug";
+
+// https://www.gatsbyjs.com/plugins/gatsby-plugin-mdx/#mdxoptions
+const wrapESMPlugin = (name) =>
+  function wrapESM(opts) {
+    return async (...args) => {
+      const mod = await import(name);
+      const plugin = mod.default(opts);
+      return plugin(...args);
+    };
+  };
 
 const config: GatsbyConfig = {
   graphqlTypegen: true,
   plugins: [
+    "gatsby-plugin-mantine",
     {
       resolve: `gatsby-plugin-mdx`,
       options: {
         extensions: [`.md`, `.mdx`],
+        mdxOptions: {
+          remarkPlugins: [],
+          rehypePlugins: [
+            // wrapESMPlugin("rehype-slug"),
+            RehypeSlug,
+            // [RehypeAutolinkHeadings, { behavior: `wrap` }],
+          ],
+        },
       },
     },
-    "gatsby-plugin-mantine",
     // {
     //   resolve: "gatsby-source-filesystem",
     //   options: {

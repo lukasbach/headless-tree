@@ -3,3 +3,6 @@
     --toc-width: 200px;
     --header-height: 80px;
 }
+html {
+    scroll-padding-top: var(--header-height);
+}

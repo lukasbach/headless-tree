@@ -9,6 +9,7 @@ import { Prism } from "@mantine/prism";
 import { DemoBox } from "./demo-box";
 import { ApiDocs } from "./api-docs";
 import { FeatureLink } from "@/components/feature-page/feature-link";
+import { TocItems } from "@/components/toc-items";
 
 export type FeaturePageProps = {
   children: ReactNode;
@@ -36,12 +37,16 @@ export const FeaturePage: FC<FeaturePageProps> = ({ children, data }) => {
             theme.colorScheme === "dark"
               ? theme.colors.dark[5]
               : theme.colors.gray[2],
+          background:
+            theme.colorScheme === "dark"
+              ? theme.colors.dark[9]
+              : theme.colors.gray[0],
+          paddingRight: "var(--toc-width)",
+          paddingTop: 40,
         })}
       >
         <Container>
-          <Title order={1} mt="40px">
-            {data.mdx?.frontmatter?.title}
-          </Title>
+          <Title order={1}>{data.mdx?.frontmatter?.title}</Title>
           <Text fz="lg" mb="20px">
             {data.mdx?.frontmatter?.subtitle}
           </Text>
@@ -82,11 +87,22 @@ export const FeaturePage: FC<FeaturePageProps> = ({ children, data }) => {
       </Box>
 
       <Tabs.Panel value="page" pt="xs">
-        <DemoBox
-          storybookTag={data.mdx?.frontmatter?.storybook}
-          height="400px"
-        />
-        <Container>{children}</Container>
+        <Box sx={{ display: "flex" }}>
+          <Container sx={{ flexGrow: 1 }}>{children}</Container>
+          <Box sx={{ width: "var(--toc-width)" }}>
+            <Box
+              sx={{
+                position: "sticky",
+                top: "var(--header-height)",
+                "> ul": { border: "none" },
+              }}
+            >
+              <TocItems
+                items={(data.mdx?.tableOfContents?.items ?? []) as any}
+              />
+            </Box>
+          </Box>
+        </Box>
       </Tabs.Panel>
 
       <Tabs.Panel value="demo" pt="xs">

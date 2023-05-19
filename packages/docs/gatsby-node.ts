@@ -2,8 +2,6 @@ import type { GatsbyNode } from "gatsby";
 import TsconfigPathsPlugin from "tsconfig-paths-webpack-plugin";
 import * as fs from "fs-extra";
 import * as path from "path";
-// eslint-disable-next-line import/no-extraneous-dependencies
-import * as express from "express";
 
 export const onCreateWebpackConfig: GatsbyNode["onCreateWebpackConfig"] = ({
   actions,
@@ -14,11 +12,6 @@ export const onCreateWebpackConfig: GatsbyNode["onCreateWebpackConfig"] = ({
     },
   });
 };
-
-// https://github.com/gatsbyjs/gatsby/issues/13072#issuecomment-630114464
-// export const onCreateDevServer: GatsbyNode["onCreateDevServer"] = ({ app }) => {
-//   app.use(express.static("public"));
-// };
 
 export const sourceNodes: GatsbyNode["sourceNodes"] = async ({
   graphql,
@@ -42,7 +35,10 @@ export const sourceNodes: GatsbyNode["sourceNodes"] = async ({
       sourcePath,
       source,
       // eslint-disable-next-line no-underscore-dangle
-      embed: `/storybook/react/iframe.html?id=${story.id}&viewMode=story`,
+      embed:
+        process.env.NODE_ENV === "dev"
+          ? `/storybook/react/iframe.html?id=${story.id}&viewMode=story`
+          : "https://example.org",
       sbSource: "react",
       id: createNodeId(story.id),
       parent: null,
