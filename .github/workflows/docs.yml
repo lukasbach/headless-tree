@@ -23,7 +23,7 @@ jobs:
       - run: yarn docs
       - run: yarn docs:md
       - run: yarn build:web
-      - run: ls -la ./packages/docs/public
+      - run: tree ./packages/docs/public
       - uses: actions/upload-pages-artifact@v1
         with:
           path: ./packages/docs/public
