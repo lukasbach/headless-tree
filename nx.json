@@ -8,7 +8,8 @@
           "build:esm",
           "build:docs",
           "typecheck",
-          "build:sb"
+          "build:sb",
+          "lint:test"
         ],
         "accessToken": "ZDgzYThjZTEtMzA1Yi00YTEyLWJhY2QtYjk3ZDBmNTJjMzg1fHJlYWQtd3JpdGU="
       }

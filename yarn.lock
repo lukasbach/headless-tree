@@ -2516,6 +2516,7 @@ __metadata:
     babel-preset-gatsby: 3.9.0
     fs-extra: ^11.1.1
     gatsby: ^5.9.0
+    gatsby-link: ^5.10.0
     gatsby-plugin-mantine: ^5.0.0
     gatsby-plugin-mdx: ^5.9.0
     gatsby-source-filesystem: ^5.9.0
@@ -12525,6 +12526,30 @@ __metadata:
   languageName: node
   linkType: hard
 
+"gatsby-core-utils@npm:^4.10.0":
+  version: 4.10.0
+  resolution: "gatsby-core-utils@npm:4.10.0"
+  dependencies:
+    "@babel/runtime": ^7.20.13
+    ci-info: 2.0.0
+    configstore: ^5.0.1
+    fastq: ^1.15.0
+    file-type: ^16.5.4
+    fs-extra: ^11.1.1
+    got: ^11.8.6
+    hash-wasm: ^4.9.0
+    import-from: ^4.0.0
+    lmdb: 2.5.3
+    lock: ^1.1.0
+    node-object-hash: ^2.3.10
+    proper-lockfile: ^4.1.2
+    resolve-from: ^5.0.0
+    tmp: ^0.2.1
+    xdg-basedir: ^4.0.0
+  checksum: 605d29475d3b204965888cfbaf043091ea56f8ee5a6682c74a578ded7e9fc3d005ee86df91bf6347f87946a01bc2366b65c63e8d7110184f030edde7acb8e753
+  languageName: node
+  linkType: hard
+
 "gatsby-core-utils@npm:^4.9.0":
   version: 4.9.0
   resolution: "gatsby-core-utils@npm:4.9.0"
@@ -12566,6 +12591,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"gatsby-link@npm:^5.10.0":
+  version: 5.10.0
+  resolution: "gatsby-link@npm:5.10.0"
+  dependencies:
+    "@types/reach__router": ^1.3.10
+    gatsby-page-utils: ^3.10.0
+    prop-types: ^15.8.1
+  peerDependencies:
+    "@gatsbyjs/reach-router": ^2.0.0
+    react: ^18.0.0 || ^0.0.0
+    react-dom: ^18.0.0 || ^0.0.0
+  checksum: 405c46c31c4d4b2e420c3cfe00e6551ae134d9a846b44ef114b70a1bba81171e79e478af38aa6aeab3419750a24cade96cbbe3d77f888d8b47dfd90fe4bcb5e6
+  languageName: node
+  linkType: hard
+
 "gatsby-link@npm:^5.9.0":
   version: 5.9.0
   resolution: "gatsby-link@npm:5.9.0"
@@ -12578,6 +12618,22 @@ __metadata:
     react: ^18.0.0 || ^0.0.0
     react-dom: ^18.0.0 || ^0.0.0
   checksum: 48b91cf12fdfe9d5142d4da4b7a770e72c896c93e9052a32471c734256dd3a9803e554a0f07a8f2cfb1dfc7c7e4bf8c0d542d7d5a428e7fb988e67575bf569a1
+  languageName: node
+  linkType: hard
+
+"gatsby-page-utils@npm:^3.10.0":
+  version: 3.10.0
+  resolution: "gatsby-page-utils@npm:3.10.0"
+  dependencies:
+    "@babel/runtime": ^7.20.13
+    bluebird: ^3.7.2
+    chokidar: ^3.5.3
+    fs-exists-cached: ^1.0.0
+    gatsby-core-utils: ^4.10.0
+    glob: ^7.2.3
+    lodash: ^4.17.21
+    micromatch: ^4.0.5
+  checksum: a5bd87ba1aa88f52a58fb63b42fda84c9a0cbea8d40c80f3aa9344a8d5036d4ea602b97e22092ff6b5fcf92b8d8106f63eeb2dc0facd4085fd106d1ed09015e8
   languageName: node
   linkType: hard
 
