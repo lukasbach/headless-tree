@@ -1,0 +1,29 @@
+name: Deploy
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  deployments: write
+  id-token: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: volta-cli/action@v3
+      - run: yarn
+      - run: yarn lint:test
+      - run: yarn build:core
+      - run: yarn docs
+      - run: yarn docs:md
+      - run: yarn build:web
+      - uses: actions/upload-pages-artifact@v1
+        with:
+          path: ./packages/docs/public
+      - uses: actions/deploy-pages@v2

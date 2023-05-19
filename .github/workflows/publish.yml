@@ -16,7 +16,7 @@ jobs:
           fetch-depth: 0
       - uses: volta-cli/action@v3
       - run: yarn
-      - run: yarn lint
+      - run: yarn lint:test
       - run: yarn build:core
       - run: yarn docs
       - run: yarn docs:md
@@ -31,3 +31,5 @@ jobs:
         uses: actions-js/push@master
         with:
           github_token: ${{ secrets.GH_TOKEN }}
+          message: "chore: release [skip ci]"
+          tags: true
