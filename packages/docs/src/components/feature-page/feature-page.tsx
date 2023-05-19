@@ -86,19 +86,14 @@ export const FeaturePage: FC<FeaturePageProps> = ({ children, data }) => {
           storybookTag={data.mdx?.frontmatter?.storybook}
           height="400px"
         />
-        <Container>
-          {children}
-          <DemoBox
-            storybookTag={data.mdx?.frontmatter?.storybook}
-            height="200px"
-          />
-        </Container>
+        <Container>{children}</Container>
       </Tabs.Panel>
 
       <Tabs.Panel value="demo" pt="xs">
         <DemoBox
           storybookTag={data.mdx?.frontmatter?.storybook}
-          height="calc(100vh - 100px)"
+          height="calc(100vh - var(--header-height))"
+          fullWidth={true}
         />
       </Tabs.Panel>
 

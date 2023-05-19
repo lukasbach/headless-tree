@@ -1,4 +1,4 @@
-import React, { FC, ReactNode, useState } from "react";
+import React, { FC, ReactNode } from "react";
 import {
   AppShell,
   ColorScheme,
@@ -8,6 +8,8 @@ import {
 import { useLocalStorage } from "@mantine/hooks";
 import { Sidebar } from "@/components/layout/sidebar";
 import { HeaderBar } from "@/components/layout/header-bar";
+
+import "./global-layout.css";
 
 export type LayoutContainerProps = {
   children: ReactNode;

@@ -5,12 +5,17 @@ import { useStories } from "@/queries/use-stories";
 
 export type DemoBoxProps = {
   storybookTag?: string | null;
-  height: string;
+  height?: string;
+  fullWidth?: boolean;
 };
 
 const storyStartToken = "// story-start";
 
-export const DemoBox: FC<DemoBoxProps> = ({ storybookTag, height }) => {
+export const DemoBox: FC<DemoBoxProps> = ({
+  storybookTag,
+  height,
+  fullWidth,
+}) => {
   const { allStory } = useStories();
   const stories = allStory.nodes.filter((story) =>
     storybookTag ? story.tags?.includes(storybookTag) : true
@@ -20,78 +25,83 @@ export const DemoBox: FC<DemoBoxProps> = ({ storybookTag, height }) => {
   const code = story.source?.includes(storyStartToken)
     ? story.source.split(storyStartToken)[1]
     : story.source;
+  height ??= "500px";
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        height,
-        width: "calc(100vw - 200px)",
-        left: "200px",
-        position: "absolute",
-      }}
-    >
+    <Box sx={{ height }}>
       <Box
-        sx={(theme) => ({
+        sx={{
           display: "flex",
-          alignItems: "center",
-          background:
-            theme.colorScheme === "dark"
-              ? theme.colors.dark[6]
-              : theme.colors.gray[1],
-          padding: "4px 8px",
-        })}
+          flexDirection: "column",
+          height,
+          width: fullWidth
+            ? "calc(100vw - var(--sidebar-width))"
+            : "calc(100vw - var(--sidebar-width) - var(--toc-width))",
+          left: "var(--sidebar-width)",
+          position: "absolute",
+        }}
       >
-        <Box>Example:</Box>
-        <Select
-          size="xs"
-          sx={{ width: "200px", paddingLeft: "8px" }}
-          value={selectedStory}
-          onChange={setSelectedStory}
-          data={stories.map((story) => ({
-            value: story.story ?? "",
-            label: story.name ?? "",
-          }))}
-        />
-        <Box sx={{ flexGrow: 1 }} />
-        <Button size="xs" variant="default" mr="sm">
-          Open Source
-        </Button>
-        <Button size="xs" variant="default">
-          Open in Storybook
-        </Button>
-      </Box>
-      <Box
-        display="flex"
-        sx={(theme) => ({
-          flexGrow: 1,
-          minHeight: 0,
-          alignItems: "stretch",
-          borderBottom: "1px solid",
-          borderColor:
-            theme.colorScheme === "dark"
-              ? theme.colors.dark[6]
-              : theme.colors.gray[1],
-        })}
-      >
-        <Box w="50%" h="100%">
-          <Box p="16px" h="100%">
-            <Box
-              component="iframe"
-              src={story.embed ?? ""}
-              width="100%"
-              height="100%"
-              sx={{ borderRadius: 16, border: "none", background: "white" }}
+        <Box
+          sx={(theme) => ({
+            display: "flex",
+            alignItems: "center",
+            background:
+              theme.colorScheme === "dark"
+                ? theme.colors.dark[6]
+                : theme.colors.gray[1],
+            padding: "4px 8px",
+          })}
+        >
+          <Box>Example:</Box>
+          <Select
+            size="xs"
+            sx={{ width: "var(--sidebar-width)", paddingLeft: "8px" }}
+            value={selectedStory}
+            onChange={setSelectedStory}
+            data={stories.map((story) => ({
+              value: story.story ?? "",
+              label: story.name ?? "",
+            }))}
+          />
+          <Box sx={{ flexGrow: 1 }} />
+          <Button size="xs" variant="default" mr="sm">
+            Open Source
+          </Button>
+          <Button size="xs" variant="default">
+            Open in Storybook
+          </Button>
+        </Box>
+        <Box
+          display="flex"
+          sx={(theme) => ({
+            flexGrow: 1,
+            minHeight: 0,
+            alignItems: "stretch",
+            borderBottom: "1px solid",
+            borderColor:
+              theme.colorScheme === "dark"
+                ? theme.colors.dark[6]
+                : theme.colors.gray[1],
+          })}
+        >
+          <Box w="50%" h="100%">
+            <Box p="16px" h="100%">
+              <Box
+                component="iframe"
+                src={story.embed ?? ""}
+                width="100%"
+                height="100%"
+                sx={{ borderRadius: 16, border: "none", background: "white" }}
+              />
+            </Box>
+          </Box>
+          <Box sx={{ flexGrow: 1, overflow: "auto", minHeight: 0 }} h="100%">
+            <Prism
+              withLineNumbers
+              language="tsx"
+              children={code ?? "Could not load source"}
             />
           </Box>
-        </Box>
-        <Box sx={{ flexGrow: 1, overflow: "auto", minHeight: 0 }} h="100%">
-          <Prism
-            withLineNumbers
-            language="tsx"
-            children={code ?? "Could not load source"}
-          />
         </Box>
       </Box>
     </Box>
