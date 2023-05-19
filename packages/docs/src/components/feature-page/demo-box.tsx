@@ -27,6 +27,9 @@ export const DemoBox: FC<DemoBoxProps> = ({ storybookTag, height }) => {
         display: "flex",
         flexDirection: "column",
         height,
+        width: "calc(100vw - 200px)",
+        left: "200px",
+        position: "absolute",
       }}
     >
       <Box
