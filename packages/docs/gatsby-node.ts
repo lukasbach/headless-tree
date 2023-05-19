@@ -36,7 +36,7 @@ export const sourceNodes: GatsbyNode["sourceNodes"] = async ({
       source,
       // eslint-disable-next-line no-underscore-dangle
       embed:
-        process.env.NODE_ENV === "dev"
+        process.env.NODE_ENV === "production"
           ? `/storybook/react/iframe.html?id=${story.id}&viewMode=story`
           : "https://example.org",
       sbSource: "react",
