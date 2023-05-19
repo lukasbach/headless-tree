@@ -1,6 +1,6 @@
 import React, { FC, ReactNode } from "react";
 import { ActionIcon, Header, useMantineColorScheme } from "@mantine/core";
-import { IoMoonOutline, IoSunnyOutline } from "react-icons/all";
+import { IoMoonOutline, IoSunnyOutline } from "react-icons/io5";
 
 export type HeaderBarProps = {};
 

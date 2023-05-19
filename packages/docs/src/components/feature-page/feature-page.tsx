@@ -4,7 +4,7 @@ import {
   IoDiceOutline,
   IoDocumentTextOutline,
   IoFlaskOutline,
-} from "react-icons/all";
+} from "react-icons/io5";
 import { Prism } from "@mantine/prism";
 import { DemoBox } from "./demo-box";
 import { ApiDocs } from "./api-docs";
