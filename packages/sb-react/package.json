@@ -6,7 +6,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "start": "storybook dev -p 6006",
-    "build:sb": "storybook build -o ../docs/public/storybook/react"
+    "build:sb": "storybook build"
   },
   "author": "Lukas Bach <npm@lukasbach.com>",
   "license": "MIT",

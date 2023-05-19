@@ -16,9 +16,9 @@ export const onCreateWebpackConfig: GatsbyNode["onCreateWebpackConfig"] = ({
 };
 
 // https://github.com/gatsbyjs/gatsby/issues/13072#issuecomment-630114464
-export const onCreateDevServer: GatsbyNode["onCreateDevServer"] = ({ app }) => {
-  app.use(express.static("public"));
-};
+// export const onCreateDevServer: GatsbyNode["onCreateDevServer"] = ({ app }) => {
+//   app.use(express.static("public"));
+// };
 
 export const sourceNodes: GatsbyNode["sourceNodes"] = async ({
   graphql,
@@ -27,7 +27,7 @@ export const sourceNodes: GatsbyNode["sourceNodes"] = async ({
   createNodeId,
 }) => {
   const { stories } = await fs.readJson(
-    "./public/storybook/react/stories.json"
+    "../sb-react/storybook-static/stories.json"
   );
 
   for (const story of Object.values(stories) as any) {
