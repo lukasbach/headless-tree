@@ -15,13 +15,6 @@ jobs:
           persist-credentials: false
           fetch-depth: 0
       - uses: volta-cli/action@v3
-        with:
-          always-auth: true
-          registry-url: https://registry.npmjs.org/
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - run: yarn
       - run: yarn lint
       - run: yarn build:core
@@ -29,8 +22,6 @@ jobs:
       - run: yarn docs:md
       - run: yarn build:web
       - run: yarn changeset version
-      - run: cat ./.npmrc
-      - run: cat $NPM_CONFIG_USERCONFIG
       - run: yarn changeset publish
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
@@ -40,13 +31,3 @@ jobs:
         uses: actions-js/push@master
         with:
           github_token: ${{ secrets.GH_TOKEN }}
-      # - uses: changesets/action@v1.4.0
-      #   id: changesets
-      #   with:
-      #     publish: yarn changeset publish
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-      #     NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      # - name: publish
-      #   if: steps.changesets.outputs.hasChangesets == 'false'
-      #   run: yarn changeset publish
