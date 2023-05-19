@@ -16,19 +16,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: echo "dir=$(yarn config get cacheFolder)" >> $GITHUB_OUTPUT
-        id: yarn-cache-dir-path
       - uses: actions/cache@v3
         with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-cache-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-      - uses: actions/cache@v3
-        id: dep-cache
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-yarn-deps-${{ hashFiles('**/yarn.lock') }}
+          path: '**/node_modules'
+          key: ${{ runner.os }}-deps-${{ hashFiles('**/yarn.lock') }}
       - uses: volta-cli/action@v3
       - run: yarn
       - run: yarn lint:test
