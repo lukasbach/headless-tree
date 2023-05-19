@@ -10,6 +10,12 @@ jobs:
     name: Verify
     steps:
       - uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        with:
+          path: |
+            **/node_modules
+            ./.yarn/cache
+          key: ${{ runner.os }}-deps-${{ hashFiles('**/yarn.lock') }}
       - uses: volta-cli/action@v3
       - run: yarn
       - run: yarn lint:test
