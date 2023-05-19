@@ -1,4 +1,4 @@
-name: Deploy
+name: Docs
 on:
   push:
     branches:
@@ -12,7 +12,7 @@ permissions:
   id-token: write
 
 jobs:
-  test:
+  docs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
