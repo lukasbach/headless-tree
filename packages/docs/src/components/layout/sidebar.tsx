@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from "react";
+import React, { FC } from "react";
 import { Box, createStyles, Navbar, NavLink } from "@mantine/core";
 import { Link } from "gatsby";
 import { useNavbarData } from "@/queries/use-navbar-data";

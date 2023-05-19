@@ -1,7 +1,6 @@
 import React, { FC } from "react";
 import { Box } from "@mantine/core";
 import { Link } from "gatsby-link";
-import { navigate } from "gatsby";
 
 export type TocItem = {
   url: string;
