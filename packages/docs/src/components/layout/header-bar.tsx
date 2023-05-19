@@ -8,7 +8,7 @@ export const HeaderBar: FC<HeaderBarProps> = ({}) => {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const dark = colorScheme === "dark";
   return (
-    <Header height={60}>
+    <Header height={60} bg="dark.9">
       <ActionIcon
         variant="outline"
         color={dark ? "yellow" : "blue"}

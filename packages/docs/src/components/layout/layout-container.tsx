@@ -35,7 +35,7 @@ export const LayoutContainer: FC<LayoutContainerProps> = ({
       <MantineProvider
         withGlobalStyles
         withNormalizeCSS
-        theme={{ colorScheme }}
+        theme={{ colorScheme, primaryColor: "grape" }}
       >
         <AppShell
           header={<HeaderBar />}

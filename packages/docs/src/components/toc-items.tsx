@@ -42,7 +42,8 @@ export const TocItems: FC<TocItemsProps> = ({ items }) => {
             sx={(theme) => ({
               display: "block",
               padding: "6px 12px",
-              borderRadius: 4,
+              margin: "0 4px",
+              borderRadius: "8px",
               color:
                 theme.colorScheme === "dark"
                   ? theme.colors.dark[0]

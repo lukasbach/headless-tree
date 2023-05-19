@@ -12,7 +12,26 @@ const categories = [
 ];
 
 const useStyles = createStyles((theme) => ({
-  root: { borderRadius: 8, paddingTop: "4px", paddingBottom: "4px" },
+  root: {
+    position: "relative",
+    borderRadius: 8,
+    paddingTop: "4px",
+    paddingBottom: "4px",
+    "&[data-active]": {
+      fontWeight: "bold",
+    },
+    "[data-active]:before": {
+      content: '""',
+      position: "absolute",
+      borderRadius: 16,
+      left: -6,
+      top: 6,
+      bottom: 6,
+      width: 4,
+      backgroundColor:
+        theme.colors[theme.primaryColor][theme.colorScheme === "dark" ? 6 : 7],
+    },
+  },
 }));
 
 export const Sidebar: FC<SidebarProps> = ({ location }) => {

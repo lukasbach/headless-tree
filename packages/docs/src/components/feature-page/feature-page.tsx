@@ -88,7 +88,7 @@ export const FeaturePage: FC<FeaturePageProps> = ({ children, data }) => {
 
       <Tabs.Panel value="page" pt="xs">
         <Box sx={{ display: "flex" }}>
-          <Container sx={{ flexGrow: 1 }}>{children}</Container>
+          <Container sx={{ flexGrow: 1, width: 0 }}>{children}</Container>
           <Box sx={{ width: "var(--toc-width)" }}>
             <Box
               sx={{
