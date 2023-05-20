@@ -32,6 +32,7 @@ jobs:
       - run: |
           mkdir -p ./packages/docs/public/storybook
           cp -r ./packages/sb-react/storybook-static ./packages/docs/public/storybook/react
+          cp -r ./docs ./packages/docs/public/api
       - uses: actions/upload-pages-artifact@v1
         with:
           path: ./packages/docs/public
