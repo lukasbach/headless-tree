@@ -58,7 +58,6 @@ export const Search = () => {
               data-selected={item.isSelected()}
               data-searchmatch={item.isMatchingSearch()}
             >
-              {item.isExpanded() ? "v " : "> "}
               {item.getItemName()}
             </button>
           </div>

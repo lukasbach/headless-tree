@@ -60,7 +60,6 @@ export const AsyncDataLoading = () => {
               data-expanded={item.isExpanded()}
               data-selected={item.isSelected()}
             >
-              {item.isExpanded() ? "v " : "> "}
               {item.getItemName()}
               {item.isLoading() && " (loading...)"}
             </button>

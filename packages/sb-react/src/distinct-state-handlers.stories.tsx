@@ -49,7 +49,6 @@ export const DistinctStateHandlers = () => {
             data-expanded={item.isExpanded()}
             data-selected={item.isSelected()}
           >
-            {item.isExpanded() ? "v " : "> "}
             {item.getItemName()}
           </button>
         </div>

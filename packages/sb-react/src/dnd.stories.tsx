@@ -84,7 +84,6 @@ export const Dnd = ({ canDropInbetween, canDropForeignDragObject }) => {
               data-dropabove={item.isDropTargetAbove() && item.isDraggingOver()}
               data-dropbelow={item.isDropTargetBelow() && item.isDraggingOver()}
             >
-              {item.isExpanded() ? "v " : "> "}
               {item.getItemName()}
             </button>
           </div>

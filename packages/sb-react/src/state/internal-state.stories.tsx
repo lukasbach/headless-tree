@@ -8,12 +8,12 @@ import {
 import { useTree } from "@headless-tree/react";
 
 const meta = {
-  title: "React/No State Handlers",
+  title: "React/State/Internal State",
 } satisfies Meta;
 
 export default meta;
 
-export const NoStateHandlers = () => {
+export const InternalState = () => {
   const tree = useTree<string>({
     state: {},
     rootItemId: "root",
@@ -42,7 +42,6 @@ export const NoStateHandlers = () => {
             data-expanded={item.isExpanded()}
             data-selected={item.isSelected()}
           >
-            {item.isExpanded() ? "v " : "> "}
             {item.getItemName()}
           </button>
         </div>
