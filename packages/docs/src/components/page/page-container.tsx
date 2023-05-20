@@ -8,10 +8,10 @@ import {
 import { Prism } from "@mantine/prism";
 import { DemoBox } from "./demo-box";
 import { ApiDocs } from "./api-docs";
-import { FeatureLink } from "@/components/feature-page/feature-link";
+import { PageMetaLink } from "@/components/page/page-meta-link";
 import { TocItems } from "@/components/toc-items";
 
-export type FeaturePageProps = {
+export type PageContainerProps = {
   children: ReactNode;
   data: Queries.DocByIdQuery;
 };
@@ -26,8 +26,11 @@ const useTabStyles = createStyles((theme) => ({
   },
 }));
 
-export const FeaturePage: FC<FeaturePageProps> = ({ children, data }) => {
+export const PageContainer: FC<PageContainerProps> = ({ children, data }) => {
   const tabStyles = useTabStyles();
+  const hasDemos = !!data.mdx?.frontmatter?.storybook;
+  const hasApi = !!data.mdx?.frontmatter?.api;
+
   return (
     <Tabs defaultValue="page" classNames={tabStyles.classes}>
       <Box
@@ -50,38 +53,47 @@ export const FeaturePage: FC<FeaturePageProps> = ({ children, data }) => {
           <Text fz="lg" mb="20px">
             {data.mdx?.frontmatter?.subtitle}
           </Text>
-          <FeatureLink
-            label="Import"
-            value={
-              data.mdx?.frontmatter?.import && (
-                <Prism
-                  language="typescript"
-                  children={data.mdx?.frontmatter?.import ?? ""}
+          {data.mdx?.frontmatter?.metalinks?.map(
+            (link) =>
+              link && (
+                <PageMetaLink
+                  label={link.name ?? ""}
+                  href={link.href}
+                  linkText={link.label ?? undefined}
+                  value={
+                    link.code && (
+                      <Prism
+                        language={(link.language ?? "typescript") as any}
+                        children={link.code ?? ""}
+                        noCopy
+                        w="400px"
+                        ml="-16px"
+                        sx={{ " pre": { padding: 0 } }}
+                      />
+                    )
+                  }
                 />
               )
-            }
-          />
-          <FeatureLink
-            label="Source"
-            href={data.mdx?.frontmatter?.sourceImplementation}
-            linkText="View source"
-          />
-          <FeatureLink
-            label="Types"
-            href={data.mdx?.frontmatter?.sourceTypes}
-            linkText="View Types Source"
-          />
-          <FeatureLink label="TypeDoc" href="#" linkText="View Documentation" />
-          <Tabs.List mt="sm">
+          )}
+          <Tabs.List
+            mt="sm"
+            display={!hasDemos && !hasApi ? "none" : undefined}
+          >
             <Tabs.Tab value="page" icon={<IoDocumentTextOutline />}>
               Guide
             </Tabs.Tab>
-            <Tabs.Tab value="demo" icon={<IoDiceOutline />}>
-              Demos
-            </Tabs.Tab>
-            <Tabs.Tab value="api" icon={<IoFlaskOutline />}>
-              API
-            </Tabs.Tab>
+
+            {hasDemos && (
+              <Tabs.Tab value="demo" icon={<IoDiceOutline />}>
+                Demos
+              </Tabs.Tab>
+            )}
+
+            {hasApi && (
+              <Tabs.Tab value="api" icon={<IoFlaskOutline />}>
+                API
+              </Tabs.Tab>
+            )}
           </Tabs.List>
         </Container>
       </Box>
@@ -105,19 +117,23 @@ export const FeaturePage: FC<FeaturePageProps> = ({ children, data }) => {
         </Box>
       </Tabs.Panel>
 
-      <Tabs.Panel value="demo" pt="xs">
-        <DemoBox
-          storybookTag={data.mdx?.frontmatter?.storybook}
-          height="calc(100vh - var(--header-height))"
-          fullWidth={true}
-        />
-      </Tabs.Panel>
+      {hasDemos && (
+        <Tabs.Panel value="demo" pt="xs">
+          <DemoBox
+            storybookTag={data.mdx?.frontmatter?.storybook}
+            height="calc(100vh - var(--header-height))"
+            fullWidth={true}
+          />
+        </Tabs.Panel>
+      )}
 
-      <Tabs.Panel value="api" pt="xs">
-        <Container>
-          <ApiDocs data={data} />
-        </Container>
-      </Tabs.Panel>
+      {hasApi && (
+        <Tabs.Panel value="api" pt="xs">
+          <Container>
+            <ApiDocs data={data} />
+          </Container>
+        </Tabs.Panel>
+      )}
     </Tabs>
   );
 };

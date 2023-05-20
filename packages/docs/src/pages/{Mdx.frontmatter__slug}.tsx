@@ -1,22 +1,17 @@
 import React from "react";
 import { graphql, PageProps } from "gatsby";
 import { LayoutContainer } from "@/components/layout/layout-container";
-import { FeaturePage } from "@/components/feature-page/feature-page";
+import { PageContainer } from "@/components/page/page-container";
 
 export default function DocPage({
   data,
   location,
   children,
 }: PageProps<Queries.DocByIdQuery>) {
-  if (data.mdx?.frontmatter?.template === "feature") {
-    return (
-      <LayoutContainer location={location.pathname}>
-        <FeaturePage data={data}>{children}</FeaturePage>
-      </LayoutContainer>
-    );
-  }
   return (
-    <LayoutContainer location={location.pathname}>{children}</LayoutContainer>
+    <LayoutContainer location={location.pathname}>
+      <PageContainer data={data}>{children}</PageContainer>
+    </LayoutContainer>
   );
 }
 
@@ -37,6 +32,13 @@ export const query = graphql`
           itemInstance
           state
           treeInstance
+        }
+        metalinks {
+          code
+          href
+          label
+          language
+          name
         }
         import
         storybook

@@ -969,6 +969,7 @@ type MdxFrontmatter = {
   readonly category: Maybe<Scalars['String']>;
   readonly href: Maybe<Scalars['String']>;
   readonly import: Maybe<Scalars['String']>;
+  readonly metalinks: Maybe<ReadonlyArray<Maybe<MdxFrontmatterMetalinks>>>;
   readonly slug: Maybe<Scalars['String']>;
   readonly sourceImplementation: Maybe<Scalars['String']>;
   readonly sourceTypes: Maybe<Scalars['String']>;
@@ -1015,6 +1016,7 @@ type MdxFrontmatterFieldSelector = {
   readonly category: InputMaybe<FieldSelectorEnum>;
   readonly href: InputMaybe<FieldSelectorEnum>;
   readonly import: InputMaybe<FieldSelectorEnum>;
+  readonly metalinks: InputMaybe<MdxFrontmatterMetalinksFieldSelector>;
   readonly slug: InputMaybe<FieldSelectorEnum>;
   readonly sourceImplementation: InputMaybe<FieldSelectorEnum>;
   readonly sourceTypes: InputMaybe<FieldSelectorEnum>;
@@ -1029,6 +1031,7 @@ type MdxFrontmatterFilterInput = {
   readonly category: InputMaybe<StringQueryOperatorInput>;
   readonly href: InputMaybe<StringQueryOperatorInput>;
   readonly import: InputMaybe<StringQueryOperatorInput>;
+  readonly metalinks: InputMaybe<MdxFrontmatterMetalinksFilterListInput>;
   readonly slug: InputMaybe<StringQueryOperatorInput>;
   readonly sourceImplementation: InputMaybe<StringQueryOperatorInput>;
   readonly sourceTypes: InputMaybe<StringQueryOperatorInput>;
@@ -1038,11 +1041,48 @@ type MdxFrontmatterFilterInput = {
   readonly title: InputMaybe<StringQueryOperatorInput>;
 };
 
+type MdxFrontmatterMetalinks = {
+  readonly code: Maybe<Scalars['String']>;
+  readonly href: Maybe<Scalars['String']>;
+  readonly label: Maybe<Scalars['String']>;
+  readonly language: Maybe<Scalars['String']>;
+  readonly name: Maybe<Scalars['String']>;
+};
+
+type MdxFrontmatterMetalinksFieldSelector = {
+  readonly code: InputMaybe<FieldSelectorEnum>;
+  readonly href: InputMaybe<FieldSelectorEnum>;
+  readonly label: InputMaybe<FieldSelectorEnum>;
+  readonly language: InputMaybe<FieldSelectorEnum>;
+  readonly name: InputMaybe<FieldSelectorEnum>;
+};
+
+type MdxFrontmatterMetalinksFilterInput = {
+  readonly code: InputMaybe<StringQueryOperatorInput>;
+  readonly href: InputMaybe<StringQueryOperatorInput>;
+  readonly label: InputMaybe<StringQueryOperatorInput>;
+  readonly language: InputMaybe<StringQueryOperatorInput>;
+  readonly name: InputMaybe<StringQueryOperatorInput>;
+};
+
+type MdxFrontmatterMetalinksFilterListInput = {
+  readonly elemMatch: InputMaybe<MdxFrontmatterMetalinksFilterInput>;
+};
+
+type MdxFrontmatterMetalinksSortInput = {
+  readonly code: InputMaybe<SortOrderEnum>;
+  readonly href: InputMaybe<SortOrderEnum>;
+  readonly label: InputMaybe<SortOrderEnum>;
+  readonly language: InputMaybe<SortOrderEnum>;
+  readonly name: InputMaybe<SortOrderEnum>;
+};
+
 type MdxFrontmatterSortInput = {
   readonly api: InputMaybe<MdxFrontmatterApiSortInput>;
   readonly category: InputMaybe<SortOrderEnum>;
   readonly href: InputMaybe<SortOrderEnum>;
   readonly import: InputMaybe<SortOrderEnum>;
+  readonly metalinks: InputMaybe<MdxFrontmatterMetalinksSortInput>;
   readonly slug: InputMaybe<SortOrderEnum>;
   readonly sourceImplementation: InputMaybe<SortOrderEnum>;
   readonly sourceTypes: InputMaybe<SortOrderEnum>;
@@ -2421,7 +2461,7 @@ type DocByIdQueryVariables = Exact<{
 }>;
 
 
-type DocByIdQuery = { readonly mdx: { readonly tableOfContents: Record<string, unknown> | null, readonly frontmatter: { readonly slug: string | null, readonly title: string | null, readonly subtitle: string | null, readonly import: string | null, readonly storybook: string | null, readonly template: string | null, readonly sourceTypes: string | null, readonly sourceImplementation: string | null, readonly api: { readonly config: string | null, readonly hotkeys: string | null, readonly itemInstance: string | null, readonly state: string | null, readonly treeInstance: string | null } | null } | null } | null };
+type DocByIdQuery = { readonly mdx: { readonly tableOfContents: Record<string, unknown> | null, readonly frontmatter: { readonly slug: string | null, readonly title: string | null, readonly subtitle: string | null, readonly import: string | null, readonly storybook: string | null, readonly template: string | null, readonly sourceTypes: string | null, readonly sourceImplementation: string | null, readonly api: { readonly config: string | null, readonly hotkeys: string | null, readonly itemInstance: string | null, readonly state: string | null, readonly treeInstance: string | null } | null, readonly metalinks: ReadonlyArray<{ readonly code: string | null, readonly href: string | null, readonly label: string | null, readonly language: string | null, readonly name: string | null } | null> | null } | null } | null };
 
 type NavbarDataQueryVariables = Exact<{ [key: string]: never; }>;
 

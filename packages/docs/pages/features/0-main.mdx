@@ -7,15 +7,28 @@ template: feature
 storybook: feature/main
 sourceImplementation: packages/core/src/features/drag-and-drop/feature.ts
 sourceTypes: packages/core/src/features/drag-and-drop/types.ts
+metalinks:
+  - name: Source
+    label: View Source
+    href: /
+  - name: Types
+    label: View Types Source
+    href: /
+  - name: TypeDoc
+    label: View TypeDoc
+    href: /
+  - name: Import
+    code: "import {abc} from \"asdasd\""
+    language: typescript
 api:
-    config: MainFeatureConfig.md
-    state: MainFeatureState.md
-    treeInstance: MainFeatureTreeInstance.md
-    itemInstance: MainFeatureItemInstance.md
-    hotkeys: MainFeatureHotkeys.md
+  config: MainFeatureConfig.md
+  state: MainFeatureState.md
+  treeInstance: MainFeatureTreeInstance.md
+  itemInstance: MainFeatureItemInstance.md
+  hotkeys: MainFeatureHotkeys.md
 ---
 
-import { DemoBox } from "../../src/components/feature-page/demo-box";
+import { DemoBox } from "../../src/components/page/demo-box";
 
 
 # h1 Heading 8-)

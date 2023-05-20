@@ -1,7 +1,7 @@
 import React, { FC, ReactNode } from "react";
 import { Anchor, Box } from "@mantine/core";
 
-export type FeatureLinksProps = {
+export type PageMetaLinkProps = {
   label: string;
   value?: ReactNode | null;
   href?: string | null;
@@ -9,7 +9,7 @@ export type FeatureLinksProps = {
   icon?: ReactNode;
 };
 
-export const FeatureLink: FC<FeatureLinksProps> = ({
+export const PageMetaLink: FC<PageMetaLinkProps> = ({
   label,
   value,
   icon,

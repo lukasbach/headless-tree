@@ -38,9 +38,10 @@ export const TocItems: FC<TocItemsProps> = ({ items }) => {
           <Box
             component={Link}
             to={item.url}
+            fz="xs"
             sx={(theme) => ({
               display: "block",
-              padding: "6px 12px",
+              padding: "3px 8px",
               margin: "0 4px",
               borderRadius: "8px",
               color:
