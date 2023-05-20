@@ -971,8 +971,6 @@ type MdxFrontmatter = {
   readonly import: Maybe<Scalars['String']>;
   readonly metalinks: Maybe<ReadonlyArray<Maybe<MdxFrontmatterMetalinks>>>;
   readonly slug: Maybe<Scalars['String']>;
-  readonly sourceImplementation: Maybe<Scalars['String']>;
-  readonly sourceTypes: Maybe<Scalars['String']>;
   readonly storybook: Maybe<Scalars['String']>;
   readonly subtitle: Maybe<Scalars['String']>;
   readonly template: Maybe<Scalars['String']>;
@@ -1018,8 +1016,6 @@ type MdxFrontmatterFieldSelector = {
   readonly import: InputMaybe<FieldSelectorEnum>;
   readonly metalinks: InputMaybe<MdxFrontmatterMetalinksFieldSelector>;
   readonly slug: InputMaybe<FieldSelectorEnum>;
-  readonly sourceImplementation: InputMaybe<FieldSelectorEnum>;
-  readonly sourceTypes: InputMaybe<FieldSelectorEnum>;
   readonly storybook: InputMaybe<FieldSelectorEnum>;
   readonly subtitle: InputMaybe<FieldSelectorEnum>;
   readonly template: InputMaybe<FieldSelectorEnum>;
@@ -1033,8 +1029,6 @@ type MdxFrontmatterFilterInput = {
   readonly import: InputMaybe<StringQueryOperatorInput>;
   readonly metalinks: InputMaybe<MdxFrontmatterMetalinksFilterListInput>;
   readonly slug: InputMaybe<StringQueryOperatorInput>;
-  readonly sourceImplementation: InputMaybe<StringQueryOperatorInput>;
-  readonly sourceTypes: InputMaybe<StringQueryOperatorInput>;
   readonly storybook: InputMaybe<StringQueryOperatorInput>;
   readonly subtitle: InputMaybe<StringQueryOperatorInput>;
   readonly template: InputMaybe<StringQueryOperatorInput>;
@@ -1084,8 +1078,6 @@ type MdxFrontmatterSortInput = {
   readonly import: InputMaybe<SortOrderEnum>;
   readonly metalinks: InputMaybe<MdxFrontmatterMetalinksSortInput>;
   readonly slug: InputMaybe<SortOrderEnum>;
-  readonly sourceImplementation: InputMaybe<SortOrderEnum>;
-  readonly sourceTypes: InputMaybe<SortOrderEnum>;
   readonly storybook: InputMaybe<SortOrderEnum>;
   readonly subtitle: InputMaybe<SortOrderEnum>;
   readonly template: InputMaybe<SortOrderEnum>;
@@ -2461,12 +2453,12 @@ type DocByIdQueryVariables = Exact<{
 }>;
 
 
-type DocByIdQuery = { readonly mdx: { readonly tableOfContents: Record<string, unknown> | null, readonly frontmatter: { readonly slug: string | null, readonly title: string | null, readonly subtitle: string | null, readonly import: string | null, readonly storybook: string | null, readonly template: string | null, readonly sourceTypes: string | null, readonly sourceImplementation: string | null, readonly api: { readonly config: string | null, readonly hotkeys: string | null, readonly itemInstance: string | null, readonly state: string | null, readonly treeInstance: string | null } | null, readonly metalinks: ReadonlyArray<{ readonly code: string | null, readonly href: string | null, readonly label: string | null, readonly language: string | null, readonly name: string | null } | null> | null } | null } | null };
+type DocByIdQuery = { readonly mdx: { readonly tableOfContents: Record<string, unknown> | null, readonly frontmatter: { readonly slug: string | null, readonly title: string | null, readonly subtitle: string | null, readonly import: string | null, readonly storybook: string | null, readonly template: string | null, readonly api: { readonly config: string | null, readonly hotkeys: string | null, readonly itemInstance: string | null, readonly state: string | null, readonly treeInstance: string | null } | null, readonly metalinks: ReadonlyArray<{ readonly code: string | null, readonly href: string | null, readonly label: string | null, readonly language: string | null, readonly name: string | null } | null> | null } | null } | null };
 
 type NavbarDataQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-type NavbarDataQuery = { readonly allMdx: { readonly nodes: ReadonlyArray<{ readonly frontmatter: { readonly category: string | null, readonly slug: string | null, readonly title: string | null, readonly href: string | null } | null }> } };
+type NavbarDataQuery = { readonly allMdx: { readonly nodes: ReadonlyArray<{ readonly frontmatter: { readonly category: string | null, readonly slug: string | null, readonly title: string | null, readonly href: string | null } | null, readonly internal: { readonly contentFilePath: string | null } }> } };
 
 
 }

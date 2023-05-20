@@ -43,8 +43,6 @@ export const query = graphql`
         import
         storybook
         template
-        sourceTypes
-        sourceImplementation
       }
       tableOfContents(maxDepth: 3)
     }

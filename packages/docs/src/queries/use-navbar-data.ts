@@ -11,6 +11,9 @@ export const useNavbarData = () =>
             title
             href
           }
+          internal {
+            contentFilePath
+          }
         }
       }
     }

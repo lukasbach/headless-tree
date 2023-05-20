@@ -36,11 +36,17 @@ const useStyles = createStyles((theme) => ({
 
 export const Sidebar: FC<SidebarProps> = ({ location }) => {
   const styles = useStyles();
-  const allItems = useNavbarData();
+  const allItems = useNavbarData().allMdx.nodes;
+  const sorted = [...allItems].sort(
+    (a, b) =>
+      a?.internal?.contentFilePath?.localeCompare(
+        b?.internal?.contentFilePath ?? ""
+      ) ?? 1
+  );
   return (
     <Navbar width={{ base: 200 }}>
       {categories.map(({ key, name }) => {
-        const items = allItems.allMdx.nodes.filter(
+        const items = sorted.filter(
           (node) => node.frontmatter?.category === key
         );
         return (
