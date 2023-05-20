@@ -1,5 +1,6 @@
 import React, { FC, ReactNode } from "react";
 import { Box, Title, Text, Tabs, Container, createStyles } from "@mantine/core";
+import { MDXProvider } from "@mdx-js/react";
 import {
   IoDiceOutline,
   IoDocumentTextOutline,
@@ -100,7 +101,20 @@ export const PageContainer: FC<PageContainerProps> = ({ children, data }) => {
 
       <Tabs.Panel value="page" pt="xs">
         <Box sx={{ display: "flex" }}>
-          <Container sx={{ flexGrow: 1, width: 0 }}>{children}</Container>
+          <Container sx={{ flexGrow: 1, width: 0 }}>
+            <MDXProvider
+              components={{
+                code: ({ children, className }) => (
+                  <Prism
+                    children={children as string}
+                    language={(className?.slice(9) ?? "typescript") as any}
+                  />
+                ),
+              }}
+            >
+              {children}
+            </MDXProvider>
+          </Container>
           <Box sx={{ width: "var(--toc-width)" }}>
             <Box
               sx={{
