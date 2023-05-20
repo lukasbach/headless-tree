@@ -2,12 +2,12 @@
 slug: "/demos"
 title: "Demos"
 category: demos
-template: page
 ---
 
 import {DemoBox} from "../../src/components/page/demo-box";
 
 
 <DemoBox
-  height="calc(100vh - 60px)"
+  height="calc(100vh - var(--header-height))"
+  fullWidth={true}
 />

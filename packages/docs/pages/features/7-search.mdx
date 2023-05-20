@@ -1,0 +1,34 @@
+---
+slug: "/features/search"
+title: "Tree Search"
+subtitle: "Searching for items in the tree by typing in a search query"
+category: feature
+metalinks:
+  - name: Source
+    label: View Source
+    href: https://github.com/lukasbach/headless-tree/blob/main/packages/core/src/features/search/feature.ts
+  - name: Types
+    label: View Types Source
+    href: https://github.com/lukasbach/headless-tree/blob/main/packages/core/src/features/search/types.ts
+  - name: TypeDoc
+    label: View TypeDoc
+    href: /api/types/_headless_tree_core.SearchFeatureDef.html
+  - name: Import
+    code: "import { searchFeature } from \"@headless-tree/core\";"
+    language: typescript
+storybook: feature/dnd
+api:
+  typesSource: https://github.com/lukasbach/headless-tree/blob/main/packages/core/src/features/search/types.ts
+  typedoc: /api/types/_headless_tree_core.SearchFeatureDef.html
+  config: SearchFeatureConfig.md
+  state: SearchFeatureState.md
+  treeInstance: SearchFeatureTreeInstance.md
+  itemInstance: SearchFeatureItemInstance.md
+  hotkeys: SearchFeatureHotkeys.md
+---
+
+import { DemoBox } from "../../src/components/page/demo-box";
+
+<DemoBox storybookTag="feature/main" />
+
+TODO

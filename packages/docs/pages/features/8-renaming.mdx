@@ -1,0 +1,34 @@
+---
+slug: "/features/renaming"
+title: "Renaming"
+subtitle: "Rename items in the tree"
+category: feature
+metalinks:
+  - name: Source
+    label: View Source
+    href: https://github.com/lukasbach/headless-tree/blob/main/packages/core/src/features/renaming/feature.ts
+  - name: Types
+    label: View Types Source
+    href: https://github.com/lukasbach/headless-tree/blob/main/packages/core/src/features/renaming/types.ts
+  - name: TypeDoc
+    label: View TypeDoc
+    href: /api/types/_headless_tree_core.RenamingFeatureDef.html
+  - name: Import
+    code: "import { renamingFeature } from \"@headless-tree/core\";"
+    language: typescript
+storybook: feature/dnd
+api:
+  typesSource: https://github.com/lukasbach/headless-tree/blob/main/packages/core/src/features/renaming/types.ts
+  typedoc: /api/types/_headless_tree_core.RenamingFeatureDef.html
+  config: RenamingFeatureConfig.md
+  state: RenamingFeatureState.md
+  treeInstance: RenamingFeatureTreeInstance.md
+  itemInstance: RenamingFeatureItemInstance.md
+  hotkeys: RenamingFeatureHotkeys.md
+---
+
+import { DemoBox } from "../../src/components/page/demo-box";
+
+<DemoBox storybookTag="feature/main" />
+
+TODO

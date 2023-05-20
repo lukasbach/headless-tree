@@ -7,7 +7,10 @@ export type SidebarProps = { location: string };
 
 const categories = [
   { key: "intro", name: "Intro" },
+  { key: "guide", name: "Guides" },
+  { key: "data-adapter", name: "Data Adapters" },
   { key: "feature", name: "Features" },
+  { key: "advguide", name: "Advanced Guides" },
   { key: "demos", name: "Demos" },
 ];
 
@@ -44,7 +47,10 @@ export const Sidebar: FC<SidebarProps> = ({ location }) => {
       ) ?? 1
   );
   return (
-    <Navbar width={{ base: 200 }}>
+    <Navbar
+      width={{ base: "var(--sidebar-width)" }}
+      sx={{ overflow: "auto !important" }}
+    >
       {categories.map(({ key, name }) => {
         const items = sorted.filter(
           (node) => node.frontmatter?.category === key

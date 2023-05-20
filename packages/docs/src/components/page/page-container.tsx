@@ -29,8 +29,8 @@ const useTabStyles = createStyles((theme) => ({
 
 export const PageContainer: FC<PageContainerProps> = ({ children, data }) => {
   const tabStyles = useTabStyles();
-  const hasDemos = !!data.mdx?.frontmatter?.storybook;
-  const hasApi = !!data.mdx?.frontmatter?.api;
+  const hasDemos = !!data?.mdx?.frontmatter?.storybook;
+  const hasApi = !!data?.mdx?.frontmatter?.api;
 
   return (
     <Tabs defaultValue="page" classNames={tabStyles.classes}>
@@ -120,6 +120,8 @@ export const PageContainer: FC<PageContainerProps> = ({ children, data }) => {
               sx={{
                 position: "sticky",
                 top: "var(--header-height)",
+                maxHeight: "calc(100vh - var(--header-height))",
+                overflow: "auto",
                 "> ul": { border: "none" },
               }}
             >

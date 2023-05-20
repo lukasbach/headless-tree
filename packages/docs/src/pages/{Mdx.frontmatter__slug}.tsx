@@ -40,9 +40,7 @@ export const query = graphql`
           language
           name
         }
-        import
         storybook
-        template
       }
       tableOfContents(maxDepth: 3)
     }

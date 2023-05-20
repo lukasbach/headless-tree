@@ -1,0 +1,34 @@
+---
+slug: "/features/async-dataloader"
+title: "Async Data Loader"
+subtitle: "Data interface for asynchronous data sources"
+category: feature
+metalinks:
+  - name: Source
+    label: View Source
+    href: https://github.com/lukasbach/headless-tree/blob/main/packages/core/src/features/async-data-loader/feature.ts
+  - name: Types
+    label: View Types Source
+    href: https://github.com/lukasbach/headless-tree/blob/main/packages/core/src/features/async-data-loader/types.ts
+  - name: TypeDoc
+    label: View TypeDoc
+    href: /api/types/_headless_tree_core.AsyncDataLoaderFeatureDef.html
+  - name: Import
+    code: "import { asyncDataLoaderFeature } from \"@headless-tree/core\";"
+    language: typescript
+storybook: feature/dnd
+api:
+  typesSource: https://github.com/lukasbach/headless-tree/blob/main/packages/core/src/features/async-data-loader/types.ts
+  typedoc: /api/types/_headless_tree_core.AsyncDataLoaderFeatureDef.html
+  config: AsyncDataLoaderFeatureConfig.md
+  state: AsyncDataLoaderFeatureState.md
+  treeInstance: AsyncDataLoaderFeatureTreeInstance.md
+  itemInstance: AsyncDataLoaderFeatureItemInstance.md
+  hotkeys: AsyncDataLoaderFeatureHotkeys.md
+---
+
+import { DemoBox } from "../../src/components/page/demo-box";
+
+<DemoBox storybookTag="feature/main" />
+
+TODO

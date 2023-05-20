@@ -20,12 +20,14 @@ export const DemoBox: FC<DemoBoxProps> = ({
   const stories = allStory.nodes.filter((story) =>
     storybookTag ? story.tags?.includes(storybookTag) : true
   );
-  const [selectedStory, setSelectedStory] = useState(stories[0].story);
+  const [selectedStory, setSelectedStory] = useState(stories[0]?.story);
   const story = stories.find((s) => s.story === selectedStory)!;
-  const code = story.source?.includes(storyStartToken)
+  const code = story?.source?.includes(storyStartToken)
     ? story.source.split(storyStartToken)[1]
-    : story.source;
+    : story?.source;
   height ??= "500px";
+
+  if (stories.length === 0) return null;
 
   return (
     <Box sx={{ height }}>
