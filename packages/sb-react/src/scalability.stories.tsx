@@ -7,6 +7,7 @@ import {
   syncDataLoaderFeature,
 } from "@headless-tree/core";
 import { useTree } from "@headless-tree/react";
+import cx from "classnames";
 
 const meta = {
   title: "React/Scalability",
@@ -95,16 +96,16 @@ export const Scalability = ({ itemsPerLevel, openLevels }) => {
           <button
             {...item.getProps()}
             ref={item.registerElement}
-            className="treeitem"
-            data-focused={item.isFocused()}
-            data-expanded={item.isExpanded()}
-            data-selected={item.isSelected()}
-            data-drop={item.isDropTarget() && item.isDraggingOver()}
-            data-dropabove={item.isDropTargetAbove() && item.isDraggingOver()}
-            data-dropbelow={item.isDropTargetBelow() && item.isDraggingOver()}
+            className={cx("treeitem", {
+              focused: item.isFocused(),
+              expanded: item.isExpanded(),
+              selected: item.isSelected(),
+              folder: item.isFolder(),
+              drop: item.isDropTarget() && item.isDraggingOver(),
+              dropabove: item.isDropTargetAbove() && item.isDraggingOver(),
+              dropbelow: item.isDropTargetBelow() && item.isDraggingOver(),
+            })}
           >
-            {item.isFolder() && item.isExpanded() ? "v " : ""}
-            {item.isFolder() && !item.isExpanded() ? "> " : ""}
             {item.getItemName()}
           </button>
         </div>

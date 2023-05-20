@@ -23,27 +23,27 @@
     outline: none;
 }
 
-.treeitem[data-selected=true] {
+.treeitem.selected {
     background-color: #eee;
 }
 
-.treeitem[data-focused=true] {
+.treeitem.focused {
     border-color: black;
 }
 
-.treeitem[data-drop=true] {
+.treeitem.drop {
     border-color: red;
 }
 
-.treeitem[data-dropabove=true] {
+.treeitem.dropabove {
     border-top: 1px solid red;
 }
 
-.treeitem[data-dropbelow=true] {
+.treeitem.dropbelow {
     border-bottom: 1px solid red;
 }
 
-.treeitem[data-searchmatch=true] {
+.treeitem.searchmatch {
     background-color: #ffffcd;
 }
 
@@ -56,6 +56,6 @@
     transition: transform 0.1s ease-in-out;
 }
 
-.treeitem[data-expanded=true]:before {
+.treeitem.expanded:before {
     transform: rotate(90deg);
 }

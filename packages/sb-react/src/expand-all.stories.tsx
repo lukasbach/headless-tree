@@ -8,6 +8,7 @@ import {
   asyncDataLoaderFeature,
 } from "@headless-tree/core";
 import { useTree } from "@headless-tree/react";
+import cx from "classnames";
 
 const meta = {
   title: "React/Expand All",
@@ -79,13 +80,13 @@ export const ExpandAll = () => {
             <button
               {...item.getProps()}
               ref={item.registerElement}
-              className="treeitem"
-              data-focused={item.isFocused()}
-              data-expanded={item.isExpanded()}
-              data-selected={item.isSelected()}
+              className={cx("treeitem", {
+                focused: item.isFocused(),
+                expanded: item.isExpanded(),
+                selected: item.isSelected(),
+                folder: item.isFolder(),
+              })}
             >
-              {item.isFolder() && item.isExpanded() ? "v " : ""}
-              {item.isFolder() && !item.isExpanded() ? "> " : ""}
               {item.getItemName()}
             </button>
             <button onClick={() => item.expandAll(cancelToken)}>+</button>

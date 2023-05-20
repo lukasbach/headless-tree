@@ -6,6 +6,7 @@ import {
   syncDataLoaderFeature,
 } from "@headless-tree/core";
 import { useTree } from "@headless-tree/react";
+import cx from "classnames";
 
 const meta = {
   title: "React/Distinct State Handlers",
@@ -44,10 +45,12 @@ export const DistinctStateHandlers = () => {
           <button
             {...item.getProps()}
             ref={item.registerElement}
-            className="treeitem"
-            data-focused={item.isFocused()}
-            data-expanded={item.isExpanded()}
-            data-selected={item.isSelected()}
+            className={cx("treeitem", {
+              focused: item.isFocused(),
+              expanded: item.isExpanded(),
+              selected: item.isSelected(),
+              folder: item.isFolder(),
+            })}
           >
             {item.getItemName()}
           </button>
