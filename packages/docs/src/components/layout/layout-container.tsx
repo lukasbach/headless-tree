@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from "react";
+import React, { FC, ReactNode, useEffect } from "react";
 import {
   AppShell,
   ColorScheme,
@@ -27,6 +27,15 @@ export const LayoutContainer: FC<LayoutContainerProps> = ({
   });
   const toggleColorScheme = (value?: ColorScheme) =>
     setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
+
+  useEffect(() => {
+    if (colorScheme === "dark") {
+      document.body.classList.add("dark");
+    } else {
+      document.body.classList.remove("dark");
+    }
+  }, [colorScheme]);
+
   return (
     <ColorSchemeProvider
       colorScheme={colorScheme}
@@ -35,7 +44,7 @@ export const LayoutContainer: FC<LayoutContainerProps> = ({
       <MantineProvider
         withGlobalStyles
         withNormalizeCSS
-        theme={{ colorScheme, primaryColor: "grape" }}
+        theme={{ colorScheme, primaryColor: "violet" }}
       >
         <AppShell
           header={<HeaderBar />}

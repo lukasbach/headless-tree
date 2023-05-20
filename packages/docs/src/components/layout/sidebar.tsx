@@ -18,8 +18,8 @@ const useStyles = createStyles((theme) => ({
   root: {
     position: "relative",
     borderRadius: 8,
-    paddingTop: "4px",
-    paddingBottom: "4px",
+    paddingTop: "2px",
+    paddingBottom: "2px",
     "&[data-active]": {
       fontWeight: "bold",
     },
@@ -34,6 +34,9 @@ const useStyles = createStyles((theme) => ({
       backgroundColor:
         theme.colors[theme.primaryColor][theme.colorScheme === "dark" ? 6 : 7],
     },
+  },
+  label: {
+    fontSize: ".75rem",
   },
 }));
 
@@ -50,6 +53,7 @@ export const Sidebar: FC<SidebarProps> = ({ location }) => {
     <Navbar
       width={{ base: "var(--sidebar-width)" }}
       sx={{ overflow: "auto !important" }}
+      fz="sm"
     >
       {categories.map(({ key, name }) => {
         const items = sorted.filter(
@@ -57,7 +61,7 @@ export const Sidebar: FC<SidebarProps> = ({ location }) => {
         );
         return (
           <Box key={key} sx={{ padding: 16 }}>
-            <Box>{name}</Box>
+            <Box fw="500">{name}</Box>
             {items.map((item) => (
               <NavLink
                 key={item.frontmatter?.href ?? item.frontmatter?.slug ?? "#"}
