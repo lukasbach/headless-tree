@@ -62,7 +62,7 @@ export const DemoBox: FC<DemoBoxProps> = ({
             onChange={setSelectedStory}
             data={stories.map((story) => ({
               value: story.story ?? "",
-              label: story.name ?? "",
+              label: story.title ?? "",
             }))}
           />
           <Box sx={{ flexGrow: 1 }} />
