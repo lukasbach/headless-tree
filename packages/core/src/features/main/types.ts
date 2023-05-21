@@ -12,6 +12,7 @@ export type MainFeatureDef<T = any> = {
   state: {};
   config: {
     features?: FeatureImplementation<any>[];
+    initialState?: Partial<TreeState<T>>;
     state?: Partial<TreeState<T>>;
     setState?: SetStateFn<TreeState<T>>;
   };

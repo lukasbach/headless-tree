@@ -38,7 +38,7 @@ export const createTree = <T>(
   const additionalFeatures = [treeFeature, ...(initialConfig.features ?? [])];
   let state = additionalFeatures.reduce(
     (acc, feature) => feature.getInitialState?.(acc, treeInstance) ?? acc,
-    initialConfig.state ?? {}
+    initialConfig.initialState ?? initialConfig.state ?? {}
   ) as TreeState<T>;
   let config = additionalFeatures.reduce(
     (acc, feature) => feature.getDefaultConfig?.(acc, treeInstance) ?? acc,

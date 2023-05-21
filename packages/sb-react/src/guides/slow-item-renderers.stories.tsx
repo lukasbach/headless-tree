@@ -28,7 +28,7 @@ const SlowItem = forwardRef<HTMLButtonElement, HTMLProps<HTMLButtonElement>>(
 export const SlowItemRenderers = () => {
   const tree = useTree<string>({
     rootItemId: "folder",
-    state: {
+    initialState: {
       expandedItems: ["folder-1", "folder-2", "folder-3"],
     },
     getItemName: (item) => item.getItemData(),
@@ -69,8 +69,7 @@ export const SlowItemRenderers = () => {
               folder: item.isFolder(),
             })}
           >
-            {item.getItemName()} {item.isExpanded() ? "v" : ">"}{" "}
-            {item.isSelected() ? "selected" : ""}
+            {item.getItemName()}
           </SlowItem>
         </div>
       ))}

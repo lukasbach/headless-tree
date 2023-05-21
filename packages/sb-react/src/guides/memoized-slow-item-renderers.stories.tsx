@@ -31,7 +31,7 @@ const MemoizedItem = memo(SlowItem);
 export const MemoizedSlowItemRenderers = () => {
   const tree = useTree<string>({
     rootItemId: "folder",
-    state: {
+    initialState: {
       expandedItems: ["folder-1", "folder-2", "folder-3"],
     },
     getItemName: (item) => item.getItemData(),
