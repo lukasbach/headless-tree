@@ -1,5 +1,13 @@
 # @headless-tree/react
 
+## 0.0.4
+
+### Patch Changes
+
+- 751682a: dev release
+- Updated dependencies [751682a]
+  - @headless-tree/core@0.0.5
+
 ## 0.0.3
 
 ### Patch Changes
