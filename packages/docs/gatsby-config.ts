@@ -44,7 +44,7 @@ const config: GatsbyConfig = {
       },
     },
   ],
-  jsxRuntime: "automatic",
+  // jsxRuntime: "automatic",
 };
 
 export default config;
