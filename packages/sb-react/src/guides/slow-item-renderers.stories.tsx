@@ -7,6 +7,7 @@ import {
   syncDataLoaderFeature,
 } from "@headless-tree/core";
 import { useTree } from "@headless-tree/react";
+import { action } from "@storybook/addon-actions";
 import cx from "classnames";
 
 const meta = {
@@ -18,7 +19,8 @@ export default meta;
 const SlowItem = forwardRef<HTMLButtonElement, HTMLProps<HTMLButtonElement>>(
   (props, ref) => {
     const start = Date.now();
-    while (Date.now() - start < 30); // force the component to take 30ms to render
+    while (Date.now() - start < 20); // force the component to take 20ms to render
+    action("renderItem")();
     return <button {...(props as any)} ref={ref} />;
   }
 );
@@ -26,6 +28,9 @@ const SlowItem = forwardRef<HTMLButtonElement, HTMLProps<HTMLButtonElement>>(
 export const SlowItemRenderers = () => {
   const tree = useTree<string>({
     rootItemId: "folder",
+    state: {
+      expandedItems: ["folder-1", "folder-2", "folder-3"],
+    },
     getItemName: (item) => item.getItemData(),
     isItemFolder: (item) => !item.getItemData().endsWith("item"),
     dataLoader: {
@@ -64,7 +69,8 @@ export const SlowItemRenderers = () => {
               folder: item.isFolder(),
             })}
           >
-            {item.getItemName()}
+            {item.getItemName()} {item.isExpanded() ? "v" : ">"}{" "}
+            {item.isSelected() ? "selected" : ""}
           </SlowItem>
         </div>
       ))}

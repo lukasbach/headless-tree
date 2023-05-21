@@ -1,5 +1,5 @@
 import { FeatureImplementation, ItemInstance } from "../../types/core";
-import { ItemMeta, TreeFeatureDef } from "./types";
+import { ItemMeta, TreeFeatureDef, TreeItemDataRef } from "./types";
 import { makeStateUpdater, memo, poll } from "../../utils";
 import { MainFeatureDef } from "../main/types";
 import { HotkeysCoreFeatureDef } from "../hotkeys-core/types";
@@ -174,7 +174,8 @@ export const treeFeature: FeatureImplementation<
         "aria-label": item.getItemName(),
         "aria-level": itemMeta.level,
         tabIndex: item.isFocused() ? 0 : -1,
-        onClick: (e) => {
+        onClick: item.getMemoizedProp("tree/onClick", () => (e) => {
+          console.log("onClick", item.getId());
           item.setFocused();
           item.primaryAction();
 
@@ -191,7 +192,7 @@ export const treeFeature: FeatureImplementation<
           } else {
             item.expand();
           }
-        },
+        }),
       };
     },
     expand: () => tree.expandItem(item.getItemMeta().itemId),
@@ -235,6 +236,23 @@ export const treeFeature: FeatureImplementation<
     getTree: () => tree as any,
     getItemAbove: () => tree.getItems()[item.getItemMeta().index - 1],
     getItemBelow: () => tree.getItems()[item.getItemMeta().index + 1],
+    getMemoizedProp: (name, create, deps) => {
+      const data = item.getDataRef<TreeItemDataRef>();
+      const memoizedValue = data.current.memoizedValues?.[name];
+      if (
+        memoizedValue &&
+        (!deps ||
+          data.current.memoizedDeps?.[name]?.every((d, i) => d === deps![i]))
+      ) {
+        return memoizedValue;
+      }
+      data.current.memoizedDeps ??= {};
+      data.current.memoizedValues ??= {};
+      const value = create();
+      data.current.memoizedDeps[name] = deps;
+      data.current.memoizedValues[name] = value;
+      return value;
+    },
   }),
 
   hotkeys: {

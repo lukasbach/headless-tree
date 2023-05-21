@@ -33,7 +33,7 @@ export const dragAndDropFeature: FeatureImplementation<
 
       draggable: tree.getConfig().isItemDraggable?.(item) ?? true,
 
-      onDragStart: (e) => {
+      onDragStart: item.getMemoizedProp("dnd/onDragStart", () => (e) => {
         const selectedItems = tree.getSelectedItems();
         const items = selectedItems.includes(item) ? selectedItems : [item];
         const config = tree.getConfig();
@@ -56,9 +56,9 @@ export const dragAndDropFeature: FeatureImplementation<
           draggedItems: items,
           draggingOverItem: tree.getFocusedItem(),
         });
-      },
+      }),
 
-      onDragOver: (e) => {
+      onDragOver: item.getMemoizedProp("dnd/onDragOver", () => (e) => {
         const target = getDropTarget(e, item, tree);
         const dataRef = tree.getDataRef<DndDataRef>();
 
@@ -87,9 +87,9 @@ export const dragAndDropFeature: FeatureImplementation<
           dragTarget: target,
           draggingOverItem: item,
         }));
-      },
+      }),
 
-      onDragLeave: () => {
+      onDragLeave: item.getMemoizedProp("dnd/onDragLeave", () => () => {
         const dataRef = tree.getDataRef<DndDataRef>();
         dataRef.current.lastDragCode = "no-drag";
         tree.getConfig().setDndState?.((state) => ({
@@ -97,9 +97,9 @@ export const dragAndDropFeature: FeatureImplementation<
           draggingOverItem: undefined,
           dragTarget: undefined,
         }));
-      },
+      }),
 
-      onDrop: (e) => {
+      onDrop: item.getMemoizedProp("dnd/onDrop", () => (e) => {
         const dataRef = tree.getDataRef<DndDataRef>();
         const target = getDropTarget(e, item, tree);
 
@@ -120,7 +120,7 @@ export const dragAndDropFeature: FeatureImplementation<
           config.onDropForeignDragObject?.(e.dataTransfer, target);
         }
         // TODO rebuild tree?
-      },
+      }),
     }),
 
     isDropTarget: () => {

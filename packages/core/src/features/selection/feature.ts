@@ -91,7 +91,7 @@ export const selectionFeature: FeatureImplementation<
 
     getProps: () => ({
       ...prev.getProps(),
-      onClick: (e) => {
+      onClick: item.getMemoizedProp("selection/onClick", () => (e) => {
         if (e.shiftKey) {
           item.selectUpTo(e.ctrlKey || e.metaKey);
         } else if (e.ctrlKey || e.metaKey) {
@@ -101,7 +101,7 @@ export const selectionFeature: FeatureImplementation<
         }
 
         prev.getProps().onClick?.(e);
-      },
+      }),
     }),
   }),
 

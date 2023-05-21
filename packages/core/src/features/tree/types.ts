@@ -9,6 +9,11 @@ export type ItemMeta = {
   posInSet: number;
 };
 
+export type TreeItemDataRef = {
+  memoizedValues: Record<string, any>;
+  memoizedDeps: Record<string, any[] | undefined>;
+};
+
 export type TreeFeatureDef<T> = {
   state: {
     expandedItems: string[];
@@ -59,6 +64,7 @@ export type TreeFeatureDef<T> = {
     getTree: () => TreeInstance<T>;
     getItemAbove: () => ItemInstance<T> | null;
     getItemBelow: () => ItemInstance<T> | null;
+    getMemoizedProp: <X>(name: string, create: () => X, deps?: any[]) => X;
   };
   hotkeys:
     | "focusNextItem"
