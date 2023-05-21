@@ -1,48 +1,71 @@
 import type { Meta } from "@storybook/react";
-import React, { useState } from "react";
+import React from "react";
 import {
   hotkeysCoreFeature,
   selectionFeature,
   dragAndDropFeature,
-  asyncDataLoaderFeature,
+  syncDataLoaderFeature,
+  expandAllFeature,
 } from "@headless-tree/core";
 import { useTree } from "@headless-tree/react";
 import cx from "classnames";
 
 const meta = {
-  title: "React/Async Data Loading",
-  tags: ["feature/async-data-loader"],
+  title: "React/Hotkeys/Custom Hotkeys",
 } satisfies Meta;
 
 export default meta;
 
-// eslint-disable-next-line no-promise-executor-return
-const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
-// story-start
-export const AsyncDataLoading = () => {
-  const [loaderName, setLoaderName] = useState("Loading...");
+export const CustomHotkeys = () => {
   const tree = useTree<string>({
-    rootItemId: "root",
+    rootItemId: "folder",
     getItemName: (item) => item.getItemData(),
-    isItemFolder: () => true,
-    createLoadingItemData: () => loaderName,
-    asyncDataLoader: {
-      getItem: (itemId) => wait(800).then(() => itemId),
+    isItemFolder: (item) => !item.getItemData().endsWith("item"),
+    dataLoader: {
+      getItem: (itemId) => itemId,
       getChildren: (itemId) =>
-        wait(800).then(() => [`${itemId}-1`, `${itemId}-2`, `${itemId}-3`]),
+        itemId.length < 15
+          ? [
+              `${itemId}-1`,
+              `${itemId}-2`,
+              `${itemId}-3`,
+              `${itemId}-1item`,
+              `${itemId}-2item`,
+            ]
+          : [],
     },
-    dataLoader: null as any,
+    hotkeys: {
+      // Begin the hotkey name with "custom" to satisfy the type checker
+      customExpandAll: {
+        // TODO this doesn't work at all..
+        hotkey: "q",
+        handler: (e, tree) => {
+          tree.expandAll();
+        },
+      },
+      customCollapseAll: {
+        hotkey: "w",
+        handler: (e, tree) => {
+          tree.collapseAll();
+        },
+      },
+    },
     features: [
-      asyncDataLoaderFeature,
+      syncDataLoaderFeature,
       selectionFeature,
       hotkeysCoreFeature,
       dragAndDropFeature,
+      expandAllFeature,
     ],
   });
 
   return (
     <>
+      <p className="description">
+        In this example, two additional custom hotkeys are defined: Press "q"
+        while the tree is focused to expand all items, and press "w" to collapse
+        all items.
+      </p>
       <div ref={tree.registerElement} className="tree">
         {tree.getItems().map((item) => (
           <div
@@ -61,23 +84,9 @@ export const AsyncDataLoading = () => {
               })}
             >
               {item.getItemName()}
-              {item.isLoading() && " (loading...)"}
             </button>
-            <button onClick={() => item.invalidateItemData()}>[i1]</button>
-            <button onClick={() => item.invalidateChildrenIds()}>[i2]</button>
           </div>
         ))}
-      </div>
-      <p>
-        Press [i1] to invalidate item data, or [i2] to invalidate its children
-        array.
-      </p>
-      <div>
-        Loading item name:{" "}
-        <input
-          value={loaderName}
-          onChange={(e) => setLoaderName(e.target.value)}
-        />
       </div>
     </>
   );

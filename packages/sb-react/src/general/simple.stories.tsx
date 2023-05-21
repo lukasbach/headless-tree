@@ -3,29 +3,39 @@ import React from "react";
 import {
   hotkeysCoreFeature,
   selectionFeature,
+  dragAndDropFeature,
   syncDataLoaderFeature,
 } from "@headless-tree/core";
 import { useTree } from "@headless-tree/react";
 import cx from "classnames";
 
 const meta = {
-  title: "React/State/Internal State",
-  tags: ["guides/state", "react/state/internal-state"],
+  title: "React/General/Simple Example",
 } satisfies Meta;
 
 export default meta;
 
-// story-start
-export const InternalState = () => {
+export const SimpleExample = () => {
   const tree = useTree<string>({
-    rootItemId: "root",
+    rootItemId: "folder",
     getItemName: (item) => item.getItemData(),
-    isItemFolder: () => true,
+    isItemFolder: (item) => !item.getItemData().endsWith("item"),
     dataLoader: {
       getItem: (itemId) => itemId,
-      getChildren: (itemId) => [`${itemId}-1`, `${itemId}-2`, `${itemId}-3`],
+      getChildren: (itemId) => [
+        `${itemId}-1`,
+        `${itemId}-2`,
+        `${itemId}-3`,
+        `${itemId}-1item`,
+        `${itemId}-2item`,
+      ],
     },
-    features: [syncDataLoaderFeature, selectionFeature, hotkeysCoreFeature],
+    features: [
+      syncDataLoaderFeature,
+      selectionFeature,
+      hotkeysCoreFeature,
+      dragAndDropFeature,
+    ],
   });
 
   return (

@@ -1,5 +1,5 @@
 import type { Meta } from "@storybook/react";
-import React, { useState } from "react";
+import React from "react";
 import {
   hotkeysCoreFeature,
   selectionFeature,
@@ -10,35 +10,41 @@ import { useTree } from "@headless-tree/react";
 import cx from "classnames";
 
 const meta = {
-  title: "React/Example",
+  title: "React/General/Item Data Objects",
 } satisfies Meta;
 
 export default meta;
 
-export const Example = () => {
-  const [state, setState] = useState({});
-  const tree = useTree<string>({
-    state,
-    setState,
-    rootItemId: "folder",
-    getItemName: (item) => item.getItemData(),
-    isItemFolder: (item) => !item.getItemData().endsWith("item"),
-    hotkeys: {
-      customEvent: {
-        hotkey: "Escape",
-        handler: () => alert("Hello!"),
-      },
-    },
+interface Item {
+  name: string;
+  children?: string[];
+  isFolder?: boolean;
+  isRed?: boolean;
+}
+
+const items: Record<string, Item> = {
+  root: { name: "Root", children: ["folder1", "folder2"], isFolder: true },
+  folder1: { name: "Folder 1", children: ["item1", "item2"], isFolder: true },
+  folder2: {
+    name: "Folder 2 (red)",
+    children: ["folder3"],
+    isFolder: true,
+    isRed: true,
+  },
+  folder3: { name: "Folder 3", children: ["item3"], isFolder: true },
+  item1: { name: "Item 1 (red)", isRed: true },
+  item2: { name: "Item 2" },
+  item3: { name: "Item 3" },
+};
+
+export const ItemDataObjects = () => {
+  const tree = useTree<Item>({
+    rootItemId: "root",
+    getItemName: (item) => item.getItemData().name,
+    isItemFolder: (item) => Boolean(item.getItemData().isFolder),
     dataLoader: {
-      getItem: (itemId) => itemId,
-      getChildren: (itemId) => [
-        `${itemId}-1`,
-        `${itemId}-2`,
-        `${itemId}-3`,
-        `${itemId}-1item`,
-        `${itemId}-2item`,
-        `${itemId}-3item`,
-      ],
+      getItem: (itemId) => items[itemId],
+      getChildren: (itemId) => items[itemId].children ?? [],
     },
     features: [
       syncDataLoaderFeature,
@@ -59,6 +65,7 @@ export const Example = () => {
           <button
             {...item.getProps()}
             ref={item.registerElement}
+            style={{ color: item.getItemData().isRed ? "red" : undefined }}
             className={cx("treeitem", {
               focused: item.isFocused(),
               expanded: item.isExpanded(),
