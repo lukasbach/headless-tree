@@ -8,6 +8,7 @@ import {
   nestedDataAdapter,
 } from "@headless-tree/core";
 import { useTree } from "@headless-tree/react";
+import cx from "classnames";
 
 const meta = {
   title: "React/Data Adapters/Nested Data Adapter",
@@ -67,6 +68,8 @@ const data: Item = {
   ],
 };
 
+// TODO when dropping an item into a closed folder, this breaks "cannot read properties of undefined, reading name)
+
 export const NestedDataAdapter = ({ canDropInbetween }) => {
   const dataAdapter = nestedDataAdapter<Item>({
     rootItem: data,
@@ -102,15 +105,16 @@ export const NestedDataAdapter = ({ canDropInbetween }) => {
             <button
               {...item.getProps()}
               ref={item.registerElement}
-              className="treeitem"
-              data-focused={item.isFocused()}
-              data-expanded={item.isExpanded()}
-              data-selected={item.isSelected()}
-              data-drop={item.isDropTarget() && item.isDraggingOver()}
-              data-dropabove={item.isDropTargetAbove() && item.isDraggingOver()}
-              data-dropbelow={item.isDropTargetBelow() && item.isDraggingOver()}
+              className={cx("treeitem", {
+                focused: item.isFocused(),
+                expanded: item.isExpanded(),
+                selected: item.isSelected(),
+                folder: item.isFolder(),
+                drop: item.isDropTarget() && item.isDraggingOver(),
+                dropabove: item.isDropTargetAbove() && item.isDraggingOver(),
+                dropbelow: item.isDropTargetBelow() && item.isDraggingOver(),
+              })}
             >
-              {!item.isFolder() ? "" : item.isExpanded() ? "v " : "> "}
               {item.getItemName()}
             </button>
           </div>
