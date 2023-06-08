@@ -130,6 +130,10 @@ export type FeatureImplementation<
   key?: string;
   dependingFeatures?: string[];
 
+  stateHandlerNames?: Partial<
+    Record<keyof MergedFeatures<F>["state"], keyof MergedFeatures<F>["config"]>
+  >;
+
   getInitialState?: (
     initialState: Partial<MergedFeatures<F>["state"]>,
     tree: MergedFeatures<F>["treeInstance"]

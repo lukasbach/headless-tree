@@ -28,6 +28,11 @@ export const treeFeature: FeatureImplementation<
     ...defaultConfig,
   }),
 
+  stateHandlerNames: {
+    expandedItems: "setExpandedItems",
+    focusedItem: "setFocusedItem",
+  },
+
   createTreeInstance: (prev, instance) => ({
     ...prev,
 
@@ -91,9 +96,10 @@ export const treeFeature: FeatureImplementation<
         return;
       }
 
-      instance
-        .getConfig()
-        .setExpandedItems?.((expandedItems) => [...expandedItems, itemId]);
+      instance.applySubStateUpdate("expandedItems", (expandedItems) => [
+        ...expandedItems,
+        itemId,
+      ]);
       instance.rebuildTree();
     },
 
@@ -102,11 +108,9 @@ export const treeFeature: FeatureImplementation<
         return;
       }
 
-      instance
-        .getConfig()
-        .setExpandedItems?.((expandedItems) =>
-          expandedItems.filter((id) => id !== itemId)
-        );
+      instance.applySubStateUpdate("expandedItems", (expandedItems) =>
+        expandedItems.filter((id) => id !== itemId)
+      );
       instance.rebuildTree();
     },
 
@@ -119,7 +123,7 @@ export const treeFeature: FeatureImplementation<
     },
 
     focusItem: (itemId) => {
-      instance.getConfig().setFocusedItem?.(itemId);
+      instance.applySubStateUpdate("focusedItem", itemId);
     },
 
     focusNextItem: () => {
@@ -134,6 +138,7 @@ export const treeFeature: FeatureImplementation<
       instance.focusItem(instance.getItems()[nextIndex].getId());
     },
 
+    // TODO remove unused stuff
     updateDomFocus: (scrollIntoView) => {
       // Required because if the state is managed outside in react, the state only updated during next render
       setTimeout(async () => {

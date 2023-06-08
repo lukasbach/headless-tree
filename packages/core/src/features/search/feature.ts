@@ -25,11 +25,15 @@ export const searchFeature: FeatureImplementation<
     ...defaultConfig,
   }),
 
+  stateHandlerNames: {
+    search: "setSearch",
+  },
+
   createTreeInstance: (prev, instance) => ({
     ...prev,
 
     setSearch: (search) => {
-      instance.getConfig().setSearch?.(search);
+      instance.applySubStateUpdate("search", search);
       instance
         .getItems()
         .find((item) =>

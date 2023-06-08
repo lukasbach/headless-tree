@@ -5,6 +5,7 @@ import {
   SetStateFn,
   TreeConfig,
   TreeState,
+  Updater,
 } from "../../types/core";
 import { ItemMeta } from "../tree/types";
 
@@ -17,6 +18,11 @@ export type MainFeatureDef<T = any> = {
     setState?: SetStateFn<TreeState<T>>;
   };
   treeInstance: {
+    /** @internal */
+    applySubStateUpdate: <K extends keyof TreeState<any>>(
+      stateName: K,
+      updater: Updater<TreeState<T>[K]>
+    ) => void;
     setState: SetStateFn<TreeState<T>>;
     getState: () => TreeState<T>;
     setConfig: SetStateFn<TreeConfig<T>>;

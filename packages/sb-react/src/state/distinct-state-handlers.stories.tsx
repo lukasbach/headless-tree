@@ -17,7 +17,6 @@ export default meta;
 
 // story-start
 export const DistinctStateHandlers = () => {
-  // TODO delayed reaction to changes!!
   const [selectedItems, setSelectedItems] = useState([]);
   const [expandedItems, setExpandedItems] = useState([]);
   const [focusedItem, setFocusedItem] = useState(null);

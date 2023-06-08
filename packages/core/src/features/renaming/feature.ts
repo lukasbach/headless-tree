@@ -19,6 +19,11 @@ export const renamingFeature: FeatureImplementation<
     ...defaultConfig,
   }),
 
+  stateHandlerNames: {
+    renamingItem: "setRenamingItem",
+    renamingValue: "setRenamingValue",
+  },
+
   createTreeInstance: (prev, instance) => ({
     ...prev,
 
@@ -30,8 +35,8 @@ export const renamingFeature: FeatureImplementation<
         return;
       }
 
-      config.setRenamingItem?.(itemId);
-      config.setRenamingValue?.(item.getItemName());
+      instance.applySubStateUpdate("renamingItem", itemId);
+      instance.applySubStateUpdate("renamingValue", item.getItemName());
     },
 
     getRenamingItem: () => {
@@ -42,7 +47,7 @@ export const renamingFeature: FeatureImplementation<
     getRenamingValue: () => instance.getState().renamingValue || "",
 
     abortRenaming: () => {
-      instance.getConfig().setRenamingItem?.(null);
+      instance.applySubStateUpdate("renamingItem", null);
     },
 
     completeRenaming: () => {
@@ -51,7 +56,7 @@ export const renamingFeature: FeatureImplementation<
       if (item) {
         config.onRename?.(item, instance.getState().renamingValue || "");
       }
-      instance.getConfig().setRenamingItem?.(null);
+      instance.applySubStateUpdate("renamingItem", null);
     },
 
     isRenamingItem: () => !!instance.getState().renamingItem,
@@ -63,7 +68,7 @@ export const renamingFeature: FeatureImplementation<
       onBlur: () => tree.abortRenaming(),
       value: tree.getRenamingValue(),
       onChange: (e) => {
-        tree.getConfig().setRenamingValue?.(e.target.value);
+        tree.applySubStateUpdate("renamingValue", e.target.value);
       },
     }),
 

@@ -44,6 +44,10 @@ export const createTree = <T>(
     (acc, feature) => feature.getDefaultConfig?.(acc, treeInstance) ?? acc,
     initialConfig
   ) as TreeConfig<T>;
+  const stateHandlerNames = additionalFeatures.reduce(
+    (acc, feature) => ({ ...acc, ...feature.stateHandlerNames }),
+    {} as Record<string, string>
+  );
 
   let treeElement: HTMLElement | undefined | null;
   const treeDataRef: { current: any } = { current: {} };
@@ -109,8 +113,15 @@ export const createTree = <T>(
       ...prev,
       getState: () => state,
       setState: (updater) => {
-        state = typeof updater === "function" ? updater(state) : updater;
+        // Not necessary, since I think the subupdate below keeps the state fresh anyways?
+        // state = typeof updater === "function" ? updater(state) : updater;
         config.setState?.(state);
+      },
+      applySubStateUpdate: (stateName, updater) => {
+        state[stateName] =
+          typeof updater === "function" ? updater(state[stateName]) : updater;
+        console.log(stateHandlerNames, stateName, config)
+        config[stateHandlerNames[stateName]]!(state[stateName]);
       },
       rebuildTree: () => {
         rebuildItemMeta(mainFeature);

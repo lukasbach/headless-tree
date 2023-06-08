@@ -53,6 +53,7 @@ export function makeStateUpdater<K extends keyof TreeState<any>>(
   };
 }
 
+// TODO remove
 export const scrollIntoView = (element: Element | undefined | null) => {
   if (!element) {
     return;

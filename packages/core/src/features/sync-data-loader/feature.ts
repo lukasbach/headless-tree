@@ -1,6 +1,7 @@
 import { FeatureImplementation } from "../../types/core";
 import { SyncDataLoaderFeatureDef } from "./types";
 import { MainFeatureDef } from "../main/types";
+import { makeStateUpdater } from "../../utils";
 
 export const syncDataLoaderFeature: FeatureImplementation<
   any,
@@ -14,6 +15,15 @@ export const syncDataLoaderFeature: FeatureImplementation<
     loadingItems: [],
     ...initialState,
   }),
+
+  getDefaultConfig: (defaultConfig, tree) => ({
+    setLoadingItems: makeStateUpdater("loadingItems", tree),
+    ...defaultConfig,
+  }),
+
+  stateHandlerNames: {
+    loadingItems: "setLoadingItems",
+  },
 
   createTreeInstance: (prev, instance) => ({
     ...prev,

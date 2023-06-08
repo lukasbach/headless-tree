@@ -22,11 +22,15 @@ export const selectionFeature: FeatureImplementation<
     ...defaultConfig,
   }),
 
+  stateHandlerNames: {
+    selectedItems: "setSelectedItems",
+  },
+
   createTreeInstance: (prev, instance) => ({
     ...prev,
 
     setSelectedItems: (selectedItems) => {
-      instance.getConfig().setSelectedItems?.(selectedItems);
+      instance.applySubStateUpdate("selectedItems", selectedItems);
     },
 
     // TODO memo

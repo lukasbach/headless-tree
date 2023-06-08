@@ -17,6 +17,10 @@ export const dragAndDropFeature: FeatureImplementation<
     ...defaultConfig,
   }),
 
+  stateHandlerNames: {
+    dnd: "setDndState",
+  },
+
   createTreeInstance: (prev, tree) => ({
     ...prev,
 
@@ -52,7 +56,7 @@ export const dragAndDropFeature: FeatureImplementation<
           e.dataTransfer?.setData(format, data);
         }
 
-        tree.getConfig().setDndState?.({
+        tree.applySubStateUpdate("dnd", {
           draggedItems: items,
           draggingOverItem: tree.getFocusedItem(),
         });
@@ -82,7 +86,7 @@ export const dragAndDropFeature: FeatureImplementation<
 
         dataRef.current.lastDragCode = nextDragCode;
 
-        tree.getConfig().setDndState?.((state) => ({
+        tree.applySubStateUpdate("dnd", (state) => ({
           ...state,
           dragTarget: target,
           draggingOverItem: item,
@@ -92,7 +96,7 @@ export const dragAndDropFeature: FeatureImplementation<
       onDragLeave: item.getMemoizedProp("dnd/onDragLeave", () => () => {
         const dataRef = tree.getDataRef<DndDataRef>();
         dataRef.current.lastDragCode = "no-drag";
-        tree.getConfig().setDndState?.((state) => ({
+        tree.applySubStateUpdate("dnd", (state) => ({
           ...state,
           draggingOverItem: undefined,
           dragTarget: undefined,
@@ -112,7 +116,7 @@ export const dragAndDropFeature: FeatureImplementation<
         const draggedItems = tree.getState().dnd?.draggedItems;
 
         dataRef.current.lastDragCode = undefined;
-        tree.getConfig().setDndState?.(null);
+        tree.applySubStateUpdate("dnd", null);
 
         if (draggedItems) {
           config.onDrop?.(draggedItems, target);

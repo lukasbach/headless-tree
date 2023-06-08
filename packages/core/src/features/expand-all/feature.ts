@@ -26,7 +26,7 @@ export const expandAllFeature: FeatureImplementation<
     },
 
     collapseAll: () => {
-      tree.getConfig().setExpandedItems?.([]);
+      tree.applySubStateUpdate("expandedItems", []);
       tree.rebuildTree();
     },
   }),
