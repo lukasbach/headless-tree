@@ -10,7 +10,7 @@ const categories = [
   { key: "guide", name: "Guides" },
   { key: "data-adapter", name: "Data Adapters" },
   { key: "feature", name: "Features" },
-  { key: "advguide", name: "Advanced Guides" },
+  { key: "recipe", name: "Recipes" },
   { key: "demos", name: "Demos" },
 ];
 
