@@ -41,7 +41,6 @@ export type TreeFeatureDef<T> = {
     getFocusedItem: () => ItemInstance<any>;
     focusNextItem: () => void;
     focusPreviousItem: () => void;
-    scrollToItem: (item: ItemInstance<any>) => void;
     updateDomFocus: (scrollIntoView?: boolean) => void;
 
     getContainerProps: () => Record<string, any>;
@@ -65,6 +64,9 @@ export type TreeFeatureDef<T> = {
     getItemAbove: () => ItemInstance<T> | null;
     getItemBelow: () => ItemInstance<T> | null;
     getMemoizedProp: <X>(name: string, create: () => X, deps?: any[]) => X;
+    scrollTo: (
+      scrollIntoViewArg?: boolean | ScrollIntoViewOptions
+    ) => Promise<void>;
   };
   hotkeys:
     | "focusNextItem"

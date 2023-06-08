@@ -162,6 +162,11 @@ export const treeFeature: FeatureImplementation<
     isLoading: () => {
       throw new Error("No data-loader registered");
     },
+    scrollTo: async (scrollIntoViewArg) => {
+      tree.getConfig().scrollToItem?.(item as any);
+      await poll(() => item.getElement() !== null, 20);
+      item.getElement()!.scrollIntoView(scrollIntoViewArg);
+    },
     getId: () => item.getItemMeta().itemId,
     getProps: () => {
       const itemMeta = item.getItemMeta();

@@ -10,12 +10,12 @@ import { useTree } from "@headless-tree/react";
 import cx from "classnames";
 
 const meta = {
-  title: "React/Search",
+  title: "React/Search/Basic",
 } satisfies Meta;
 
 export default meta;
 
-export const Search = () => {
+export const Basic = () => {
   const tree = useTree<string>({
     rootItemId: "root",
     getItemName: (item) => item.getItemData(),
@@ -23,6 +23,16 @@ export const Search = () => {
     dataLoader: {
       getItem: (itemId) => itemId,
       getChildren: (itemId) => [`${itemId}-1`, `${itemId}-2`, `${itemId}-3`],
+    },
+    initialState: {
+      expandedItems: [
+        "root-1",
+        "root-2",
+        "root-3",
+        "root-1-1",
+        "root-1-2",
+        "root-1-3",
+      ],
     },
     features: [
       syncDataLoaderFeature,

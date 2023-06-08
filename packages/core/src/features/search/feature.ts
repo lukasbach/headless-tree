@@ -110,7 +110,6 @@ export const searchFeature: FeatureImplementation<
       allowWhenInputFocused: true,
       isEnabled: (tree) => tree.isSearchOpen(),
       handler: (e, tree) => {
-        // TODO scroll into view
         const focusItem = tree
           .getSearchMatchingItems()
           .find(
@@ -119,6 +118,7 @@ export const searchFeature: FeatureImplementation<
               tree.getFocusedItem().getItemMeta().index
           );
         focusItem?.setFocused();
+        focusItem?.scrollTo({ block: "nearest", inline: "nearest" });
       },
     },
 
@@ -127,7 +127,6 @@ export const searchFeature: FeatureImplementation<
       allowWhenInputFocused: true,
       isEnabled: (tree) => tree.isSearchOpen(),
       handler: (e, tree) => {
-        // TODO scroll into view
         const focusItem = [...tree.getSearchMatchingItems()]
           .reverse()
           .find(
@@ -136,6 +135,7 @@ export const searchFeature: FeatureImplementation<
               tree.getFocusedItem().getItemMeta().index
           );
         focusItem?.setFocused();
+        focusItem?.scrollTo({ block: "nearest", inline: "nearest" });
       },
     },
   },
