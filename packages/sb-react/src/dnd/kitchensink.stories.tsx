@@ -11,13 +11,22 @@ import { action } from "@storybook/addon-actions";
 import cx from "classnames";
 
 const meta = {
-  title: "React/Drag and Drop/Basic Example",
+  title: "React/Drag and Drop/Kitchen Sink",
+  tags: ["complex-story"],
   argTypes: {
     canDropInbetween: {
       control: "boolean",
     },
     canDropForeignDragObject: {
       control: "boolean",
+    },
+    topLinePercentage: {
+      control: { type: "number", min: 0, max: 1, step: 0.1 },
+      defaultValue: 0.2,
+    },
+    bottomLinePercentage: {
+      control: { type: "number", min: 0, max: 1, step: 0.1 },
+      defaultValue: 0.2,
     },
   },
   args: {
@@ -28,9 +37,11 @@ const meta = {
 
 export default meta;
 
-export const BasicExample = ({
+export const KitchenSink = ({
   canDropInbetween,
   canDropForeignDragObject,
+  topLinePercentage,
+  bottomLinePercentage,
 }) => {
   const [state, setState] = useState({});
   const tree = useTree<string>({
@@ -49,6 +60,8 @@ export const BasicExample = ({
         .join(",")}`,
     }),
     canDropForeignDragObject: () => canDropForeignDragObject,
+    topLinePercentage,
+    bottomLinePercentage,
     dataLoader: {
       getItem: (itemId) => itemId,
       getChildren: (itemId) => [
