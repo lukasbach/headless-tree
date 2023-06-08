@@ -61,7 +61,6 @@ export const sourceNodes: GatsbyNode["sourceNodes"] = async ({
       markdown: content,
       file,
     };
-    console.log("APIDOC", createNodeId(file), data);
     actions.createNode({
       ...data,
       id: createNodeId(file),

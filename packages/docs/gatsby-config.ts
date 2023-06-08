@@ -14,7 +14,6 @@ const wrapESMPlugin = (name) =>
 const config: GatsbyConfig = {
   graphqlTypegen: true,
   plugins: [
-    "gatsby-plugin-mantine",
     {
       resolve: `gatsby-plugin-mdx`,
       options: {

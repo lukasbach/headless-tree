@@ -1866,7 +1866,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@emotion/server@npm:^11.11.0, @emotion/server@npm:^11.4.0":
+"@emotion/server@npm:^11.11.0":
   version: 11.11.0
   resolution: "@emotion/server@npm:11.11.0"
   dependencies:
@@ -2517,7 +2517,6 @@ __metadata:
     fs-extra: ^11.1.1
     gatsby: ^5.10.0
     gatsby-link: ^5.10.0
-    gatsby-plugin-mantine: ^5.0.0
     gatsby-plugin-mdx: ^5.10.0
     gatsby-source-filesystem: ^5.10.0
     gatsby-transformer-remark: ^6.10.0
@@ -3079,32 +3078,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mantine/ssr@npm:^5.0.0":
-  version: 5.10.5
-  resolution: "@mantine/ssr@npm:5.10.5"
+"@mantine/ssr@npm:^6.0.13":
+  version: 6.0.13
+  resolution: "@mantine/ssr@npm:6.0.13"
   dependencies:
-    "@mantine/styles": 5.10.5
+    "@mantine/styles": 6.0.13
     html-react-parser: 1.4.12
   peerDependencies:
     "@emotion/react": ">=11.9.0"
     "@emotion/server": ">=11.4.0"
     react: ">=16.8.0"
     react-dom: ">=16.8.0"
-  checksum: 34058994cc207fd83e3b1e7ba5c6da76ce495fe45134fe9d31ed64a0201e4f1ce9100a26ededb3e50f1082c0c4b8d0c28d3235c64f27695b1a7948c75ad9b869
-  languageName: node
-  linkType: hard
-
-"@mantine/styles@npm:5.10.5":
-  version: 5.10.5
-  resolution: "@mantine/styles@npm:5.10.5"
-  dependencies:
-    clsx: 1.1.1
-    csstype: 3.0.9
-  peerDependencies:
-    "@emotion/react": ">=11.9.0"
-    react: ">=16.8.0"
-    react-dom: ">=16.8.0"
-  checksum: 7c7322779e21681a58c80dddfb30a9ce5cfecfa0854bc35921533ebe8fb101199f9626cd38bfa2dea31e9d7ffc5a25e2005c62a5feaf3cb766b540c480a449da
+  checksum: 92ae8f5d2d1dd571897447ea9120e5169828b57b85497ec67adf501f3bfd9c29d51b045d37dd614684875ee4208fcd2dee668738d6cab524ab4c037a51f83807
   languageName: node
   linkType: hard
 
@@ -12716,20 +12701,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"gatsby-plugin-mantine@npm:^5.0.0":
-  version: 5.0.0
-  resolution: "gatsby-plugin-mantine@npm:5.0.0"
-  dependencies:
-    "@emotion/server": ^11.4.0
-    "@mantine/ssr": ^5.0.0
-  peerDependencies:
-    gatsby: "*"
-    react: "*"
-    react-dom: "*"
-  checksum: ff725173ff6e3f44c8c89f8e9e8c3aaf42898422ce364a2952d1ea52a91beef28c5610b5aa5ccc4af02dcadcacde1350ef83cea3fa934666308d160c61f2ac30
-  languageName: node
-  linkType: hard
-
 "gatsby-plugin-mdx@npm:^5.10.0":
   version: 5.10.0
   resolution: "gatsby-plugin-mdx@npm:5.10.0"
@@ -21815,6 +21786,7 @@ __metadata:
   dependencies:
     "@changesets/cli": ^2.26.1
     "@lukasbach/eslint-config-deps": ^1.0.3
+    "@mantine/ssr": ^6.0.13
     "@nrwl/nx-cloud": latest
     "@types/node": 18.16.1
     "@types/react": 18.2.1
