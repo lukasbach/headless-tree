@@ -20,6 +20,7 @@
     "@mantine/core": "^6.0.13",
     "@mantine/hooks": "^6.0.13",
     "@mantine/prism": "^6.0.13",
+    "@mantine/ssr": "^6.0.13",
     "@mdx-js/react": "^2.3.0",
     "@types/node": "^20.1.1",
     "fs-extra": "^11.1.1",
