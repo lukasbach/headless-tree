@@ -5,24 +5,21 @@ import {
   selectionFeature,
   dragAndDropFeature,
   expandAllFeature,
-  asyncDataLoaderFeature,
+  syncDataLoaderFeature,
 } from "@headless-tree/core";
 import { useTree } from "@headless-tree/react";
 import cx from "classnames";
 
 const meta = {
-  title: "React/Expand All",
+  title: "React/Expand All/Basic",
 } satisfies Meta;
 
 export default meta;
 
 // story-start
-// eslint-disable-next-line no-promise-executor-return
-const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
 const cancelToken = { current: false };
 
-export const ExpandAll = () => {
+export const Basic = () => {
   const tree = useTree<string>({
     rootItemId: "folder",
     state: {},
@@ -30,24 +27,22 @@ export const ExpandAll = () => {
     isItemFolder: (item) =>
       !item.getItemData().endsWith("item") && item.getItemMeta().level < 3,
     createLoadingItemData: () => "Loading...",
-    asyncDataLoader: {
-      getItem: (itemId) => wait(800).then(() => itemId),
-      getChildren: (itemId) =>
-        wait(800).then(() => [
-          `${itemId}-1`,
-          `${itemId}-2`,
-          `${itemId}-1item`,
-          `${itemId}-2item`,
-          `${itemId}-3item`,
-        ]),
+    dataLoader: {
+      getItem: (itemId) => itemId,
+      getChildren: (itemId) => [
+        `${itemId}-1`,
+        `${itemId}-2`,
+        `${itemId}-1item`,
+        `${itemId}-2item`,
+        `${itemId}-3item`,
+      ],
     },
-    dataLoader: null as any,
     features: [
-      asyncDataLoaderFeature,
       selectionFeature,
       hotkeysCoreFeature,
       dragAndDropFeature,
       expandAllFeature,
+      syncDataLoaderFeature,
     ],
   });
 
@@ -66,7 +61,7 @@ export const ExpandAll = () => {
           // per expand-all-operation
           setTimeout(() => {
             cancelToken.current = false;
-          }, 1000);
+          }, 100);
         }}
       >
         Cancel Expanding
@@ -95,9 +90,6 @@ export const ExpandAll = () => {
           </div>
         ))}
       </div>
-      <pre>
-        Loading: {JSON.stringify(tree.getState().loadingItems, null, 2)}
-      </pre>
     </>
   );
 };

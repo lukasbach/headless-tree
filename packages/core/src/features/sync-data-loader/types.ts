@@ -7,7 +7,7 @@ export type SyncDataLoaderFeatureDef<T> = {
   state: {};
   config: {
     rootItemId: string;
-    dataLoader: SyncTreeDataLoader<T>;
+    dataLoader?: SyncTreeDataLoader<T>;
   };
   treeInstance: {
     retrieveItemData: (itemId: string) => T;

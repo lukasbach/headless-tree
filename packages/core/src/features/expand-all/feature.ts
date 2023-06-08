@@ -38,6 +38,9 @@ export const expandAllFeature: FeatureImplementation<
       if (cancelToken?.current) {
         return;
       }
+      if (!item.isFolder()) {
+        return;
+      }
 
       item.expand();
       await poll(() => !tree.getState().loadingItems.includes(item.getId()));

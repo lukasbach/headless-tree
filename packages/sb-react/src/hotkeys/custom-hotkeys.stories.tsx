@@ -37,7 +37,6 @@ export const CustomHotkeys = () => {
     hotkeys: {
       // Begin the hotkey name with "custom" to satisfy the type checker
       customExpandAll: {
-        // TODO this doesn't work at all..
         hotkey: "q",
         handler: (e, tree) => {
           tree.expandAll();
