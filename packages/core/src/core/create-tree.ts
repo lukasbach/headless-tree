@@ -120,7 +120,6 @@ export const createTree = <T>(
       applySubStateUpdate: (stateName, updater) => {
         state[stateName] =
           typeof updater === "function" ? updater(state[stateName]) : updater;
-        console.log(stateHandlerNames, stateName, config)
         config[stateHandlerNames[stateName]]!(state[stateName]);
       },
       rebuildTree: () => {

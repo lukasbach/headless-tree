@@ -50,7 +50,6 @@ export const treeFeature: FeatureImplementation<
     getItemsMeta: () => {
       const { rootItemId } = instance.getConfig();
       const { expandedItems } = instance.getState();
-      // console.log("!", instance.getConfig());
       const flatItems: ItemMeta[] = [];
 
       const recursiveAdd = (
@@ -181,7 +180,6 @@ export const treeFeature: FeatureImplementation<
         "aria-level": itemMeta.level,
         tabIndex: item.isFocused() ? 0 : -1,
         onClick: item.getMemoizedProp("tree/onClick", () => (e) => {
-          console.log("onClick", item.getId());
           item.setFocused();
           item.primaryAction();
 
