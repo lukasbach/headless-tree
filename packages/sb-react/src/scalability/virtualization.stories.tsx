@@ -16,7 +16,7 @@ import { useVirtualizer, Virtualizer } from "@tanstack/react-virtual";
 import cx from "classnames";
 
 const meta = {
-  title: "React/Virtualization",
+  title: "React/Scalability/Basic Virtualization",
   argTypes: {
     itemsPerLevel: {
       type: "number",
@@ -126,7 +126,7 @@ const Inner = forwardRef<Virtualizer<HTMLDivElement, Element>, any>(
   }
 );
 
-export const Virtualization = ({ itemsPerLevel, openLevels }) => {
+export const BasicVirtualization = ({ itemsPerLevel, openLevels }) => {
   const virtualizer = useRef<Virtualizer<HTMLDivElement, Element> | null>(null);
   const [state, setState] = useState(() => ({
     expandedItems: getExpandedItemIds(itemsPerLevel, openLevels),

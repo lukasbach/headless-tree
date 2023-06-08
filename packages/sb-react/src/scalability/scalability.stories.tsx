@@ -10,7 +10,7 @@ import { useTree } from "@headless-tree/react";
 import cx from "classnames";
 
 const meta = {
-  title: "React/Scalability",
+  title: "React/Scalability/Big Tree",
   argTypes: {
     itemsPerLevel: {
       type: "number",
@@ -50,7 +50,7 @@ const getExpandedItemIds = (
   ];
 };
 
-export const Scalability = ({ itemsPerLevel, openLevels }) => {
+export const BigTree = ({ itemsPerLevel, openLevels }) => {
   const [state, setState] = useState(() => ({
     expandedItems: getExpandedItemIds(itemsPerLevel, openLevels),
   }));

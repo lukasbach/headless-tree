@@ -11,7 +11,7 @@ import { action } from "@storybook/addon-actions";
 import cx from "classnames";
 
 const meta = {
-  title: "React/Dnd",
+  title: "React/Drag and Drop/Basic Example",
   argTypes: {
     canDropInbetween: {
       control: "boolean",
@@ -28,7 +28,10 @@ const meta = {
 
 export default meta;
 
-export const Dnd = ({ canDropInbetween, canDropForeignDragObject }) => {
+export const BasicExample = ({
+  canDropInbetween,
+  canDropForeignDragObject,
+}) => {
   const [state, setState] = useState({});
   const tree = useTree<string>({
     state,
