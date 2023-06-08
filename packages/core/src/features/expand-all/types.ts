@@ -3,11 +3,11 @@ export type ExpandAllFeatureDef = {
   config: {};
   treeInstance: {
     expandAll: (cancelToken?: { current: boolean }) => Promise<void>;
-    collapseAll: () => Promise<void>;
+    collapseAll: () => void;
   };
   itemInstance: {
     expandAll: (cancelToken?: { current: boolean }) => Promise<void>;
-    collapseAll: () => Promise<void>;
+    collapseAll: () => void;
   };
   hotkeys: never;
 };

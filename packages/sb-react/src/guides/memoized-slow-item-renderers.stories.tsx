@@ -25,7 +25,6 @@ const SlowItem = forwardRef<HTMLButtonElement, HTMLProps<HTMLButtonElement>>(
   }
 );
 
-// TODO this doesn't work yet
 const MemoizedItem = memo(SlowItem);
 
 export const MemoizedSlowItemRenderers = () => {

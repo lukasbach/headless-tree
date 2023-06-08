@@ -25,8 +25,9 @@ export const expandAllFeature: FeatureImplementation<
       );
     },
 
-    collapseAll: async () => {
+    collapseAll: () => {
       tree.getConfig().setExpandedItems?.([]);
+      tree.rebuildTree();
     },
   }),
 
@@ -50,12 +51,10 @@ export const expandAllFeature: FeatureImplementation<
       );
     },
 
-    collapseAll: async () => {
-      await Promise.all(
-        item.getChildren().map(async (child) => {
-          await child?.collapseAll();
-        })
-      );
+    collapseAll: () => {
+      for (const child of item.getChildren()) {
+        child?.collapseAll();
+      }
       item.collapse();
     },
   }),

@@ -62,10 +62,11 @@ export const ExpandAll = () => {
           cancelToken.current = true;
 
           // Reset cancel token again. In production, you probably want to
-          // do this before the expand operation
+          // do this before the expand operation, i.e. create a new token
+          // per expand-all-operation
           setTimeout(() => {
             cancelToken.current = false;
-          }, 150);
+          }, 1000);
         }}
       >
         Cancel Expanding
