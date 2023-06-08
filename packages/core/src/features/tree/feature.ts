@@ -138,8 +138,7 @@ export const treeFeature: FeatureImplementation<
       instance.focusItem(instance.getItems()[nextIndex].getId());
     },
 
-    // TODO remove unused stuff
-    updateDomFocus: (scrollIntoView) => {
+    updateDomFocus: () => {
       // Required because if the state is managed outside in react, the state only updated during next render
       setTimeout(async () => {
         const focusedItem = instance.getFocusedItem();
@@ -148,9 +147,6 @@ export const treeFeature: FeatureImplementation<
         const focusedElement = focusedItem.getElement();
         if (!focusedElement) return;
         focusedElement.focus();
-        // if (scrollIntoView) {
-        //   focusedElement.scrollIntoView();
-        // }
       });
     },
 
@@ -311,7 +307,7 @@ export const treeFeature: FeatureImplementation<
           item.getItemMeta().level !== 0
         ) {
           item.getParent()?.setFocused();
-          tree.updateDomFocus(true);
+          tree.updateDomFocus();
         } else {
           item.collapse();
         }
