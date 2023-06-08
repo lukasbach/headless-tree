@@ -10,20 +10,35 @@ import { useTree } from "@headless-tree/react";
 import cx from "classnames";
 
 const meta = {
-  title: "React/Search/Basic",
+  title: "React/Search/Custom Matcher",
 } satisfies Meta;
 
 export default meta;
 
-export const Basic = () => {
-  const tree = useTree<string>({
+const rootItem = { name: "Root", color: "black" };
+
+const coloredItems = [
+  { name: "Item 1", color: "red" },
+  { name: "Item 2", color: "green" },
+  { name: "Item 3", color: "purple" },
+  { name: "Item 4", color: "orange" },
+  { name: "Item 5", color: "blue" },
+];
+
+export const CustomMatcher = () => {
+  const tree = useTree<typeof rootItem>({
     rootItemId: "root",
-    getItemName: (item) => item.getItemData(),
-    isItemFolder: () => true,
+    getItemName: (item) => item.getItemData().name,
+    isItemFolder: (item) => item.getId() === "root",
     dataLoader: {
-      getItem: (itemId) => itemId,
-      getChildren: (itemId) => [`${itemId}-1`, `${itemId}-2`, `${itemId}-3`],
+      getItem: (itemId) =>
+        itemId === "root"
+          ? rootItem
+          : coloredItems.find((item) => item.name === itemId)!,
+      getChildren: (itemId) => coloredItems.map((item) => item.name),
     },
+    isSearchMatchingItem: (searchQuery, item) =>
+      item.getItemData().color.includes(searchQuery),
     initialState: {
       expandedItems: [
         "root-1",
@@ -44,6 +59,10 @@ export const Basic = () => {
 
   return (
     <>
+      <p className="description">
+        This example uses a custom matcher that matches the name of the item
+        color, not the name. Try searching for "blue" or "red".
+      </p>
       <p>
         <button onClick={() => tree.openSearch()}>Open Search</button> or press
         any letter keys while focusing the tree to search.
@@ -59,7 +78,7 @@ export const Basic = () => {
           />{" "}
           ({tree.getSearchMatchingItems().length} matches)
         </>
-      )}{" "}
+      )}
       <div ref={tree.registerElement} className="tree">
         {tree.getItems().map((item) => (
           <div
@@ -77,6 +96,7 @@ export const Basic = () => {
                 folder: item.isFolder(),
                 searchmatch: item.isMatchingSearch(),
               })}
+              style={{ color: item.getItemData().color }}
             >
               {item.getItemName()}
             </button>

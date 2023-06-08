@@ -75,8 +75,9 @@ export const searchFeature: FeatureImplementation<
 
     getSearchMatchingItems: memo(
       (search, items) =>
-        items.filter((item) =>
-          instance.getConfig().isSearchMatchingItem?.(search, item)
+        items.filter(
+          (item) =>
+            search && instance.getConfig().isSearchMatchingItem?.(search, item)
         ),
       () => [instance.getSearchValue(), instance.getItems()]
     ),
