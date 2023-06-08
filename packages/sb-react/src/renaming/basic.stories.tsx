@@ -4,19 +4,18 @@ import {
   hotkeysCoreFeature,
   selectionFeature,
   syncDataLoaderFeature,
-  searchFeature,
   renamingFeature,
 } from "@headless-tree/core";
 import { useTree } from "@headless-tree/react";
 import cx from "classnames";
 
 const meta = {
-  title: "React/Renaming",
+  title: "React/Renaming/Basic",
 } satisfies Meta;
 
 export default meta;
 
-export const Renaming = () => {
+export const Basic = () => {
   const tree = useTree<string>({
     rootItemId: "root",
     getItemName: (item) => item.getItemData(),
@@ -32,19 +31,18 @@ export const Renaming = () => {
       syncDataLoaderFeature,
       selectionFeature,
       hotkeysCoreFeature,
-      searchFeature,
       renamingFeature,
     ],
   });
 
   return (
     <>
-      {tree.isSearchOpen() && (
-        <input
-          {...tree.getSearchInputElementProps()}
-          ref={tree.registerSearchInputElement}
-        />
-      )}{" "}
+      <p className="description">
+        <button onClick={() => tree.startRenamingItem("root-2")}>
+          Rename root-2
+        </button>{" "}
+        or press F2 when an item is focused.
+      </p>
       <div ref={tree.registerElement} className="tree">
         {tree.getItems().map((item) => (
           <div
@@ -68,7 +66,6 @@ export const Renaming = () => {
                   expanded: item.isExpanded(),
                   selected: item.isSelected(),
                   folder: item.isFolder(),
-                  searchmatch: item.isMatchingSearch(),
                 })}
               >
                 {item.getItemName()}
@@ -77,10 +74,6 @@ export const Renaming = () => {
           </div>
         ))}
       </div>
-      <button onClick={() => tree.startRenamingItem("root-2")}>
-        Rename root-2
-      </button>{" "}
-      or press F2 when an item is focused.
     </>
   );
 };
