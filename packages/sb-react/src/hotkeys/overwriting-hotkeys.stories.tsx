@@ -11,10 +11,12 @@ import cx from "classnames";
 
 const meta = {
   title: "React/Hotkeys/Overwriting Hotkeys",
+  tags: ["feature/hotkeys"],
 } satisfies Meta;
 
 export default meta;
 
+// story-start
 export const OverwritingHotkeys = () => {
   const tree = useTree<string>({
     rootItemId: "folder",

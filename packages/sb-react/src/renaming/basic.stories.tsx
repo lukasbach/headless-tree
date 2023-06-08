@@ -11,10 +11,12 @@ import cx from "classnames";
 
 const meta = {
   title: "React/Renaming/Basic",
+  tags: ["feature/renaming", "basic"],
 } satisfies Meta;
 
 export default meta;
 
+// story-start
 export const Basic = () => {
   const tree = useTree<string>({
     rootItemId: "root",

@@ -15,6 +15,7 @@ const meta = {
 
 export default meta;
 
+// story-start
 export const Example = () => {
   const [state, setState] = useState({});
   const tree = useTree<string>({

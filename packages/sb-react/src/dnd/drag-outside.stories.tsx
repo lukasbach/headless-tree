@@ -12,10 +12,12 @@ import cx from "classnames";
 
 const meta = {
   title: "React/Drag and Drop/Drag Outside",
+  tags: ["feature/dnd"],
 } satisfies Meta;
 
 export default meta;
 
+// story-start
 export const DragOutside = () => {
   const [state, setState] = useState({});
   const tree = useTree<string>({

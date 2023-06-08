@@ -11,10 +11,12 @@ import cx from "classnames";
 
 const meta = {
   title: "React/Renaming/Can Rename Configurability",
+  tags: ["feature/renaming"],
 } satisfies Meta;
 
 export default meta;
 
+// story-start
 export const CanRenameConfigurability = () => {
   const tree = useTree<string>({
     rootItemId: "root",

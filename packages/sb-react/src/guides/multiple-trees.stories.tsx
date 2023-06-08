@@ -16,6 +16,7 @@ const meta = {
 
 export default meta;
 
+// story-start
 type Item = {
   name: string;
   children?: Item[];

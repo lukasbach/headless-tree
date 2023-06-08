@@ -10,7 +10,7 @@ import cx from "classnames";
 
 const meta = {
   title: "React/State/Internal State",
-  tags: ["guides/state", "react/state/internal-state"],
+  tags: ["guides/state"],
 } satisfies Meta;
 
 export default meta;

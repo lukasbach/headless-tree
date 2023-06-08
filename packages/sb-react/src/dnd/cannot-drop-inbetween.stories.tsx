@@ -12,10 +12,12 @@ import cx from "classnames";
 
 const meta = {
   title: "React/Drag and Drop/Cannot Drop Inbetween",
+  tags: ["feature/dnd"],
 } satisfies Meta;
 
 export default meta;
 
+// story-start
 export const CannotDropInbetween = () => {
   const [state, setState] = useState({});
   const tree = useTree<string>({

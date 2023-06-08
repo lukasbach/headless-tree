@@ -136,9 +136,10 @@ export const PageContainer: FC<PageContainerProps> = ({ children, data }) => {
       {hasDemos && (
         <Tabs.Panel value="demo" pt="xs">
           <DemoBox
-            storybookTag={data.mdx?.frontmatter?.storybook}
+            stories={[data.mdx?.frontmatter?.storybook]}
             height="calc(100vh - var(--header-height))"
             fullWidth={true}
+            initialStory="basic"
           />
         </Tabs.Panel>
       )}

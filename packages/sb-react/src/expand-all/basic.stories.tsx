@@ -12,6 +12,7 @@ import cx from "classnames";
 
 const meta = {
   title: "React/Expand All/Basic",
+  tags: ["feature/expand-all", "basic"],
 } satisfies Meta;
 
 export default meta;

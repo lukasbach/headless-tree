@@ -11,10 +11,12 @@ import cx from "classnames";
 
 const meta = {
   title: "React/Search/Custom Matcher",
+  tags: ["feature/search"],
 } satisfies Meta;
 
 export default meta;
 
+// story-start
 const rootItem = { name: "Root", color: "black" };
 
 const coloredItems = [

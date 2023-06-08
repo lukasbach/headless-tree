@@ -16,7 +16,7 @@ metalinks:
   - name: Import
     code: "import { asyncDataLoaderFeature } from \"@headless-tree/core\";"
     language: typescript
-storybook: feature/dnd
+storybook: feature/async-data-loader
 api:
   typesSource: https://github.com/lukasbach/headless-tree/blob/main/packages/core/src/features/async-data-loader/types.ts
   typedoc: /api/types/_headless_tree_core.AsyncDataLoaderFeatureDef.html
@@ -29,6 +29,6 @@ api:
 
 import { DemoBox } from "../../src/components/page/demo-box";
 
-<DemoBox storybookTag="feature/main" />
+<DemoBox stories={["feature/async-data-loader"]} />
 
 TODO

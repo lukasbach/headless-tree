@@ -15,6 +15,7 @@ const meta = {
 
 export default meta;
 
+// story-start
 export const SimpleExample = () => {
   const tree = useTree<string>({
     rootItemId: "folder",

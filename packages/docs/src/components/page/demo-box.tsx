@@ -4,7 +4,8 @@ import { Prism } from "@mantine/prism";
 import { useStories } from "@/queries/use-stories";
 
 export type DemoBoxProps = {
-  storybookTag?: string | null;
+  stories?: string[] | null;
+  initialStory?: string;
   height?: string;
   fullWidth?: boolean;
 };
@@ -12,22 +13,31 @@ export type DemoBoxProps = {
 const storyStartToken = "// story-start";
 
 export const DemoBox: FC<DemoBoxProps> = ({
-  storybookTag,
+  stories,
   height,
   fullWidth,
+  initialStory,
 }) => {
   const { allStory } = useStories();
-  const stories = allStory.nodes.filter((story) =>
-    storybookTag ? story.tags?.includes(storybookTag) : true
+  console.log(allStory.nodes, stories);
+  const matchingStories = allStory.nodes.filter((story) =>
+    stories
+      ? stories.some((tag) => story.tags?.includes(tag) || story.title === tag)
+      : true
   );
-  const [selectedStory, setSelectedStory] = useState(stories[0]?.story);
-  const story = stories.find((s) => s.story === selectedStory)!;
+  const [selectedStory, setSelectedStory] = useState(
+    initialStory
+      ? matchingStories.find((story) => story.title === initialStory)?.story ??
+          matchingStories[0]?.story
+      : matchingStories[0]?.story
+  );
+  const story = matchingStories.find((s) => s.story === selectedStory)!;
   const code = story?.source?.includes(storyStartToken)
     ? story.source.split(storyStartToken)[1]
     : story?.source;
   height ??= "500px";
 
-  if (stories.length === 0) return null;
+  if (matchingStories.length === 0) return null;
 
   return (
     <Box sx={{ height }}>
@@ -60,7 +70,7 @@ export const DemoBox: FC<DemoBoxProps> = ({
             sx={{ width: "var(--sidebar-width)", paddingLeft: "8px" }}
             value={selectedStory}
             onChange={setSelectedStory}
-            data={stories.map((story) => ({
+            data={matchingStories.map((story) => ({
               value: story.story ?? "",
               label: story.title ?? "",
             }))}

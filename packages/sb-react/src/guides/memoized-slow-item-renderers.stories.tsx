@@ -16,6 +16,7 @@ const meta = {
 
 export default meta;
 
+// story-start
 const SlowItem = forwardRef<HTMLButtonElement, HTMLProps<HTMLButtonElement>>(
   (props, ref) => {
     const start = Date.now();

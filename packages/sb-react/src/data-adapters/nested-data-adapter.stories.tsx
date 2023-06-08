@@ -12,6 +12,7 @@ import cx from "classnames";
 
 const meta = {
   title: "React/Data Adapters/Nested Data Adapter",
+  tags: ["feature/nested-data-adapter"],
   argTypes: {
     canDropInbetween: {
       control: "boolean",
@@ -24,6 +25,7 @@ const meta = {
 
 export default meta;
 
+// story-start
 type Item = {
   name: string;
   children?: Item[];

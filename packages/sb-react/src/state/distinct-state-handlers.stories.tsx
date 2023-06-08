@@ -10,7 +10,7 @@ import cx from "classnames";
 
 const meta = {
   title: "React/State/Distinct State Handlers",
-  tags: ["guides/state", "react/state/distinct-state-handlers"],
+  tags: ["guides/state"],
 } satisfies Meta;
 
 export default meta;

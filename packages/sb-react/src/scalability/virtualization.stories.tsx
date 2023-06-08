@@ -33,6 +33,7 @@ const meta = {
 
 export default meta;
 
+// story-start
 const getExpandedItemIds = (
   itemsPerLevel: number,
   openLevels: number,

@@ -11,7 +11,7 @@ import cx from "classnames";
 
 const meta = {
   title: "React/State/External State",
-  tags: ["guides/state", "react/state/external-state"],
+  tags: ["guides/state"],
 } satisfies Meta;
 
 export default meta;

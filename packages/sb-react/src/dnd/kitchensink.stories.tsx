@@ -12,7 +12,7 @@ import cx from "classnames";
 
 const meta = {
   title: "React/Drag and Drop/Kitchen Sink",
-  tags: ["complex-story"],
+  tags: ["feature/dnd", "complex-story"],
   argTypes: {
     canDropInbetween: {
       control: "boolean",
@@ -37,6 +37,7 @@ const meta = {
 
 export default meta;
 
+// story-start
 export const KitchenSink = ({
   canDropInbetween,
   canDropForeignDragObject,

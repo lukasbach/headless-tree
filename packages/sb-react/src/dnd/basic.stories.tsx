@@ -12,10 +12,12 @@ import cx from "classnames";
 
 const meta = {
   title: "React/Drag and Drop/Basic",
+  tags: ["feature/dnd", "basic"],
 } satisfies Meta;
 
 export default meta;
 
+// story-start
 export const Basic = () => {
   const [state, setState] = useState({});
   const tree = useTree<string>({

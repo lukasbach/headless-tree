@@ -12,10 +12,12 @@ import cx from "classnames";
 
 const meta = {
   title: "React/Hotkeys/Custom Hotkeys",
+  tags: ["feature/hotkeys"],
 } satisfies Meta;
 
 export default meta;
 
+// story-start
 export const CustomHotkeys = () => {
   const tree = useTree<string>({
     rootItemId: "folder",

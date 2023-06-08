@@ -11,10 +11,12 @@ import cx from "classnames";
 
 const meta = {
   title: "React/Search/Scroll Behaviour",
+  tags: ["feature/search"],
 } satisfies Meta;
 
 export default meta;
 
+// story-start
 export const ScrollBehaviour = () => {
   const tree = useTree<string>({
     rootItemId: "root",
