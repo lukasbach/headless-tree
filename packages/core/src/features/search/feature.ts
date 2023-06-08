@@ -110,6 +110,16 @@ export const searchFeature: FeatureImplementation<
       },
     },
 
+    submitSearch: {
+      hotkey: "Enter",
+      allowWhenInputFocused: true,
+      isEnabled: (tree) => tree.isSearchOpen(),
+      handler: (e, tree) => {
+        tree.closeSearch();
+        tree.setSelectedItems([tree.getFocusedItem().getId()]);
+      },
+    },
+
     nextSearchItem: {
       hotkey: "ArrowDown",
       allowWhenInputFocused: true,

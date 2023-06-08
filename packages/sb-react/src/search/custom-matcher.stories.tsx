@@ -25,6 +25,8 @@ const coloredItems = [
   { name: "Item 5", color: "blue" },
 ];
 
+// TODO when entering a search, then hitting escape, why is the found item not focused?
+
 export const CustomMatcher = () => {
   const tree = useTree<typeof rootItem>({
     rootItemId: "root",

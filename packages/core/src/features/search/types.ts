@@ -34,6 +34,7 @@ export type SearchFeatureDef<T> = {
   hotkeys:
     | "openSearch"
     | "closeSearch"
+    | "submitSearch"
     | "nextSearchItem"
     | "previousSearchItem";
 };
