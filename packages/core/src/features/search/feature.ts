@@ -108,6 +108,7 @@ export const searchFeature: FeatureImplementation<
     nextSearchItem: {
       hotkey: "ArrowDown",
       allowWhenInputFocused: true,
+      canRepeat: true,
       isEnabled: (tree) => tree.isSearchOpen(),
       handler: (e, tree) => {
         const focusItem = tree
@@ -125,6 +126,7 @@ export const searchFeature: FeatureImplementation<
     previousSearchItem: {
       hotkey: "ArrowUp",
       allowWhenInputFocused: true,
+      canRepeat: true,
       isEnabled: (tree) => tree.isSearchOpen(),
       handler: (e, tree) => {
         const focusItem = [...tree.getSearchMatchingItems()]
