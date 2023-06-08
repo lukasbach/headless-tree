@@ -1,5 +1,5 @@
 import type { Meta } from "@storybook/react";
-import React, { forwardRef, HTMLProps } from "react";
+import React, { forwardRef, HTMLProps, memo } from "react";
 import {
   hotkeysCoreFeature,
   selectionFeature,
@@ -11,7 +11,7 @@ import { action } from "@storybook/addon-actions";
 import cx from "classnames";
 
 const meta = {
-  title: "React/Guides/Slow Item Renderers",
+  title: "React/Guides/Render Performance/Memoized Slow Item Renderers",
 } satisfies Meta;
 
 export default meta;
@@ -26,7 +26,9 @@ const SlowItem = forwardRef<HTMLButtonElement, HTMLProps<HTMLButtonElement>>(
   }
 );
 
-export const SlowItemRenderers = () => {
+const MemoizedItem = memo(SlowItem);
+
+export const MemoizedSlowItemRenderers = () => {
   const tree = useTree<string>({
     rootItemId: "folder",
     initialState: {
@@ -60,7 +62,7 @@ export const SlowItemRenderers = () => {
           className="treeitem-parent"
           style={{ marginLeft: `${item.getItemMeta().level * 20}px` }}
         >
-          <SlowItem
+          <MemoizedItem
             {...item.getProps()}
             ref={item.registerElement}
             className={cx("treeitem", {
@@ -71,7 +73,7 @@ export const SlowItemRenderers = () => {
             })}
           >
             {item.getItemName()}
-          </SlowItem>
+          </MemoizedItem>
         </div>
       ))}
     </div>
