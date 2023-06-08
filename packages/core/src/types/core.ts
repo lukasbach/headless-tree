@@ -174,9 +174,5 @@ export type FeatureImplementation<
     tree: MergedFeatures<F>["treeInstance"]
   ) => void;
 
-  setState?: (instance: MergedFeatures<F>["treeInstance"]) => void;
-  onConfigChange?: (instance: MergedFeatures<F>["treeInstance"]) => void;
-  onStateOrConfigChange?: (instance: MergedFeatures<F>["treeInstance"]) => void;
-
   hotkeys?: HotkeysConfig<T, D>;
 };
