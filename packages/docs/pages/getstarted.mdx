@@ -41,9 +41,9 @@ without a dependency on React. Documentation on that and bindings for other fram
 <DemoBox stories={["React/General/Simple Example"]} />
 
 The `useTree` hook (or the `createTree` function from the core package, if you are not using the React bindings)
-return an instance of [`TreeInstance`](/api/interfaces/_headless_tree_core.TreeInstance.html). The most important
+return an instance of [TreeInstance](/api/interfaces/_headless_tree_core.TreeInstance.html). The most important
 method on that instance is `getItems()`, which returns a flat list of all nodes in the tree. Those nodes are of type
-[`ItemInstance`](/api/interfaces/_headless_tree_core.ItemInstance.html), which provides methods to interact with
+[ItemInstance](/api/interfaces/_headless_tree_core.ItemInstance.html), which provides methods to interact with
 each item and get the necessary props to render it.
 
 When rendering your tree, don't forget to

@@ -1,5 +1,6 @@
 import type { GatsbyConfig } from "gatsby";
 import * as RehypeSlug from "rehype-slug";
+import * as RemarkGfm from "remark-gfm";
 
 // https://www.gatsbyjs.com/plugins/gatsby-plugin-mdx/#mdxoptions
 const wrapESMPlugin = (name) =>
@@ -23,6 +24,7 @@ const config: GatsbyConfig = {
           rehypePlugins: [
             // wrapESMPlugin("rehype-slug"),
             RehypeSlug,
+            RemarkGfm,
             // [RehypeAutolinkHeadings, { behavior: `wrap` }],
           ],
         },

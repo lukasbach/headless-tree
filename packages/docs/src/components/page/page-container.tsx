@@ -7,6 +7,8 @@ import {
   Container,
   createStyles,
   Code,
+  Table,
+  Anchor,
 } from "@mantine/core";
 import { MDXProvider } from "@mdx-js/react";
 import {
@@ -110,8 +112,11 @@ export const PageContainer: FC<PageContainerProps> = ({ children, data }) => {
       <Tabs.Panel value="page" pt="xs">
         <Box sx={{ display: "flex" }}>
           <Container sx={{ flexGrow: 1, width: 0 }}>
+            {/* https://www.gatsbyjs.com/plugins/gatsby-plugin-mdx/#mdxprovider */}
             <MDXProvider
               components={{
+                table: Table as any,
+                a: Anchor as any,
                 code: ({ children, className, title }) => {
                   if (!className) {
                     return <Code>{children}</Code>;
