@@ -1,5 +1,13 @@
 import React, { FC, ReactNode } from "react";
-import { Box, Title, Text, Tabs, Container, createStyles } from "@mantine/core";
+import {
+  Box,
+  Title,
+  Text,
+  Tabs,
+  Container,
+  createStyles,
+  Code,
+} from "@mantine/core";
 import { MDXProvider } from "@mdx-js/react";
 import {
   IoDiceOutline,
@@ -104,12 +112,17 @@ export const PageContainer: FC<PageContainerProps> = ({ children, data }) => {
           <Container sx={{ flexGrow: 1, width: 0 }}>
             <MDXProvider
               components={{
-                code: ({ children, className }) => (
-                  <Prism
-                    children={children as string}
-                    language={(className?.slice(9) ?? "typescript") as any}
-                  />
-                ),
+                code: ({ children, className, title }) => {
+                  if (!className) {
+                    return <Code>{children}</Code>;
+                  }
+                  return (
+                    <Prism
+                      children={children as string}
+                      language={(className?.slice(9) ?? "typescript") as any}
+                    />
+                  );
+                },
               }}
             >
               {children}
