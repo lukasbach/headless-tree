@@ -4,17 +4,48 @@ title: "Hotkeys"
 category: guide
 ---
 
-# Enabling Hotkeys
+import { DemoBox } from "../../src/components/page/demo-box";
 
-TODO
+Headless Tree provides its own implementation of keybindings that can be customized and extended.
+
+Further down on this page, you can find a list of all available hotkeys. Note that the availability of hotkeys
+depends on the features that are included. For any hotkey to work, the `hotkeysCoreFeature` must be included.
+This enables some basic tree-related hotkeys like moving focus with arrow keys. Other feature-specific hotkeys,
+like toggling selection or renaming an item, need both the `hotkeysCoreFeature` and the feature that implements
+the functionality, such as the `selectionFeature` or the `renamingFeature`.
+
+The type of a hotkey implementation is shown below. Read on to see how you can customize existing hotkeys with this
+type or add your own.
+
+```ts
+export interface HotkeyConfig<T> {
+  hotkey: string;
+  canRepeat?: boolean;
+  allowWhenInputFocused?: boolean;
+  isEnabled?: (tree: TreeInstance<T>) => boolean;
+  preventDefault?: boolean;
+  handler: (e: KeyboardEvent, tree: TreeInstance<T>) => void;
+}
+```
 
 # Overwriting Hotkeys
 
-TODO
+You can pass an object of partial hotkey implementations in the `hotkeys` config property to your tree.
+Default hotkeys and your custom hotkeys will be merged together during runtime, with your custom hotkeys
+overwriting the default hotkeys. This allows you to overwrite the keybindings, parts of the behavior (like
+being able to repeat pressing the key) certain hotkeys or overwriting their implementation.
+
+Use the tables at the bottom of the page for reference of the hotkey names.
+
+<DemoBox stories={["React/Hotkeys/Overwriting Hotkeys"]} />
 
 # Adding custom Hotkeys
 
-TODO
+You can also very easily add custom hotkeys, with arbitrary keybindings and implementations. While you can
+technically use any names for the hotkeys, the TypeScript type is implemented to only support the official
+hotkey names and any names that are prefixed with `custom` to avoid mistakes.
+
+<DemoBox stories={["React/Hotkeys/Custom Hotkeys"]} />
 
 # Available Hotkeys
 
