@@ -120,8 +120,8 @@ const tree = useTree<ItemPayload>({
     getItemName: (item) => item.getItemData().itemName,
     isItemFolder: (item) => item.isFolder,
     dataLoader: {
-        getItem: (itemId) => myDataStructure[itemId]
-        getChildren: (itemPayload) => itemPayload.childrenIds,
+        getItem: (itemId) => myDataStructure[itemId],
+        getChildren: (itemId) => myDataStructure[itemId].childrenIds,
     },
     features: [ syncDataLoaderFeature ],
 });

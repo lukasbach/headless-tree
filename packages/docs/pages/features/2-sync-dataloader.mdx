@@ -31,4 +31,30 @@ import { DemoBox } from "../../src/components/page/demo-box";
 
 <DemoBox stories={["feature/sync-data-loader"]} />
 
-TODO
+When using Headless Tree, you need to provide an interface to read your data. The most straight-forward way
+to do this is using the Sync Data Loader Feature. Alternatively, you can use the [Async Data Loader Feature](/features/async-data-loader)
+if you are dealing with asynchronous data sources. In both cases, you need to include the respective feature
+explicitly.
+
+When using the Sync Data Loader Feature, you need to provide a `dataLoader` property in your tree config
+which implements the [`SyncTreeDataLoader`](/api/types/_headless_tree_core.SyncTreeDataLoader.html) interface.
+
+```ts
+const tree = useTree<ItemPayload>({
+    rootItemId: "root-item",
+    getItemName: (item) => item.getItemData().itemName,
+    isItemFolder: (item) => item.isFolder,
+    dataLoader: {
+        getItem: (itemId) => myDataStructure[itemId],
+        getChildren: (itemId) => myDataStructure[itemId].childrenIds,
+    },
+    features: [ syncDataLoaderFeature ],
+});
+```
+
+Note that Headless Tree may call `getItem` and `getChildren` multiple times for the same item, and also during each
+render. Therefore, you should make sure that these functions are fast and do not perform any expensive operations.
+
+Asynchronous data providers on the other hand provide caching out of the box, and only call those functions once
+per item until their data are explicitly invalidated. If your data source provides an synchronous, yet expensive
+interface, you can still use the [Async Data Loader](/features/async-data-loader) instead.
