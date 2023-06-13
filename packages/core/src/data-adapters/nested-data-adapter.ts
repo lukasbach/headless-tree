@@ -33,6 +33,7 @@ export const nestedDataAdapter = <T = any>(
       getChildren: (itemId) =>
         props.getChildren(itemMap[itemId])?.map(props.getItemId) ?? [],
     },
+    // TODO move out as reusable utility for all dnd-related stuff
     onDrop: (items: ItemInstance<T>[], target: DropTarget<T>) => {
       if (!props.changeChildren) {
         return;
