@@ -43,4 +43,7 @@ based on the Bundlephobia report as of Headless Tree v0.0.5.
 | Expand All        | 1.0kB       |
 | React Bindings    | 0.4kB       |
 
-Total bundle size is 6.5kB plus 0.4kB for the React bindings.
+Total bundle size is 6.5kB plus 0.4kB for the React bindings. Note that
+the sum of features is bigger than the total bundle size, because some
+features share code. Tree-shaking will ensure that the minimum amount of
+code is included in your bundle.
