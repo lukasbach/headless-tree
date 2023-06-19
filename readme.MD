@@ -42,3 +42,5 @@ based on the Bundlephobia report as of Headless Tree v0.0.5.
 | Renaming          | 1.1kB       |
 | Expand All        | 1.0kB       |
 | React Bindings    | 0.4kB       |
+
+Total bundle size is 6.5kB plus 0.4kB for the React bindings.
