@@ -5,7 +5,7 @@ import {
   selectionFeature,
   dragAndDropFeature,
   syncDataLoaderFeature,
-  nestedDataAdapter,
+  createOnDropHandler,
 } from "@headless-tree/core";
 import { useTree } from "@headless-tree/react";
 import cx from "classnames";
@@ -19,107 +19,42 @@ export default meta;
 // story-start
 type Item = {
   name: string;
-  children?: Item[];
+  children?: string[];
 };
 
-const data1: Item = {
-  name: "Root item",
-  children: [
-    {
-      name: "Item 1",
-      children: [
-        {
-          name: "Item 1.1",
-          children: [
-            {
-              name: "Item 1.1.1",
-            },
-            {
-              name: "Item 1.1.2",
-            },
-            {
-              name: "Item 1.1.3",
-            },
-          ],
-        },
-        {
-          name: "Item 1.2",
-        },
-      ],
-    },
-    {
-      name: "Item 2",
-      children: [
-        {
-          name: "Item 2.1",
-        },
-        {
-          name: "Item 2.2",
-        },
-      ],
-    },
-  ],
+const data1: Record<string, Item> = {
+  root: { name: "Root", children: ["lunch", "dessert"] },
+  lunch: { name: "Lunch", children: ["sandwich", "salad", "soup"] },
+  sandwich: { name: "Sandwich" },
+  salad: { name: "Salad" },
+  soup: { name: "Soup", children: ["tomato", "chicken"] },
+  tomato: { name: "Tomato" },
+  chicken: { name: "Chicken" },
+  dessert: { name: "Dessert", children: ["icecream", "cake"] },
+  icecream: { name: "Icecream" },
+  cake: { name: "Cake" },
 };
 
-const data2: Item = {
-  name: "Root item",
-  children: [
-    {
-      name: "Item 1",
-      children: [
-        {
-          name: "Item 1.1",
-          children: [
-            {
-              name: "Item 1.1.1",
-            },
-            {
-              name: "Item 1.1.2",
-            },
-            {
-              name: "Item 1.1.3",
-            },
-          ],
-        },
-        {
-          name: "Item 1.2",
-        },
-      ],
-    },
-    {
-      name: "Item 2",
-      children: [
-        {
-          name: "Item 2.1",
-        },
-        {
-          name: "Item 2.2",
-        },
-      ],
-    },
-  ],
-};
+const data2 = JSON.parse(JSON.stringify(data1));
 
-const Tree = (props: { data: Item; prefix: string }) => {
-  const dataAdapter = nestedDataAdapter<Item>({
-    rootItem: props.data,
-    getChildren: (item) => item.children,
-    getItemId: (item) => props.prefix + item.name,
-    changeChildren: (item, children) => {
-      item.children = children;
-    },
-  });
-
+const Tree = (props: { data: Record<string, Item>; prefix: string }) => {
   const tree = useTree<Item>({
-    ...dataAdapter,
+    rootItemId: "root",
+    dataLoader: {
+      getItem: (id) => props.data[id],
+      getChildren: (id) => props.data[id]?.children ?? [],
+    },
     getItemName: (item) => item.getItemData().name,
     isItemFolder: (item) => item.getItemData().children !== undefined,
     canDropInbetween: true,
+    onDrop: createOnDropHandler((item, newChildren) => {
+      item.getItemData().children = newChildren.map((child) => child.getId());
+    }),
     onDropForeignDragObject: (dataTransfer, target) => {
       console.log(
         "onDropForeignDragObject",
         dataTransfer.getData("text/plain"),
-        dataAdapter
+        target
       );
       // // TODO dataTransfer transfers item data, but onDrop actually requires item instances. This needs to be fixed in the data adapter.
       // dataAdapter.onDrop?.(
@@ -143,6 +78,7 @@ const Tree = (props: { data: Item; prefix: string }) => {
     ],
   });
 
+  // TODO tree props, role=tree and aria-label
   return (
     <div ref={tree.registerElement} className="tree">
       {tree.getItems().map((item) => (
