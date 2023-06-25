@@ -175,7 +175,7 @@ export const treeFeature: FeatureImplementation<
         role: "treeitem",
         "aria-setsize": itemMeta.setSize,
         "aria-posinset": itemMeta.posInSet,
-        "aria-selected": false,
+        "aria-selected": "false",
         "aria-label": item.getItemName(),
         "aria-level": itemMeta.level,
         tabIndex: item.isFocused() ? 0 : -1,

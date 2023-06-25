@@ -95,6 +95,7 @@ export const selectionFeature: FeatureImplementation<
 
     getProps: () => ({
       ...prev.getProps(),
+      "aria-selected": item.isSelected() ? "true" : "false",
       onClick: item.getMemoizedProp("selection/onClick", () => (e) => {
         if (e.shiftKey) {
           item.selectUpTo(e.ctrlKey || e.metaKey);
