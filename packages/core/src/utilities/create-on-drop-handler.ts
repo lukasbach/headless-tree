@@ -18,6 +18,7 @@ export const createOnDropHandler =
             items.some((item) => item.getId() === child.getId())
           ).length;
 
+    // remove moved items from their old parents
     // TODO bulk sibling changes together
     for (const item of items) {
       const siblings = item.getParent()?.getChildren();
@@ -29,12 +30,14 @@ export const createOnDropHandler =
       }
     }
 
+    // add moved items to new common parent, if dropped onto parent
     if (target.childIndex === null) {
       onChangeChildren(target.item, [...target.item.getChildren(), ...items]);
       items[0].getTree().rebuildTree();
       return;
     }
 
+    // add moved items to new common parent, if dropped between siblings
     const oldChildren = target.item.getChildren();
     const newChildren = [
       ...oldChildren.slice(
