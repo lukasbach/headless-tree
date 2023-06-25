@@ -6,6 +6,7 @@ import {
   dragAndDropFeature,
   syncDataLoaderFeature,
   nestedDataAdapter,
+  createOnDropHandler,
 } from "@headless-tree/core";
 import { useTree } from "@headless-tree/react";
 import cx from "classnames";
@@ -86,6 +87,9 @@ export const NestedDataAdapter = ({ canDropInbetween }) => {
     ...dataAdapter,
     getItemName: (item) => item.getItemData().name,
     isItemFolder: (item) => item.getItemData().children !== undefined,
+    onDrop: createOnDropHandler((item, newChildren) => {
+      item.getItemData().children = newChildren.map((i) => i.getItemData());
+    }),
     canDropInbetween,
     features: [
       syncDataLoaderFeature,

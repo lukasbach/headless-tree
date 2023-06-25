@@ -1,5 +1,6 @@
 export * from "./types/core";
 export * from "./core/create-tree";
+
 export * from "./features/tree/types";
 export * from "./features/main/types";
 export * from "./features/drag-and-drop/types";
@@ -21,3 +22,5 @@ export * from "./features/renaming/feature";
 export * from "./features/expand-all/feature";
 
 export * from "./data-adapters/nested-data-adapter";
+
+export * from "./utilities/create-on-drop-handler";

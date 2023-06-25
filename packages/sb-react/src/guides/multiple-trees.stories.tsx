@@ -121,11 +121,11 @@ const Tree = (props: { data: Item; prefix: string }) => {
         dataTransfer.getData("text/plain"),
         dataAdapter
       );
-      // TODO dataTransfer transfers item data, but onDrop actually requires item instances. This needs to be fixed in the data adapter.
-      dataAdapter.onDrop?.(
-        JSON.parse(dataTransfer.getData("text/plain")),
-        target
-      );
+      // // TODO dataTransfer transfers item data, but onDrop actually requires item instances. This needs to be fixed in the data adapter.
+      // dataAdapter.onDrop?.(
+      //   JSON.parse(dataTransfer.getData("text/plain")),
+      //   target
+      // );
     },
     createForeignDragObject: (items) => {
       console.log(items);

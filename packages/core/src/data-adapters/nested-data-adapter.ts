@@ -1,7 +1,4 @@
 import { DataAdapterConfig } from "./types";
-import { ItemInstance } from "../types/core";
-import { DropTarget } from "../features/drag-and-drop/types";
-import { performItemsMove } from "../utils";
 
 interface NestedDataAdapterProps<T> {
   rootItem: T;
@@ -32,18 +29,6 @@ export const nestedDataAdapter = <T = any>(
       getItem: (itemId) => itemMap[itemId],
       getChildren: (itemId) =>
         props.getChildren(itemMap[itemId])?.map(props.getItemId) ?? [],
-    },
-    // TODO move out as reusable utility for all dnd-related stuff
-    onDrop: (items: ItemInstance<T>[], target: DropTarget<T>) => {
-      if (!props.changeChildren) {
-        return;
-      }
-      performItemsMove(items, target, (item, newChildren) => {
-        props.changeChildren?.(
-          item.getItemData(),
-          newChildren.map((child) => child.getItemData())
-        );
-      });
     },
   };
 };
