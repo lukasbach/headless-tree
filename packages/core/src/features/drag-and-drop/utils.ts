@@ -46,6 +46,7 @@ const getDropTargetPosition = (
   return DropTargetPosition.Item;
 };
 
+// TODO mabye just make a flow chart
 export const getDropTarget = (
   e: any,
   item: ItemInstance<any>,
@@ -64,10 +65,12 @@ export const getDropTarget = (
   const inbetweenPos = getDropTargetPosition(offset, 0.5, 0.5);
 
   if (!config.canDropInbetween) {
+    // TODO canDrop!?? drop on recursive parent?
     return dropOnItemTarget;
   }
 
   if (!canDrop(e.dataTransfer, dropOnItemTarget, tree)) {
+    // TODO parent check
     return {
       item: item.getParent(),
       childIndex:

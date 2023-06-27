@@ -24,3 +24,5 @@ export * from "./features/expand-all/feature";
 export * from "./data-adapters/nested-data-adapter";
 
 export * from "./utilities/create-on-drop-handler";
+export * from "./utilities/insert-items-at-target";
+export * from "./utilities/remove-items-from-parents";

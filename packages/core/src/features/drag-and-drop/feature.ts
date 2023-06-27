@@ -104,15 +104,16 @@ export const dragAndDropFeature: FeatureImplementation<
       }),
 
       // TODO move old items out in here
-      /*
-      onDragEnd: (e) =>
-        console.log(
-          "ondragend",
-          e,
-          tree.getElement(),
-          e.dataTransfer.dropEffect
-        ),
-       */
+      onDragEnd: item.getMemoizedProp("dnd/onDragEnd", () => (e) => {
+        const draggedItems = tree.getState().dnd?.draggedItems;
+        tree.applySubStateUpdate("dnd", null);
+
+        if (e.dataTransfer.dropEffect === "none" || !draggedItems) {
+          return;
+        }
+
+        tree.getConfig().onCompleteForeignDrop?.(draggedItems);
+      }),
 
       onDrop: item.getMemoizedProp("dnd/onDrop", () => (e) => {
         const dataRef = tree.getDataRef<DndDataRef>();

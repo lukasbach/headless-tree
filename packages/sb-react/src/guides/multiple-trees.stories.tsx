@@ -6,6 +6,8 @@ import {
   dragAndDropFeature,
   syncDataLoaderFeature,
   createOnDropHandler,
+  insertItemsAtTarget,
+  removeItemsFromParents,
 } from "@headless-tree/core";
 import { useTree } from "@headless-tree/react";
 import cx from "classnames";
@@ -47,20 +49,38 @@ const Tree = (props: { data: Record<string, Item>; prefix: string }) => {
     getItemName: (item) => item.getItemData().name,
     isItemFolder: (item) => item.getItemData().children !== undefined,
     canDropInbetween: true,
-    onDrop: createOnDropHandler((item, newChildren) => {
-      item.getItemData().children = newChildren.map((child) => child.getId());
-    }),
+    onDrop: (items, target) => {
+      console.log("onDrop", items, target);
+      removeItemsFromParents(items, (item, newChildren) => {
+        item.getItemData().children = newChildren.map((child) => child.getId());
+      });
+      insertItemsAtTarget(items, target, (item, newChildren) => {
+        console.log(
+          "insert",
+          items.map((i) => i.getId()),
+          item.getId(),
+          newChildren.map((i) => i.getId()),
+          target
+        );
+        item.getItemData().children = newChildren.map((child) => child.getId());
+      });
+      // TODO move out here?
+      // tree.rebuildTree();
+    },
     onDropForeignDragObject: (dataTransfer, target) => {
-      console.log(
-        "onDropForeignDragObject",
-        dataTransfer.getData("text/plain"),
-        target
-      );
       // // TODO dataTransfer transfers item data, but onDrop actually requires item instances. This needs to be fixed in the data adapter.
-      // dataAdapter.onDrop?.(
-      //   JSON.parse(dataTransfer.getData("text/plain")),
-      //   target
-      // );
+      for (const item of JSON.parse(dataTransfer.getData("text/plain"))) {
+        // TODO insert items into data structure
+      }
+      // TODO pass item ids as new children
+      // insertItemsAtTarget(items, target, (item, newChildren) => {
+      //   item.getItemData().children = newChildren.map((child) => child.getId());
+      // });
+    },
+    onCompleteForeignDrop: (items) => {
+      removeItemsFromParents(items, (item, newChildren) => {
+        item.getItemData().children = newChildren.map((child) => child.getId());
+      });
     },
     createForeignDragObject: (items) => {
       console.log(items);
