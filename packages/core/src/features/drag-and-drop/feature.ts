@@ -147,19 +147,25 @@ export const dragAndDropFeature: FeatureImplementation<
     isDropTargetAbove: () => {
       const target = tree.getDropTarget();
 
-      if (!target || target.childIndex === null) return false;
-      const targetIndex = target.item.getItemMeta().index;
-
-      return targetIndex + target.childIndex + 1 === item.getItemMeta().index;
+      if (
+        !target ||
+        target.childIndex === null ||
+        target.item !== item.getParent()
+      )
+        return false;
+      return target.childIndex === item.getItemMeta().posInSet;
     },
 
     isDropTargetBelow: () => {
       const target = tree.getDropTarget();
 
-      if (!target || target.childIndex === null) return false;
-      const targetIndex = target.item.getItemMeta().index;
-
-      return targetIndex + target.childIndex === item.getItemMeta().index;
+      if (
+        !target ||
+        target.childIndex === null ||
+        target.item !== item.getParent()
+      )
+        return false;
+      return target.childIndex - 1 === item.getItemMeta().posInSet;
     },
 
     isDraggingOver: () => {

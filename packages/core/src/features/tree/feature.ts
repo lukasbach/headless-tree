@@ -229,10 +229,8 @@ export const treeFeature: FeatureImplementation<
       },
       () => [item.getItemMeta()]
     ),
-    getIndexInParent: () =>
-      item.getItemMeta().index -
-      (item.getParent()?.getItemMeta().index ?? 0) -
-      1,
+    // TODO remove
+    getIndexInParent: () => item.getItemMeta().posInSet,
     getChildren: () =>
       tree
         .retrieveChildrenIds(item.getItemMeta().itemId)
