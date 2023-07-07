@@ -5,10 +5,12 @@ import {
   selectionFeature,
   dragAndDropFeature,
   syncDataLoaderFeature,
+  createOnDropHandler,
+  removeItemsFromParents,
 } from "@headless-tree/core";
 import { useTree } from "@headless-tree/react";
-import { action } from "@storybook/addon-actions";
 import cx from "classnames";
+import { createDemoData, DemoItem } from "../utils/data";
 
 const meta = {
   title: "React/Drag and Drop/Drag Outside",
@@ -17,39 +19,32 @@ const meta = {
 
 export default meta;
 
+const [dataLoader, data] = createDemoData();
+
 // story-start
 export const DragOutside = () => {
   const [state, setState] = useState({});
-  const tree = useTree<string>({
+  const tree = useTree<DemoItem>({
     state,
     setState,
     rootItemId: "root",
-    getItemName: (item) => item.getItemData(),
-    isItemFolder: () => true,
+    getItemName: (item) => item.getItemData().name,
+    isItemFolder: (item) => !!item.getItemData().children,
     canDropInbetween: true,
-    onDrop: (items, target) => {
-      alert(
-        `Dropped ${items.map((item) =>
-          item.getId()
-        )} on ${target.item.getId()}, index ${target.childIndex}`
-      );
-    },
+    onDrop: createOnDropHandler((item, newChildren) => {
+      data[item.getId()].children = newChildren;
+    }),
     createForeignDragObject: (items) => ({
       format: "text/plain",
       data: `custom foreign drag object: ${items
         .map((item) => item.getId())
         .join(",")}`,
     }),
-    dataLoader: {
-      getItem: (itemId) => itemId,
-      getChildren: (itemId) => [
-        `${itemId}-1`,
-        `${itemId}-2`,
-        `${itemId}-3`,
-        `${itemId}-4`,
-        `${itemId}-5`,
-        `${itemId}-6`,
-      ],
+    dataLoader,
+    onCompleteForeignDrop: (items) => {
+      removeItemsFromParents(items, (item, newChildren) => {
+        item.getItemData().children = newChildren;
+      });
     },
     features: [
       syncDataLoaderFeature,

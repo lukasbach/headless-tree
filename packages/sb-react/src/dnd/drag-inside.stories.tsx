@@ -5,10 +5,12 @@ import {
   selectionFeature,
   dragAndDropFeature,
   syncDataLoaderFeature,
+  createOnDropHandler,
+  insertItemsAtTarget,
 } from "@headless-tree/core";
 import { useTree } from "@headless-tree/react";
-import { action } from "@storybook/addon-actions";
 import cx from "classnames";
+import { createDemoData, DemoItem } from "../utils/data";
 
 const meta = {
   title: "React/Drag and Drop/Drag Inside",
@@ -17,42 +19,38 @@ const meta = {
 
 export default meta;
 
+const [dataLoader, data] = createDemoData();
+let newItemId = 0;
+
 // story-start
 export const DragInside = () => {
   const [state, setState] = useState({});
-  const tree = useTree<string>({
+  const tree = useTree<DemoItem>({
     state,
     setState,
     rootItemId: "root",
-    getItemName: (item) => item.getItemData(),
-    isItemFolder: () => true,
+    getItemName: (item) => item.getItemData().name,
+    isItemFolder: (item) => !!item.getItemData().children,
     canDropInbetween: true,
-    onDrop: (items, target) => {
-      alert(
-        `Dropped ${items.map((item) =>
-          item.getId()
-        )} on ${target.item.getId()}, index ${target.childIndex}`
-      );
-    },
+    onDrop: createOnDropHandler((item, newChildren) => {
+      data[item.getId()].children = newChildren;
+    }),
     onDropForeignDragObject: (dataTransfer, target) => {
+      const newId = `new-${newItemId++}`;
+      data[newId] = {
+        name: dataTransfer.getData("text/plain"),
+      };
+      insertItemsAtTarget([newId], target, (item, newChildrenIds) => {
+        data[item.getId()].children = newChildrenIds;
+      });
       alert(
         `Dropped external data with payload "${JSON.stringify(
           dataTransfer.getData("text/plain")
         )}" on ${target.item.getId()}, index ${target.childIndex}`
       );
     },
-    canDropForeignDragObject: () => true,
-    dataLoader: {
-      getItem: (itemId) => itemId,
-      getChildren: (itemId) => [
-        `${itemId}-1`,
-        `${itemId}-2`,
-        `${itemId}-3`,
-        `${itemId}-4`,
-        `${itemId}-5`,
-        `${itemId}-6`,
-      ],
-    },
+    canDropForeignDragObject: (_, target) => target.item.isFolder(),
+    dataLoader,
     features: [
       syncDataLoaderFeature,
       selectionFeature,

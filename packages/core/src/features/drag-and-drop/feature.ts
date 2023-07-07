@@ -13,6 +13,7 @@ export const dragAndDropFeature: FeatureImplementation<
 
   getDefaultConfig: (defaultConfig, tree) => ({
     canDrop: (_, target) => target.item.isFolder(),
+    canDropForeignDragObject: () => false,
     setDndState: makeStateUpdater("dnd", tree),
     ...defaultConfig,
   }),
@@ -134,7 +135,6 @@ export const dragAndDropFeature: FeatureImplementation<
         } else {
           config.onDropForeignDragObject?.(e.dataTransfer, target);
         }
-        console.log("onDrop");
         // TODO rebuild tree?
       }),
     }),
