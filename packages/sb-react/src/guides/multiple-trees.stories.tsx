@@ -5,7 +5,6 @@ import {
   selectionFeature,
   dragAndDropFeature,
   syncDataLoaderFeature,
-  createOnDropHandler,
   insertItemsAtTarget,
   removeItemsFromParents,
 } from "@headless-tree/core";
@@ -49,45 +48,43 @@ const Tree = (props: { data: Record<string, Item>; prefix: string }) => {
     getItemName: (item) => item.getItemData().name,
     isItemFolder: (item) => item.getItemData().children !== undefined,
     canDropInbetween: true,
+
+    // onDrop is only called when moving items WITHIN one tree.
+    // This handles the entire move operation.
+    // Normally you can use `createOnDropHandler` for that, this just shows
+    // demonstrates how to do with the individual handlers.
     onDrop: (items, target) => {
-      console.log("onDrop", items, target);
+      const itemIds = items.map((item) => item.getId());
       removeItemsFromParents(items, (item, newChildren) => {
-        item.getItemData().children = newChildren.map((child) => child.getId());
+        item.getItemData().children = newChildren;
       });
-      insertItemsAtTarget(items, target, (item, newChildren) => {
-        console.log(
-          "insert",
-          items.map((i) => i.getId()),
-          item.getId(),
-          newChildren.map((i) => i.getId()),
-          target
-        );
-        item.getItemData().children = newChildren.map((child) => child.getId());
+      insertItemsAtTarget(itemIds, target, (item, newChildren) => {
+        item.getItemData().children = newChildren;
       });
-      // TODO move out here?
-      // tree.rebuildTree();
     },
+
+    // When moving items out of the tree, this is used to serialize the
+    // dragged items as foreign drag object
+    createForeignDragObject: (items) => ({
+      format: "text/plain",
+      data: JSON.stringify(items.map((item) => item.getId())),
+    }),
+
+    // This is called in the target tree when the foreign drag object is
+    // dropped. This handler inserts the moved items
     onDropForeignDragObject: (dataTransfer, target) => {
-      // // TODO dataTransfer transfers item data, but onDrop actually requires item instances. This needs to be fixed in the data adapter.
-      for (const item of JSON.parse(dataTransfer.getData("text/plain"))) {
-        // TODO insert items into data structure
-      }
-      // TODO pass item ids as new children
-      // insertItemsAtTarget(items, target, (item, newChildren) => {
-      //   item.getItemData().children = newChildren.map((child) => child.getId());
-      // });
+      const newChildrenIds = JSON.parse(dataTransfer.getData("text/plain"));
+      insertItemsAtTarget(newChildrenIds, target, (item, newChildren) => {
+        item.getItemData().children = newChildren;
+      });
     },
+
+    // This is called in the source tree when the foreign drag is completed.
+    // This handler removes the moved items from the source tree.
     onCompleteForeignDrop: (items) => {
       removeItemsFromParents(items, (item, newChildren) => {
-        item.getItemData().children = newChildren.map((child) => child.getId());
+        item.getItemData().children = newChildren;
       });
-    },
-    createForeignDragObject: (items) => {
-      console.log(items);
-      return {
-        format: "text/plain",
-        data: JSON.stringify(items.map((item) => item.getItemData())),
-      };
     },
     canDropForeignDragObject: () => true,
     features: [

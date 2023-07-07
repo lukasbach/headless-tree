@@ -103,7 +103,6 @@ export const dragAndDropFeature: FeatureImplementation<
         }));
       }),
 
-      // TODO move old items out in here
       onDragEnd: item.getMemoizedProp("dnd/onDragEnd", () => (e) => {
         const draggedItems = tree.getState().dnd?.draggedItems;
         tree.applySubStateUpdate("dnd", null);
@@ -135,6 +134,7 @@ export const dragAndDropFeature: FeatureImplementation<
         } else {
           config.onDropForeignDragObject?.(e.dataTransfer, target);
         }
+        console.log("onDrop");
         // TODO rebuild tree?
       }),
     }),

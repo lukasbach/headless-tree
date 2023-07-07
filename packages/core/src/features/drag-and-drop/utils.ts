@@ -1,5 +1,10 @@
 import { ItemInstance, TreeInstance } from "../../types/core";
-import { DropTarget, DropTargetPosition } from "./types";
+import {
+  DndState,
+  DragAndDropFeatureDef,
+  DropTarget,
+  DropTargetPosition,
+} from "./types";
 
 export const getDragCode = ({ item, childIndex }: DropTarget<any>) =>
   `${item.getId()}__${childIndex ?? "none"}`;
@@ -46,46 +51,67 @@ const getDropTargetPosition = (
   return DropTargetPosition.Item;
 };
 
-// TODO mabye just make a flow chart
 export const getDropTarget = (
   e: any,
   item: ItemInstance<any>,
-  tree: TreeInstance<any>
+  tree: TreeInstance<any>,
+  canDropInbetween = tree.getConfig().canDropInbetween
 ): DropTarget<any> => {
   const config = tree.getConfig();
+  const draggedItems = tree.getState().dnd?.draggedItems ?? [];
+  const itemTarget = { item, childIndex: null, insertionIndex: null };
+  const parentTarget = {
+    item: item.getParent(),
+    childIndex: null,
+    insertionIndex: null,
+  };
+
+  if (!canDropInbetween) {
+    if (!canDrop(e.dataTransfer, parentTarget, tree)) {
+      return getDropTarget(e, item.getParent(), tree, false);
+    }
+    return itemTarget;
+  }
+
+  const canDropInside = canDrop(e.dataTransfer, itemTarget, tree);
+
   const offset = getDropOffset(e, item);
 
-  const dropOnItemTarget = { item, childIndex: null };
-
-  const pos = getDropTargetPosition(
-    offset,
-    config.topLinePercentage ?? 0.3,
-    config.bottomLinePercentage ?? 0.7
-  );
-  const inbetweenPos = getDropTargetPosition(offset, 0.5, 0.5);
-
-  if (!config.canDropInbetween) {
-    // TODO canDrop!?? drop on recursive parent?
-    return dropOnItemTarget;
-  }
-
-  if (!canDrop(e.dataTransfer, dropOnItemTarget, tree)) {
-    // TODO parent check
-    return {
-      item: item.getParent(),
-      childIndex:
-        item.getIndexInParent() +
-        (inbetweenPos === DropTargetPosition.Top ? 0 : 1),
-    };
-  }
+  const pos = canDropInside
+    ? getDropTargetPosition(
+        offset,
+        config.topLinePercentage ?? 0.3,
+        config.bottomLinePercentage ?? 0.7
+      )
+    : getDropTargetPosition(offset, 0.5, 0.5);
 
   if (pos === DropTargetPosition.Item) {
-    return dropOnItemTarget;
+    return itemTarget;
   }
+
+  if (!canDrop(e.dataTransfer, parentTarget, tree)) {
+    return getDropTarget(e, item.getParent(), tree, false);
+  }
+
+  const childIndex =
+    item.getIndexInParent() + (pos === DropTargetPosition.Top ? 0 : 1);
+
+  const numberOfDragItemsBeforeTarget = item
+    .getParent()
+    .getChildren()
+    .slice(0, childIndex)
+    .reduce(
+      (counter, child) =>
+        child && draggedItems?.some((i) => i.getId() === child.getId())
+          ? ++counter
+          : counter,
+      0
+    );
 
   return {
     item: item.getParent(),
-    childIndex:
-      item.getIndexInParent() + (pos === DropTargetPosition.Top ? 0 : 1),
+    childIndex,
+    // TODO performance could be improved by computing this only when dragcode changed
+    insertionIndex: childIndex - numberOfDragItemsBeforeTarget,
   };
 };

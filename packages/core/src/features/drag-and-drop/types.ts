@@ -5,15 +5,22 @@ export type DndDataRef = {
 };
 
 export type DndState<T> = {
-  draggedItems?: ItemInstance<T>[];
+  draggedItems?: ItemInstance<T>[]; // TODO not used anymore?
   draggingOverItem?: ItemInstance<T>;
   dragTarget?: DropTarget<T>;
 };
 
-export type DropTarget<T> = {
-  item: ItemInstance<T>;
-  childIndex: number | null;
-};
+export type DropTarget<T> =
+  | {
+      item: ItemInstance<T>;
+      childIndex: number;
+      insertionIndex: number;
+    }
+  | {
+      item: ItemInstance<T>;
+      childIndex: null;
+      insertionIndex: null;
+    };
 
 export enum DropTargetPosition {
   Top = "top",
