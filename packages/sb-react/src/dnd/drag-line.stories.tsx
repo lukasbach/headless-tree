@@ -88,7 +88,6 @@ export const DragLine = () => {
           className="dragline"
         />
       )}
-      {dragLine?.right}
       <pre>
         {JSON.stringify(
           {
