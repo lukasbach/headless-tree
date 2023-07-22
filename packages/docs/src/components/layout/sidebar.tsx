@@ -8,7 +8,6 @@ export type SidebarProps = { location: string };
 const categories = [
   { key: "intro", name: "Intro" },
   { key: "guide", name: "Guides" },
-  { key: "data-adapter", name: "Data Adapters" },
   { key: "feature", name: "Features" },
   { key: "recipe", name: "Recipes" },
   { key: "demos", name: "Demos" },
