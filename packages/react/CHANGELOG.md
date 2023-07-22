@@ -1,5 +1,13 @@
 # @headless-tree/react
 
+## 0.0.5
+
+### Patch Changes
+
+- bc9c446: dev release
+- Updated dependencies [bc9c446]
+  - @headless-tree/core@0.0.6
+
 ## 0.0.4
 
 ### Patch Changes

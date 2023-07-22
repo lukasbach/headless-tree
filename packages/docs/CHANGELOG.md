@@ -1,5 +1,15 @@
 # @headless-tree/docs
 
+## 0.0.6
+
+### Patch Changes
+
+- bc9c446: dev release
+- Updated dependencies [bc9c446]
+  - @headless-tree/core@0.0.6
+  - @headless-tree/react@0.0.5
+  - @headless-tree/sb-react@0.0.6
+
 ## 0.0.5
 
 ### Patch Changes
