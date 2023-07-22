@@ -1,5 +1,5 @@
 import { FeatureDefs, FeatureImplementation } from "../../types/core";
-import { DndDataRef, DragAndDropFeatureDef } from "./types";
+import { DndDataRef, DragAndDropFeatureDef, DragLineData } from "./types";
 import { canDrop, getDragCode, getDropTarget } from "./utils";
 import { makeStateUpdater } from "../../utils";
 
@@ -27,6 +27,45 @@ export const dragAndDropFeature: FeatureImplementation<
 
     getDropTarget: () => {
       return tree.getState().dnd?.dragTarget ?? null;
+    },
+
+    getDragLineData: (): DragLineData | null => {
+      const target = tree.getDropTarget();
+      const intend = (target?.item.getItemMeta().level ?? 0) + 1;
+
+      if (!target || target.childIndex === null) return null;
+
+      const children = target.item.getChildren();
+
+      if (target.childIndex === children.length) {
+        const bb = children[target.childIndex - 1]
+          ?.getElement()
+          ?.getBoundingClientRect();
+
+        if (bb) {
+          return {
+            intend,
+            top: bb.bottom,
+            left: bb.left,
+            right: bb.right,
+          };
+        }
+      }
+
+      const bb = children[target.childIndex]
+        ?.getElement()
+        ?.getBoundingClientRect();
+
+      if (bb) {
+        return {
+          intend,
+          top: bb.top,
+          left: bb.left,
+          right: bb.right,
+        };
+      }
+
+      return null;
     },
   }),
 

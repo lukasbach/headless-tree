@@ -10,14 +10,14 @@ import { useTree } from "@headless-tree/react";
 import cx from "classnames";
 
 const meta = {
-  title: "React/Drag and Drop/Basic",
+  title: "React/Drag and Drop/Drag Line",
   tags: ["feature/dnd", "basic"],
 } satisfies Meta;
 
 export default meta;
 
 // story-start
-export const Basic = () => {
+export const DragLine = () => {
   const [state, setState] = useState({});
   const tree = useTree<string>({
     state,
@@ -52,6 +52,8 @@ export const Basic = () => {
     ],
   });
 
+  const dragLine = tree.getDragLineData();
+
   return (
     <div ref={tree.registerElement} className="tree">
       {tree.getItems().map((item) => (
@@ -69,14 +71,33 @@ export const Basic = () => {
               selected: item.isSelected(),
               folder: item.isFolder(),
               drop: item.isDropTarget() && item.isDraggingOver(),
-              dropabove: item.isDropTargetAbove() && item.isDraggingOver(),
-              dropbelow: item.isDropTargetBelow() && item.isDraggingOver(),
             })}
           >
             {item.getItemName()}
           </button>
         </div>
       ))}
+      {dragLine && (
+        <div
+          style={{
+            top: `${dragLine.top}px`,
+            left: `${dragLine.left - 10}px`,
+            width: `${dragLine.right - dragLine.left + 10}px`,
+            pointerEvents: "none", // important to prevent capturing drag events
+          }}
+          className="dragline"
+        />
+      )}
+      {dragLine?.right}
+      <pre>
+        {JSON.stringify(
+          {
+            dragLine,
+          },
+          null,
+          2
+        )}
+      </pre>
     </div>
   );
 };

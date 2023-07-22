@@ -67,3 +67,23 @@
     border-radius: 8px;
     padding: 8px 12px;
 }
+
+
+.dragline {
+    position: absolute;
+    height: 3px;
+    width: unset;
+    margin-top: -1px;
+    background-color: #00aff4;
+}
+
+.dragline::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: -3px;
+    height: 8px;
+    width: 8px;
+    background-color: #00aff4;
+    border-radius: 99px;
+}

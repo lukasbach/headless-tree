@@ -10,6 +10,13 @@ export type DndState<T> = {
   dragTarget?: DropTarget<T>;
 };
 
+export type DragLineData = {
+  intend: number;
+  top: number;
+  left: number;
+  right: number;
+};
+
 export type DropTarget<T> =
   | {
       item: ItemInstance<T>;
@@ -70,6 +77,7 @@ export type DragAndDropFeatureDef<T> = {
   };
   treeInstance: {
     getDropTarget: () => DropTarget<T> | null;
+    getDragLineData: () => DragLineData | null;
   };
   itemInstance: {
     isDropTarget: () => boolean;
