@@ -1,4 +1,4 @@
-name: Publish
+name: Snapshot Publish
 on:
   push:
     branches:
@@ -27,15 +27,9 @@ jobs:
       - run: yarn docs
       - run: yarn docs:md
       - run: yarn build:web
-      - name: Create Release Pull Request or Publish to npm
-        id: changesets
-        uses: changesets/action@v1
-        with:
-          version: yarn changeset version
-          publish: yarn changeset publish
-          commit: "chore: release [skip ci]"
+      - run: yarn changeset version --snapshot
+      - run: yarn changeset publish --no-git-tag --tag snapshot
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
