@@ -15,6 +15,8 @@ jobs:
           echo "owner=$(gh pr view --json headRepositoryOwner --jq .headRepositoryOwner.login)" >> "$GITHUB_OUTPUT"
           echo "repo=$(gh pr view --json headRepository --jq .headRepository.name)" >> "$GITHUB_OUTPUT"
           echo "ref=$(gh pr view --json headRefName --jq .headRefName)" >> "$GITHUB_OUTPUT"
+        env:
+          GH_TOKEN: ${{ github.token }}
       - name: "Merge pull request"
         if: steps.vars.outputs.ref == 'changeset-release/main' && steps.vars.outputs.owner == 'lukasbach' && steps.vars.outputs.repo == 'headless-tree'
         uses: "actions/github-script@v6"
