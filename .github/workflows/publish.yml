@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  prepare:
+  publish:
     runs-on: ubuntu-latest
     name: Publish
     steps:
@@ -28,10 +28,6 @@ jobs:
       - run: yarn docs:md
       - run: yarn build:web
 
-  publish:
-    needs: prepare
-    runs-on: ubuntu-latest
-    steps:
       - name: Create Release Pull Request or Publish to npm
         id: changesets
         uses: changesets/action@v1
@@ -44,9 +40,5 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-  snapshot:
-    needs: publish
-    runs-on: ubuntu-latest
-    steps:
       - run: yarn changeset version --snapshot
       - run: yarn changeset publish --no-git-tag --tag snapshot
