@@ -47,7 +47,6 @@ jobs:
   snapshot:
     needs: publish
     runs-on: ubuntu-latest
-    if: jobs.publish.outputs.published  == false
     steps:
       - run: yarn changeset version --snapshot
       - run: yarn changeset publish --no-git-tag --tag snapshot
