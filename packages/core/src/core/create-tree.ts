@@ -30,12 +30,26 @@ const buildItemInstance = (
   return itemInstance;
 };
 
+const verifyFeatures = (features: FeatureImplementation[] | undefined) => {
+  const loadedFeatures = features?.map((feature) => feature.key);
+  for (const feature of features ?? []) {
+    const missingDependency = feature.deps?.find(
+      (dep) => !loadedFeatures?.includes(dep)
+    );
+    if (missingDependency) {
+      throw new Error(`${feature.key} needs ${missingDependency}`);
+    }
+  }
+};
+
 export const createTree = <T>(
   initialConfig: TreeConfig<T>
 ): TreeInstance<T> => {
   const treeInstance: TreeInstance<T> = {} as any;
 
   const additionalFeatures = [treeFeature, ...(initialConfig.features ?? [])];
+  verifyFeatures(additionalFeatures);
+
   let state = additionalFeatures.reduce(
     (acc, feature) => feature.getInitialState?.(acc, treeInstance) ?? acc,
     initialConfig.initialState ?? initialConfig.state ?? {}

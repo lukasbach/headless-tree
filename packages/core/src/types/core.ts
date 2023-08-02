@@ -129,6 +129,7 @@ export type FeatureImplementation<
 > = {
   key?: string;
   deps?: string[];
+  overwrites?: string[];
 
   stateHandlerNames?: Partial<
     Record<keyof MergedFeatures<F>["state"], keyof MergedFeatures<F>["config"]>
