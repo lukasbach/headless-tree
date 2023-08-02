@@ -42,12 +42,41 @@ const verifyFeatures = (features: FeatureImplementation[] | undefined) => {
   }
 };
 
+const compareFeatures = (
+  feature1: FeatureImplementation,
+  feature2: FeatureImplementation
+) => {
+  // TODO extract keys into enum
+  if (feature1.key === "main") {
+    return -1;
+  }
+  if (feature2.key === "main") {
+    return 1;
+  }
+  if (feature1.key === "tree") {
+    return -1;
+  }
+  if (feature2.key === "tree") {
+    return 1;
+  }
+  if (feature2.key && feature1.overwrites?.includes(feature2.key)) {
+    return 1;
+  }
+  return -1;
+};
+
+const sortFeatures = (features: FeatureImplementation[] = []) =>
+  features.sort(compareFeatures);
+
 export const createTree = <T>(
   initialConfig: TreeConfig<T>
 ): TreeInstance<T> => {
   const treeInstance: TreeInstance<T> = {} as any;
 
-  const additionalFeatures = [treeFeature, ...(initialConfig.features ?? [])];
+  const additionalFeatures = [
+    treeFeature,
+    ...sortFeatures(initialConfig.features),
+  ];
   verifyFeatures(additionalFeatures);
 
   let state = additionalFeatures.reduce(
@@ -196,7 +225,6 @@ export const createTree = <T>(
     }),
   };
 
-  // todo sort features
   const features = [mainFeature, ...additionalFeatures];
 
   for (const feature of features) {
