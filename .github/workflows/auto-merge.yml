@@ -10,6 +10,8 @@ jobs:
     permissions:
       pull-requests: write
     steps:
+      - name: "Test"
+        run: echo github.ref_name
       - name: "Merge pull request"
         if: github.ref_name == 'changeset-release/main'
         uses: "actions/github-script@v6"
