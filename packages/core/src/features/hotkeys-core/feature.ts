@@ -48,7 +48,6 @@ export const hotkeysCoreFeature: FeatureImplementation<
   MainFeatureDef | HotkeysCoreFeatureDef<any>
 > = {
   key: "hotkeys-core",
-  dependingFeatures: ["main", "tree"],
 
   onTreeMount: (tree, element) => {
     const data = tree.getDataRef<HotkeysCoreDataRef>();

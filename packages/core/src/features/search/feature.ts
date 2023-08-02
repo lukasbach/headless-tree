@@ -10,7 +10,6 @@ export const searchFeature: FeatureImplementation<
   MainFeatureDef | TreeFeatureDef<any> | SearchFeatureDef<any>
 > = {
   key: "search",
-  dependingFeatures: ["main", "tree"],
 
   getInitialState: (initialState) => ({
     search: null,

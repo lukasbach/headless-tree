@@ -14,7 +14,6 @@ export const expandAllFeature: FeatureImplementation<
   | ExpandAllFeatureDef
 > = {
   key: "expand-all",
-  dependingFeatures: ["main", "tree"],
 
   createTreeInstance: (prev, tree) => ({
     ...prev,

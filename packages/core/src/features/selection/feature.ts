@@ -10,7 +10,6 @@ export const selectionFeature: FeatureImplementation<
   MainFeatureDef | TreeFeatureDef<any> | SelectionFeatureDef<any>
 > = {
   key: "selection",
-  dependingFeatures: ["main", "tree"],
 
   getInitialState: (initialState) => ({
     selectedItems: [],

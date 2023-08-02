@@ -10,7 +10,6 @@ export const asyncDataLoaderFeature: FeatureImplementation<
   MainFeatureDef | TreeFeatureDef<any> | AsyncDataLoaderFeatureDef<any>
 > = {
   key: "async-data-loader",
-  dependingFeatures: ["main"],
 
   getInitialState: (initialState) => ({
     loadingItems: [],

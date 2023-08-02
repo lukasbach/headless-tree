@@ -10,7 +10,6 @@ export const renamingFeature: FeatureImplementation<
   MainFeatureDef | TreeFeatureDef<any> | RenamingFeatureDef<any>
 > = {
   key: "renaming",
-  dependingFeatures: ["main", "tree"],
 
   getDefaultConfig: (defaultConfig, tree) => ({
     setRenamingItem: makeStateUpdater("renamingItem", tree),

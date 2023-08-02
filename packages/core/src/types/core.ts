@@ -128,7 +128,7 @@ export type FeatureImplementation<
   F extends FeatureDef = EmptyFeatureDef
 > = {
   key?: string;
-  dependingFeatures?: string[];
+  deps?: string[];
 
   stateHandlerNames?: Partial<
     Record<keyof MergedFeatures<F>["state"], keyof MergedFeatures<F>["config"]>

@@ -9,7 +9,6 @@ export const syncDataLoaderFeature: FeatureImplementation<
   MainFeatureDef | SyncDataLoaderFeatureDef<any>
 > = {
   key: "sync-data-loader",
-  dependingFeatures: ["main"],
 
   getInitialState: (initialState) => ({
     loadingItems: [],

@@ -14,7 +14,6 @@ export const treeFeature: FeatureImplementation<
   | SyncDataLoaderFeatureDef<any>
 > = {
   key: "tree",
-  dependingFeatures: ["main"],
 
   getInitialState: (initialState) => ({
     expandedItems: [],
