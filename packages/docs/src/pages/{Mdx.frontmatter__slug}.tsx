@@ -27,11 +27,8 @@ export const query = graphql`
         title
         subtitle
         api {
-          config
-          hotkeys
-          itemInstance
-          state
-          treeInstance
+          name
+          docs
         }
         metalinks {
           code

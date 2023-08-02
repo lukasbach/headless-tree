@@ -164,9 +164,7 @@ export const PageContainer: FC<PageContainerProps> = ({ children, data }) => {
 
       {hasApi && (
         <Tabs.Panel value="api" pt="xs">
-          <Container>
-            <ApiDocs data={data} />
-          </Container>
+          <ApiDocs data={data} />
         </Tabs.Panel>
       )}
     </Tabs>
