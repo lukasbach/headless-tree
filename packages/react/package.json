@@ -1,6 +1,6 @@
 {
   "name": "@headless-tree/react",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
   "types": "lib/esm/index.d.ts",
