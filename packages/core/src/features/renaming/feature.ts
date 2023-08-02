@@ -27,7 +27,6 @@ export const renamingFeature: FeatureImplementation<
     ...prev,
 
     startRenamingItem: (itemId) => {
-      const config = instance.getConfig();
       const item = instance.getItemInstance(itemId);
 
       if (!item.canRename()) {

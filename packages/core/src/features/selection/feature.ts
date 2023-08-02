@@ -70,7 +70,7 @@ export const selectionFeature: FeatureImplementation<
       const newSelectedItems = tree
         .getItems()
         .slice(a, b + 1)
-        .map((item) => item.getItemMeta().itemId);
+        .map((treeItem) => treeItem.getItemMeta().itemId);
 
       if (!ctrl) {
         tree.setSelectedItems(newSelectedItems);
