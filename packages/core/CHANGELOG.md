@@ -1,5 +1,11 @@
 # @headless-tree/core
 
+## 0.0.8
+
+### Patch Changes
+
+- 076dfc5: dev release
+
 ## 0.0.7
 
 ### Patch Changes
