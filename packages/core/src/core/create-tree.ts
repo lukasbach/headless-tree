@@ -46,19 +46,6 @@ const compareFeatures = (
   feature1: FeatureImplementation,
   feature2: FeatureImplementation
 ) => {
-  // TODO extract keys into enum
-  if (feature1.key === "main") {
-    return -1;
-  }
-  if (feature2.key === "main") {
-    return 1;
-  }
-  if (feature1.key === "tree") {
-    return -1;
-  }
-  if (feature2.key === "tree") {
-    return 1;
-  }
   if (feature2.key && feature1.overwrites?.includes(feature2.key)) {
     return 1;
   }
