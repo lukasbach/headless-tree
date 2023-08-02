@@ -10,12 +10,13 @@ jobs:
     permissions:
       pull-requests: write
     steps:
-      - name: "Test"
-        run: echo "$REF_NAME"
-        env:
-          REF_NAME: ${{ toJson(github.ref_name) }}
+      - id: vars
+        run: |
+          echo "owner=$(gh pr view --json headRepositoryOwner --jq .headRepositoryOwner.login)" >> "$GITHUB_OUTPUT"
+          echo "repo=$(gh pr view --json headRepository --jq .headRepository.name)" >> "$GITHUB_OUTPUT"
+          echo "ref=$(gh pr view --json headRefName --jq .headRefName)" >> "$GITHUB_OUTPUT"
       - name: "Merge pull request"
-        if: github.ref_name == 'changeset-release/main'
+        if: steps.vars.outputs.ref == 'changeset-release/main' && steps.vars.outputs.owner == 'lukasbach' && steps.vars.outputs.repo == 'headless-tree'
         uses: "actions/github-script@v6"
         with:
           script: |
