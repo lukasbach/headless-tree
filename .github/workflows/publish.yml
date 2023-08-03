@@ -33,7 +33,7 @@ jobs:
         with:
           version: yarn changeset version
           publish: yarn changeset publish
-          commit: "chore: release [skip ci]"
+          commit: "chore: release"
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
