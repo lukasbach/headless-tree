@@ -8,7 +8,6 @@ import {
 } from "@mantine/core";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import IframeResizer from "iframe-resizer-react";
 import { useApiDocs } from "@/queries/use-api-docs";
 
 export type ApiDocsProps = {
@@ -58,24 +57,26 @@ const DocsIframe: FC<{ src: string }> = ({ src }) => {
   }, [theme]);
   return (
     <Box
-      component={IframeResizer}
+      component="iframe"
       ref={ref}
       src={src}
       sx={{
         border: "none",
         width: "100%",
-        // height: "calc(100vh - var(--header-height))",
+        height: "calc(100vh - var(--header-height))",
       }}
       onLoad={() => {
-        ref.current?.contentDocument?.documentElement.setAttribute(
+        if (!ref.current?.contentDocument || !ref.current.contentWindow) {
+          return;
+        }
+        ref.current.contentDocument.documentElement.setAttribute(
           "data-theme",
           theme.colorScheme
         );
-        if (ref.current?.contentDocument) {
-          ref.current.contentDocument.body.style.background = "transparent";
-        }
-        ref.current?.contentDocument
-          ?.getElementsByClassName("tsd-page-toolbar")
+        ref.current.contentDocument.body.style.background = "transparent";
+        ref.current.height = `${ref.current.contentWindow.document.body.scrollHeight}px`;
+        ref.current.contentDocument
+          .getElementsByClassName("tsd-page-toolbar")
           .item(0)
           ?.remove();
       }}
