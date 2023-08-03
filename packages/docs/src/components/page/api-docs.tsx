@@ -66,21 +66,19 @@ const DocsIframe: FC<{ src: string }> = ({ src }) => {
         height: "calc(100vh - var(--header-height))",
       }}
       onLoad={() => {
-        ref.current?.contentWindow?.addEventListener("DOMContentLoaded", () => {
-          if (!ref.current?.contentDocument || !ref.current.contentWindow) {
-            return;
-          }
-          ref.current.contentDocument.documentElement.setAttribute(
-            "data-theme",
-            theme.colorScheme
-          );
-          ref.current.contentDocument.body.style.background = "transparent";
-          ref.current.height = `${ref.current.contentWindow.document.body.scrollHeight}px`;
-          ref.current.contentDocument
-            .getElementsByClassName("tsd-page-toolbar")
-            .item(0)
-            ?.remove();
-        });
+        if (!ref.current?.contentDocument || !ref.current.contentWindow) {
+          return;
+        }
+        ref.current.contentDocument.documentElement.setAttribute(
+          "data-theme",
+          theme.colorScheme
+        );
+        ref.current.contentDocument.body.style.background = "transparent";
+        ref.current.height = `${ref.current.contentWindow.document.body.scrollHeight}px`;
+        ref.current.contentDocument
+          .getElementsByClassName("tsd-page-toolbar")
+          .item(0)
+          ?.remove();
       }}
     />
   );
