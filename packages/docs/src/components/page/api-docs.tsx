@@ -70,12 +70,11 @@ const DocsIframe: FC<{ src: string }> = ({ src }) => {
         if (!ref.current?.contentDocument) {
           return;
         }
-        const script = ref.current.contentDocument.createElement("script");
-        script?.setAttribute(
-          "src",
-          "https://www.unpkg.com/browse/iframe-resizer@4.3.6/js/iframeResizer.contentWindow.min.js"
+        ref.current.contentDocument.head.append(
+          `<scr` +
+            `ipt src="https://www.unpkg.com/browse/iframe-resizer@4.3.6/js/iframeResizer.contentWindow.min.js"></scr` +
+            `ipt>`
         );
-        ref.current.contentDocument.head.appendChild(script);
         ref.current.contentDocument?.documentElement.setAttribute(
           "data-theme",
           theme.colorScheme
