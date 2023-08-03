@@ -67,15 +67,22 @@ const DocsIframe: FC<{ src: string }> = ({ src }) => {
         // height: "calc(100vh - var(--header-height))",
       }}
       onLoad={() => {
-        ref.current?.contentDocument?.documentElement.setAttribute(
+        if (!ref.current?.contentDocument) {
+          return;
+        }
+        const script = ref.current.contentDocument.createElement("script");
+        script?.setAttribute(
+          "src",
+          "https://www.unpkg.com/browse/iframe-resizer@4.3.6/js/iframeResizer.contentWindow.min.js"
+        );
+        ref.current.contentDocument.head.appendChild(script);
+        ref.current.contentDocument?.documentElement.setAttribute(
           "data-theme",
           theme.colorScheme
         );
-        if (ref.current?.contentDocument) {
-          ref.current.contentDocument.body.style.background = "transparent";
-        }
+        ref.current.contentDocument.body.style.background = "transparent";
         ref.current?.contentDocument
-          ?.getElementsByClassName("tsd-page-toolbar")
+          .getElementsByClassName("tsd-page-toolbar")
           .item(0)
           ?.remove();
       }}
