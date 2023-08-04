@@ -3,6 +3,14 @@ import TsconfigPathsPlugin from "tsconfig-paths-webpack-plugin";
 import * as fs from "fs-extra";
 import * as path from "path";
 
+/*
+import * as express from "express";
+
+export const onCreateDevServer = ({ app }) => {
+  app.use(express.static("docs"));
+};
+*/
+
 export const onCreateWebpackConfig: GatsbyNode["onCreateWebpackConfig"] = ({
   actions,
 }) => {
@@ -14,7 +22,6 @@ export const onCreateWebpackConfig: GatsbyNode["onCreateWebpackConfig"] = ({
 };
 
 export const sourceNodes: GatsbyNode["sourceNodes"] = async ({
-  graphql,
   actions,
   createContentDigest,
   createNodeId,

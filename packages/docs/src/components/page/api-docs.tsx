@@ -1,54 +1,13 @@
-import React, { FC, ReactNode, useEffect, useRef } from "react";
-import {
-  Box,
-  Tabs,
-  Title,
-  TypographyStylesProvider,
-  useMantineTheme,
-} from "@mantine/core";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
+import React, { FC, useEffect, useRef } from "react";
+import { Tabs, TypographyStylesProvider, useMantineTheme } from "@mantine/core";
 import IframeResizer from "iframe-resizer-react";
-import { useApiDocs } from "@/queries/use-api-docs";
 
 export type ApiDocsProps = {
   data: Queries.DocByIdQuery;
 };
 
-const Section: FC<{ title: string; documentName?: string | null }> = ({
-  documentName,
-  title,
-}) => {
-  const { allApiDoc } = useApiDocs();
-  const markdown = allApiDoc.nodes.find(
-    (node) => node.file === documentName
-  )?.markdown;
-
-  if (!markdown) {
-    return null;
-  }
-
-  const modifiedMarkdown = markdown
-    .split("\n## Properties")[1]
-    // remove "Defined in" section
-    ?.replace(/#### Defined in\n\n[^_]+___/g, "")
-    ?.replace(/#### Defined in\n\n[^_]+$/g, "")
-
-    // disable links
-    ?.replace(/\[([^]]+)]\([^)]+\)/g, "$1");
-
-  return (
-    <>
-      <Title sx={{ borderBottom: "1px solid", paddingTop: "28px" }}>
-        {title}
-      </Title>
-      <ReactMarkdown children={modifiedMarkdown} remarkPlugins={[remarkGfm]} />
-    </>
-  );
-};
-
 const DocsIframe: FC<{ src: string }> = ({ src }) => {
-  const ref = useRef<HTMLIFrameElement>(null);
+  const ref = useRef<HTMLIFrameElement | null>(null);
   const theme = useMantineTheme();
   useEffect(() => {
     ref.current?.contentDocument?.documentElement.setAttribute(
@@ -57,30 +16,27 @@ const DocsIframe: FC<{ src: string }> = ({ src }) => {
     );
   }, [theme]);
   return (
-    <Box
-      component={IframeResizer}
-      ref={ref}
+    <IframeResizer
       src={src}
-      sx={{
-        border: "none",
-        width: "100%",
-        // height: "calc(100vh - var(--header-height))",
-      }}
-      onLoad={() => {
-        if (!ref.current?.contentDocument) {
+      style={{ width: "100%", border: "none" }}
+      onLoad={(e) => {
+        const iframe = e.target as HTMLIFrameElement;
+        if (!iframe.contentDocument) {
           return;
         }
-        ref.current.contentDocument.head.append(
-          `<scr` +
-            `ipt src="https://www.unpkg.com/browse/iframe-resizer@4.3.6/js/iframeResizer.contentWindow.min.js"></scr` +
-            `ipt>`
-        );
-        ref.current.contentDocument?.documentElement.setAttribute(
+        ref.current = iframe;
+        const script = iframe.contentDocument.createElement("script");
+        script.src =
+          "https://www.unpkg.com/iframe-resizer@4.3.6/js/iframeResizer.contentWindow.min.js";
+
+        iframe.contentDocument.head.appendChild(script);
+
+        iframe.contentDocument?.documentElement.setAttribute(
           "data-theme",
           theme.colorScheme
         );
-        ref.current.contentDocument.body.style.background = "transparent";
-        ref.current?.contentDocument
+        iframe.contentDocument.body.style.background = "transparent";
+        iframe.contentDocument
           .getElementsByClassName("tsd-page-toolbar")
           .item(0)
           ?.remove();
