@@ -124,7 +124,6 @@ export const createTree = <T>(
         itemInstances.push(itemInstancesMap[item.itemId]);
       }
     }
-    console.log("REBUILT");
   };
 
   const eachFeature = (fn: (feature: FeatureImplementation<any>) => void) => {
