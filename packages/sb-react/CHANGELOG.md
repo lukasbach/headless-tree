@@ -1,5 +1,14 @@
 # @headless-tree/sb-react
 
+## 0.0.9
+
+### Patch Changes
+
+- ab2a124: dev release
+- Updated dependencies [ab2a124]
+  - @headless-tree/core@0.0.9
+  - @headless-tree/react@0.0.8
+
 ## 0.0.8
 
 ### Patch Changes
