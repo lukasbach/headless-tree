@@ -1,5 +1,5 @@
 import React from "react";
-import { Title, Container, Box, Text } from "@mantine/core";
+import { Box, Container, Text, Title } from "@mantine/core";
 import { LayoutContainer } from "@/components/layout/layout-container";
 import { DemoBox } from "@/components/page/demo-box";
 
