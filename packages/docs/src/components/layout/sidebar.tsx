@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Box, createStyles, Navbar, NavLink } from "@mantine/core";
+import { Box, NavLink, Navbar, createStyles } from "@mantine/core";
 import { Link } from "gatsby";
 import { useNavbarData } from "@/queries/use-navbar-data";
 
@@ -45,8 +45,8 @@ export const Sidebar: FC<SidebarProps> = ({ location }) => {
   const sorted = [...allItems].sort(
     (a, b) =>
       a?.internal?.contentFilePath?.localeCompare(
-        b?.internal?.contentFilePath ?? ""
-      ) ?? 1
+        b?.internal?.contentFilePath ?? "",
+      ) ?? 1,
   );
   return (
     <Navbar
@@ -56,7 +56,7 @@ export const Sidebar: FC<SidebarProps> = ({ location }) => {
     >
       {categories.map(({ key, name }) => {
         const items = sorted.filter(
-          (node) => node.frontmatter?.category === key
+          (node) => node.frontmatter?.category === key,
         );
         return (
           <Box key={key} sx={{ padding: 16 }}>

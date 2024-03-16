@@ -32,7 +32,7 @@ export type EmptyFeatureDef = {
 };
 
 type UnionToIntersection<T> = (T extends any ? (x: T) => any : never) extends (
-  x: infer R
+  x: infer R,
 ) => any
   ? R
   : never;
@@ -117,7 +117,7 @@ export type HotkeysConfig<T, F extends FeatureDef = FeatureDefs<T>> = Record<
 
 export type CustomHotkeysConfig<
   T,
-  F extends FeatureDef = FeatureDefs<T>
+  F extends FeatureDef = FeatureDefs<T>,
 > = Partial<
   Record<HotkeyName<F> | `custom${string}`, Partial<HotkeyConfig<T>>>
 >;
@@ -125,7 +125,7 @@ export type CustomHotkeysConfig<
 export type FeatureImplementation<
   T = any,
   D extends FeatureDef = any,
-  F extends FeatureDef = EmptyFeatureDef
+  F extends FeatureDef = EmptyFeatureDef,
 > = {
   key?: string;
   deps?: string[];
@@ -137,46 +137,46 @@ export type FeatureImplementation<
 
   getInitialState?: (
     initialState: Partial<MergedFeatures<F>["state"]>,
-    tree: MergedFeatures<F>["treeInstance"]
+    tree: MergedFeatures<F>["treeInstance"],
   ) => Partial<D["state"] & MergedFeatures<F>["state"]>;
 
   getDefaultConfig?: (
     defaultConfig: Partial<MergedFeatures<F>["config"]>,
-    tree: MergedFeatures<F>["treeInstance"]
+    tree: MergedFeatures<F>["treeInstance"],
   ) => Partial<D["config"] & MergedFeatures<F>["config"]>;
 
   createTreeInstance?: (
     prev: MergedFeatures<F>["treeInstance"],
-    instance: MergedFeatures<F>["treeInstance"]
+    instance: MergedFeatures<F>["treeInstance"],
   ) => D["treeInstance"] & MergedFeatures<F>["treeInstance"];
 
   createItemInstance?: (
     prev: MergedFeatures<F>["itemInstance"],
     item: MergedFeatures<F>["itemInstance"],
     tree: MergedFeatures<F>["treeInstance"],
-    itemId: string
+    itemId: string,
   ) => D["itemInstance"] & MergedFeatures<F>["itemInstance"];
 
   onTreeMount?: (
     instance: MergedFeatures<F>["treeInstance"],
-    treeElement: HTMLElement
+    treeElement: HTMLElement,
   ) => void;
 
   onTreeUnmount?: (
     instance: MergedFeatures<F>["treeInstance"],
-    treeElement: HTMLElement
+    treeElement: HTMLElement,
   ) => void;
 
   onItemMount?: (
     instance: MergedFeatures<F>["itemInstance"],
     itemElement: HTMLElement,
-    tree: MergedFeatures<F>["treeInstance"]
+    tree: MergedFeatures<F>["treeInstance"],
   ) => void;
 
   onItemUnmount?: (
     instance: MergedFeatures<F>["itemInstance"],
     itemElement: HTMLElement,
-    tree: MergedFeatures<F>["treeInstance"]
+    tree: MergedFeatures<F>["treeInstance"],
   ) => void;
 
   hotkeys?: HotkeysConfig<T, D>;

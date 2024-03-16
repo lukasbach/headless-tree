@@ -5,7 +5,7 @@ import { insertItemsAtTarget } from "./insert-items-at-target";
 
 export const createOnDropHandler =
   <T>(
-    onChangeChildren: (item: ItemInstance<T>, newChildren: string[]) => void
+    onChangeChildren: (item: ItemInstance<T>, newChildren: string[]) => void,
   ) =>
   (items: ItemInstance<T>[], target: DropTarget<T>) => {
     const itemIds = items.map((item) => item.getId());

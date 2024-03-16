@@ -46,14 +46,14 @@ export const selectionFeature: FeatureImplementation<
       tree.setSelectedItems(
         selectedItems.includes(item.getItemMeta().itemId)
           ? selectedItems
-          : [...selectedItems, item.getItemMeta().itemId]
+          : [...selectedItems, item.getItemMeta().itemId],
       );
     },
 
     deselect: () => {
       const { selectedItems } = tree.getState();
       tree.setSelectedItems(
-        selectedItems.filter((id) => id !== item.getItemMeta().itemId)
+        selectedItems.filter((id) => id !== item.getItemMeta().itemId),
       );
     },
 

@@ -1,9 +1,9 @@
 import type { Meta } from "@storybook/react";
 import React, { useState } from "react";
 import {
+  dragAndDropFeature,
   hotkeysCoreFeature,
   selectionFeature,
-  dragAndDropFeature,
   syncDataLoaderFeature,
 } from "@headless-tree/core";
 import { useTree } from "@headless-tree/react";
@@ -29,8 +29,8 @@ export const DragLine = () => {
     onDrop: (items, target) => {
       alert(
         `Dropped ${items.map((item) =>
-          item.getId()
-        )} on ${target.item.getId()}, index ${target.childIndex}`
+          item.getId(),
+        )} on ${target.item.getId()}, index ${target.childIndex}`,
       );
     },
     dataLoader: {
@@ -94,7 +94,7 @@ export const DragLine = () => {
             dragLine,
           },
           null,
-          2
+          2,
         )}
       </pre>
     </div>

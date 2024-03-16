@@ -4,7 +4,7 @@ import { DropTarget } from "../features/drag-and-drop/types";
 export const insertItemsAtTarget = <T>(
   itemIds: string[],
   target: DropTarget<T>,
-  onChangeChildren: (item: ItemInstance<T>, newChildrenIds: string[]) => void
+  onChangeChildren: (item: ItemInstance<T>, newChildrenIds: string[]) => void,
 ) => {
   // add moved items to new common parent, if dropped onto parent
   if (target.childIndex === null) {

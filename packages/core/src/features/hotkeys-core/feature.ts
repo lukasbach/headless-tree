@@ -18,13 +18,13 @@ const specialKeys: Record<string, RegExp> = {
 const testHotkeyMatch = (
   pressedKeys: Set<string>,
   tree: TreeInstance<any>,
-  hotkey: HotkeyConfig<any>
+  hotkey: HotkeyConfig<any>,
 ) => {
   const supposedKeys = hotkey.hotkey.split("+");
   const doKeysMatch = supposedKeys.every((key) =>
     key in specialKeys
       ? [...pressedKeys].some((pressedKey) => specialKeys[key].test(pressedKey))
-      : pressedKeys.has(key)
+      : pressedKeys.has(key),
   );
   const isEnabled = !hotkey.isEnabled || hotkey.isEnabled(tree);
   const equalCounts = pressedKeys.size === supposedKeys.length;
@@ -35,10 +35,10 @@ const findHotkeyMatch = (
   pressedKeys: Set<string>,
   tree: TreeInstance<any>,
   config1: HotkeysConfig<any, any>,
-  config2: HotkeysConfig<any, any>
+  config2: HotkeysConfig<any, any>,
 ) => {
   return Object.entries({ ...config1, ...config2 }).find(([, hotkey]) =>
-    testHotkeyMatch(pressedKeys, tree, hotkey)
+    testHotkeyMatch(pressedKeys, tree, hotkey),
   )?.[0];
 };
 
@@ -60,7 +60,7 @@ export const hotkeysCoreFeature: FeatureImplementation<
         data.current.pressedKeys,
         tree as any,
         tree.getHotkeyPresets(),
-        tree.getConfig().hotkeys as HotkeysConfig<any>
+        tree.getConfig().hotkeys as HotkeysConfig<any>,
       );
 
       if (!hotkeyName) return;

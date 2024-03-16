@@ -1,9 +1,9 @@
 import type { Meta } from "@storybook/react";
-import React, { forwardRef, HTMLProps } from "react";
+import React, { HTMLProps, forwardRef } from "react";
 import {
+  dragAndDropFeature,
   hotkeysCoreFeature,
   selectionFeature,
-  dragAndDropFeature,
   syncDataLoaderFeature,
 } from "@headless-tree/core";
 import { useTree } from "@headless-tree/react";
@@ -23,7 +23,7 @@ const SlowItem = forwardRef<HTMLButtonElement, HTMLProps<HTMLButtonElement>>(
     while (Date.now() - start < 20); // force the component to take 20ms to render
     action("renderItem")();
     return <button {...(props as any)} ref={ref} />;
-  }
+  },
 );
 
 export const SlowItemRenderers = () => {

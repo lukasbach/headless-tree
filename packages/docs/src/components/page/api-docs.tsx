@@ -12,7 +12,7 @@ const DocsIframe: FC<{ src: string }> = ({ src }) => {
   useEffect(() => {
     ref.current?.contentDocument?.documentElement.setAttribute(
       "data-theme",
-      theme.colorScheme
+      theme.colorScheme,
     );
   }, [theme]);
   return (
@@ -33,7 +33,7 @@ const DocsIframe: FC<{ src: string }> = ({ src }) => {
 
         iframe.contentDocument?.documentElement.setAttribute(
           "data-theme",
-          theme.colorScheme
+          theme.colorScheme,
         );
         iframe.contentDocument.body.style.background = "transparent";
         iframe.contentDocument

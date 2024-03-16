@@ -1,5 +1,5 @@
 import React from "react";
-import { graphql, PageProps } from "gatsby";
+import { PageProps, graphql } from "gatsby";
 import { LayoutContainer } from "@/components/layout/layout-container";
 import { PageContainer } from "@/components/page/page-container";
 

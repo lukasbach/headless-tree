@@ -1,11 +1,11 @@
 import type { Meta } from "@storybook/react";
 import React from "react";
 import {
+  dragAndDropFeature,
+  expandAllFeature,
   hotkeysCoreFeature,
   selectionFeature,
-  dragAndDropFeature,
   syncDataLoaderFeature,
-  expandAllFeature,
 } from "@headless-tree/core";
 import { useTree } from "@headless-tree/react";
 import cx from "classnames";

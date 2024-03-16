@@ -65,7 +65,7 @@ export type TreeFeatureDef<T> = {
     getItemBelow: () => ItemInstance<T> | null;
     getMemoizedProp: <X>(name: string, create: () => X, deps?: any[]) => X;
     scrollTo: (
-      scrollIntoViewArg?: boolean | ScrollIntoViewOptions
+      scrollIntoViewArg?: boolean | ScrollIntoViewOptions,
     ) => Promise<void>;
   };
   hotkeys:

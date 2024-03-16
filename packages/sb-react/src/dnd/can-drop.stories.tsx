@@ -1,13 +1,12 @@
 import type { Meta } from "@storybook/react";
 import React, { useState } from "react";
 import {
+  dragAndDropFeature,
   hotkeysCoreFeature,
   selectionFeature,
-  dragAndDropFeature,
   syncDataLoaderFeature,
 } from "@headless-tree/core";
 import { useTree } from "@headless-tree/react";
-import { action } from "@storybook/addon-actions";
 import cx from "classnames";
 
 const meta = {
@@ -32,8 +31,8 @@ export const CanDrop = () => {
     onDrop: (items, target) => {
       alert(
         `Dropped ${items.map((item) =>
-          item.getId()
-        )} on ${target.item.getId()}, index ${target.childIndex}`
+          item.getId(),
+        )} on ${target.item.getId()}, index ${target.childIndex}`,
       );
     },
     dataLoader: {

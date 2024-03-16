@@ -1,16 +1,16 @@
 import type { Meta } from "@storybook/react";
 import React, { useState } from "react";
 import {
-  hotkeysCoreFeature,
-  selectionFeature,
-  dragAndDropFeature,
-  syncDataLoaderFeature,
   createOnDropHandler,
+  dragAndDropFeature,
+  hotkeysCoreFeature,
   removeItemsFromParents,
+  selectionFeature,
+  syncDataLoaderFeature,
 } from "@headless-tree/core";
 import { useTree } from "@headless-tree/react";
 import cx from "classnames";
-import { createDemoData, DemoItem } from "../utils/data";
+import { DemoItem, createDemoData } from "../utils/data";
 
 const meta = {
   title: "React/Drag and Drop/Drag Outside",
@@ -86,8 +86,8 @@ export const DragOutside = () => {
         onDrop={(e) =>
           alert(
             `Drop, dataTransfer payload is ${JSON.stringify(
-              e.dataTransfer.getData("text/plain")
-            )}`
+              e.dataTransfer.getData("text/plain"),
+            )}`,
           )
         }
         onDragOver={(e) => e.preventDefault()}

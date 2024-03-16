@@ -1,12 +1,12 @@
 import type { Meta } from "@storybook/react";
 import React from "react";
 import {
-  hotkeysCoreFeature,
-  selectionFeature,
   dragAndDropFeature,
-  syncDataLoaderFeature,
+  hotkeysCoreFeature,
   insertItemsAtTarget,
   removeItemsFromParents,
+  selectionFeature,
+  syncDataLoaderFeature,
 } from "@headless-tree/core";
 import { useTree } from "@headless-tree/react";
 import cx from "classnames";

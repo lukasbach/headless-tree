@@ -21,7 +21,7 @@ export type MainFeatureDef<T = any> = {
     /** @internal */
     applySubStateUpdate: <K extends keyof TreeState<any>>(
       stateName: K,
-      updater: Updater<TreeState<T>[K]>
+      updater: Updater<TreeState<T>[K]>,
     ) => void;
     setState: SetStateFn<TreeState<T>>;
     getState: () => TreeState<T>;

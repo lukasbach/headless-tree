@@ -47,7 +47,7 @@ export const asyncDataLoaderFeature: FeatureImplementation<
           dataRef.current.itemData[itemId] = item;
           config.onLoadedItem?.(itemId, item);
           instance.applySubStateUpdate("loadingItems", (loadingItems) =>
-            loadingItems.filter((id) => id !== itemId)
+            loadingItems.filter((id) => id !== itemId),
           );
         });
       }
@@ -83,7 +83,7 @@ export const asyncDataLoaderFeature: FeatureImplementation<
           dataRef.current.childrenIds[itemId] = childrenIds;
           config.onLoadedChildren?.(itemId, childrenIds);
           instance.applySubStateUpdate("loadingItems", (loadingItems) =>
-            loadingItems.filter((id) => id !== itemId)
+            loadingItems.filter((id) => id !== itemId),
           );
           instance.rebuildTree();
         });
@@ -92,7 +92,7 @@ export const asyncDataLoaderFeature: FeatureImplementation<
           dataRef.current.childrenIds[itemId] = childrenIds;
           config.onLoadedChildren?.(itemId, childrenIds);
           instance.applySubStateUpdate("loadingItems", (loadingItems) =>
-            loadingItems.filter((id) => id !== itemId)
+            loadingItems.filter((id) => id !== itemId),
           );
           instance.rebuildTree();
         });

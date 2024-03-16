@@ -1,16 +1,16 @@
 import type { Meta } from "@storybook/react";
 import React, { useState } from "react";
 import {
-  hotkeysCoreFeature,
-  selectionFeature,
-  dragAndDropFeature,
-  syncDataLoaderFeature,
   createOnDropHandler,
+  dragAndDropFeature,
+  hotkeysCoreFeature,
   insertItemsAtTarget,
+  selectionFeature,
+  syncDataLoaderFeature,
 } from "@headless-tree/core";
 import { useTree } from "@headless-tree/react";
 import cx from "classnames";
-import { createDemoData, DemoItem } from "../utils/data";
+import { DemoItem, createDemoData } from "../utils/data";
 
 const meta = {
   title: "React/Drag and Drop/Drag Inside",
@@ -45,8 +45,8 @@ export const DragInside = () => {
       });
       alert(
         `Dropped external data with payload "${JSON.stringify(
-          dataTransfer.getData("text/plain")
-        )}" on ${target.item.getId()}, index ${target.childIndex}`
+          dataTransfer.getData("text/plain"),
+        )}" on ${target.item.getId()}, index ${target.childIndex}`,
       );
     },
     canDropForeignDragObject: (_, target) => target.item.isFolder(),

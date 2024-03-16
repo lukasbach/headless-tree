@@ -1,18 +1,18 @@
 import type { Meta } from "@storybook/react";
 import React, {
-  useState,
-  useRef,
   forwardRef,
   useImperativeHandle,
+  useRef,
+  useState,
 } from "react";
 import {
+  dragAndDropFeature,
   hotkeysCoreFeature,
   selectionFeature,
-  dragAndDropFeature,
   syncDataLoaderFeature,
 } from "@headless-tree/core";
 import { useTree } from "@headless-tree/react";
-import { useVirtualizer, Virtualizer } from "@tanstack/react-virtual";
+import { Virtualizer, useVirtualizer } from "@tanstack/react-virtual";
 import cx from "classnames";
 
 const meta = {
@@ -37,7 +37,7 @@ export default meta;
 const getExpandedItemIds = (
   itemsPerLevel: number,
   openLevels: number,
-  prefix = "folder"
+  prefix = "folder",
 ) => {
   if (openLevels === 0) {
     return [];
@@ -52,7 +52,7 @@ const getExpandedItemIds = (
   return [
     ...expandedItems,
     ...expandedItems.flatMap((itemId) =>
-      getExpandedItemIds(itemsPerLevel, openLevels - 1, itemId)
+      getExpandedItemIds(itemsPerLevel, openLevels - 1, itemId),
     ),
   ];
 };
@@ -124,7 +124,7 @@ const Inner = forwardRef<Virtualizer<HTMLDivElement, Element>, any>(
         </div>
       </div>
     );
-  }
+  },
 );
 
 export const BasicVirtualization = ({ itemsPerLevel, openLevels }) => {
