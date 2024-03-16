@@ -27,7 +27,7 @@ export const sourceNodes: GatsbyNode["sourceNodes"] = async ({
   createNodeId,
 }) => {
   const { stories } = await fs.readJson(
-    "../sb-react/storybook-static/stories.json"
+    "../sb-react/storybook-static/stories.json",
   );
 
   for (const story of Object.values(stories) as any) {
@@ -35,7 +35,7 @@ export const sourceNodes: GatsbyNode["sourceNodes"] = async ({
     const sourcePath = path.join(basePath, story.importPath);
     const source = await fs.readFile(
       path.join(__dirname, "../..", sourcePath),
-      "utf-8"
+      "utf-8",
     );
     actions.createNode({
       ...story,
@@ -62,7 +62,7 @@ export const sourceNodes: GatsbyNode["sourceNodes"] = async ({
   for (const file of apidocs) {
     const content = await fs.readFile(
       path.join("./apidocs/interfaces", file),
-      "utf-8"
+      "utf-8",
     );
     const data = {
       markdown: content,

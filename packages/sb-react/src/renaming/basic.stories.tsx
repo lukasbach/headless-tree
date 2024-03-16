@@ -2,9 +2,9 @@ import type { Meta } from "@storybook/react";
 import React from "react";
 import {
   hotkeysCoreFeature,
+  renamingFeature,
   selectionFeature,
   syncDataLoaderFeature,
-  renamingFeature,
 } from "@headless-tree/core";
 import { useTree } from "@headless-tree/react";
 import cx from "classnames";

@@ -20,7 +20,7 @@ export const expandAllFeature: FeatureImplementation<
 
     expandAll: async (cancelToken) => {
       await Promise.all(
-        tree.getItems().map((item) => item.expandAll(cancelToken))
+        tree.getItems().map((item) => item.expandAll(cancelToken)),
       );
     },
 
@@ -46,10 +46,10 @@ export const expandAllFeature: FeatureImplementation<
       await Promise.all(
         item.getChildren().map(async (child) => {
           await poll(
-            () => !tree.getState().loadingItems.includes(child.getId())
+            () => !tree.getState().loadingItems.includes(child.getId()),
           );
           await child?.expandAll(cancelToken);
-        })
+        }),
       );
     },
 

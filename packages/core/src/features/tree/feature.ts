@@ -56,7 +56,7 @@ export const treeFeature: FeatureImplementation<
         parentId: string,
         level: number,
         setSize: number,
-        posInSet: number
+        posInSet: number,
       ) => {
         flatItems.push({
           itemId,
@@ -107,7 +107,7 @@ export const treeFeature: FeatureImplementation<
       }
 
       instance.applySubStateUpdate("expandedItems", (expandedItems) =>
-        expandedItems.filter((id) => id !== itemId)
+        expandedItems.filter((id) => id !== itemId),
       );
       instance.rebuildTree();
     },
@@ -226,7 +226,7 @@ export const treeFeature: FeatureImplementation<
         }
         return tree.getItemInstance(tree.getConfig().rootItemId);
       },
-      () => [item.getItemMeta()]
+      () => [item.getItemMeta()],
     ),
     // TODO remove
     getIndexInParent: () => item.getItemMeta().posInSet,

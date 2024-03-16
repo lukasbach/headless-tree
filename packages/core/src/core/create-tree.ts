@@ -13,7 +13,7 @@ import { ItemMeta } from "../features/tree/types";
 const buildItemInstance = (
   features: FeatureImplementation[],
   tree: TreeInstance<any>,
-  itemId: string
+  itemId: string,
 ) => {
   const itemInstance = {} as ItemInstance<any>;
   for (const feature of features) {
@@ -23,8 +23,8 @@ const buildItemInstance = (
         { ...itemInstance },
         itemInstance,
         tree,
-        itemId
-      ) ?? {}
+        itemId,
+      ) ?? {},
     );
   }
   return itemInstance;
@@ -34,7 +34,7 @@ const verifyFeatures = (features: FeatureImplementation[] | undefined) => {
   const loadedFeatures = features?.map((feature) => feature.key);
   for (const feature of features ?? []) {
     const missingDependency = feature.deps?.find(
-      (dep) => !loadedFeatures?.includes(dep)
+      (dep) => !loadedFeatures?.includes(dep),
     );
     if (missingDependency) {
       throw new Error(`${feature.key} needs ${missingDependency}`);
@@ -44,7 +44,7 @@ const verifyFeatures = (features: FeatureImplementation[] | undefined) => {
 
 const compareFeatures = (
   feature1: FeatureImplementation,
-  feature2: FeatureImplementation
+  feature2: FeatureImplementation,
 ) => {
   if (feature2.key && feature1.overwrites?.includes(feature2.key)) {
     return 1;
@@ -56,7 +56,7 @@ const sortFeatures = (features: FeatureImplementation[] = []) =>
   features.sort(compareFeatures);
 
 export const createTree = <T>(
-  initialConfig: TreeConfig<T>
+  initialConfig: TreeConfig<T>,
 ): TreeInstance<T> => {
   const treeInstance: TreeInstance<T> = {} as any;
 
@@ -68,15 +68,15 @@ export const createTree = <T>(
 
   let state = additionalFeatures.reduce(
     (acc, feature) => feature.getInitialState?.(acc, treeInstance) ?? acc,
-    initialConfig.initialState ?? initialConfig.state ?? {}
+    initialConfig.initialState ?? initialConfig.state ?? {},
   ) as TreeState<T>;
   let config = additionalFeatures.reduce(
     (acc, feature) => feature.getDefaultConfig?.(acc, treeInstance) ?? acc,
-    initialConfig
+    initialConfig,
   ) as TreeConfig<T>;
   const stateHandlerNames = additionalFeatures.reduce(
     (acc, feature) => ({ ...acc, ...feature.stateHandlerNames }),
-    {} as Record<string, string>
+    {} as Record<string, string>,
   );
 
   let treeElement: HTMLElement | undefined | null;
@@ -98,7 +98,7 @@ export const createTree = <T>(
     const rootInstance = buildItemInstance(
       [main, ...additionalFeatures],
       treeInstance,
-      config.rootItemId
+      config.rootItemId,
     );
     itemInstancesMap[config.rootItemId] = rootInstance;
     itemMetaMap[config.rootItemId] = {
@@ -116,7 +116,7 @@ export const createTree = <T>(
         const instance = buildItemInstance(
           [main, ...additionalFeatures],
           treeInstance,
-          item.itemId
+          item.itemId,
         );
         itemInstancesMap[item.itemId] = instance;
         itemInstances.push(instance);
@@ -172,11 +172,11 @@ export const createTree = <T>(
 
         if (treeElement && !element) {
           eachFeature((feature) =>
-            feature.onTreeUnmount?.(treeInstance, treeElement!)
+            feature.onTreeUnmount?.(treeInstance, treeElement!),
           );
         } else if (!treeElement && element) {
           eachFeature((feature) =>
-            feature.onTreeMount?.(treeInstance, element)
+            feature.onTreeMount?.(treeInstance, element),
           );
         }
         treeElement = element;
@@ -195,11 +195,11 @@ export const createTree = <T>(
         const oldElement = itemElementsMap[itemId];
         if (oldElement && !element) {
           eachFeature((feature) =>
-            feature.onItemUnmount?.(instance, oldElement!, treeInstance)
+            feature.onItemUnmount?.(instance, oldElement!, treeInstance),
           );
         } else if (!oldElement && element) {
           eachFeature((feature) =>
-            feature.onItemMount?.(instance, element!, treeInstance)
+            feature.onItemMount?.(instance, element!, treeInstance),
           );
         }
         itemElementsMap[itemId] = element;
@@ -216,7 +216,7 @@ export const createTree = <T>(
   for (const feature of features) {
     Object.assign(
       treeInstance,
-      feature.createTreeInstance?.({ ...treeInstance }, treeInstance) ?? {}
+      feature.createTreeInstance?.({ ...treeInstance }, treeInstance) ?? {},
     );
     Object.assign(hotkeyPresets, feature.hotkeys ?? {});
   }

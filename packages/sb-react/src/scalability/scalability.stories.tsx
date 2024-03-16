@@ -1,9 +1,9 @@
 import type { Meta } from "@storybook/react";
 import React, { useState } from "react";
 import {
+  dragAndDropFeature,
   hotkeysCoreFeature,
   selectionFeature,
-  dragAndDropFeature,
   syncDataLoaderFeature,
 } from "@headless-tree/core";
 import { useTree } from "@headless-tree/react";
@@ -31,7 +31,7 @@ export default meta;
 const getExpandedItemIds = (
   itemsPerLevel: number,
   openLevels: number,
-  prefix = "folder"
+  prefix = "folder",
 ) => {
   if (openLevels === 0) {
     return [];
@@ -46,7 +46,7 @@ const getExpandedItemIds = (
   return [
     ...expandedItems,
     ...expandedItems.flatMap((itemId) =>
-      getExpandedItemIds(itemsPerLevel, openLevels - 1, itemId)
+      getExpandedItemIds(itemsPerLevel, openLevels - 1, itemId),
     ),
   ];
 };

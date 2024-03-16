@@ -23,13 +23,13 @@ export const DemoBox: FC<DemoBoxProps> = ({
   const matchingStories = allStory.nodes.filter((story) =>
     stories
       ? stories.some((tag) => story.tags?.includes(tag) || story.title === tag)
-      : true
+      : true,
   );
   const [selectedStory, setSelectedStory] = useState(
     initialStory
       ? matchingStories.find((story) => story.title === initialStory)?.story ??
           matchingStories[0]?.story
-      : matchingStories[0]?.story
+      : matchingStories[0]?.story,
   );
   const story = matchingStories.find((s) => s.story === selectedStory)!;
   const code = story?.source?.includes(storyStartToken)

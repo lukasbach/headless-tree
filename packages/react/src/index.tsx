@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createTree, TreeConfig } from "@headless-tree/core";
+import { TreeConfig, createTree } from "@headless-tree/core";
 
 export const useTree = <T,>(config: TreeConfig<T>) => {
   const [tree] = useState(() => ({ current: createTree(config) }));

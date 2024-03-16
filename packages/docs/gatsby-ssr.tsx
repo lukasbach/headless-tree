@@ -1,6 +1,6 @@
 import * as React from "react";
 import { renderToString } from "react-dom/server";
-import { createStylesServer, ServerStyles } from "@mantine/ssr";
+import { ServerStyles, createStylesServer } from "@mantine/ssr";
 
 const stylesServer = createStylesServer();
 

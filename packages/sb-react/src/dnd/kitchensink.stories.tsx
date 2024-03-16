@@ -1,9 +1,9 @@
 import type { Meta } from "@storybook/react";
 import React, { useState } from "react";
 import {
+  dragAndDropFeature,
   hotkeysCoreFeature,
   selectionFeature,
-  dragAndDropFeature,
   syncDataLoaderFeature,
 } from "@headless-tree/core";
 import { useTree } from "@headless-tree/react";

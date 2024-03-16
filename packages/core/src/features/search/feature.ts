@@ -38,7 +38,7 @@ export const searchFeature: FeatureImplementation<
         .find((item) =>
           instance
             .getConfig()
-            .isSearchMatchingItem?.(instance.getSearchValue(), item)
+            .isSearchMatchingItem?.(instance.getSearchValue(), item),
         )
         ?.setFocused();
     },
@@ -76,9 +76,9 @@ export const searchFeature: FeatureImplementation<
       (search, items) =>
         items.filter(
           (item) =>
-            search && instance.getConfig().isSearchMatchingItem?.(search, item)
+            search && instance.getConfig().isSearchMatchingItem?.(search, item),
         ),
-      () => [instance.getSearchValue(), instance.getItems()]
+      () => [instance.getSearchValue(), instance.getItems()],
     ),
   }),
 
@@ -130,7 +130,7 @@ export const searchFeature: FeatureImplementation<
           .find(
             (item) =>
               item.getItemMeta().index >
-              tree.getFocusedItem().getItemMeta().index
+              tree.getFocusedItem().getItemMeta().index,
           );
         focusItem?.setFocused();
         focusItem?.scrollTo({ block: "nearest", inline: "nearest" });
@@ -148,7 +148,7 @@ export const searchFeature: FeatureImplementation<
           .find(
             (item) =>
               item.getItemMeta().index <
-              tree.getFocusedItem().getItemMeta().index
+              tree.getFocusedItem().getItemMeta().index,
           );
         focusItem?.setFocused();
         focusItem?.scrollTo({ block: "nearest", inline: "nearest" });

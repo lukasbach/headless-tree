@@ -1,14 +1,14 @@
 import React, { FC, ReactNode } from "react";
 import {
-  Box,
-  Title,
-  Text,
-  Tabs,
-  Container,
-  createStyles,
-  Code,
-  Table,
   Anchor,
+  Box,
+  Code,
+  Container,
+  Table,
+  Tabs,
+  Text,
+  Title,
+  createStyles,
 } from "@mantine/core";
 import { MDXProvider } from "@mdx-js/react";
 import {
@@ -84,7 +84,7 @@ export const PageContainer: FC<PageContainerProps> = ({ children, data }) => {
                     )
                   }
                 />
-              )
+              ),
           )}
           <Tabs.List
             mt="sm"

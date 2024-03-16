@@ -1,10 +1,5 @@
 import { ItemInstance, TreeInstance } from "../../types/core";
-import {
-  DndState,
-  DragAndDropFeatureDef,
-  DropTarget,
-  DropTargetPosition,
-} from "./types";
+import { DropTarget, DropTargetPosition } from "./types";
 
 export const getDragCode = ({ item, childIndex }: DropTarget<any>) =>
   `${item.getId()}__${childIndex ?? "none"}`;
@@ -17,7 +12,7 @@ export const getDropOffset = (e: any, item: ItemInstance<any>): number => {
 export const canDrop = (
   dataTransfer: DataTransfer | null,
   target: DropTarget<any>,
-  tree: TreeInstance<any>
+  tree: TreeInstance<any>,
 ) => {
   const draggedItems = tree.getState().dnd?.draggedItems;
   const config = tree.getConfig();
@@ -40,7 +35,7 @@ export const canDrop = (
 const getDropTargetPosition = (
   offset: number,
   topLinePercentage: number,
-  bottomLinePercentage: number
+  bottomLinePercentage: number,
 ) => {
   if (offset < topLinePercentage) {
     return DropTargetPosition.Top;
@@ -55,7 +50,7 @@ export const getDropTarget = (
   e: any,
   item: ItemInstance<any>,
   tree: TreeInstance<any>,
-  canDropInbetween = tree.getConfig().canDropInbetween
+  canDropInbetween = tree.getConfig().canDropInbetween,
 ): DropTarget<any> => {
   const config = tree.getConfig();
   const draggedItems = tree.getState().dnd?.draggedItems ?? [];
@@ -81,7 +76,7 @@ export const getDropTarget = (
     ? getDropTargetPosition(
         offset,
         config.topLinePercentage ?? 0.3,
-        config.bottomLinePercentage ?? 0.7
+        config.bottomLinePercentage ?? 0.7,
       )
     : getDropTargetPosition(offset, 0.5, 0.5);
 
@@ -105,7 +100,7 @@ export const getDropTarget = (
         child && draggedItems?.some((i) => i.getId() === child.getId())
           ? ++counter
           : counter,
-      0
+      0,
     );
 
   return {

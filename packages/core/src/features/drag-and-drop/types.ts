@@ -56,12 +56,12 @@ export type DragAndDropFeatureDef<T> = {
     };
     canDropForeignDragObject?: (
       dataTransfer: DataTransfer,
-      target: DropTarget<T>
+      target: DropTarget<T>,
     ) => boolean;
     onDrop?: (items: ItemInstance<T>[], target: DropTarget<T>) => void;
     onDropForeignDragObject?: (
       dataTransfer: DataTransfer,
-      target: DropTarget<T>
+      target: DropTarget<T>,
     ) => void;
 
     /** Runs in the onDragEnd event, if `ev.dataTransfer.dropEffect` is not `none`, i.e. the drop

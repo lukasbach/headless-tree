@@ -1,12 +1,12 @@
 import React, { FC } from "react";
 import {
   ActionIcon,
-  Header,
-  useMantineColorScheme,
   Box,
+  Header,
   MantineProvider,
+  useMantineColorScheme,
 } from "@mantine/core";
-import { IoMoonOutline, IoSunnyOutline, IoLogoGithub } from "react-icons/io5";
+import { IoLogoGithub, IoMoonOutline, IoSunnyOutline } from "react-icons/io5";
 import { Link } from "gatsby-link";
 
 export type HeaderBarProps = {};

@@ -4,7 +4,7 @@ export type NoInfer<T> = [T][T extends any ? 0 : never];
 
 export const memo = <D extends readonly any[], R>(
   fn: (...args: [...D]) => R,
-  deps: () => [...D]
+  deps: () => [...D],
 ) => {
   let value: R | undefined;
   let oldDeps: D | null = null;
@@ -40,7 +40,7 @@ export function functionalUpdate<T>(updater: Updater<T>, input: T): T {
 }
 export function makeStateUpdater<K extends keyof TreeState<any>>(
   key: K,
-  instance: unknown
+  instance: unknown,
 ) {
   return (updater: Updater<TreeState<any>[K]>) => {
     (instance as any).setState(<TTableState>(old: TTableState) => {

@@ -27,7 +27,7 @@ export type HotkeysCoreFeatureDef<T> = {
     onItemHotkey?: (
       name: string,
       item: ItemInstance<T>,
-      element: HTMLElement
+      element: HTMLElement,
     ) => void;
   };
   treeInstance: {};
