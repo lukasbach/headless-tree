@@ -18,14 +18,14 @@
   "author": "Lukas Bach <npm@lukasbach.com>",
   "license": "MIT",
   "devDependencies": {
-    "@babel/preset-env": "^7.21.5",
-    "@babel/preset-react": "^7.18.6",
-    "@babel/preset-typescript": "^7.21.5",
+    "@babel/preset-env": "^7.24.0",
+    "@babel/preset-react": "^7.23.3",
+    "@babel/preset-typescript": "^7.23.3",
     "@headless-tree/core": "workspace:*",
     "prop-types": "15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "typescript": "^5.0.4"
+    "typescript": "^5.4.2"
   },
   "peerDependencies": {
     "@headless-tree/core": "*",
