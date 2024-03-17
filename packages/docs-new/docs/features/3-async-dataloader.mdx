@@ -1,0 +1,86 @@
+---
+slug: "/features/async-dataloader"
+title: "Async Data Loader"
+subtitle: "Data interface for asynchronous data sources"
+category: feature
+metalinks:
+  - name: Source
+    label: View Source
+    href: https://github.com/lukasbach/headless-tree/blob/main/packages/core/src/features/async-data-loader/feature.ts
+  - name: Types
+    label: View Types Source
+    href: https://github.com/lukasbach/headless-tree/blob/main/packages/core/src/features/async-data-loader/types.ts
+  - name: TypeDoc
+    label: View TypeDoc
+    href: /api/types/_headless_tree_core.AsyncDataLoaderFeatureDef.html
+  - name: Import
+    code: "import { asyncDataLoaderFeature } from \"@headless-tree/core\";"
+    language: typescript
+storybook: feature/async-data-loader
+api:
+ - name: Tree State
+   docs: /api/types/_headless_tree_core.TreeFeatureDef.html
+ - name: Tree Configuration
+   docs: /api/types/_headless_tree_core.TreeFeatureDef.html
+ - name: Tree Instance
+   docs: /api/types/_headless_tree_core.TreeFeatureDef.html
+ - name: Item Instance
+   docs: /api/types/_headless_tree_core.TreeFeatureDef.html
+---
+
+import { DemoBox } from "../../src/components/demo/demo-box";
+
+<DemoBox tags={["feature/async-data-loader"]} />
+
+The Async Data Loader is an alternative to the [Sync Data Loader](/features/sync-dataloader) that allows you to
+define your data interface in an asynchronous manner. If you want to use it, you need to use the `asyncDataLoaderFeature`
+instead of the `syncDataLoaderFeature` in your tree config.
+
+```ts
+
+const tree = useTree<ItemPayload>({
+rootItemId: "root",
+    getItemName: (item) => item.getItemData().name,
+    isItemFolder: () => item.getItemData().isFolder,
+    createLoadingItemData: () => "Loading...",
+    asyncDataLoader: {
+        getItem: async (itemId) =>  await dataSources.getItem(itemId)
+        getChildren: (itemId) => dataSources.getChildren(itemId),
+    },
+    features: [ asyncDataLoaderFeature ],
+});
+```
+
+# Loading Items
+
+The Async Data Loader provides functionality for marking items as "loading" and displaying them as such. While item
+data is loading through the `getItem` function, it is considered "loading" and is intended to be displayed as such.
+The same goes for an items children, while their IDs are being fetched through the `getChildren` function.
+
+The Async Data Loader defines a state for loading items: `state.loadingItems` keeps an array of item IDs which are currently
+loading. For a given item, you can check if it is loading by calling `item.isLoading()`.
+
+When an item is loading, its item data will be set to the value returned by `config.createLoadingItemData`. This
+way, you can customize how loading items are displayed.
+
+# Invalidating Item Data
+
+While the Sync Data Loader does not provide a data invalidation concept since it refetches all data during every render
+anyway, the Async Data Loader caches item data and does not refetch it unless it is invalidated. Methods for invalidating
+certain items are provided both on the tree instance...
+
+```ts
+tree.invalidateItemData(itemId);
+
+tree.invalidateChildrenIds(itemId);
+```
+
+...and on the item instance:
+
+```ts
+item.invalidateItemData();
+
+item.invalidateChildrenIds();
+```
+
+The data loader will then refetch the respective data the next render.
