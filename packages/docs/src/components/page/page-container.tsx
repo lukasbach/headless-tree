@@ -156,7 +156,7 @@ export const PageContainer: FC<PageContainerProps> = ({ children, data }) => {
           <DemoBox
             stories={[data.mdx?.frontmatter?.storybook]}
             height="calc(100vh - var(--header-height))"
-            fullWidth={true}
+            fullWidth
             initialStory="basic"
           />
         </Tabs.Panel>

@@ -88,7 +88,7 @@ export const DragInside = () => {
       </div>
       <div
         style={{ marginTop: "10px" }}
-        draggable={true}
+        draggable
         onDragStart={(e) => {
           e.dataTransfer.setData("text/plain", "hello world");
         }}

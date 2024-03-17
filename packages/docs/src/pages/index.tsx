@@ -14,9 +14,9 @@ export default function Home() {
       </Box>
 
       <DemoBox
-        initialStory={"React/General/Simple Example"}
+        initialStory="React/General/Simple Example"
         height="600px"
-        fullWidth={true}
+        fullWidth
       />
       <Container mt={80}>
         <Title order={2}>Features</Title>
