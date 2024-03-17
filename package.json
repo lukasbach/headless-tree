@@ -19,7 +19,7 @@
   "dependencies": {
     "@changesets/cli": "^2.27.1",
     "@lukasbach/eslint-config-deps": "^1.0.7",
-    "@types/node": "18.19.24",
+    "@types/node": "20.11.28",
     "@types/react": "18.2.66",
     "@types/react-dom": "18.2.22",
     "eslint": "^8.57.0",
@@ -34,7 +34,7 @@
     "npm": "9.6.7"
   },
   "eslintConfig": {
-    "extends": "@lukasbach/base",
+    "extends": "@lukasbach/base/react",
     "parserOptions": {
       "project": "./tsconfig.lint.json"
     },
