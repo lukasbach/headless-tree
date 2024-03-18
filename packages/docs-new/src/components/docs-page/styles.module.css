@@ -1,0 +1,36 @@
+.container {
+    background-color: #f8f9fa; /* var(--ifm-menu-color-background-active) */
+    border-radius: 16px;
+    padding: .8rem 1.5rem;
+}
+
+.title {
+    font-size: 2.5rem;
+    margin: 0 !important;
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    margin: 0;
+    padding: 0;
+}
+
+.dataTable {
+    margin-top: .6rem;
+    margin-bottom: 0;
+    border: none;
+    font-size: .8rem;
+}
+
+.dataTable tr td:first-child {
+    color: #888;
+}
+
+.dataTable td {
+    padding: .15rem 1rem .15rem 0;
+}
+
+.dataTable td, .dataTable tr {
+    border: none;
+    background-color: transparent !important;
+}
