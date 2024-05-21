@@ -15,3 +15,4 @@ storybook-static
 /packages/docs/apidocs
 /packages/docs/.cache
 /packages/docs/public
+/packages/docs-new/docs/md-test
