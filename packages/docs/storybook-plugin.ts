@@ -1,7 +1,6 @@
-import type { PluginModule } from "@docusaurus/types/src/plugin";
+import type { Plugin, PluginModule } from "@docusaurus/types/src/plugin";
 import * as fs from "fs/promises";
 import * as path from "path";
-import { Plugin } from "@docusaurus/types/src/plugin";
 import { StoryData } from "@site/src/util/use-stories";
 
 type Options = {

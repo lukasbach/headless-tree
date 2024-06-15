@@ -13,7 +13,6 @@ export const useStories = (storyIds: string[] | undefined) => {
   const [data, setData] = useState<StoryData[] | null>(null);
   useEffect(() => {
     const storyPromises = storyIds?.map(async (storyId) => {
-      console.log(storyIds, storyId);
       const story = await import(
         `@generated/docusaurus-plugin-storybook/default/story.${storyId}.json`
       );

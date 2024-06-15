@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import { FC, useMemo, useState } from "react";
 import { useStories } from "@site/src/util/use-stories";
 import { useStoriesByTags } from "@site/src/util/use-stories-by-tags";
@@ -47,7 +48,9 @@ export const DemoBox: FC<DemoBoxProps> = ({
           <select
             className={styles.storySelector}
             value={selectedStory}
-            onChange={(event) => setSelectedStory(parseInt(event.target.value))}
+            onChange={(event) =>
+              setSelectedStory(parseInt(event.target.value, 10))
+            }
           >
             {storyData.map((story, index) => (
               <option key={story.id} value={index}>
