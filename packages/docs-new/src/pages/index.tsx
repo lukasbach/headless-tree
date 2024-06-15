@@ -4,6 +4,7 @@ import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import Layout from "@theme/Layout";
 import Heading from "@theme/Heading";
 
+import { DemoBox } from "@site/src/components/demo/demo-box";
 import styles from "./index.module.css";
 
 function HomepageHeader() {
@@ -18,9 +19,9 @@ function HomepageHeader() {
         <div className={styles.buttons}>
           <Link
             className="button button--secondary button--lg"
-            to="/docs/intro"
+            to="/docs/getstarted"
           >
-            Docusaurus Tutorial - 5min ⏱️
+            Get Started
           </Link>
         </div>
       </div>
@@ -36,6 +37,9 @@ export default function Home(): JSX.Element {
       description="Description will go into a meta tag in <head />"
     >
       <HomepageHeader />
+      <main className={styles.demoBox}>
+        <DemoBox stories={["react-general-simple-example--simple-example"]} />
+      </main>
     </Layout>
   );
 }
