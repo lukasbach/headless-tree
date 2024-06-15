@@ -21,3 +21,9 @@
   align-items: center;
   justify-content: center;
 }
+
+.demoBox {
+  max-width: 1400px;
+  margin: auto;
+padding: 0 1rem;
+}
