@@ -26,7 +26,7 @@ export const DemoBox: FC<DemoBoxProps> = ({
   const allStories = useAllStories(!all);
   const storyData = useMemo(
     () => [...(tagStories ?? []), ...(idStories ?? []), ...(allStories ?? [])],
-    [idStories, tagStories],
+    [idStories, tagStories, allStories],
   );
   const [selectedStory, setSelectedStory] = useState(0);
 
