@@ -15,7 +15,7 @@ export const useAllStories = (skip?: boolean) => {
         ).default,
       );
     })();
-  }, []);
+  }, [skip]);
 
   return useStories(storyList);
 };
