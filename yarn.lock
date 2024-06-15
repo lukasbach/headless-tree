@@ -3838,9 +3838,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@headless-tree/docs@workspace:packages/docs-new":
+"@headless-tree/docs@workspace:packages/docs":
   version: 0.0.0-use.local
-  resolution: "@headless-tree/docs@workspace:packages/docs-new"
+  resolution: "@headless-tree/docs@workspace:packages/docs"
   dependencies:
     "@docusaurus/core": "npm:3.1.1"
     "@docusaurus/module-type-aliases": "npm:3.1.1"
