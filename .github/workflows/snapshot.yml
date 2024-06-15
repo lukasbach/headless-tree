@@ -24,8 +24,6 @@ jobs:
       - run: yarn
       - run: yarn lint:test
       - run: yarn build:core
-      - run: yarn docs
-      - run: yarn docs:md
       - run: yarn build:web
       - run: yarn changeset version --snapshot
       - run: yarn changeset publish --no-git-tag --tag snapshot
