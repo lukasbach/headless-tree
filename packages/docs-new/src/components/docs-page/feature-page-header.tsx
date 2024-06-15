@@ -12,8 +12,9 @@ export const FeaturePageHeader: FC<
     title: string;
     subtitle?: string;
     feature: string;
+    isCore?: boolean;
   }>
-> = ({ title, subtitle, children, feature }) => {
+> = ({ title, subtitle, children, feature, isCore }) => {
   return (
     <DocsPageHeader title={title} subtitle={subtitle}>
       <LinkRow
@@ -26,12 +27,14 @@ export const FeaturePageHeader: FC<
         title="Types"
         url={`https://github.com/lukasbach/headless-tree/blob/main/packages/core/src/features/${feature}/types.ts`}
       />
-      <tr>
-        <td>Import</td>
-        <td className={styles.code}>
-          import {`{ ${feature}Feature } from "@headless-tree/core`}
-        </td>
-      </tr>
+      {!isCore && (
+        <tr>
+          <td>Import</td>
+          <td className={styles.code}>
+            import {`{ ${feature}Feature } from "@headless-tree/core`}
+          </td>
+        </tr>
+      )}
       <tr>
         <td>Type Documentation</td>
         <td>

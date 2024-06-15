@@ -2,33 +2,17 @@
 slug: "/features/sync-dataloader"
 title: "Sync Data Loader"
 subtitle: "Data interface for synchronous data sources"
-category: feature
-metalinks:
-  - name: Source
-    label: View Source
-    href: https://github.com/lukasbach/headless-tree/blob/main/packages/core/src/features/sync-data-loader/feature.ts
-  - name: Types
-    label: View Types Source
-    href: https://github.com/lukasbach/headless-tree/blob/main/packages/core/src/features/sync-data-loader/types.ts
-  - name: TypeDoc
-    label: View TypeDoc
-    href: /api/types/_headless_tree_core.SyncDataLoaderFeatureDef.html
-  - name: Import
-    code: "import { syncDataLoaderFeature } from \"@headless-tree/core\";"
-    language: typescript
-storybook: feature/sync-data-loader
-api:
- - name: Tree State
-   docs: /api/types/_headless_tree_core.TreeFeatureDef.html
- - name: Tree Configuration
-   docs: /api/types/_headless_tree_core.TreeFeatureDef.html
- - name: Tree Instance
-   docs: /api/types/_headless_tree_core.TreeFeatureDef.html
- - name: Item Instance
-   docs: /api/types/_headless_tree_core.TreeFeatureDef.html
+hide_title: true
 ---
 
 import { DemoBox } from "../../src/components/demo/demo-box";
+import { FeaturePageHeader } from "../../src/components/docs-page/feature-page-header";
+
+<FeaturePageHeader
+    title="Sync Data Loader"
+    subtitle="Data interface for synchronous data sources"
+    feature="sync-data-loader"
+/>
 
 <DemoBox tags={["feature/sync-data-loader"]} />
 
