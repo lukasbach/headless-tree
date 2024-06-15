@@ -1,5 +1,5 @@
 .container {
-    background-color: #f8f9fa; /* var(--ifm-menu-color-background-active) */
+    background-color: var(--ifm-menu-color-background-active);
     border-radius: 16px;
     padding: .8rem 1.5rem;
     margin-bottom: 1rem;
@@ -34,4 +34,16 @@
 .dataTable td, .dataTable tr {
     border: none;
     background-color: transparent !important;
+}
+
+.typedocLink {
+    display: inline-block;
+    margin-right: .5rem;
+    background-color: var(--ifm-background-color);
+    border-radius: 4px;
+    padding: 4px;
+}
+
+.code {
+    font-family: 'Fira Code', monospace;
 }
