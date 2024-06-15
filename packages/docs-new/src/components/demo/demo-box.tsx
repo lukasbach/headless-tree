@@ -2,6 +2,8 @@ import { FC, useMemo, useState } from "react";
 import { useStories } from "@site/src/util/use-stories";
 import { useStoriesByTags } from "@site/src/util/use-stories-by-tags";
 import { Highlight } from "prism-react-renderer";
+import { useCleanedCode } from "@site/src/components/demo/use-cleaned-code";
+import { useAllStories } from "@site/src/util/use-all-stories";
 import styles from "./demo-box.module.css";
 
 export type DemoBoxProps = {
@@ -10,13 +12,20 @@ export type DemoBoxProps = {
   initialStory?: string;
   height?: string;
   fullWidth?: boolean;
+  all?: boolean;
 };
 
-export const DemoBox: FC<DemoBoxProps> = ({ stories, initialStory, tags }) => {
+export const DemoBox: FC<DemoBoxProps> = ({
+  stories,
+  initialStory,
+  tags,
+  all,
+}) => {
   const tagStories = useStoriesByTags(tags);
   const idStories = useStories(stories);
+  const allStories = useAllStories(!all);
   const storyData = useMemo(
-    () => [...(tagStories ?? []), ...(idStories ?? [])],
+    () => [...(tagStories ?? []), ...(idStories ?? []), ...(allStories ?? [])],
     [idStories, tagStories],
   );
   const [selectedStory, setSelectedStory] = useState(0);
@@ -25,6 +34,8 @@ export const DemoBox: FC<DemoBoxProps> = ({ stories, initialStory, tags }) => {
     () => storyData?.[selectedStory] ?? null,
     [selectedStory, storyData],
   );
+
+  const code = useCleanedCode(story?.code ?? "");
 
   if (!story) return null;
 
@@ -46,8 +57,20 @@ export const DemoBox: FC<DemoBoxProps> = ({ stories, initialStory, tags }) => {
           </select>
         </div>
         <div className={styles.topRight}>
-          <a href="#">Code</a>
-          <a href="#">Storybook</a>
+          <a
+            href={`https://github.com/lukasbach/headless-tree/tree/main/packages/sb-react/${story.importPath}`}
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            Code
+          </a>
+          <a
+            href={`https://headless-tree.lukasbach.com/storybook/react/index.html?path=/story/${story.id}`}
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            Storybook
+          </a>
         </div>
       </div>
       <div className={styles.sidebyside}>
@@ -60,7 +83,7 @@ export const DemoBox: FC<DemoBoxProps> = ({ stories, initialStory, tags }) => {
           />
         </div>
         <div className={styles.right}>
-          <Highlight code={story.code} language="tsx">
+          <Highlight code={code} language="tsx">
             {({ style, tokens, getLineProps, getTokenProps }) => (
               <pre style={style}>
                 {tokens.map((line, i) => (

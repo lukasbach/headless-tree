@@ -61,6 +61,10 @@ export const storybookPlugin: PluginModule = (
         "story-tags.json",
         JSON.stringify(storiesByTags),
       );
+
+      const allStories = Object.values(content).map((story) => story.id);
+      await actions.createData("all-stories.json", JSON.stringify(allStories));
+
       for (const [id, story] of Object.entries(content)) {
         await actions.createData(`story.${id}.json`, JSON.stringify(story));
       }
