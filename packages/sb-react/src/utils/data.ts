@@ -16,6 +16,7 @@ export const createDemoData = () => {
     apple: { name: "Apple" },
     banana: { name: "Banana" },
     orange: { name: "Orange" },
+    lemon: { name: "Lemon" },
     berries: { name: "Berries", children: ["red", "blue", "black"] },
     red: { name: "Red", children: ["strawberry", "raspberry"] },
     strawberry: { name: "Strawberry" },
