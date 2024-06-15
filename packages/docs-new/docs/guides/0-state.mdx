@@ -18,7 +18,7 @@ a `dnd` state sub-state is exposed that contains the IDs of dragged items, the i
 over, and the position of where the item would be dropped. When you choose to manage that state yourself, you can
 read those pieces of information or control them yourself. However, the data of the tree, as well as its mutation
 followed by the drop event, is not part of the state. You need to handle these data mutations yourself outside of the
-tree state. There are other concepts that can help with that, such as [data adapters](/data-adapters/concept).
+tree state.
 
 Another important part to keep in mind is that which parts of the state are exposed depends on the features that
 are included. The aforementioned `dnd` state property will be completely ignored if the `dragAndDropFeature` is

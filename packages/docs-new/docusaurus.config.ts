@@ -49,16 +49,17 @@ const config: Config = {
       "classic",
       {
         docs: {
+          routeBasePath: "/",
           sidebarCollapsible: false,
           sidebarPath: "./sidebars.ts",
           editUrl:
             "https://github.com/lukasbach/headless-tree/tree/main/packages/docs/",
         },
-        blog: {
+        blog: false /* {
           showReadingTime: true,
           editUrl:
             "https://github.com/lukasbach/headless-tree/tree/main/packages/docs/",
-        },
+        } */,
         theme: {
           customCss: "./src/css/custom.css",
         },
@@ -97,7 +98,7 @@ const config: Config = {
           items: [
             {
               label: "Get Started",
-              to: "/docs/getstarted",
+              to: "/getstarted",
             },
             {
               label: "API",
