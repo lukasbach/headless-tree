@@ -26,14 +26,11 @@ jobs:
       - run: yarn
       - run: yarn lint:test
       - run: yarn build:core
-      - run: yarn docs
-      - run: yarn docs:md
       - run: yarn build:web
       - run: |
           mkdir -p ./packages/docs/public/storybook
-          cp -r ./packages/sb-react/storybook-static ./packages/docs/public/storybook/react
-          cp -r ./docs ./packages/docs/public/api
+          cp -r ./packages/sb-react/storybook-static ./packages/docs/build/storybook/react
       - uses: actions/upload-pages-artifact@v1
         with:
-          path: ./packages/docs/public
+          path: ./packages/docs/build
       - uses: actions/deploy-pages@v2
