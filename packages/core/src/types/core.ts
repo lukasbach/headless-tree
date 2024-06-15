@@ -52,6 +52,7 @@ export type FeatureDefs<T> =
   | ExpandAllFeatureDef;
 
 type MergedFeatures<F extends FeatureDef> = {
+  // TODO remove in favor of types below
   state: UnionToIntersection<F["state"]>;
   config: UnionToIntersection<F["config"]>;
   treeInstance: UnionToIntersection<F["treeInstance"]>;

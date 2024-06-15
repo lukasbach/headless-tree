@@ -1,6 +1,7 @@
 import { themes as prismThemes } from "prism-react-renderer";
 import type { Config } from "@docusaurus/types";
 import type * as Preset from "@docusaurus/preset-classic";
+import path from "path";
 import { storybookPlugin } from "./storybook-plugin";
 
 const config: Config = {
@@ -31,6 +32,16 @@ const config: Config = {
   },
 
   plugins: [
+    [
+      "docusaurus-plugin-typedoc-api",
+      {
+        projectRoot: path.join(__dirname, "../.."),
+        packages: [
+          { path: "packages/core", entry: { index: "src/mddocs-entry.ts" } },
+          { path: "packages/react", entry: { index: "src/index.tsx" } },
+        ],
+      },
+    ],
     [
       storybookPlugin,
       {
@@ -80,6 +91,11 @@ const config: Config = {
           sidebarId: "tutorialSidebar",
           position: "left",
           label: "Tutorial",
+        },
+        {
+          to: "api",
+          label: "API",
+          position: "left",
         },
         { to: "/blog", label: "Blog", position: "left" },
         {

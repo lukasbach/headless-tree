@@ -23,7 +23,7 @@
     "@types/react-dom": "18.2.22",
     "eslint": "^8.57.0",
     "lerna": "^6.6.2",
-    "typedoc": "^0.25.12",
+    "typedoc": "^0.25.13",
     "typedoc-plugin-markdown": "^3.17.1",
     "zx": "^7.2.3"
   },
