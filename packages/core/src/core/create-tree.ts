@@ -18,6 +18,8 @@ const buildItemInstance = (
   const itemInstance = {} as ItemInstance<any>;
   for (const feature of features) {
     Object.assign(
+      // TODO dont run createItemInstance, but assign prototype objects instead?
+      // https://jsfiddle.net/bgenc58r/
       itemInstance,
       feature.createItemInstance?.(
         { ...itemInstance },
