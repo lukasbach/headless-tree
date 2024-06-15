@@ -6,13 +6,14 @@ template: page
 sidebar_position: 0
 ---
 
-import { Alert } from "@mantine/core";
 import { DemoBox } from "../src/components/demo/demo-box";
 
-<Alert title="A note on stability" color="red" variant="filled" sx={{ marginTop: "20px" }}>
-    This project is currently in Alpha. Expect breaking changes in minor version bumps and incomplete changelogs.
-    Bug reports and contributions are welcome!
-</Alert>
+:::danger[A note on stability]
+
+This project is currently in Alpha. Expect breaking changes in minor version bumps and incomplete changelogs.
+Bug reports and contributions are welcome!
+
+:::
 
 # Installation
 
@@ -46,9 +47,9 @@ without a dependency on React. Documentation on that and bindings for other fram
 <DemoBox stories={["react-general-simple-example--simple-example"]} />
 
 The `useTree` hook (or the `createTree` function from the core package, if you are not using the React bindings)
-return an instance of [TreeInstance](/api/interfaces/_headless_tree_core.TreeInstance.html). The most important
+return an instance of [TreeInstance](/api/core/interface/TreeInstance). The most important
 method on that instance is `getItems()`, which returns a flat list of all nodes in the tree. Those nodes are of type
-[ItemInstance](/api/interfaces/_headless_tree_core.ItemInstance.html), which provides methods to interact with
+[ItemInstance](/api/core/interface/ItemInstance), which provides methods to interact with
 each item and get the necessary props to render it.
 
 When rendering your tree, don't forget to
@@ -85,16 +86,30 @@ useTree({
 })
 ```
 
-<Alert color="red" variant="filled" title="Make sure to import all features you are using">
-    Which features are imported and which not affects which methods are available on the tree instance and on the
-    item instances, as well as which config options are respected by Headless Tree. However, the TypeScript Types
-    always include all possible functions. If you are trying to use a feature which is not working or where methods
-    are missing during runtime, check if you have included all necessary features in your tree.
-</Alert>
+:::danger[Make sure to import all features you are using]
+Which features are imported and which not affects which methods are available on the tree instance and on the
+item instances, as well as which config options are respected by Headless Tree. However, the TypeScript Types
+always include all possible functions. If you are trying to use a feature which is not working or where methods
+are missing during runtime, check if you have included all necessary features in your tree.
+:::
 
 All available features are documented with a dedicated guide on how to use them. In the sidebar, you can
 find each feature under its respective name in the "Features" category. The "Tree Core" and "Main Feature"
 features are special features that are always included and do not need to be imported.
+
+# Types
+
+Headless Tree is written in TypeScript and provides full TypeScript support. The most important types to keep
+in mind are
+
+- [TreeConfig](/api/core/interface/TreeConfig): The configuration object that you pass to `useTree` or `createTree`.
+- [TreeInstance](/api/core/interface/TreeInstance): The instance of a tree that you get back from `useTree` or `createTree`.
+- [ItemInstance](/api/core/interface/ItemInstance): The instance of an item that you get back from the tree instance.
+- [TreeState](/api/core/interface/TreeState): The state of a tree instance, which you can access via `tree.state` (read
+  more in the guide on [managing State](/guides/state)).
+
+Note that some of the defined functions require that you include the respective feature in your tree config, see
+the section above.
 
 # Hooking up your data structure
 
