@@ -88,16 +88,15 @@ const config: Config = {
       items: [
         {
           type: "docSidebar",
-          sidebarId: "tutorialSidebar",
+          sidebarId: "docs",
           position: "left",
-          label: "Tutorial",
+          label: "Docs",
         },
         {
           to: "api",
           label: "API",
           position: "left",
         },
-        { to: "/blog", label: "Blog", position: "left" },
         {
           href: "https://github.com/facebook/docusaurus",
           label: "GitHub",
@@ -106,49 +105,56 @@ const config: Config = {
       ],
     },
     footer: {
-      style: "dark",
       links: [
         {
           title: "Docs",
           items: [
             {
-              label: "Tutorial",
-              to: "/docs/intro",
+              label: "Get Started",
+              to: "/docs/getstarted",
+            },
+            {
+              label: "API",
+              to: "/api",
             },
           ],
         },
         {
-          title: "Community",
+          title: "Project",
           items: [
             {
-              label: "Stack Overflow",
-              href: "https://stackoverflow.com/questions/tagged/docusaurus",
-            },
-            {
-              label: "Discord",
-              href: "https://discordapp.com/invite/docusaurus",
-            },
-            {
-              label: "Twitter",
-              href: "https://twitter.com/docusaurus",
+              label: "Github",
+              href: "https://github.com/lukasbach/headless-tree",
             },
           ],
         },
         {
-          title: "More",
+          title: "More from me",
           items: [
             {
-              label: "Blog",
-              to: "/blog",
+              label: "My GitHub profile",
+              href: "https://github.com/lukasbach",
             },
             {
-              label: "GitHub",
-              href: "https://github.com/facebook/docusaurus",
+              label: "My personal homepage",
+              href: "https://lukasbach.com",
+            },
+            {
+              label: "Yana",
+              href: "https://yana.js.org",
+            },
+            {
+              label: "DevSession",
+              href: "https://devsession.js.org",
+            },
+            {
+              label: "Orion",
+              href: "https://orion.lukasbach.com",
             },
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} <a href="https://lukasbach.com" target="_blank">Lukas Bach</a>. Built with Docusaurus.`,
     },
     prism: {
       theme: prismThemes.github,
