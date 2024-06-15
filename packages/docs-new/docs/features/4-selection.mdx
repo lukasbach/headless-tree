@@ -2,34 +2,17 @@
 slug: "/features/selection"
 title: "Selections"
 subtitle: "Support for selecting multiple items"
-category: feature
-metalinks:
-  - name: Source
-    label: View Source
-    href: https://github.com/lukasbach/headless-tree/blob/main/packages/core/src/features/selection/feature.ts
-  - name: Types
-    label: View Types Source
-    href: https://github.com/lukasbach/headless-tree/blob/main/packages/core/src/features/selection/types.ts
-  - name: TypeDoc
-    label: View TypeDoc
-    href: /api/types/_headless_tree_core.SelectionFeatureDef.html
-  - name: Import
-    code: "import { selectionFeature } from \"@headless-tree/core\";"
-    language: typescript
-storybook: feature/selection
-api:
- - name: Tree State
-   docs: /api/types/_headless_tree_core.TreeFeatureDef.html
- - name: Tree Configuration
-   docs: /api/types/_headless_tree_core.TreeFeatureDef.html
- - name: Tree Instance
-   docs: /api/types/_headless_tree_core.TreeFeatureDef.html
- - name: Item Instance
-   docs: /api/types/_headless_tree_core.TreeFeatureDef.html
+hide_title: true
 ---
 
 import { DemoBox } from "../../src/components/demo/demo-box";
+import {FeaturePageHeader} from "../../src/components/docs-page/feature-page-header";
 
+<FeaturePageHeader
+    title="Selecting Items"
+    subtitle="Support for selecting multiple items"
+    feature="selection"
+/>
 <DemoBox tags={["feature/selection"]} />
 
 TODO
