@@ -2,6 +2,7 @@
     background-color: #f8f9fa; /* var(--ifm-menu-color-background-active) */
     border-radius: 16px;
     padding: .8rem 1.5rem;
+    margin-bottom: 1rem;
 }
 
 .title {
