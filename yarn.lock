@@ -3847,6 +3847,7 @@ __metadata:
     "@docusaurus/preset-classic": "npm:3.1.1"
     "@docusaurus/tsconfig": "npm:3.1.1"
     "@docusaurus/types": "npm:3.1.1"
+    "@headless-tree/sb-react": "workspace:*"
     "@mdx-js/react": "npm:^3.0.0"
     clsx: "npm:^2.0.0"
     docusaurus-plugin-typedoc: "npm:^1.0.1"
@@ -3878,7 +3879,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@headless-tree/sb-react@workspace:packages/sb-react":
+"@headless-tree/sb-react@workspace:*, @headless-tree/sb-react@workspace:packages/sb-react":
   version: 0.0.0-use.local
   resolution: "@headless-tree/sb-react@workspace:packages/sb-react"
   dependencies:
