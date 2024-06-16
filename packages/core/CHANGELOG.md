@@ -1,5 +1,11 @@
 # @headless-tree/core
 
+## 0.0.10
+
+### Patch Changes
+
+- 520ec27: test release
+
 ## 0.0.9
 
 ### Patch Changes
