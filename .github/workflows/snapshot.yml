@@ -20,7 +20,7 @@ jobs:
             **/node_modules
             ./.yarn/cache
           key: ${{ runner.os }}-deps-${{ hashFiles('**/yarn.lock') }}
-      - uses: volta-cli/action@v3
+      - uses: volta-cli/action@v4.1.1
       - run: yarn
       - run: yarn lint:test
       - run: yarn build:core
