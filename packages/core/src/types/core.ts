@@ -52,7 +52,8 @@ export type FeatureDefs<T> =
   | ExpandAllFeatureDef;
 
 type MergedFeatures<F extends FeatureDef> = {
-  // TODO remove in favor of types below
+  // type can't be removed because it's used for individual feature sets as feature deps in feature implementations
+  // to my future self, yes I'm already aware this sounds dumb when I first write this
   state: UnionToIntersection<F["state"]>;
   config: UnionToIntersection<F["config"]>;
   treeInstance: UnionToIntersection<F["treeInstance"]>;
