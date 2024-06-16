@@ -1,5 +1,14 @@
 # @headless-tree/sb-react
 
+## 0.0.10
+
+### Patch Changes
+
+- 520ec27: test release
+- Updated dependencies [520ec27]
+  - @headless-tree/core@0.0.10
+  - @headless-tree/react@0.0.9
+
 ## 0.0.9
 
 ### Patch Changes
