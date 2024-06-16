@@ -96,3 +96,6 @@
   width: 4px;
   background-color: rgb(121, 80, 242);
 }
+.hidden {
+   display: none !important;
+}

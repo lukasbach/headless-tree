@@ -85,6 +85,11 @@ const config: Config = {
           position: "left",
         },
         {
+          href: "https://headless-tree.lukasbach.com/storybook/react/",
+          label: "Storybook",
+          position: "left",
+        },
+        {
           href: "https://github.com/lukasbach/headless-tree",
           label: "GitHub",
           position: "right",
