@@ -28,7 +28,7 @@ jobs:
       - run: yarn build:core
       - run: yarn build:web
       - run: |
-          mkdir -p ./packages/docs/public/storybook
+          mkdir -p ./packages/docs/build/storybook
           cp -r ./packages/sb-react/storybook-static ./packages/docs/build/storybook/react
       - uses: actions/upload-pages-artifact@v1
         with:
