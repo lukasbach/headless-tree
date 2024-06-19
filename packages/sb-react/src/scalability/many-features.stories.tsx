@@ -1,5 +1,5 @@
 import type { Meta } from "@storybook/react";
-import React from "react";
+import React, { useState } from "react";
 import {
   dragAndDropFeature,
   hotkeysCoreFeature,
@@ -10,17 +10,59 @@ import { useTree } from "@headless-tree/react";
 import cx from "classnames";
 
 const meta = {
-  title: "React/Guides/Overwriting Internals",
+  title: "React/Scalability/Many Features",
+  argTypes: {
+    featureCount: {
+      type: "number",
+    },
+  },
+  args: {
+    featureCount: 100,
+  },
 } satisfies Meta;
 
 export default meta;
 
 // story-start
-export const OverwritingInternals = () => {
+
+declare module "@headless-tree/core" {
+  export interface ItemInstance<T> {
+    logSomething: () => void;
+    logCascading: (counter: number) => void;
+  }
+}
+
+let counter = 0;
+
+const createFeature = () => ({
+  key: `custom-${counter++}`,
+  itemInstance: {
+    logSomething: ({}, value: number) => {
+      console.log("Single call", value);
+    },
+    logCascading: ({ prev }, value: number) => {
+      const prevValue = prev?.(value + 1);
+      if (!prevValue) {
+        console.log("Cascading call", value);
+      }
+    },
+  },
+});
+
+export const ManyFeatures = ({ featureCount }) => {
+  const [state, setState] = useState({});
   const tree = useTree<string>({
+    state,
+    setState,
     rootItemId: "folder",
     getItemName: (item) => item.getItemData(),
     isItemFolder: (item) => !item.getItemData().endsWith("item"),
+    hotkeys: {
+      customEvent: {
+        hotkey: "Escape",
+        handler: () => alert("Hello!"),
+      },
+    },
     dataLoader: {
       getItem: (itemId) => itemId,
       getChildren: (itemId) => [
@@ -29,6 +71,7 @@ export const OverwritingInternals = () => {
         `${itemId}-3`,
         `${itemId}-1item`,
         `${itemId}-2item`,
+        `${itemId}-3item`,
       ],
     },
     features: [
@@ -36,35 +79,7 @@ export const OverwritingInternals = () => {
       selectionFeature,
       hotkeysCoreFeature,
       dragAndDropFeature,
-      {
-        itemInstance: {
-          getProps: ({ prev, item }) => ({
-            ...prev(),
-            onMouseOver: () => {
-              console.log("Mouse over!", item.getId());
-            },
-          }),
-        },
-        treeInstance: {
-          expandItem: ({ prev }, itemId) => {
-            // Run the original implementation
-            prev(itemId);
-
-            alert(`Item ${itemId} expanded!`);
-          },
-          focusNextItem: ({ prev }) => {
-            // Run the original implementation
-            prev();
-
-            alert("Next item focused!");
-          },
-        },
-        onItemMount: (item, element) => {
-          // You can also hook into various lifecycle events. This runs
-          // when a tree item is mounted into the DOM.
-          console.log("Item mounts!", item.getId(), element);
-        },
-      } as any, // TODO type
+      ...Array.from({ length: featureCount }, createFeature),
     ],
   });
 
@@ -88,6 +103,8 @@ export const OverwritingInternals = () => {
           >
             {item.getItemName()}
           </button>
+          <button onClick={() => item.logSomething()}>normal</button>
+          <button onClick={() => item.logCascading(0)}>cascade</button>
         </div>
       ))}
     </div>

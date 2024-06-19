@@ -52,6 +52,7 @@ export const getDropTarget = (
   tree: TreeInstance<any>,
   canDropInbetween = tree.getConfig().canDropInbetween,
 ): DropTarget<any> => {
+  console.log("gfetDropTarget", item.getItemName());
   const config = tree.getConfig();
   const draggedItems = tree.getState().dnd?.draggedItems ?? [];
   const itemTarget = { item, childIndex: null, insertionIndex: null };

@@ -15,11 +15,13 @@ import { ExpandAllFeatureDef } from "../features/expand-all/types";
 export type Updater<T> = T | ((old: T) => T);
 export type SetStateFn<T> = (updaterOrValue: Updater<T>) => void;
 
+type FunctionMap = Record<string, (...args: any[]) => any>;
+
 export type FeatureDef = {
-  state: object;
-  config: object;
-  treeInstance: object;
-  itemInstance: object;
+  state: any;
+  config: any;
+  treeInstance: FunctionMap;
+  itemInstance: FunctionMap;
   hotkeys: string;
 };
 
@@ -124,62 +126,118 @@ export type CustomHotkeysConfig<
   Record<HotkeyName<F> | `custom${string}`, Partial<HotkeyConfig<T>>>
 >;
 
+type MayReturnNull<T extends (...x: any[]) => any> = (
+  ...args: Parameters<T>
+) => ReturnType<T> | null;
+
+export type ItemInstanceOpts<
+  ItemInstance extends FunctionMap = FunctionMap,
+  TreeInstance extends FunctionMap = FunctionMap,
+  Key extends keyof ItemInstance = any,
+> = {
+  item: ItemInstance;
+  tree: TreeInstance;
+  itemId: string;
+  prev: MayReturnNull<ItemInstance[Key]>;
+};
+
+export type TreeInstanceOpts<
+  TreeInstance extends FunctionMap = FunctionMap,
+  Key extends keyof TreeInstance = any,
+> = {
+  tree: TreeInstance;
+  prev: MayReturnNull<TreeInstance[Key]>;
+};
+
 export type FeatureImplementation<
   T = any,
-  D extends FeatureDef = any,
-  F extends FeatureDef = EmptyFeatureDef,
+  SelfFeatureDef extends FeatureDef = any,
+  DepFeaturesDef extends FeatureDef = EmptyFeatureDef,
+  // /** @internal */
+  // AllFeatures extends FeatureDef = MergedFeatures<
+  //   DepFeaturesDef | SelfFeatureDef
+  // >,
+  // /** @internal */
+  // DepFeatures extends FeatureDef = MergedFeatures<DepFeaturesDef>,
 > = {
   key?: string;
   deps?: string[];
   overwrites?: string[];
 
   stateHandlerNames?: Partial<
-    Record<keyof MergedFeatures<F>["state"], keyof MergedFeatures<F>["config"]>
+    Record<
+      keyof MergedFeatures<DepFeaturesDef>["state"],
+      keyof MergedFeatures<DepFeaturesDef>["config"]
+    >
   >;
 
   getInitialState?: (
-    initialState: Partial<MergedFeatures<F>["state"]>,
-    tree: MergedFeatures<F>["treeInstance"],
-  ) => Partial<D["state"] & MergedFeatures<F>["state"]>;
+    initialState: Partial<MergedFeatures<DepFeaturesDef>["state"]>,
+    tree: MergedFeatures<DepFeaturesDef>["treeInstance"],
+  ) => Partial<
+    SelfFeatureDef["state"] & MergedFeatures<DepFeaturesDef>["state"]
+  >;
 
   getDefaultConfig?: (
-    defaultConfig: Partial<MergedFeatures<F>["config"]>,
-    tree: MergedFeatures<F>["treeInstance"],
-  ) => Partial<D["config"] & MergedFeatures<F>["config"]>;
+    defaultConfig: Partial<MergedFeatures<DepFeaturesDef>["config"]>,
+    tree: MergedFeatures<DepFeaturesDef>["treeInstance"],
+  ) => Partial<
+    SelfFeatureDef["config"] & MergedFeatures<DepFeaturesDef>["config"]
+  >;
 
-  createTreeInstance?: (
-    prev: MergedFeatures<F>["treeInstance"],
-    instance: MergedFeatures<F>["treeInstance"],
-  ) => D["treeInstance"] & MergedFeatures<F>["treeInstance"];
+  treeInstance?: {
+    [key in keyof (SelfFeatureDef["treeInstance"] &
+      MergedFeatures<DepFeaturesDef>["treeInstance"])]?: (
+      opts: TreeInstanceOpts<
+        SelfFeatureDef["treeInstance"] &
+          MergedFeatures<DepFeaturesDef>["treeInstance"],
+        key
+      >,
+      ...args: Parameters<
+        (SelfFeatureDef["treeInstance"] &
+          MergedFeatures<DepFeaturesDef>["treeInstance"])[key]
+      >
+    ) => void;
+  };
 
-  createItemInstance?: (
-    prev: MergedFeatures<F>["itemInstance"],
-    item: MergedFeatures<F>["itemInstance"],
-    tree: MergedFeatures<F>["treeInstance"],
-    itemId: string,
-  ) => D["itemInstance"] & MergedFeatures<F>["itemInstance"];
+  itemInstance?: {
+    [key in keyof (SelfFeatureDef["itemInstance"] &
+      MergedFeatures<DepFeaturesDef>["itemInstance"])]?: (
+      opts: ItemInstanceOpts<
+        SelfFeatureDef["itemInstance"] &
+          MergedFeatures<DepFeaturesDef>["itemInstance"],
+        SelfFeatureDef["treeInstance"] &
+          MergedFeatures<DepFeaturesDef>["treeInstance"],
+        key
+      >,
+      ...args: Parameters<
+        (SelfFeatureDef["itemInstance"] &
+          MergedFeatures<DepFeaturesDef>["itemInstance"])[key]
+      >
+    ) => void;
+  };
 
   onTreeMount?: (
-    instance: MergedFeatures<F>["treeInstance"],
+    instance: MergedFeatures<DepFeaturesDef>["treeInstance"],
     treeElement: HTMLElement,
   ) => void;
 
   onTreeUnmount?: (
-    instance: MergedFeatures<F>["treeInstance"],
+    instance: MergedFeatures<DepFeaturesDef>["treeInstance"],
     treeElement: HTMLElement,
   ) => void;
 
   onItemMount?: (
-    instance: MergedFeatures<F>["itemInstance"],
+    instance: MergedFeatures<DepFeaturesDef>["itemInstance"],
     itemElement: HTMLElement,
-    tree: MergedFeatures<F>["treeInstance"],
+    tree: MergedFeatures<DepFeaturesDef>["treeInstance"],
   ) => void;
 
   onItemUnmount?: (
-    instance: MergedFeatures<F>["itemInstance"],
+    instance: MergedFeatures<DepFeaturesDef>["itemInstance"],
     itemElement: HTMLElement,
-    tree: MergedFeatures<F>["treeInstance"],
+    tree: MergedFeatures<DepFeaturesDef>["treeInstance"],
   ) => void;
 
-  hotkeys?: HotkeysConfig<T, D>;
+  hotkeys?: HotkeysConfig<T, SelfFeatureDef>;
 };

@@ -17,6 +17,8 @@ const meta = {
 
 export default meta;
 
+// TODO stopped verifying stories after big revampt at this story
+
 // story-start
 export const CustomHotkeys = () => {
   const tree = useTree<string>({

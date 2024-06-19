@@ -2,15 +2,15 @@ import { TreeState, Updater } from "./types/core";
 
 export type NoInfer<T> = [T][T extends any ? 0 : never];
 
-export const memo = <D extends readonly any[], R>(
+export const memo = <D extends readonly any[], P extends readonly any[], R>(
   fn: (...args: [...D]) => R,
-  deps: () => [...D],
+  deps: (...args: [...P]) => [...D],
 ) => {
   let value: R | undefined;
   let oldDeps: D | null = null;
 
-  return () => {
-    const newDeps = deps();
+  return (...a: [...P]) => {
+    const newDeps = deps(...a);
 
     if (!value) {
       value = fn(...newDeps);

@@ -24,18 +24,15 @@ export const syncDataLoaderFeature: FeatureImplementation<
     loadingItems: "setLoadingItems",
   },
 
-  createTreeInstance: (prev, instance) => ({
-    ...prev,
+  treeInstance: {
+    retrieveItemData: ({ tree }, itemId) =>
+      tree.getConfig().dataLoader!.getItem(itemId),
 
-    retrieveItemData: (itemId) =>
-      instance.getConfig().dataLoader!.getItem(itemId),
+    retrieveChildrenIds: ({ tree }, itemId) =>
+      tree.getConfig().dataLoader!.getChildren(itemId),
+  },
 
-    retrieveChildrenIds: (itemId) =>
-      instance.getConfig().dataLoader!.getChildren(itemId),
-  }),
-
-  createItemInstance: (prev) => ({
-    ...prev,
+  itemInstance: {
     isLoading: () => false,
-  }),
+  },
 };

@@ -10,7 +10,7 @@ import { useTree } from "@headless-tree/react";
 import cx from "classnames";
 
 const meta = {
-  title: "React/Guides/Simple Plugin",
+  title: "React/Plugins/Simple Plugin",
   tags: ["guide/plugin", "basic"],
 } satisfies Meta;
 
@@ -45,9 +45,8 @@ export const SimplePlugin = () => {
       hotkeysCoreFeature,
       dragAndDropFeature,
       {
-        createItemInstance: (prev, item: any) => ({
-          ...prev,
-          alertChildren: () => {
+        itemInstance: {
+          alertChildren: ({ item }) => {
             alert(
               item
                 .getChildren()
@@ -55,7 +54,7 @@ export const SimplePlugin = () => {
                 .join(", "),
             );
           },
-        }),
+        },
       },
     ],
   });

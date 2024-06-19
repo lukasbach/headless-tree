@@ -53,6 +53,7 @@ export const DragLine = () => {
   });
 
   const dragLine = tree.getDragLineData();
+  console.log(dragLine);
 
   return (
     <div ref={tree.registerElement} className="tree">

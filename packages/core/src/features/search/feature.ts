@@ -28,65 +28,59 @@ export const searchFeature: FeatureImplementation<
     search: "setSearch",
   },
 
-  createTreeInstance: (prev, instance) => ({
-    ...prev,
-
-    setSearch: (search) => {
-      instance.applySubStateUpdate("search", search);
-      instance
+  treeInstance: {
+    setSearch: ({ tree }, search) => {
+      tree.applySubStateUpdate("search", search);
+      tree
         .getItems()
         .find((item) =>
-          instance
-            .getConfig()
-            .isSearchMatchingItem?.(instance.getSearchValue(), item),
+          tree.getConfig().isSearchMatchingItem?.(tree.getSearchValue(), item),
         )
         ?.setFocused();
     },
-    openSearch: (initialValue = "") => {
-      instance.setSearch(initialValue);
+    openSearch: ({ tree }, initialValue = "") => {
+      tree.setSearch(initialValue);
       setTimeout(() => {
-        instance
-          .getDataRef<SearchFeatureDataRef>()
-          .current.searchInput?.focus();
+        tree.getDataRef<SearchFeatureDataRef>().current.searchInput?.focus();
       });
     },
-    closeSearch: () => {
-      instance.setSearch(null);
-      instance.updateDomFocus();
+    closeSearch: ({ tree }) => {
+      tree.setSearch(null);
+      tree.updateDomFocus();
     },
-    isSearchOpen: () => instance.getState().search !== null,
-    getSearchValue: () => instance.getState().search || "",
-    registerSearchInputElement: (element) => {
-      const dataRef = instance.getDataRef<SearchFeatureDataRef>();
+    isSearchOpen: ({ tree }) => tree.getState().search !== null,
+    getSearchValue: ({ tree }) => tree.getState().search || "",
+    registerSearchInputElement: ({ tree }, element) => {
+      const dataRef = tree.getDataRef<SearchFeatureDataRef>();
       dataRef.current.searchInput = element;
       if (element && dataRef.current.keydownHandler) {
         element.addEventListener("keydown", dataRef.current.keydownHandler);
       }
     },
-    getSearchInputElement: () =>
-      instance.getDataRef<SearchFeatureDataRef>().current.searchInput ?? null,
+    getSearchInputElement: ({ tree }) =>
+      tree.getDataRef<SearchFeatureDataRef>().current.searchInput ?? null,
 
-    getSearchInputElementProps: () => ({
-      value: instance.getSearchValue(),
-      onChange: (e: any) => instance.setSearch(e.target.value),
-      onBlur: () => instance.closeSearch(),
+    getSearchInputElementProps: ({ tree }) => ({
+      value: tree.getSearchValue(),
+      onChange: (e: any) => tree.setSearch(e.target.value),
+      onBlur: () => tree.closeSearch(),
     }),
 
     getSearchMatchingItems: memo(
-      (search, items) =>
-        items.filter(
-          (item) =>
-            search && instance.getConfig().isSearchMatchingItem?.(search, item),
-        ),
-      () => [instance.getSearchValue(), instance.getItems()],
+      (search, items, isSearchMatchingItem) =>
+        items.filter((item) => search && isSearchMatchingItem?.(search, item)),
+      ({ tree }) => [
+        tree.getSearchValue(),
+        tree.getItems(),
+        tree.getConfig().isSearchMatchingItem,
+      ],
     ),
-  }),
+  },
 
-  createItemInstance: (prev, item, tree) => ({
-    ...prev,
-    isMatchingSearch: () =>
+  itemInstance: {
+    isMatchingSearch: ({ tree, item }) =>
       tree.getSearchMatchingItems().some((i) => i.getId() === item.getId()),
-  }),
+  },
 
   hotkeys: {
     openSearch: {

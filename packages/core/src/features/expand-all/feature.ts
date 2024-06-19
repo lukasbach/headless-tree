@@ -15,25 +15,21 @@ export const expandAllFeature: FeatureImplementation<
 > = {
   key: "expand-all",
 
-  createTreeInstance: (prev, tree) => ({
-    ...prev,
-
-    expandAll: async (cancelToken) => {
+  treeInstance: {
+    expandAll: async ({ tree }, cancelToken) => {
       await Promise.all(
         tree.getItems().map((item) => item.expandAll(cancelToken)),
       );
     },
 
-    collapseAll: () => {
+    collapseAll: ({ tree }) => {
       tree.applySubStateUpdate("expandedItems", []);
       tree.rebuildTree();
     },
-  }),
+  },
 
-  createItemInstance: (prev, item, tree) => ({
-    ...prev,
-
-    expandAll: async (cancelToken) => {
+  itemInstance: {
+    expandAll: async ({ tree, item }, cancelToken) => {
       if (cancelToken?.current) {
         return;
       }
@@ -53,11 +49,11 @@ export const expandAllFeature: FeatureImplementation<
       );
     },
 
-    collapseAll: () => {
+    collapseAll: ({ item }) => {
       for (const child of item.getChildren()) {
         child?.collapseAll();
       }
       item.collapse();
     },
-  }),
+  },
 };

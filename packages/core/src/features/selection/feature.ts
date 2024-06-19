@@ -25,23 +25,19 @@ export const selectionFeature: FeatureImplementation<
     selectedItems: "setSelectedItems",
   },
 
-  createTreeInstance: (prev, instance) => ({
-    ...prev,
-
-    setSelectedItems: (selectedItems) => {
-      instance.applySubStateUpdate("selectedItems", selectedItems);
+  treeInstance: {
+    setSelectedItems: ({ tree }, selectedItems) => {
+      tree.applySubStateUpdate("selectedItems", selectedItems);
     },
 
     // TODO memo
-    getSelectedItems: () => {
-      return instance.getState().selectedItems.map(instance.getItemInstance);
+    getSelectedItems: ({ tree }) => {
+      return tree.getState().selectedItems.map(tree.getItemInstance);
     },
-  }),
+  },
 
-  createItemInstance: (prev, item, tree) => ({
-    ...prev,
-
-    select: () => {
+  itemInstance: {
+    select: ({ tree, item }) => {
       const { selectedItems } = tree.getState();
       tree.setSelectedItems(
         selectedItems.includes(item.getItemMeta().itemId)
@@ -50,19 +46,19 @@ export const selectionFeature: FeatureImplementation<
       );
     },
 
-    deselect: () => {
+    deselect: ({ tree, item }) => {
       const { selectedItems } = tree.getState();
       tree.setSelectedItems(
         selectedItems.filter((id) => id !== item.getItemMeta().itemId),
       );
     },
 
-    isSelected: () => {
+    isSelected: ({ tree, item }) => {
       const { selectedItems } = tree.getState();
       return selectedItems.includes(item.getItemMeta().itemId);
     },
 
-    selectUpTo: (ctrl: boolean) => {
+    selectUpTo: ({ tree, item }, ctrl: boolean) => {
       const indexA = item.getItemMeta().index;
       // TODO dont use focused item as anchor, but last primary-clicked item
       const indexB = tree.getFocusedItem().getItemMeta().index;
@@ -84,7 +80,7 @@ export const selectionFeature: FeatureImplementation<
       tree.setSelectedItems(uniqueSelectedItems);
     },
 
-    toggleSelect: () => {
+    toggleSelect: ({ item }) => {
       if (item.isSelected()) {
         item.deselect();
       } else {
@@ -92,8 +88,8 @@ export const selectionFeature: FeatureImplementation<
       }
     },
 
-    getProps: () => ({
-      ...prev.getProps(),
+    getProps: ({ tree, item, prev }) => ({
+      ...prev?.(),
       "aria-selected": item.isSelected() ? "true" : "false",
       onClick: item.getMemoizedProp("selection/onClick", () => (e) => {
         if (e.shiftKey) {
@@ -104,10 +100,10 @@ export const selectionFeature: FeatureImplementation<
           tree.setSelectedItems([item.getItemMeta().itemId]);
         }
 
-        prev.getProps().onClick?.(e);
+        prev()?.onClick?.(e);
       }),
     }),
-  }),
+  },
 
   hotkeys: {
     // setSelectedItem: {

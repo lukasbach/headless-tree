@@ -23,46 +23,43 @@ export const renamingFeature: FeatureImplementation<
     renamingValue: "setRenamingValue",
   },
 
-  createTreeInstance: (prev, instance) => ({
-    ...prev,
-
-    startRenamingItem: (itemId) => {
-      const item = instance.getItemInstance(itemId);
+  treeInstance: {
+    startRenamingItem: ({ tree }, itemId) => {
+      const item = tree.getItemInstance(itemId);
 
       if (!item.canRename()) {
         return;
       }
 
-      instance.applySubStateUpdate("renamingItem", itemId);
-      instance.applySubStateUpdate("renamingValue", item.getItemName());
+      tree.applySubStateUpdate("renamingItem", itemId);
+      tree.applySubStateUpdate("renamingValue", item.getItemName());
     },
 
-    getRenamingItem: () => {
-      const itemId = instance.getState().renamingItem;
-      return itemId ? instance.getItemInstance(itemId) : null;
+    getRenamingItem: ({ tree }) => {
+      const itemId = tree.getState().renamingItem;
+      return itemId ? tree.getItemInstance(itemId) : null;
     },
 
-    getRenamingValue: () => instance.getState().renamingValue || "",
+    getRenamingValue: ({ tree }) => tree.getState().renamingValue || "",
 
-    abortRenaming: () => {
-      instance.applySubStateUpdate("renamingItem", null);
+    abortRenaming: ({ tree }) => {
+      tree.applySubStateUpdate("renamingItem", null);
     },
 
-    completeRenaming: () => {
-      const config = instance.getConfig();
-      const item = instance.getRenamingItem();
+    completeRenaming: ({ tree }) => {
+      const config = tree.getConfig();
+      const item = tree.getRenamingItem();
       if (item) {
-        config.onRename?.(item, instance.getState().renamingValue || "");
+        config.onRename?.(item, tree.getState().renamingValue || "");
       }
-      instance.applySubStateUpdate("renamingItem", null);
+      tree.applySubStateUpdate("renamingItem", null);
     },
 
-    isRenamingItem: () => !!instance.getState().renamingItem,
-  }),
+    isRenamingItem: ({ tree }) => !!tree.getState().renamingItem,
+  },
 
-  createItemInstance: (prev, instance, tree) => ({
-    ...prev,
-    getRenameInputProps: () => ({
+  itemInstance: {
+    getRenameInputProps: ({ tree }) => ({
       onBlur: () => tree.abortRenaming(),
       value: tree.getRenamingValue(),
       onChange: (e) => {
@@ -70,11 +67,12 @@ export const renamingFeature: FeatureImplementation<
       },
     }),
 
-    canRename: () =>
-      tree.getConfig().canRename?.(instance as ItemInstance<any>) ?? true,
+    canRename: ({ tree, item }) =>
+      tree.getConfig().canRename?.(item as ItemInstance<any>) ?? true,
 
-    isRenaming: () => instance.getId() === tree.getState().renamingItem,
-  }),
+    isRenaming: ({ tree, item }) =>
+      item.getId() === tree.getState().renamingItem,
+  },
 
   hotkeys: {
     renameItem: {

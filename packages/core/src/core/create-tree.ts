@@ -9,28 +9,7 @@ import {
 import { MainFeatureDef } from "../features/main/types";
 import { treeFeature } from "../features/tree/feature";
 import { ItemMeta } from "../features/tree/types";
-
-const buildItemInstance = (
-  features: FeatureImplementation[],
-  tree: TreeInstance<any>,
-  itemId: string,
-) => {
-  const itemInstance = {} as ItemInstance<any>;
-  for (const feature of features) {
-    Object.assign(
-      // TODO dont run createItemInstance, but assign prototype objects instead?
-      // https://jsfiddle.net/bgenc58r/
-      itemInstance,
-      feature.createItemInstance?.(
-        { ...itemInstance },
-        itemInstance,
-        tree,
-        itemId,
-      ) ?? {},
-    );
-  }
-  return itemInstance;
-};
+import { buildItemInstance, buildTreeInstance } from "./instance-builders";
 
 const verifyFeatures = (features: FeatureImplementation[] | undefined) => {
   const loadedFeatures = features?.map((feature) => feature.key);
@@ -60,13 +39,14 @@ const sortFeatures = (features: FeatureImplementation[] = []) =>
 export const createTree = <T>(
   initialConfig: TreeConfig<T>,
 ): TreeInstance<T> => {
-  const treeInstance: TreeInstance<T> = {} as any;
-
   const additionalFeatures = [
     treeFeature,
     ...sortFeatures(initialConfig.features),
   ];
   verifyFeatures(additionalFeatures);
+  const features = [...additionalFeatures];
+
+  const treeInstance = buildTreeInstance(features);
 
   let state = additionalFeatures.reduce(
     (acc, feature) => feature.getInitialState?.(acc, treeInstance) ?? acc,
@@ -140,34 +120,38 @@ export const createTree = <T>(
     MainFeatureDef<T>
   > = {
     key: "main",
-    createTreeInstance: (prev) => ({
-      ...prev,
+    treeInstance: {
       getState: () => state,
-      setState: (updater) => {
+      setState: ({}, updater) => {
         // Not necessary, since I think the subupdate below keeps the state fresh anyways?
         // state = typeof updater === "function" ? updater(state) : updater;
-        config.setState?.(state);
+        config.setState?.(state); // TODO this cant be right... This doesnt allow external state updates
       },
-      applySubStateUpdate: (stateName, updater) => {
+      applySubStateUpdate: <K extends keyof TreeState<any>>(
+        _,
+        stateName: K,
+        updater,
+      ) => {
         state[stateName] =
           typeof updater === "function" ? updater(state[stateName]) : updater;
         config[stateHandlerNames[stateName]]!(state[stateName]);
       },
+      // TODO rebuildSubTree: (itemId: string) => void;
       rebuildTree: () => {
         rebuildItemMeta(mainFeature);
         config.setState?.(state);
       },
       getConfig: () => config,
-      setConfig: (updater) => {
+      setConfig: (_, updater) => {
         config = typeof updater === "function" ? updater(config) : updater;
 
         if (config.state) {
           state = { ...state, ...config.state };
         }
       },
-      getItemInstance: (itemId) => itemInstancesMap[itemId],
+      getItemInstance: ({}, itemId) => itemInstancesMap[itemId],
       getItems: () => itemInstances,
-      registerElement: (element) => {
+      registerElement: ({}, element) => {
         if (treeElement === element) {
           return;
         }
@@ -186,10 +170,9 @@ export const createTree = <T>(
       getElement: () => treeElement,
       getDataRef: () => treeDataRef,
       getHotkeyPresets: () => hotkeyPresets,
-    }),
-    createItemInstance: (prev, instance, _, itemId) => ({
-      ...prev,
-      registerElement: (element) => {
+    },
+    itemInstance: {
+      registerElement: ({ itemId, item }, element) => {
         if (itemElementsMap[itemId] === element) {
           return;
         }
@@ -197,29 +180,25 @@ export const createTree = <T>(
         const oldElement = itemElementsMap[itemId];
         if (oldElement && !element) {
           eachFeature((feature) =>
-            feature.onItemUnmount?.(instance, oldElement!, treeInstance),
+            feature.onItemUnmount?.(item, oldElement!, treeInstance),
           );
         } else if (!oldElement && element) {
           eachFeature((feature) =>
-            feature.onItemMount?.(instance, element!, treeInstance),
+            feature.onItemMount?.(item, element!, treeInstance),
           );
         }
         itemElementsMap[itemId] = element;
       },
-      getElement: () => itemElementsMap[itemId],
+      getElement: ({ itemId }) => itemElementsMap[itemId],
       // eslint-disable-next-line no-return-assign
-      getDataRef: () => (itemDataRefs[itemId] ??= { current: {} }),
-      getItemMeta: () => itemMetaMap[itemId],
-    }),
+      getDataRef: ({ itemId }) => (itemDataRefs[itemId] ??= { current: {} }),
+      getItemMeta: ({ itemId }) => itemMetaMap[itemId],
+    },
   };
 
-  const features = [mainFeature, ...additionalFeatures];
+  features.unshift(mainFeature);
 
   for (const feature of features) {
-    Object.assign(
-      treeInstance,
-      feature.createTreeInstance?.({ ...treeInstance }, treeInstance) ?? {},
-    );
     Object.assign(hotkeyPresets, feature.hotkeys ?? {});
   }
 

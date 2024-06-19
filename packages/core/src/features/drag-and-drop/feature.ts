@@ -22,14 +22,12 @@ export const dragAndDropFeature: FeatureImplementation<
     dnd: "setDndState",
   },
 
-  createTreeInstance: (prev, tree) => ({
-    ...prev,
-
-    getDropTarget: () => {
+  treeInstance: {
+    getDropTarget: ({ tree }) => {
       return tree.getState().dnd?.dragTarget ?? null;
     },
 
-    getDragLineData: (): DragLineData | null => {
+    getDragLineData: ({ tree }): DragLineData | null => {
       const target = tree.getDropTarget();
       const intend = (target?.item.getItemMeta().level ?? 0) + 1;
 
@@ -67,13 +65,11 @@ export const dragAndDropFeature: FeatureImplementation<
 
       return null;
     },
-  }),
+  },
 
-  createItemInstance: (prev, item, tree) => ({
-    ...prev,
-
-    getProps: () => ({
-      ...prev.getProps(),
+  itemInstance: {
+    getProps: ({ tree, item, prev }) => ({
+      ...prev(),
 
       draggable: tree.getConfig().isItemDraggable?.(item) ?? true,
 
@@ -178,12 +174,12 @@ export const dragAndDropFeature: FeatureImplementation<
       }),
     }),
 
-    isDropTarget: () => {
+    isDropTarget: ({ tree, item }) => {
       const target = tree.getDropTarget();
       return target ? target.item.getId() === item.getId() : false;
     },
 
-    isDropTargetAbove: () => {
+    isDropTargetAbove: ({ tree, item }) => {
       const target = tree.getDropTarget();
 
       if (
@@ -195,7 +191,7 @@ export const dragAndDropFeature: FeatureImplementation<
       return target.childIndex === item.getItemMeta().posInSet;
     },
 
-    isDropTargetBelow: () => {
+    isDropTargetBelow: ({ tree, item }) => {
       const target = tree.getDropTarget();
 
       if (
@@ -207,8 +203,8 @@ export const dragAndDropFeature: FeatureImplementation<
       return target.childIndex - 1 === item.getItemMeta().posInSet;
     },
 
-    isDraggingOver: () => {
+    isDraggingOver: ({ tree, item }) => {
       return tree.getState().dnd?.draggingOverItem?.getId() === item.getId();
     },
-  }),
+  },
 };
