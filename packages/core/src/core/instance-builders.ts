@@ -4,6 +4,22 @@ import {
   TreeInstance,
 } from "../types/core";
 
+// TODO now that instance methods are memoized, getMemoized... methods should be good to be removed
+
+const findNextInstanceMethodIndex = (
+  features: FeatureImplementation[],
+  instanceType: "itemInstance" | "treeInstance",
+  methodKey: string,
+  featureSearchIndex: number,
+) => {
+  for (let i = featureSearchIndex; i >= 0; i--) {
+    if (features[i][instanceType]?.[methodKey]) {
+      return i;
+    }
+  }
+  return null;
+};
+
 const invokeInstanceMethod = (
   features: FeatureImplementation[],
   instanceType: "itemInstance" | "treeInstance",
@@ -11,34 +27,73 @@ const invokeInstanceMethod = (
   methodKey: string,
   featureSearchIndex: number,
   args: any[],
-  isPrevCall: boolean,
 ) => {
-  for (let i = featureSearchIndex; i >= 0; i--) {
-    const feature = features[i];
-    const itemInstanceMethod = feature[instanceType]?.[methodKey];
-    if (itemInstanceMethod) {
-      return itemInstanceMethod(
-        {
-          ...opts,
-          prev: (...newArgs) =>
-            invokeInstanceMethod(
-              features,
-              instanceType,
-              opts,
-              methodKey,
-              i - 1,
-              newArgs,
-              true,
-            ),
-        },
-        ...args,
-      );
+  const nextIndex = findNextInstanceMethodIndex(
+    features,
+    instanceType,
+    methodKey,
+    featureSearchIndex,
+  );
+
+  if (nextIndex !== null) {
+    return features[nextIndex][instanceType]?.[methodKey]?.(
+      {
+        ...opts,
+        prev: (...newArgs) =>
+          invokeInstanceMethod(
+            features,
+            instanceType,
+            opts,
+            methodKey,
+            nextIndex - 1,
+            newArgs,
+          ),
+      },
+      ...args,
+    );
+  }
+
+  return null;
+};
+
+const makeProxyGet = (
+  features: FeatureImplementation[],
+  instanceType: "itemInstance" | "treeInstance",
+  opts: any,
+) => {
+  let _runKey: string;
+  const method = (...args) => {
+    const nextIndex = findNextInstanceMethodIndex(
+      features,
+      instanceType,
+      _runKey,
+      features.length - 1,
+    );
+    if (nextIndex === null) {
+      return null;
     }
-  }
-  if (isPrevCall) {
-    return null;
-  }
-  throw new Error(`HeadlessTree: feature missing for method ${methodKey}`);
+    return invokeInstanceMethod(
+      features,
+      instanceType,
+      opts,
+      _runKey,
+      nextIndex,
+      args,
+    );
+  };
+  return (target: any, key: string | symbol) => {
+    if (typeof key === "symbol") {
+      return target[key];
+    }
+    if (key === "toJSON") {
+      return {};
+    }
+    // Key is defined outside so that method can keep its
+    // reference without having to be regenerated
+    // important for memoization of methods
+    _runKey = key;
+    return method;
+  };
 };
 
 export const buildItemInstance = (
@@ -47,60 +102,25 @@ export const buildItemInstance = (
   itemId: string,
 ) => {
   // demo with prototypes: https://jsfiddle.net/bgenc58r/
+  const opts = { tree, itemId } as any;
   const item = new Proxy(
     {},
     {
-      get(target, key: string | symbol) {
-        if (typeof key === "symbol") {
-          return target[key];
-        }
-        if (key === "toJSON") {
-          return { itemId };
-        }
-        return (...args) => {
-          return invokeInstanceMethod(
-            features,
-            "itemInstance",
-            { tree, item, itemId },
-            key,
-            features.length - 1,
-            args,
-            false,
-          );
-        };
-      },
+      get: makeProxyGet(features, "itemInstance", opts),
     },
   );
+  opts.item = item;
   return item as ItemInstance<any>;
 };
 
-// TODO important; the (...args) => ... should be a fixed instance that is returned consistently;
-// TODO otherwise the Render Performance -> Memoized Slow Item Renderers story will not work
-// TODO since the ref method changes everytime (and potentially other methods); if properly fixed, remove getMemoizedProp
 export const buildTreeInstance = (features: FeatureImplementation[]) => {
+  const opts = {} as any;
   const tree = new Proxy(
     {},
     {
-      get(target: any, key: string | symbol) {
-        if (typeof key === "symbol") {
-          return target[key];
-        }
-        if (key === "toJSON") {
-          return {};
-        }
-        return (...args) => {
-          return invokeInstanceMethod(
-            features,
-            "treeInstance",
-            { tree },
-            key,
-            features.length - 1,
-            args,
-            false,
-          );
-        };
-      },
+      get: makeProxyGet(features, "treeInstance", opts),
     },
   );
+  opts.tree = tree;
   return tree as TreeInstance<any>;
 };
