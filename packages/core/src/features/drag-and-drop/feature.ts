@@ -68,6 +68,7 @@ export const dragAndDropFeature: FeatureImplementation<
   },
 
   itemInstance: {
+    // TODO instead of individual getMemoizedProp calls, use a wrapped getMemoizedProps or something (getProps: () => getMemoized({...})
     getProps: ({ tree, item, prev }) => ({
       ...prev(),
 

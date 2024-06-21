@@ -4,7 +4,8 @@ import {
   TreeInstance,
 } from "../types/core";
 
-// TODO now that instance methods are memoized, getMemoized... methods should be good to be removed
+// TODO consider not proxyfying tree instances, since we dont benefit from that and
+// TODO memoizing stuff on consumer-side based on tree methods might be a realistic use case
 
 const findNextInstanceMethodIndex = (
   features: FeatureImplementation[],
@@ -61,12 +62,12 @@ const makeProxyGet = (
   instanceType: "itemInstance" | "treeInstance",
   opts: any,
 ) => {
-  let _runKey: string;
+  let runKey: string;
   const method = (...args) => {
     const nextIndex = findNextInstanceMethodIndex(
       features,
       instanceType,
-      _runKey,
+      runKey,
       features.length - 1,
     );
     if (nextIndex === null) {
@@ -76,7 +77,7 @@ const makeProxyGet = (
       features,
       instanceType,
       opts,
-      _runKey,
+      runKey,
       nextIndex,
       args,
     );
@@ -91,7 +92,7 @@ const makeProxyGet = (
     // Key is defined outside so that method can keep its
     // reference without having to be regenerated
     // important for memoization of methods
-    _runKey = key;
+    runKey = key;
     return method;
   };
 };
