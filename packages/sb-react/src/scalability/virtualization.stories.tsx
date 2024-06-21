@@ -6,6 +6,8 @@ import React, {
   useState,
 } from "react";
 import {
+  buildProxiedInstance,
+  buildStaticInstance,
   dragAndDropFeature,
   hotkeysCoreFeature,
   selectionFeature,
@@ -24,10 +26,14 @@ const meta = {
     openLevels: {
       type: "number",
     },
+    useProxyInstances: {
+      type: "boolean",
+    },
   },
   args: {
     itemsPerLevel: 10,
     openLevels: 2,
+    useProxyInstances: true,
   },
 } satisfies Meta;
 
@@ -127,12 +133,19 @@ const Inner = forwardRef<Virtualizer<HTMLDivElement, Element>, any>(
   },
 );
 
-export const BasicVirtualization = ({ itemsPerLevel, openLevels }) => {
+export const BasicVirtualization = ({
+  itemsPerLevel,
+  openLevels,
+  useProxyInstances,
+}) => {
   const virtualizer = useRef<Virtualizer<HTMLDivElement, Element> | null>(null);
   const [state, setState] = useState(() => ({
     expandedItems: getExpandedItemIds(itemsPerLevel, openLevels),
   }));
   const tree = useTree<string>({
+    instanceBuilder: useProxyInstances
+      ? buildProxiedInstance
+      : buildStaticInstance,
     state,
     setState,
     rootItemId: "folder",

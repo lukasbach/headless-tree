@@ -9,7 +9,7 @@ import {
 import { MainFeatureDef } from "../features/main/types";
 import { treeFeature } from "../features/tree/feature";
 import { ItemMeta } from "../features/tree/types";
-import { buildProxiedInstance } from "./instance-builders";
+import { buildStaticInstance } from "./build-static-instance";
 
 const verifyFeatures = (features: FeatureImplementation[] | undefined) => {
   const loadedFeatures = features?.map((feature) => feature.key);
@@ -39,6 +39,7 @@ const sortFeatures = (features: FeatureImplementation[] = []) =>
 export const createTree = <T>(
   initialConfig: TreeConfig<T>,
 ): TreeInstance<T> => {
+  const buildInstance = initialConfig.instanceBuilder ?? buildStaticInstance;
   const additionalFeatures = [
     treeFeature,
     ...sortFeatures(initialConfig.features),
@@ -46,7 +47,7 @@ export const createTree = <T>(
   verifyFeatures(additionalFeatures);
   const features = [...additionalFeatures];
 
-  const treeInstance = buildProxiedInstance(
+  const [treeInstance, finalizeTree] = buildInstance(
     features,
     "treeInstance",
     (tree) => ({ tree }),
@@ -77,15 +78,17 @@ export const createTree = <T>(
   const hotkeyPresets = {} as HotkeysConfig<T>;
 
   const rebuildItemMeta = (main: FeatureImplementation) => {
+    // TODO whenever this runs, [features] is already completed, can omit the param
     // TODO can we find a way to only run this for the changed substructure?
     itemInstances = [];
     itemMetaMap = {};
 
-    const rootInstance = buildProxiedInstance(
+    const [rootInstance, finalizeRootInstance] = buildInstance(
       [main, ...additionalFeatures],
       "itemInstance",
       (item) => ({ item, tree: treeInstance, itemId: config.rootItemId }),
     );
+    finalizeRootInstance();
     itemInstancesMap[config.rootItemId] = rootInstance;
     itemMetaMap[config.rootItemId] = {
       itemId: config.rootItemId,
@@ -99,11 +102,16 @@ export const createTree = <T>(
     for (const item of treeInstance.getItemsMeta()) {
       itemMetaMap[item.itemId] = item;
       if (!itemInstancesMap[item.itemId]) {
-        const instance = buildProxiedInstance(
+        const [instance, finalizeInstance] = buildInstance(
           [main, ...additionalFeatures],
           "itemInstance",
-          (item) => ({ item, tree: treeInstance, itemId: item.itemId }),
+          (instance) => ({
+            item: instance,
+            tree: treeInstance,
+            itemId: item.itemId,
+          }),
         );
+        finalizeInstance();
         itemInstancesMap[item.itemId] = instance;
         itemInstances.push(instance);
       } else {
@@ -207,6 +215,7 @@ export const createTree = <T>(
     Object.assign(hotkeyPresets, feature.hotkeys ?? {});
   }
 
+  finalizeTree();
   rebuildItemMeta(mainFeature);
 
   return treeInstance;

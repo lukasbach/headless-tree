@@ -4,10 +4,22 @@ import {
   ItemInstance,
   SetStateFn,
   TreeConfig,
+  TreeInstance,
   TreeState,
   Updater,
 } from "../../types/core";
 import { ItemMeta } from "../tree/types";
+
+export type InstanceTypeMap = {
+  itemInstance: ItemInstance<any>;
+  treeInstance: TreeInstance<any>;
+};
+
+export type InstanceBuilder = <T extends keyof InstanceTypeMap>(
+  features: FeatureImplementation[],
+  instanceType: T,
+  buildOpts: (self: any) => any,
+) => [instance: InstanceTypeMap[T], finalize: () => void];
 
 export type MainFeatureDef<T = any> = {
   state: {};
@@ -16,6 +28,7 @@ export type MainFeatureDef<T = any> = {
     initialState?: Partial<TreeState<T>>;
     state?: Partial<TreeState<T>>;
     setState?: SetStateFn<TreeState<T>>;
+    instanceBuilder?: InstanceBuilder;
   };
   treeInstance: {
     /** @internal */

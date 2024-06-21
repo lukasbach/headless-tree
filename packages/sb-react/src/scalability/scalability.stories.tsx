@@ -1,6 +1,8 @@
 import type { Meta } from "@storybook/react";
 import React, { useState } from "react";
 import {
+  buildProxiedInstance,
+  buildStaticInstance,
   dragAndDropFeature,
   hotkeysCoreFeature,
   selectionFeature,
@@ -18,10 +20,14 @@ const meta = {
     openLevels: {
       type: "number",
     },
+    useProxyInstances: {
+      type: "boolean",
+    },
   },
   args: {
     itemsPerLevel: 10,
     openLevels: 2,
+    useProxyInstances: true,
   },
 } satisfies Meta;
 
@@ -51,11 +57,14 @@ const getExpandedItemIds = (
   ];
 };
 
-export const BigTree = ({ itemsPerLevel, openLevels }) => {
+export const BigTree = ({ itemsPerLevel, openLevels, useProxyInstances }) => {
   const [state, setState] = useState(() => ({
     expandedItems: getExpandedItemIds(itemsPerLevel, openLevels),
   }));
   const tree = useTree<string>({
+    instanceBuilder: useProxyInstances
+      ? buildProxiedInstance
+      : buildStaticInstance,
     state,
     setState,
     rootItemId: "folder",

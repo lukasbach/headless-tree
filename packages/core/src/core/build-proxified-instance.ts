@@ -1,13 +1,7 @@
-import {
-  FeatureImplementation,
-  ItemInstance,
-  TreeInstance,
-} from "../types/core";
+import { FeatureImplementation } from "../types/core";
+import { InstanceBuilder, InstanceTypeMap } from "../features/main/types";
 
-type InstanceTypeMap = {
-  itemInstance: ItemInstance<any>;
-  treeInstance: TreeInstance<any>;
-};
+const noop = () => {};
 
 const findPrevInstanceMethod = (
   features: FeatureImplementation[],
@@ -37,7 +31,7 @@ const invokeInstanceMethod = (
     features,
     instanceType,
     methodKey,
-    featureIndex,
+    featureIndex - 1,
   );
   const itemInstanceMethod = features[featureIndex][instanceType]?.[methodKey]!;
   return itemInstanceMethod(
@@ -60,10 +54,10 @@ const invokeInstanceMethod = (
   );
 };
 
-export const buildProxiedInstance = <T extends keyof InstanceTypeMap>(
-  features: FeatureImplementation[],
-  instanceType: T,
-  buildOpts: (self: any) => any,
+export const buildProxiedInstance: InstanceBuilder = (
+  features,
+  instanceType,
+  buildOpts,
 ) => {
   // demo with prototypes: https://jsfiddle.net/bgenc58r/
   const opts = {};
@@ -101,5 +95,5 @@ export const buildProxiedInstance = <T extends keyof InstanceTypeMap>(
     },
   );
   Object.assign(opts, buildOpts(item));
-  return item as InstanceTypeMap[T];
+  return [item as any, noop];
 };
