@@ -4,49 +4,69 @@ import {
   TreeInstance,
 } from "../types/core";
 
-const invokeInstanceMethod = (
+type InstanceTypeMap = {
+  itemInstance: ItemInstance<any>;
+  treeInstance: TreeInstance<any>;
+};
+
+const findPrevInstanceMethod = (
   features: FeatureImplementation[],
-  instanceType: "itemInstance" | "treeInstance",
-  opts: any,
+  instanceType: keyof InstanceTypeMap,
   methodKey: string,
   featureSearchIndex: number,
-  args: any[],
-  isPrevCall: boolean,
 ) => {
   for (let i = featureSearchIndex; i >= 0; i--) {
     const feature = features[i];
     const itemInstanceMethod = feature[instanceType]?.[methodKey];
     if (itemInstanceMethod) {
-      return itemInstanceMethod(
-        {
-          ...opts,
-          prev: (...newArgs) =>
-            invokeInstanceMethod(
-              features,
-              instanceType,
-              opts,
-              methodKey,
-              i - 1,
-              newArgs,
-              true,
-            ),
-        },
-        ...args,
-      );
+      return i;
     }
   }
-  if (isPrevCall) {
-    return null;
-  }
-  throw new Error(`HeadlessTree: feature missing for method ${methodKey}`);
+  return null;
 };
 
-export const buildItemInstance = (
+const invokeInstanceMethod = (
   features: FeatureImplementation[],
-  tree: TreeInstance<any>,
-  itemId: string,
+  instanceType: keyof InstanceTypeMap,
+  opts: any,
+  methodKey: string,
+  featureIndex: number,
+  args: any[],
+) => {
+  const prevIndex = findPrevInstanceMethod(
+    features,
+    instanceType,
+    methodKey,
+    featureIndex,
+  );
+  const itemInstanceMethod = features[featureIndex][instanceType]?.[methodKey]!;
+  return itemInstanceMethod(
+    {
+      ...opts,
+      prev:
+        prevIndex !== null
+          ? (...newArgs) =>
+              invokeInstanceMethod(
+                features,
+                instanceType,
+                opts,
+                methodKey,
+                prevIndex,
+                newArgs,
+              )
+          : null,
+    },
+    ...args,
+  );
+};
+
+export const buildProxiedInstance = <T extends keyof InstanceTypeMap>(
+  features: FeatureImplementation[],
+  instanceType: T,
+  buildOpts: (self: any) => any,
 ) => {
   // demo with prototypes: https://jsfiddle.net/bgenc58r/
+  const opts = {};
   const item = new Proxy(
     {},
     {
@@ -55,52 +75,31 @@ export const buildItemInstance = (
           return target[key];
         }
         if (key === "toJSON") {
-          return { itemId };
-        }
-        return (...args) => {
-          return invokeInstanceMethod(
-            features,
-            "itemInstance",
-            { tree, item, itemId },
-            key,
-            features.length - 1,
-            args,
-            false,
-          );
-        };
-      },
-    },
-  );
-  return item as ItemInstance<any>;
-};
-
-// TODO important; the (...args) => ... should be a fixed instance that is returned consistently;
-// TODO otherwise the Render Performance -> Memoized Slow Item Renderers story will not work
-// TODO since the ref method changes everytime (and potentially other methods); if properly fixed, remove getMemoizedProp
-export const buildTreeInstance = (features: FeatureImplementation[]) => {
-  const tree = new Proxy(
-    {},
-    {
-      get(target: any, key: string | symbol) {
-        if (typeof key === "symbol") {
-          return target[key];
-        }
-        if (key === "toJSON") {
           return {};
         }
         return (...args) => {
-          return invokeInstanceMethod(
+          const featureIndex = findPrevInstanceMethod(
             features,
-            "treeInstance",
-            { tree },
+            instanceType,
             key,
             features.length - 1,
+          );
+
+          if (featureIndex === null) {
+            throw new Error(`HeadlessTree: feature missing for method ${key}`);
+          }
+          return invokeInstanceMethod(
+            features,
+            instanceType,
+            opts,
+            key,
+            featureIndex,
             args,
-            false,
           );
         };
       },
     },
   );
-  return tree as TreeInstance<any>;
+  Object.assign(opts, buildOpts(item));
+  return item as InstanceTypeMap[T];
 };

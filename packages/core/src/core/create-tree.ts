@@ -9,7 +9,7 @@ import {
 import { MainFeatureDef } from "../features/main/types";
 import { treeFeature } from "../features/tree/feature";
 import { ItemMeta } from "../features/tree/types";
-import { buildItemInstance, buildTreeInstance } from "./instance-builders";
+import { buildProxiedInstance } from "./instance-builders";
 
 const verifyFeatures = (features: FeatureImplementation[] | undefined) => {
   const loadedFeatures = features?.map((feature) => feature.key);
@@ -46,7 +46,11 @@ export const createTree = <T>(
   verifyFeatures(additionalFeatures);
   const features = [...additionalFeatures];
 
-  const treeInstance = buildTreeInstance(features);
+  const treeInstance = buildProxiedInstance(
+    features,
+    "treeInstance",
+    (tree) => ({ tree }),
+  );
 
   let state = additionalFeatures.reduce(
     (acc, feature) => feature.getInitialState?.(acc, treeInstance) ?? acc,
@@ -77,10 +81,10 @@ export const createTree = <T>(
     itemInstances = [];
     itemMetaMap = {};
 
-    const rootInstance = buildItemInstance(
+    const rootInstance = buildProxiedInstance(
       [main, ...additionalFeatures],
-      treeInstance,
-      config.rootItemId,
+      "itemInstance",
+      (item) => ({ item, tree: treeInstance, itemId: config.rootItemId }),
     );
     itemInstancesMap[config.rootItemId] = rootInstance;
     itemMetaMap[config.rootItemId] = {
@@ -95,10 +99,10 @@ export const createTree = <T>(
     for (const item of treeInstance.getItemsMeta()) {
       itemMetaMap[item.itemId] = item;
       if (!itemInstancesMap[item.itemId]) {
-        const instance = buildItemInstance(
+        const instance = buildProxiedInstance(
           [main, ...additionalFeatures],
-          treeInstance,
-          item.itemId,
+          "itemInstance",
+          (item) => ({ item, tree: treeInstance, itemId: item.itemId }),
         );
         itemInstancesMap[item.itemId] = instance;
         itemInstances.push(instance);
