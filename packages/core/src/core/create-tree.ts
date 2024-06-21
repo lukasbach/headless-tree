@@ -77,14 +77,13 @@ export const createTree = <T>(
 
   const hotkeyPresets = {} as HotkeysConfig<T>;
 
-  const rebuildItemMeta = (main: FeatureImplementation) => {
-    // TODO whenever this runs, [features] is already completed, can omit the param
+  const rebuildItemMeta = () => {
     // TODO can we find a way to only run this for the changed substructure?
     itemInstances = [];
     itemMetaMap = {};
 
     const [rootInstance, finalizeRootInstance] = buildInstance(
-      [main, ...additionalFeatures],
+      features,
       "itemInstance",
       (item) => ({ item, tree: treeInstance, itemId: config.rootItemId }),
     );
@@ -103,7 +102,7 @@ export const createTree = <T>(
       itemMetaMap[item.itemId] = item;
       if (!itemInstancesMap[item.itemId]) {
         const [instance, finalizeInstance] = buildInstance(
-          [main, ...additionalFeatures],
+          features,
           "itemInstance",
           (instance) => ({
             item: instance,
@@ -150,7 +149,7 @@ export const createTree = <T>(
       },
       // TODO rebuildSubTree: (itemId: string) => void;
       rebuildTree: () => {
-        rebuildItemMeta(mainFeature);
+        rebuildItemMeta();
         config.setState?.(state);
       },
       getConfig: () => config,
@@ -216,7 +215,7 @@ export const createTree = <T>(
   }
 
   finalizeTree();
-  rebuildItemMeta(mainFeature);
+  rebuildItemMeta();
 
   return treeInstance;
 };
