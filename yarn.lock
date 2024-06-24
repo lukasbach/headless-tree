@@ -21150,7 +21150,7 @@ __metadata:
     eslint: "npm:^8.57.0"
     lerna: "npm:^8.1.3"
     typedoc: "npm:^0.25.13"
-    typedoc-plugin-markdown: "npm:^3.17.1"
+    typedoc-plugin-markdown: "npm:^4.1.0"
     zx: "npm:^7.2.3"
   languageName: unknown
   linkType: soft
@@ -23005,14 +23005,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typedoc-plugin-markdown@npm:^3.17.1":
-  version: 3.17.1
-  resolution: "typedoc-plugin-markdown@npm:3.17.1"
-  dependencies:
-    handlebars: "npm:^4.7.7"
+"typedoc-plugin-markdown@npm:^4.1.0":
+  version: 4.1.0
+  resolution: "typedoc-plugin-markdown@npm:4.1.0"
   peerDependencies:
-    typedoc: ">=0.24.0"
-  checksum: 10/21bfe7fba60e3c27e15700196b1b4abdf5b63bfdc9a4af57cf6f0891f9d359ac561435773709c6ea3555bae402b7a81b637d055e767afd33e2c0dc717d0449d2
+    typedoc: 0.26.x
+  checksum: 10/ff968737d6d84086ce13f51f507f7db6157932444a690df95fe6d33f457e60b797ae666e62101102deaadbfc06f1e3d1bac6ca90b0a1279cc5771ae63eb9905d
   languageName: node
   linkType: hard
 
