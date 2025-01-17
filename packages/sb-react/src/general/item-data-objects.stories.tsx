@@ -61,20 +61,22 @@ export const ItemDataObjects = () => {
         <div
           key={item.getId()}
           className="treeitem-parent"
-          style={{ marginLeft: `${item.getItemMeta().level * 20}px` }}
         >
           <button
             {...item.getProps()}
             ref={item.registerElement}
-            style={{ color: item.getItemData().isRed ? "red" : undefined }}
-            className={cx("treeitem", {
-              focused: item.isFocused(),
-              expanded: item.isExpanded(),
-              selected: item.isSelected(),
-              folder: item.isFolder(),
-            })}
+            style={{ paddingLeft: `${item.getItemMeta().level * 20}px`, color: item.getItemData().isRed ? "red" : undefined }}
           >
-            {item.getItemName()}
+            <div
+              className={cx("treeitem", {
+                focused: item.isFocused(),
+                expanded: item.isExpanded(),
+                selected: item.isSelected(),
+                folder: item.isFolder(),
+              })}
+            >
+              {item.getItemName()}
+            </div>
           </button>
         </div>
       ))}

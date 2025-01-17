@@ -57,22 +57,22 @@ export const OverwritingHotkeys = () => {
       </p>
       <div ref={tree.registerElement} className="tree">
         {tree.getItems().map((item) => (
-          <div
-            key={item.getId()}
-            className="treeitem-parent"
-            style={{ marginLeft: `${item.getItemMeta().level * 20}px` }}
-          >
+          <div key={item.getId()} className="treeitem-parent">
             <button
               {...item.getProps()}
               ref={item.registerElement}
-              className={cx("treeitem", {
-                focused: item.isFocused(),
-                expanded: item.isExpanded(),
-                selected: item.isSelected(),
-                folder: item.isFolder(),
-              })}
+              style={{ paddingLeft: `${item.getItemMeta().level * 20}px` }}
             >
-              {item.getItemName()}
+              <div
+                className={cx("treeitem", {
+                  focused: item.isFocused(),
+                  expanded: item.isExpanded(),
+                  selected: item.isSelected(),
+                  folder: item.isFolder(),
+                })}
+              >
+                {item.getItemName()}
+              </div>
             </button>
           </div>
         ))}

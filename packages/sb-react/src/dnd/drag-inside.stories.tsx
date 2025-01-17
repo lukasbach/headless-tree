@@ -68,22 +68,25 @@ export const DragInside = () => {
           <div
             key={item.getId()}
             className="treeitem-parent"
-            style={{ marginLeft: `${item.getItemMeta().level * 20}px` }}
           >
             <button
               {...item.getProps()}
               ref={item.registerElement}
-              className={cx("treeitem", {
-                focused: item.isFocused(),
-                expanded: item.isExpanded(),
-                selected: item.isSelected(),
-                folder: item.isFolder(),
-                drop: item.isDropTarget() && item.isDraggingOver(),
-                dropabove: item.isDropTargetAbove() && item.isDraggingOver(),
-                dropbelow: item.isDropTargetBelow() && item.isDraggingOver(),
-              })}
+              style={{ paddingLeft: `${item.getItemMeta().level * 20}px` }}
             >
-              {item.getItemName()}
+              <div
+                className={cx("treeitem", {
+                  focused: item.isFocused(),
+                  expanded: item.isExpanded(),
+                  selected: item.isSelected(),
+                  folder: item.isFolder(),
+                  drop: item.isDropTarget() && item.isDraggingOver(),
+                  dropabove: item.isDropTargetAbove() && item.isDraggingOver(),
+                  dropbelow: item.isDropTargetBelow() && item.isDraggingOver(),
+                })}
+              >
+                {item.getItemName()}
+              </div>
             </button>
           </div>
         ))}
