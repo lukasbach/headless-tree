@@ -40,8 +40,10 @@ export const treeFeature: FeatureImplementation<
     isItemExpanded: ({ tree }, itemId) =>
       tree.getState().expandedItems.includes(itemId),
 
-    getItemsMeta: ({ tree }) => {
-      const { rootItemId } = tree.getConfig();
+    getItemsMeta: ({ tree }, withinItemIdParam) => {
+      const withinItemId = withinItemIdParam ?? tree.getConfig().rootItemId;
+      const withinItem = tree.getItemInstance(withinItemId);
+      const startingIndex = withinItem ? withinItem.getItemMeta().index + 1 : 0;
       const { expandedItems } = tree.getState();
       const flatItems: ItemMeta[] = [];
       const expandedItemsSet = new Set(expandedItems);
@@ -56,7 +58,7 @@ export const treeFeature: FeatureImplementation<
         flatItems.push({
           itemId,
           level,
-          index: flatItems.length,
+          index: startingIndex + flatItems.length,
           parentId,
           setSize,
           posInSet,
@@ -72,13 +74,39 @@ export const treeFeature: FeatureImplementation<
         }
       };
 
-      const children = tree.retrieveChildrenIds(rootItemId);
+      const children = tree.retrieveChildrenIds(withinItemId);
       let i = 0;
       for (const itemId of children) {
-        recursiveAdd(itemId, rootItemId, 0, children.length, i++);
+        recursiveAdd(
+          itemId,
+          withinItemId,
+          withinItem.getItemMeta().level + 1,
+          children.length,
+          i++,
+        );
       }
 
       return flatItems;
+    },
+
+    getSubtreeRange: ({ tree }, subtreeRootId) => {
+      const subtreeRoot = tree.getItemInstance(subtreeRootId);
+      const start = subtreeRoot.getItemMeta().index;
+      let end = start;
+      const itemsToProcess = [subtreeRoot];
+
+      while (itemsToProcess.length) {
+        console.log("!!!!!!!!!", ...itemsToProcess.map((i) => i.getId())); // TODO if folder was closed before, the expanded flag is already set to true here...
+        end++;
+        const item = itemsToProcess.pop()!;
+        console.log(item);
+        if (item.isExpanded()) {
+          console.log("children", item.getChildren());
+          itemsToProcess.push(...item.getChildren());
+        }
+      }
+
+      return [start, end];
     },
 
     expandItem: ({ tree }, itemId) => {
@@ -94,7 +122,7 @@ export const treeFeature: FeatureImplementation<
         ...expandedItems,
         itemId,
       ]);
-      tree.rebuildTree();
+      tree.rebuildTree(itemId);
     },
 
     collapseItem: ({ tree }, itemId) => {
@@ -105,7 +133,7 @@ export const treeFeature: FeatureImplementation<
       tree.applySubStateUpdate("expandedItems", (expandedItems) =>
         expandedItems.filter((id) => id !== itemId),
       );
-      tree.rebuildTree();
+      tree.rebuildTree(itemId);
     },
 
     // TODO memo

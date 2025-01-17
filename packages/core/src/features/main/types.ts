@@ -48,7 +48,7 @@ export type MainFeatureDef<T = any> = {
     getDataRef: <D>() => { current: D };
     /* @internal */
     getHotkeyPresets: () => HotkeysConfig<T>;
-    rebuildTree: () => void;
+    rebuildTree: (withinItemId?: string) => void;
   };
   itemInstance: {
     registerElement: (element: HTMLElement | null) => void;

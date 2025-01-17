@@ -31,7 +31,9 @@ export type TreeFeatureDef<T> = {
   };
   treeInstance: {
     /** @internal */
-    getItemsMeta: () => ItemMeta[];
+    getItemsMeta: (withinItemId?: string) => ItemMeta[];
+    /** @internal */
+    getSubtreeRange: (subtreeRootId: string) => [number, number];
 
     expandItem: (itemId: string) => void;
     collapseItem: (itemId: string) => void;

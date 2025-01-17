@@ -83,7 +83,7 @@ export const asyncDataLoaderFeature: FeatureImplementation<
           tree.applySubStateUpdate("loadingItems", (loadingItems) =>
             loadingItems.filter((id) => id !== itemId),
           );
-          tree.rebuildTree();
+          tree.rebuildTree(itemId);
         });
       } else {
         config.asyncDataLoader?.getChildren(itemId).then((childrenIds) => {
@@ -92,7 +92,7 @@ export const asyncDataLoaderFeature: FeatureImplementation<
           tree.applySubStateUpdate("loadingItems", (loadingItems) =>
             loadingItems.filter((id) => id !== itemId),
           );
-          tree.rebuildTree();
+          tree.rebuildTree(itemId);
         });
       }
 

@@ -26,5 +26,5 @@ export const insertItemsAtTarget = <T>(
 
   onChangeChildren(target.item, newChildren);
 
-  target.item.getTree().rebuildTree();
+  target.item.getTree().rebuildTree(target.item.getId());
 };

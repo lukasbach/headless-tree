@@ -36,6 +36,25 @@ const compareFeatures = (
 const sortFeatures = (features: FeatureImplementation[] = []) =>
   features.sort(compareFeatures);
 
+const getSubtreeRange = (
+  subtreeRootId: string,
+  itemMetaMap: Record<string, ItemMeta>,
+  itemInstances: ItemInstance<unknown>[],
+) => {
+  const subtreeRootMeta = itemMetaMap[subtreeRootId];
+  const start = subtreeRootMeta.index;
+  console.log(
+    `start is ${subtreeRootMeta.itemId}, next is ${itemInstances[start + subtreeRootMeta.posInSet + 1].getId()}`,
+    [...itemInstances.map((i) => i.getId())],
+  );
+  const nextItem = itemInstances[start + subtreeRootMeta.posInSet + 1];
+  // const end = itemInstances.findIndex(
+  //   (item) => item.getId() === nextItem.getId(),
+  // );
+  const end = itemMetaMap[nextItem.getId()].index - 1;
+  return [start, end];
+};
+
 export const createTree = <T>(
   initialConfig: TreeConfig<T>,
 ): TreeInstance<T> => {
@@ -70,17 +89,24 @@ export const createTree = <T>(
   const treeDataRef: { current: any } = { current: {} };
 
   const itemInstancesMap: Record<string, ItemInstance<T>> = {};
-  let itemInstances: ItemInstance<T>[] = [];
+  const itemInstances: ItemInstance<T>[] = [];
   const itemElementsMap: Record<string, HTMLElement | undefined | null> = {};
   const itemDataRefs: Record<string, { current: any }> = {};
-  let itemMetaMap: Record<string, ItemMeta> = {};
+  const itemMetaMap: Record<string, ItemMeta> = {};
 
   const hotkeyPresets = {} as HotkeysConfig<T>;
 
-  const rebuildItemMeta = () => {
-    // TODO can we find a way to only run this for the changed substructure?
-    itemInstances = [];
-    itemMetaMap = {};
+  const rebuildItemMeta = (withinItemId?: string) => {
+    const [oldRangeStart, oldRangeEnd] = withinItemId
+      ? getSubtreeRange(withinItemId, itemMetaMap, itemInstances)
+      : [0, itemInstances.length];
+    console.log("rebuildItemMeta", {
+      withinItemId,
+      oldRangeStart,
+      oldRangeEnd,
+    });
+    const newItemInstances: ItemInstance<T>[] = [];
+    // itemMetaMap = {};
 
     const [rootInstance, finalizeRootInstance] = buildInstance(
       features,
@@ -98,7 +124,7 @@ export const createTree = <T>(
       setSize: 1,
     };
 
-    for (const item of treeInstance.getItemsMeta()) {
+    for (const item of treeInstance.getItemsMeta(withinItemId)) {
       itemMetaMap[item.itemId] = item;
       if (!itemInstancesMap[item.itemId]) {
         const [instance, finalizeInstance] = buildInstance(
@@ -112,11 +138,52 @@ export const createTree = <T>(
         );
         finalizeInstance();
         itemInstancesMap[item.itemId] = instance;
-        itemInstances.push(instance);
+        newItemInstances.push(instance);
       } else {
-        itemInstances.push(itemInstancesMap[item.itemId]);
+        newItemInstances.push(itemInstancesMap[item.itemId]);
       }
     }
+
+    // TODO of course all items below need to be updated as well... index shifts..
+    // TODO do we really need a global index, is 1-3-4-2 as index sufficient?
+
+    console.log("!!", {
+      withinItemId,
+      itemMetaMap,
+      oldRangeStart,
+      oldRangeEnd,
+      newItemInstances: newItemInstances.map((i) => i.getId()),
+      oldItemInstances: [
+        ...itemInstances.slice(oldRangeStart, oldRangeEnd),
+      ].map((i) => i.getId()),
+    });
+
+    // push indices for items below down/up
+    const oldRangeDistance = oldRangeEnd - oldRangeStart;
+    const newRangeDistance = newItemInstances.length + 1; // +1 for subtree root
+    const distanceDiff = newRangeDistance - oldRangeDistance;
+    for (let i = oldRangeEnd + 1; i < itemInstances.length; i++) {
+      const item = itemInstances[i];
+      const oldMeta = itemMetaMap[item.getId()];
+      itemMetaMap[item.getId()] = {
+        ...oldMeta,
+        index: oldMeta.index + distanceDiff,
+      };
+    }
+
+    // update stale subtree with new items
+    itemInstances.splice(
+      oldRangeStart + 1,
+      oldRangeEnd - oldRangeStart,
+      ...newItemInstances,
+    );
+
+    console.log(
+      "DONE\n",
+      itemInstances
+        .map((i) => `${i.getId()}#${itemMetaMap[i.getId()].index}`)
+        .join("\n"),
+    );
   };
 
   const eachFeature = (fn: (feature: FeatureImplementation<any>) => void) => {
@@ -148,8 +215,8 @@ export const createTree = <T>(
         config[stateHandlerNames[stateName]]!(state[stateName]);
       },
       // TODO rebuildSubTree: (itemId: string) => void;
-      rebuildTree: () => {
-        rebuildItemMeta();
+      rebuildTree: (_, withinItemId) => {
+        rebuildItemMeta(withinItemId);
         config.setState?.(state);
       },
       getConfig: () => config,
