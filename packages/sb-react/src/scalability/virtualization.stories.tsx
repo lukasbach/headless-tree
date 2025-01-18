@@ -154,6 +154,7 @@ export const BasicVirtualization = ({
       virtualizer.current?.scrollToIndex(item.getItemMeta().index);
     },
     canDropInbetween: true,
+    indent: 20,
     dataLoader: {
       getItem: (itemId) => itemId,
       getChildren: (itemId) => {

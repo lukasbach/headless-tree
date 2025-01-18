@@ -31,6 +31,7 @@ export const SimpleExample = () => {
         `${itemId}-2item`,
       ],
     },
+    indent: 20,
     features: [
       syncDataLoaderFeature,
       selectionFeature,

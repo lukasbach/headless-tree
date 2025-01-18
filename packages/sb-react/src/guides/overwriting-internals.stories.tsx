@@ -31,6 +31,7 @@ export const OverwritingInternals = () => {
         `${itemId}-2item`,
       ],
     },
+    indent: 20,
     features: [
       syncDataLoaderFeature,
       selectionFeature,

@@ -33,6 +33,7 @@ export const DragLine = () => {
         )} on ${target.item.getId()}, index ${target.childIndex}`,
       );
     },
+    indent: 20,
     dataLoader: {
       getItem: (itemId) => itemId,
       getChildren: (itemId) => [

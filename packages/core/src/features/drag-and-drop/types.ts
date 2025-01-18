@@ -50,6 +50,8 @@ export type DragAndDropFeatureDef<T> = {
     canDrag?: (items: ItemInstance<T>[]) => boolean;
     canDrop?: (items: ItemInstance<T>[], target: DropTarget<T>) => boolean;
 
+    indent?: number;
+
     createForeignDragObject?: (items: ItemInstance<T>[]) => {
       format: string;
       data: any;

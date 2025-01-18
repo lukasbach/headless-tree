@@ -57,6 +57,7 @@ export const ManyFeatures = ({ featureCount }) => {
     rootItemId: "folder",
     getItemName: (item) => item.getItemData(),
     isItemFolder: (item) => !item.getItemData().endsWith("item"),
+    indent: 20,
     hotkeys: {
       customEvent: {
         hotkey: "Escape",

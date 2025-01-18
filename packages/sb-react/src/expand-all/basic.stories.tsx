@@ -38,6 +38,7 @@ export const Basic = () => {
         `${itemId}-3item`,
       ],
     },
+    indent: 20,
     features: [
       selectionFeature,
       hotkeysCoreFeature,

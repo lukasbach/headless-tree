@@ -50,6 +50,7 @@ export const DragInside = () => {
       );
     },
     canDropForeignDragObject: (_, target) => target.item.isFolder(),
+    indent: 20,
     dataLoader,
     features: [
       syncDataLoaderFeature,
