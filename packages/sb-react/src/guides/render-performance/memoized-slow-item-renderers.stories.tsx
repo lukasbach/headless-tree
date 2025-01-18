@@ -57,14 +57,13 @@ export const MemoizedSlowItemRenderers = () => {
   return (
     <div ref={tree.registerElement} className="tree">
       {tree.getItems().map((item) => (
-        <div
+        <MemoizedItem
+          {...item.getProps()}
+          ref={item.registerElement}
           key={item.getId()}
-          className="treeitem-parent"
           style={{ marginLeft: `${item.getItemMeta().level * 20}px` }}
         >
-          <MemoizedItem
-            {...item.getProps()}
-            ref={item.registerElement}
+          <div
             className={cx("treeitem", {
               focused: item.isFocused(),
               expanded: item.isExpanded(),
@@ -73,8 +72,8 @@ export const MemoizedSlowItemRenderers = () => {
             })}
           >
             {item.getItemName()}
-          </MemoizedItem>
-        </div>
+          </div>
+        </MemoizedItem>
       ))}
     </div>
   );
