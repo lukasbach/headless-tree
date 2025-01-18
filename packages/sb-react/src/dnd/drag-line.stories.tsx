@@ -1,6 +1,7 @@
 import type { Meta } from "@storybook/react";
 import React, { useState } from "react";
 import {
+  TreeState,
   dragAndDropFeature,
   hotkeysCoreFeature,
   selectionFeature,
@@ -18,7 +19,9 @@ export default meta;
 
 // story-start
 export const DragLine = () => {
-  const [state, setState] = useState({});
+  const [state, setState] = useState<Partial<TreeState<any>>>({
+    expandedItems: ["root-1", "root-1-2"],
+  });
   const tree = useTree<string>({
     state,
     setState,
@@ -54,7 +57,6 @@ export const DragLine = () => {
   });
 
   const dragLine = tree.getDragLineData();
-  console.log(dragLine);
 
   return (
     <div ref={tree.registerElement} className="tree">
@@ -81,9 +83,9 @@ export const DragLine = () => {
       {dragLine && (
         <div
           style={{
-            top: `${dragLine.top}px`,
-            left: `${dragLine.left - 10}px`,
-            width: `${dragLine.right - dragLine.left + 10}px`,
+            top: `${dragLine.top - 1}px`,
+            left: `${dragLine.left - 8}px`,
+            width: `${dragLine.right - dragLine.left + 8}px`,
             pointerEvents: "none", // important to prevent capturing drag events
           }}
           className="dragline"
