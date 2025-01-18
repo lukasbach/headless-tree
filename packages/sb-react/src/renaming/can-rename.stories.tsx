@@ -1,5 +1,5 @@
 import type { Meta } from "@storybook/react";
-import React from "react";
+import React, { Fragment } from "react";
 import {
   hotkeysCoreFeature,
   renamingFeature,
@@ -54,32 +54,36 @@ export const CanRenameConfigurability = () => {
       </p>
       <div ref={tree.registerElement} className="tree">
         {tree.getItems().map((item) => (
-          <button
-            {...item.getProps()}
-            ref={item.registerElement}
-            key={item.getId()}
-            style={{ marginLeft: `${item.getItemMeta().level * 20}px` }}
-          >
+          <Fragment key={item.getId()}>
             {item.isRenaming() ? (
-              <div className="treeitem">
+              <div
+                className="renaming-item"
+                style={{ marginLeft: `${item.getItemMeta().level * 20}px` }}
+              >
                 <input
                   {...item.getRenameInputProps()}
                   ref={(i) => i?.focus()}
                 />
               </div>
             ) : (
-              <div
-                className={cx("treeitem", {
-                  focused: item.isFocused(),
-                  expanded: item.isExpanded(),
-                  selected: item.isSelected(),
-                  folder: item.isFolder(),
-                })}
+              <button
+                {...item.getProps()}
+                ref={item.registerElement}
+                style={{ paddingLeft: `${item.getItemMeta().level * 20}px` }}
               >
-                {item.getItemName()}
-              </div>
+                <div
+                  className={cx("treeitem", {
+                    focused: item.isFocused(),
+                    expanded: item.isExpanded(),
+                    selected: item.isSelected(),
+                    folder: item.isFolder(),
+                  })}
+                >
+                  {item.getItemName()}
+                </div>
+              </button>
             )}
-          </button>
+          </Fragment>
         ))}
       </div>
     </>

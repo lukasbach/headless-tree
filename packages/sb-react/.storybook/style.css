@@ -2,9 +2,13 @@
     max-width: 300px;
 }
 
-.treeitem-parent {
+.tree button[role="treeitem"] {
     margin-bottom: 2px;
     display: flex;
+    background: transparent;
+    border: none;
+    width: 100%;
+    padding: 0;
 }
 
 .treeitem {
@@ -13,6 +17,19 @@
     background-color: white;
     border: 1px solid #ccc;
     padding: 4px 6px;
+}
+
+.renaming-item {
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 4px 6px;
+    margin-bottom: 2px;
+}
+.renaming-item input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: transparent;
 }
 
 .treeitem:hover {

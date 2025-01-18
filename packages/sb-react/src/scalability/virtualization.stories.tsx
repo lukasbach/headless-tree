@@ -95,21 +95,20 @@ const Inner = forwardRef<Virtualizer<HTMLDivElement, Element>, any>(
           {virtualizer.getVirtualItems().map((virtualItem) => {
             const item = tree.getItems()[virtualItem.index];
             return (
-              <div
+              <button
+                {...item.getProps()}
+                ref={item.registerElement}
                 key={item.getId()}
-                className="treeitem-parent"
                 style={{
                   position: "absolute",
                   top: 0,
                   left: 0,
                   width: "100%",
                   transform: `translateY(${virtualItem.start}px)`,
-                  marginLeft: `${item.getItemMeta().level * 20}px`,
+                  paddingLeft: `${item.getItemMeta().level * 20}px`,
                 }}
               >
-                <button
-                  {...item.getProps()}
-                  ref={item.registerElement}
+                <div
                   className={cx("treeitem", {
                     focused: item.isFocused(),
                     expanded: item.isExpanded(),
@@ -123,8 +122,8 @@ const Inner = forwardRef<Virtualizer<HTMLDivElement, Element>, any>(
                   })}
                 >
                   {item.getItemName()}
-                </button>
-              </div>
+                </div>
+              </button>
             );
           })}
         </div>

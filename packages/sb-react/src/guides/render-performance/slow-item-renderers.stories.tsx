@@ -55,14 +55,13 @@ export const SlowItemRenderers = () => {
   return (
     <div ref={tree.registerElement} className="tree">
       {tree.getItems().map((item) => (
-        <div
+        <SlowItem
+          {...item.getProps()}
+          ref={item.registerElement}
           key={item.getId()}
-          className="treeitem-parent"
-          style={{ marginLeft: `${item.getItemMeta().level * 20}px` }}
+          style={{ paddingLeft: `${item.getItemMeta().level * 20}px` }}
         >
-          <SlowItem
-            {...item.getProps()}
-            ref={item.registerElement}
+          <div
             className={cx("treeitem", {
               focused: item.isFocused(),
               expanded: item.isExpanded(),
@@ -71,8 +70,8 @@ export const SlowItemRenderers = () => {
             })}
           >
             {item.getItemName()}
-          </SlowItem>
-        </div>
+          </div>
+        </SlowItem>
       ))}
     </div>
   );

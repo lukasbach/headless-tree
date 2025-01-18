@@ -44,6 +44,7 @@ export const renamingFeature: FeatureImplementation<
 
     abortRenaming: ({ tree }) => {
       tree.applySubStateUpdate("renamingItem", null);
+      tree.updateDomFocus();
     },
 
     completeRenaming: ({ tree }) => {
@@ -53,6 +54,7 @@ export const renamingFeature: FeatureImplementation<
         config.onRename?.(item, tree.getState().renamingValue || "");
       }
       tree.applySubStateUpdate("renamingItem", null);
+      tree.updateDomFocus();
     },
 
     isRenamingItem: ({ tree }) => !!tree.getState().renamingItem,

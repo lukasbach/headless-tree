@@ -61,14 +61,13 @@ export const CanDrop = () => {
       </p>
       <div ref={tree.registerElement} className="tree">
         {tree.getItems().map((item) => (
-          <div
+          <button
+            {...item.getProps()}
+            ref={item.registerElement}
             key={item.getId()}
-            className="treeitem-parent"
-            style={{ marginLeft: `${item.getItemMeta().level * 20}px` }}
+            style={{ paddingLeft: `${item.getItemMeta().level * 20}px` }}
           >
-            <button
-              {...item.getProps()}
-              ref={item.registerElement}
+            <div
               className={cx("treeitem", {
                 focused: item.isFocused(),
                 expanded: item.isExpanded(),
@@ -80,8 +79,8 @@ export const CanDrop = () => {
               })}
             >
               {item.getItemName()}
-            </button>
-          </div>
+            </div>
+          </button>
         ))}
       </div>
     </>
