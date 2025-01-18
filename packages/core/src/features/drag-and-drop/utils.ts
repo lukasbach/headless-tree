@@ -52,6 +52,15 @@ export const canDrop = (
   }
 
   if (
+    draggedItems &&
+    draggedItems.some((draggedItem) =>
+      target.item.isDescendentOf(draggedItem.getParent().getId()),
+    )
+  ) {
+    return false;
+  }
+
+  if (
     !draggedItems &&
     dataTransfer &&
     !config.canDropForeignDragObject?.(dataTransfer, target)
