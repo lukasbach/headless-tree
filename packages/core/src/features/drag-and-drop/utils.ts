@@ -1,5 +1,30 @@
 import { ItemInstance, TreeInstance } from "../../types/core";
-import { DropTarget, DropTargetPosition } from "./types";
+import { DropTarget } from "./types";
+
+enum ItemDropCategory {
+  Item,
+  ExpandedFolder,
+  LastInGroup,
+}
+
+enum PlacementType {
+  ReorderAbove,
+  ReorderBelow,
+  MakeChild,
+  Reparent,
+}
+
+type TargetPlacement =
+  | {
+      type:
+        | PlacementType.ReorderAbove
+        | PlacementType.ReorderBelow
+        | PlacementType.MakeChild;
+    }
+  | {
+      type: PlacementType.Reparent;
+      reparentLevel: number;
+    };
 
 export const getDragCode = ({ item, childIndex }: DropTarget<any>) =>
   `${item.getId()}__${childIndex ?? "none"}`;
@@ -32,18 +57,75 @@ export const canDrop = (
   return true;
 };
 
-const getDropTargetPosition = (
-  offset: number,
-  topLinePercentage: number,
-  bottomLinePercentage: number,
-) => {
-  if (offset < topLinePercentage) {
-    return DropTargetPosition.Top;
+const getItemDropCategory = (item: ItemInstance<any>) => {
+  if (item.isExpanded()) {
+    return ItemDropCategory.ExpandedFolder;
   }
-  if (offset > bottomLinePercentage) {
-    return DropTargetPosition.Bottom;
+
+  if (item.getIndexInParent() === item.getParent().getItemMeta().setSize - 1) {
+    return ItemDropCategory.LastInGroup;
   }
-  return DropTargetPosition.Item;
+
+  return ItemDropCategory.Item;
+};
+
+const getTargetPlacement = (
+  e: any,
+  item: ItemInstance<any>,
+  tree: TreeInstance<any>,
+  canMakeChild: boolean,
+): TargetPlacement => {
+  const config = tree.getConfig();
+  const bb = item.getElement()?.getBoundingClientRect();
+  const topPercent = bb ? (e.pageY - bb.top) / bb.height : 0.5;
+  const leftPixels = bb ? e.pageX - bb.left : 0;
+  const targetDropCategory = getItemDropCategory(item);
+  const reorderAreaPercentage = !canMakeChild
+    ? 0.5
+    : config.reorderAreaPercentage ?? 0.3;
+  const indent = config.indent ?? 20;
+  const makeChildType = canMakeChild
+    ? PlacementType.MakeChild
+    : PlacementType.ReorderBelow;
+
+  if (targetDropCategory === ItemDropCategory.ExpandedFolder) {
+    if (topPercent < reorderAreaPercentage) {
+      return { type: PlacementType.ReorderAbove };
+    }
+    return { type: makeChildType };
+  }
+
+  if (targetDropCategory === ItemDropCategory.LastInGroup) {
+    if (leftPixels < item.getItemMeta().level * indent) {
+      if (topPercent < 0.5) {
+        return { type: PlacementType.ReorderAbove };
+      }
+      return {
+        type: PlacementType.Reparent,
+        reparentLevel: Math.floor(leftPixels / indent),
+      };
+    }
+    // if not at left of item area, treat as if it was a normal item
+  }
+
+  // targetDropCategory === ItemDropCategory.Item
+  if (topPercent < reorderAreaPercentage) {
+    return { type: PlacementType.ReorderAbove };
+  }
+  if (topPercent > 1 - reorderAreaPercentage) {
+    return { type: PlacementType.ReorderBelow };
+  }
+  return { type: makeChildType };
+};
+
+const getNthParent = (
+  item: ItemInstance<any>,
+  n: number,
+): ItemInstance<any> => {
+  if (n === item.getItemMeta().level) {
+    return item;
+  }
+  return getNthParent(item.getParent(), n);
 };
 
 export const getDropTarget = (
@@ -52,7 +134,6 @@ export const getDropTarget = (
   tree: TreeInstance<any>,
   canDropInbetween = tree.getConfig().canDropInbetween,
 ): DropTarget<any> => {
-  const config = tree.getConfig();
   const draggedItems = tree.getState().dnd?.draggedItems ?? [];
   const itemTarget = { item, childIndex: null, insertionIndex: null };
   const parentTarget = {
@@ -60,36 +141,43 @@ export const getDropTarget = (
     childIndex: null,
     insertionIndex: null,
   };
+  const canBecomeSibling = canDrop(e.dataTransfer, parentTarget, tree);
 
   if (!canDropInbetween) {
-    if (!canDrop(e.dataTransfer, parentTarget, tree)) {
+    if (!canBecomeSibling) {
       return getDropTarget(e, item.getParent(), tree, false);
     }
     return itemTarget;
   }
 
-  const canDropInside = canDrop(e.dataTransfer, itemTarget, tree);
+  const canMakeChild = canDrop(e.dataTransfer, itemTarget, tree);
+  const placement = getTargetPlacement(e, item, tree, canMakeChild);
 
-  const offset = getDropOffset(e, item);
-
-  const pos = canDropInside
-    ? getDropTargetPosition(
-        offset,
-        config.topLinePercentage ?? 0.3,
-        config.bottomLinePercentage ?? 0.7,
-      )
-    : getDropTargetPosition(offset, 0.5, 0.5);
-
-  if (pos === DropTargetPosition.Item) {
+  if (placement.type === PlacementType.MakeChild) {
     return itemTarget;
   }
 
-  if (!canDrop(e.dataTransfer, parentTarget, tree)) {
+  if (!canBecomeSibling) {
     return getDropTarget(e, item.getParent(), tree, false);
   }
 
+  if (placement.type === PlacementType.Reparent) {
+    const reparentedTarget = getNthParent(item, placement.reparentLevel - 1);
+    const targetItemAbove = getNthParent(item, placement.reparentLevel); // .getItemBelow()!;
+    const targetIndex = targetItemAbove.getIndexInParent() + 1;
+
+    // TODO possibly count items dragged out above the new target
+
+    return {
+      item: reparentedTarget,
+      childIndex: targetIndex,
+      insertionIndex: targetIndex,
+    };
+  }
+
   const childIndex =
-    item.getIndexInParent() + (pos === DropTargetPosition.Top ? 0 : 1);
+    item.getIndexInParent() +
+    (placement.type === PlacementType.ReorderAbove ? 0 : 1);
 
   const numberOfDragItemsBeforeTarget = item
     .getParent()

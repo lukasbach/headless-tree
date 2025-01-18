@@ -42,8 +42,10 @@ export type DragAndDropFeatureDef<T> = {
   config: {
     setDndState?: SetStateFn<DndState<T> | null>;
 
-    topLinePercentage?: number;
-    bottomLinePercentage?: number;
+    /** Defines the size of the area at the top and bottom of an item where, when an item is dropped, the item willö
+     * be placed above or below the item within the same parent, as opposed to being placed inside the item.
+     * If `canDropInbetween` is `false`, this is ignored. */
+    reorderAreaPercentage?: number;
     canDropInbetween?: boolean;
 
     isItemDraggable?: (item: ItemInstance<T>) => boolean;

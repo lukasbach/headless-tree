@@ -30,6 +30,7 @@ export const dragAndDropFeature: FeatureImplementation<
     getDragLineData: ({ tree }): DragLineData | null => {
       const target = tree.getDropTarget();
       const intend = (target?.item.getItemMeta().level ?? 0) + 1;
+      const leftOffset = intend * (tree.getConfig().indent ?? 1);
 
       if (!target || target.childIndex === null) return null;
 
@@ -44,7 +45,7 @@ export const dragAndDropFeature: FeatureImplementation<
           return {
             intend,
             top: bb.bottom,
-            left: bb.left,
+            left: bb.left + leftOffset,
             right: bb.right,
           };
         }
@@ -58,7 +59,7 @@ export const dragAndDropFeature: FeatureImplementation<
         return {
           intend,
           top: bb.top,
-          left: bb.left,
+          left: bb.left + leftOffset,
           right: bb.right,
         };
       }
