@@ -33,6 +33,7 @@ export const AsyncDataLoading = () => {
         wait(800).then(() => [`${itemId}-1`, `${itemId}-2`, `${itemId}-3`]),
     },
     dataLoader: null as any,
+    indent: 20,
     features: [
       asyncDataLoaderFeature,
       selectionFeature,

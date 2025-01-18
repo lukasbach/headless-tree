@@ -40,6 +40,7 @@ export const DragOutside = () => {
         .map((item) => item.getId())
         .join(",")}`,
     }),
+    indent: 20,
     dataLoader,
     onCompleteForeignDrop: (items) => {
       removeItemsFromParents(items, (item, newChildren) => {

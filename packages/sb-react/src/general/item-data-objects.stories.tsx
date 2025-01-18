@@ -47,6 +47,7 @@ export const ItemDataObjects = () => {
       getItem: (itemId) => items[itemId],
       getChildren: (itemId) => items[itemId].children ?? [],
     },
+    indent: 20,
     features: [
       syncDataLoaderFeature,
       selectionFeature,

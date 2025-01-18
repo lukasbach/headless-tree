@@ -22,6 +22,7 @@ export const OverwritingHotkeys = () => {
     rootItemId: "folder",
     getItemName: (item) => item.getItemData(),
     isItemFolder: (item) => !item.getItemData().endsWith("item"),
+    indent: 20,
     dataLoader: {
       getItem: (itemId) => itemId,
       getChildren: (itemId) => [

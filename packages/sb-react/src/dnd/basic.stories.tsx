@@ -1,6 +1,7 @@
 import type { Meta } from "@storybook/react";
 import React, { useState } from "react";
 import {
+  TreeState,
   dragAndDropFeature,
   hotkeysCoreFeature,
   selectionFeature,
@@ -18,7 +19,9 @@ export default meta;
 
 // story-start
 export const Basic = () => {
-  const [state, setState] = useState({});
+  const [state, setState] = useState<Partial<TreeState<any>>>({
+    expandedItems: ["root-1", "root-1-2"],
+  });
   const tree = useTree<string>({
     state,
     setState,
@@ -33,6 +36,7 @@ export const Basic = () => {
         )} on ${target.item.getId()}, index ${target.childIndex}`,
       );
     },
+    indent: 20,
     dataLoader: {
       getItem: (itemId) => itemId,
       getChildren: (itemId) => [

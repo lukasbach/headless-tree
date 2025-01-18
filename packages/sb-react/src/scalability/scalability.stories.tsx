@@ -77,6 +77,7 @@ export const BigTree = ({ itemsPerLevel, openLevels, useProxyInstances }) => {
         handler: () => alert("Hello!"),
       },
     },
+    indent: 20,
     dataLoader: {
       getItem: (itemId) => itemId,
       getChildren: (itemId) => {

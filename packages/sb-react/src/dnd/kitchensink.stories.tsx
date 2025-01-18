@@ -63,6 +63,7 @@ export const KitchenSink = ({
     canDropForeignDragObject: () => canDropForeignDragObject,
     topLinePercentage,
     bottomLinePercentage,
+    indent: 20,
     dataLoader: {
       getItem: (itemId) => itemId,
       getChildren: (itemId) => [

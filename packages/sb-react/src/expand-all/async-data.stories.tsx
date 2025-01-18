@@ -42,6 +42,7 @@ export const AsyncData = () => {
           `${itemId}-3item`,
         ]),
     },
+    indent: 20,
     dataLoader: null as any,
     features: [
       asyncDataLoaderFeature,

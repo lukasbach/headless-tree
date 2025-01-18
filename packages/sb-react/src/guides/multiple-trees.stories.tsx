@@ -48,6 +48,7 @@ const Tree = (props: { data: Record<string, Item>; prefix: string }) => {
     getItemName: (item) => item.getItemData().name,
     isItemFolder: (item) => item.getItemData().children !== undefined,
     canDropInbetween: true,
+    indent: 20,
 
     // onDrop is only called when moving items WITHIN one tree.
     // This handles the entire move operation.
