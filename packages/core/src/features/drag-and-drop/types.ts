@@ -86,6 +86,10 @@ export type DragAndDropFeatureDef<T> = {
   treeInstance: {
     getDropTarget: () => DropTarget<T> | null;
     getDragLineData: () => DragLineData | null;
+    getDragLineStyle: (
+      topOffset?: number,
+      leftOffset?: number,
+    ) => Record<string, any>;
   };
   itemInstance: {
     isDropTarget: () => boolean;
