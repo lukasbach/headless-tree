@@ -29,16 +29,17 @@ export const dragAndDropFeature: FeatureImplementation<
 
     getDragLineData: ({ tree }): DragLineData | null => {
       const target = tree.getDropTarget();
-      const intend = (target?.item.getItemMeta().level ?? 0) + 1;
-      const leftOffset = intend * (tree.getConfig().indent ?? 1);
+      const intend = (target?.item.getItemMeta().level ?? 0) + 1; // TODO rename to indent
 
       if (!target || target.childIndex === null) return null;
 
-      const children = target.item.getChildren();
+      const leftOffset = target.dragLineLevel * (tree.getConfig().indent ?? 1);
+      const targetItem = tree.getItems()[target.dragLineIndex];
 
-      if (target.childIndex === children.length) {
-        const bb = children[target.childIndex - 1]
-          ?.getElement()
+      if (!targetItem) {
+        const bb = tree
+          .getItems()
+          [target.dragLineIndex - 1]?.getElement()
           ?.getBoundingClientRect();
 
         if (bb) {
@@ -51,9 +52,7 @@ export const dragAndDropFeature: FeatureImplementation<
         }
       }
 
-      const bb = children[target.childIndex]
-        ?.getElement()
-        ?.getBoundingClientRect();
+      const bb = targetItem.getElement()?.getBoundingClientRect();
 
       if (bb) {
         return {
