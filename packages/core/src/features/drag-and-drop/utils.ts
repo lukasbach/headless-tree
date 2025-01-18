@@ -26,8 +26,13 @@ type TargetPlacement =
       reparentLevel: number;
     };
 
-export const getDragCode = ({ item, childIndex }: DropTarget<any>) =>
-  `${item.getId()}__${childIndex ?? "none"}`;
+export const getDragCode = ({
+  item,
+  childIndex,
+  dragLineIndex,
+  dragLineLevel,
+}: DropTarget<any>) =>
+  [item.getId(), childIndex, dragLineIndex, dragLineLevel].join("__");
 
 export const getDropOffset = (e: any, item: ItemInstance<any>): number => {
   const bb = item.getElement()?.getBoundingClientRect();
@@ -135,11 +140,21 @@ export const getDropTarget = (
   canDropInbetween = tree.getConfig().canDropInbetween,
 ): DropTarget<any> => {
   const draggedItems = tree.getState().dnd?.draggedItems ?? [];
-  const itemTarget = { item, childIndex: null, insertionIndex: null };
-  const parentTarget = {
+  const itemMeta = item.getItemMeta();
+  const parentMeta = item.getParent().getItemMeta();
+  const itemTarget = {
+    item,
+    childIndex: null,
+    insertionIndex: null,
+    dragLineIndex: itemMeta.index,
+    dragLineLevel: itemMeta.level,
+  };
+  const parentTarget: DropTarget<any> = {
     item: item.getParent(),
     childIndex: null,
     insertionIndex: null,
+    dragLineIndex: parentMeta.index,
+    dragLineLevel: parentMeta.level,
   };
   const canBecomeSibling = canDrop(e.dataTransfer, parentTarget, tree);
 
@@ -172,12 +187,14 @@ export const getDropTarget = (
       item: reparentedTarget,
       childIndex: targetIndex,
       insertionIndex: targetIndex,
+      dragLineIndex: itemMeta.index + 1,
+      dragLineLevel: placement.reparentLevel,
     };
   }
 
-  const childIndex =
-    item.getIndexInParent() +
-    (placement.type === PlacementType.ReorderAbove ? 0 : 1);
+  const maybeAddOneForBelow =
+    placement.type === PlacementType.ReorderAbove ? 0 : 1;
+  const childIndex = item.getIndexInParent() + maybeAddOneForBelow;
 
   const numberOfDragItemsBeforeTarget = item
     .getParent()
@@ -193,6 +210,8 @@ export const getDropTarget = (
 
   return {
     item: item.getParent(),
+    dragLineIndex: itemMeta.index + maybeAddOneForBelow,
+    dragLineLevel: itemMeta.level,
     childIndex,
     // TODO performance could be improved by computing this only when dragcode changed
     insertionIndex: childIndex - numberOfDragItemsBeforeTarget,

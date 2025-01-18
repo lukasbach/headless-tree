@@ -22,11 +22,15 @@ export type DropTarget<T> =
       item: ItemInstance<T>;
       childIndex: number;
       insertionIndex: number;
+      dragLineIndex: number;
+      dragLineLevel: number;
     }
   | {
       item: ItemInstance<T>;
       childIndex: null;
       insertionIndex: null;
+      dragLineIndex: number;
+      dragLineLevel: number;
     };
 
 export enum DropTargetPosition {
