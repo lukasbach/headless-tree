@@ -80,17 +80,7 @@ export const DragLine = () => {
           </div>
         </button>
       ))}
-      {dragLine && (
-        <div
-          style={{
-            top: `${dragLine.top - 1}px`,
-            left: `${dragLine.left - 8}px`,
-            width: `${dragLine.right - dragLine.left + 8}px`,
-            pointerEvents: "none", // important to prevent capturing drag events
-          }}
-          className="dragline"
-        />
-      )}
+      <div style={tree.getDragLineStyle()} className="dragline" />
       <pre>
         {JSON.stringify(
           {

@@ -65,6 +65,18 @@ export const dragAndDropFeature: FeatureImplementation<
 
       return null;
     },
+
+    getDragLineStyle: ({ tree }, topOffset = -1, leftOffset = -8) => {
+      const dragLine = tree.getDragLineData();
+      return dragLine
+        ? {
+            top: `${dragLine.top + topOffset}px`,
+            left: `${dragLine.left + leftOffset}px`,
+            width: `${dragLine.right - dragLine.left - leftOffset}px`,
+            pointerEvents: "none", // important to prevent capturing drag events
+          }
+        : { display: "none" };
+    },
   },
 
   itemInstance: {
