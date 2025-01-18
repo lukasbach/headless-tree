@@ -89,7 +89,10 @@ export const CustomMatcher = () => {
             {...item.getProps()}
             ref={item.registerElement}
             key={item.getId()}
-            style={{ marginLeft: `${item.getItemMeta().level * 20}px`, color: item.getItemData().color }}
+            style={{
+              paddingLeft: `${item.getItemMeta().level * 20}px`,
+              color: item.getItemData().color,
+            }}
           >
             <div
               className={cx("treeitem", {

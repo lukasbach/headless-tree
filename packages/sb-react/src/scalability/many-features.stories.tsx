@@ -90,7 +90,7 @@ export const ManyFeatures = ({ featureCount }) => {
           {...item.getProps()}
           ref={item.registerElement}
           key={item.getId()}
-          style={{ marginLeft: `${item.getItemMeta().level * 20}px` }}
+          style={{ paddingLeft: `${item.getItemMeta().level * 20}px` }}
         >
           <div
             className={cx("treeitem", {

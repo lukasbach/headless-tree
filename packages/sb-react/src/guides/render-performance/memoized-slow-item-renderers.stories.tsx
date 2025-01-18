@@ -17,14 +17,27 @@ const meta = {
 export default meta;
 
 // story-start
-const SlowItem = forwardRef<HTMLButtonElement, HTMLProps<HTMLButtonElement>>(
-  (props, ref) => {
-    const start = Date.now();
-    while (Date.now() - start < 20); // force the component to take 20ms to render
-    action("renderItem")();
-    return <button {...(props as any)} ref={ref} />;
-  },
-);
+const SlowItem = forwardRef<
+  HTMLButtonElement,
+  HTMLProps<HTMLButtonElement> & {
+    level: number;
+    innerClass: string;
+    title: string;
+  }
+>(({ level, innerClass, title, ...props }, ref) => {
+  const start = Date.now();
+  while (Date.now() - start < 20); // force the component to take 20ms to render
+  action("renderItem")();
+  return (
+    <button
+      {...(props as any)}
+      ref={ref}
+      style={{ paddingLeft: `${level * 20}px` }}
+    >
+      <div className={innerClass}>{title}</div>
+    </button>
+  );
+});
 
 const MemoizedItem = memo(SlowItem);
 
@@ -61,19 +74,15 @@ export const MemoizedSlowItemRenderers = () => {
           {...item.getProps()}
           ref={item.registerElement}
           key={item.getId()}
-          style={{ marginLeft: `${item.getItemMeta().level * 20}px` }}
-        >
-          <div
-            className={cx("treeitem", {
-              focused: item.isFocused(),
-              expanded: item.isExpanded(),
-              selected: item.isSelected(),
-              folder: item.isFolder(),
-            })}
-          >
-            {item.getItemName()}
-          </div>
-        </MemoizedItem>
+          level={item.getItemMeta().level}
+          innerClass={cx("treeitem", {
+            focused: item.isFocused(),
+            expanded: item.isExpanded(),
+            selected: item.isSelected(),
+            folder: item.isFolder(),
+          })}
+          title={item.getItemName()}
+        />
       ))}
     </div>
   );

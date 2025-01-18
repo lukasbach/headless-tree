@@ -63,7 +63,7 @@ export const ItemDataObjects = () => {
           ref={item.registerElement}
           key={item.getId()}
           style={{
-            marginLeft: `${item.getItemMeta().level * 20}px`,
+            paddingLeft: `${item.getItemMeta().level * 20}px`,
             color: item.getItemData().isRed ? "red" : undefined,
           }}
         >
