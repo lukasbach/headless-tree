@@ -58,15 +58,16 @@ export const ItemDataObjects = () => {
   return (
     <div ref={tree.registerElement} className="tree">
       {tree.getItems().map((item) => (
-        <div
+        <button
+          {...item.getProps()}
+          ref={item.registerElement}
           key={item.getId()}
-          className="treeitem-parent"
-          style={{ marginLeft: `${item.getItemMeta().level * 20}px` }}
+          style={{
+            marginLeft: `${item.getItemMeta().level * 20}px`,
+            color: item.getItemData().isRed ? "red" : undefined,
+          }}
         >
-          <button
-            {...item.getProps()}
-            ref={item.registerElement}
-            style={{ color: item.getItemData().isRed ? "red" : undefined }}
+          <div
             className={cx("treeitem", {
               focused: item.isFocused(),
               expanded: item.isExpanded(),
@@ -75,8 +76,8 @@ export const ItemDataObjects = () => {
             })}
           >
             {item.getItemName()}
-          </button>
-        </div>
+          </div>
+        </button>
       ))}
     </div>
   );

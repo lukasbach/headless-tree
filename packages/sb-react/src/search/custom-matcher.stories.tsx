@@ -85,14 +85,13 @@ export const CustomMatcher = () => {
       )}
       <div ref={tree.registerElement} className="tree">
         {tree.getItems().map((item) => (
-          <div
+          <button
+            {...item.getProps()}
+            ref={item.registerElement}
             key={item.getId()}
-            className="treeitem-parent"
-            style={{ marginLeft: `${item.getItemMeta().level * 20}px` }}
+            style={{ marginLeft: `${item.getItemMeta().level * 20}px`, color: item.getItemData().color }}
           >
-            <button
-              {...item.getProps()}
-              ref={item.registerElement}
+            <div
               className={cx("treeitem", {
                 focused: item.isFocused(),
                 expanded: item.isExpanded(),
@@ -100,11 +99,10 @@ export const CustomMatcher = () => {
                 folder: item.isFolder(),
                 searchmatch: item.isMatchingSearch(),
               })}
-              style={{ color: item.getItemData().color }}
             >
               {item.getItemName()}
-            </button>
-          </div>
+            </div>
+          </button>
         ))}
       </div>
     </>
