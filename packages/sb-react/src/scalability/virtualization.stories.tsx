@@ -39,8 +39,6 @@ const meta = {
 
 export default meta;
 
-// TODO dragline is broken in virtualization
-
 // story-start
 const getExpandedItemIds = (
   itemsPerLevel: number,
@@ -124,8 +122,8 @@ const Inner = forwardRef<Virtualizer<HTMLDivElement, Element>, any>(
               </button>
             );
           })}
-          <div style={tree.getDragLineStyle()} className="dragline" />
         </div>
+        <div style={tree.getDragLineStyle()} className="dragline" />
       </div>
     );
   },
