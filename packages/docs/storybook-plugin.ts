@@ -12,7 +12,7 @@ type Content = Record<string, StoryData>;
 
 const defaultOptions: Options = {
   sbBaseFolder: "./",
-  storiesJsonPath: "storybook-static/stories.json",
+  storiesJsonPath: "storybook-static/index.json",
 };
 
 export const storybookPlugin: PluginModule = (
@@ -23,13 +23,13 @@ export const storybookPlugin: PluginModule = (
   return {
     name: "docusaurus-plugin-storybook",
     loadContent: async () => {
-      const { stories } = JSON.parse(
+      const { entries } = JSON.parse(
         await fs.readFile(path.join(sbBaseFolder, storiesJsonPath), {
           encoding: "utf-8",
         }),
       );
       const withCode = await Promise.all(
-        Object.entries(stories).map(async ([id, story]: any) => ({
+        Object.entries(entries).map(async ([id, story]: any) => ({
           id,
           title: story.title,
           name: story.kind,
