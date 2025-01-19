@@ -1,7 +1,6 @@
 import type { Meta } from "@storybook/react";
 import React, { HTMLProps, forwardRef } from "react";
 import {
-  dragAndDropFeature,
   hotkeysCoreFeature,
   selectionFeature,
   syncDataLoaderFeature,
@@ -45,12 +44,7 @@ export const SlowItemRenderers = () => {
         `${itemId}-2item`,
       ],
     },
-    features: [
-      syncDataLoaderFeature,
-      selectionFeature,
-      hotkeysCoreFeature,
-      dragAndDropFeature,
-    ],
+    features: [syncDataLoaderFeature, selectionFeature, hotkeysCoreFeature],
   });
 
   return (

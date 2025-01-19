@@ -1,7 +1,6 @@
 import type { Meta } from "@storybook/react";
 import React from "react";
 import {
-  dragAndDropFeature,
   hotkeysCoreFeature,
   selectionFeature,
   syncDataLoaderFeature,
@@ -41,12 +40,7 @@ export const OverwritingHotkeys = () => {
         hotkey: "ArrowLeft",
       },
     },
-    features: [
-      syncDataLoaderFeature,
-      selectionFeature,
-      hotkeysCoreFeature,
-      dragAndDropFeature,
-    ],
+    features: [syncDataLoaderFeature, selectionFeature, hotkeysCoreFeature],
   });
 
   return (

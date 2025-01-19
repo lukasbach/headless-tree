@@ -2,7 +2,6 @@ import type { Meta } from "@storybook/react";
 import React from "react";
 import {
   asyncDataLoaderFeature,
-  dragAndDropFeature,
   expandAllFeature,
   hotkeysCoreFeature,
   selectionFeature,
@@ -48,7 +47,6 @@ export const AsyncData = () => {
       asyncDataLoaderFeature,
       selectionFeature,
       hotkeysCoreFeature,
-      dragAndDropFeature,
       expandAllFeature,
     ],
   });

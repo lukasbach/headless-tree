@@ -2,7 +2,6 @@ import type { Meta } from "@storybook/react";
 import React, { useState } from "react";
 import {
   asyncDataLoaderFeature,
-  dragAndDropFeature,
   hotkeysCoreFeature,
   selectionFeature,
 } from "@headless-tree/core";
@@ -34,12 +33,7 @@ export const AsyncDataLoading = () => {
     },
     dataLoader: null as any,
     indent: 20,
-    features: [
-      asyncDataLoaderFeature,
-      selectionFeature,
-      hotkeysCoreFeature,
-      dragAndDropFeature,
-    ],
+    features: [asyncDataLoaderFeature, selectionFeature, hotkeysCoreFeature],
   });
 
   return (

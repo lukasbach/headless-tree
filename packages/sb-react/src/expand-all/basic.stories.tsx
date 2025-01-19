@@ -1,7 +1,6 @@
 import type { Meta } from "@storybook/react";
 import React from "react";
 import {
-  dragAndDropFeature,
   expandAllFeature,
   hotkeysCoreFeature,
   selectionFeature,
@@ -42,7 +41,6 @@ export const Basic = () => {
     features: [
       selectionFeature,
       hotkeysCoreFeature,
-      dragAndDropFeature,
       expandAllFeature,
       syncDataLoaderFeature,
     ],

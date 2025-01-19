@@ -76,15 +76,14 @@ export const CanDrag = () => {
                 expanded: item.isExpanded(),
                 selected: item.isSelected(),
                 folder: item.isFolder(),
-                drop: item.isDropTarget() && item.isDraggingOver(),
-                dropabove: item.isDropTargetAbove() && item.isDraggingOver(),
-                dropbelow: item.isDropTargetBelow() && item.isDraggingOver(),
+                drop: item.isDropTarget(),
               })}
             >
               {item.getItemName()}
             </div>
           </button>
         ))}
+        <div style={tree.getDragLineStyle()} className="dragline" />
       </div>
     </>
   );

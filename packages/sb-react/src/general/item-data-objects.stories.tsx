@@ -1,7 +1,6 @@
 import type { Meta } from "@storybook/react";
 import React from "react";
 import {
-  dragAndDropFeature,
   hotkeysCoreFeature,
   selectionFeature,
   syncDataLoaderFeature,
@@ -48,12 +47,7 @@ export const ItemDataObjects = () => {
       getChildren: (itemId) => items[itemId].children ?? [],
     },
     indent: 20,
-    features: [
-      syncDataLoaderFeature,
-      selectionFeature,
-      hotkeysCoreFeature,
-      dragAndDropFeature,
-    ],
+    features: [syncDataLoaderFeature, selectionFeature, hotkeysCoreFeature],
   });
 
   return (

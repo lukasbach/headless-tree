@@ -1,7 +1,6 @@
 import type { Meta } from "@storybook/react";
 import React, { HTMLProps, forwardRef, memo } from "react";
 import {
-  dragAndDropFeature,
   hotkeysCoreFeature,
   selectionFeature,
   syncDataLoaderFeature,
@@ -60,12 +59,7 @@ export const MemoizedSlowItemRenderers = () => {
         `${itemId}-2item`,
       ],
     },
-    features: [
-      syncDataLoaderFeature,
-      selectionFeature,
-      hotkeysCoreFeature,
-      dragAndDropFeature,
-    ],
+    features: [syncDataLoaderFeature, selectionFeature, hotkeysCoreFeature],
   });
 
   return (
