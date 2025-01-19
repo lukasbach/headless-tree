@@ -2,6 +2,7 @@ import { ItemInstance, SetStateFn } from "../../types/core";
 
 export type DndDataRef = {
   lastDragCode?: string;
+  lastAllowDrop?: boolean;
 };
 
 export type DndState<T> = {

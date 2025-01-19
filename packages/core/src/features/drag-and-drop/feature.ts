@@ -115,6 +115,9 @@ export const dragAndDropFeature: FeatureImplementation<
         const dataRef = tree.getDataRef<DndDataRef>();
         const nextDragCode = getDragCode(e, item, tree);
         if (nextDragCode === dataRef.current.lastDragCode) {
+          if (dataRef.current.lastAllowDrop) {
+            e.preventDefault();
+          }
           return;
         }
         dataRef.current.lastDragCode = nextDragCode;
@@ -125,20 +128,21 @@ export const dragAndDropFeature: FeatureImplementation<
           !tree.getState().dnd?.draggedItems &&
           !tree.getConfig().canDropForeignDragObject?.(e.dataTransfer, target)
         ) {
+          dataRef.current.lastAllowDrop = false;
           return;
         }
 
         if (!canDrop(e.dataTransfer, target, tree)) {
+          dataRef.current.lastAllowDrop = false;
           return;
         }
-
-        e.preventDefault();
 
         tree.applySubStateUpdate("dnd", (state) => ({
           ...state,
           dragTarget: target,
           draggingOverItem: item,
         }));
+        dataRef.current.lastAllowDrop = true;
       }),
 
       onDragLeave: item.getMemoizedProp("dnd/onDragLeave", () => () => {
