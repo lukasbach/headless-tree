@@ -26,19 +26,6 @@ type TargetPlacement =
       reparentLevel: number;
     };
 
-export const getDragCode = ({
-  item,
-  childIndex,
-  dragLineIndex,
-  dragLineLevel,
-}: DropTarget<any>) =>
-  [item.getId(), childIndex, dragLineIndex, dragLineLevel].join("__");
-
-export const getDropOffset = (e: any, item: ItemInstance<any>): number => {
-  const bb = item.getElement()?.getBoundingClientRect();
-  return bb ? (e.pageY - bb.top) / bb.height : 0.5;
-};
-
 export const canDrop = (
   dataTransfer: DataTransfer | null,
   target: DropTarget<any>,
@@ -132,6 +119,19 @@ const getTargetPlacement = (
     return { type: PlacementType.ReorderBelow };
   }
   return { type: makeChildType };
+};
+
+export const getDragCode = (
+  e: any,
+  item: ItemInstance<any>,
+  tree: TreeInstance<any>,
+) => {
+  const placement = getTargetPlacement(e, item, tree, true);
+  return [
+    item.getId(),
+    placement.type,
+    placement.type === PlacementType.Reparent ? placement.reparentLevel : 0,
+  ].join("__");
 };
 
 const getNthParent = (
