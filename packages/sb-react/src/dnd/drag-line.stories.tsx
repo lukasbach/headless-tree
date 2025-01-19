@@ -73,7 +73,7 @@ export const DragLine = () => {
               expanded: item.isExpanded(),
               selected: item.isSelected(),
               folder: item.isFolder(),
-              drop: item.isDropTarget() && item.isDraggingOver(),
+              drop: item.isDropTarget(),
             })}
           >
             {item.getItemName()}
