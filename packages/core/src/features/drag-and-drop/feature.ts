@@ -112,8 +112,14 @@ export const dragAndDropFeature: FeatureImplementation<
       }),
 
       onDragOver: item.getMemoizedProp("dnd/onDragOver", () => (e) => {
-        const target = getDropTarget(e, item, tree);
         const dataRef = tree.getDataRef<DndDataRef>();
+        const nextDragCode = getDragCode(e, item, tree);
+        if (nextDragCode === dataRef.current.lastDragCode) {
+          return;
+        }
+        dataRef.current.lastDragCode = nextDragCode;
+
+        const target = getDropTarget(e, item, tree);
 
         if (
           !tree.getState().dnd?.draggedItems &&
@@ -127,13 +133,6 @@ export const dragAndDropFeature: FeatureImplementation<
         }
 
         e.preventDefault();
-        const nextDragCode = getDragCode(target);
-
-        if (nextDragCode === dataRef.current.lastDragCode) {
-          return;
-        }
-
-        dataRef.current.lastDragCode = nextDragCode;
 
         tree.applySubStateUpdate("dnd", (state) => ({
           ...state,
