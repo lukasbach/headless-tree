@@ -20,11 +20,7 @@ const meta = {
     canDropForeignDragObject: {
       control: "boolean",
     },
-    topLinePercentage: {
-      control: { type: "number", min: 0, max: 1, step: 0.1 },
-      defaultValue: 0.2,
-    },
-    bottomLinePercentage: {
+    reorderAreaPercentage: {
       control: { type: "number", min: 0, max: 1, step: 0.1 },
       defaultValue: 0.2,
     },
@@ -41,8 +37,7 @@ export default meta;
 export const KitchenSink = ({
   canDropInbetween,
   canDropForeignDragObject,
-  topLinePercentage,
-  bottomLinePercentage,
+  reorderAreaPercentage,
 }) => {
   const [state, setState] = useState({});
   const tree = useTree<string>({
@@ -61,8 +56,7 @@ export const KitchenSink = ({
         .join(",")}`,
     }),
     canDropForeignDragObject: () => canDropForeignDragObject,
-    topLinePercentage,
-    bottomLinePercentage,
+    reorderAreaPercentage,
     indent: 20,
     dataLoader: {
       getItem: (itemId) => itemId,
