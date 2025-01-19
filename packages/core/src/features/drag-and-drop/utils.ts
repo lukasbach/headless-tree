@@ -53,8 +53,10 @@ export const canDrop = (
 
   if (
     draggedItems &&
-    draggedItems.some((draggedItem) =>
-      target.item.isDescendentOf(draggedItem.getParent().getId()),
+    draggedItems.some(
+      (draggedItem) =>
+        target.item.getId() === draggedItem.getId() ||
+        target.item.isDescendentOf(draggedItem.getId()),
     )
   ) {
     return false;
