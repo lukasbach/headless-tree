@@ -33,8 +33,6 @@ const meta = {
 
 export default meta;
 
-// TODO DND is slow in this example
-
 // story-start
 const getExpandedItemIds = (
   itemsPerLevel: number,
