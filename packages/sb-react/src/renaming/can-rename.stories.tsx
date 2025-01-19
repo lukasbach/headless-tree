@@ -1,5 +1,5 @@
 import type { Meta } from "@storybook/react";
-import React from "react";
+import React, { Fragment } from "react";
 import {
   hotkeysCoreFeature,
   renamingFeature,
@@ -54,13 +54,12 @@ export const CanRenameConfigurability = () => {
       </p>
       <div ref={tree.registerElement} className="tree">
         {tree.getItems().map((item) => (
-          <div
-            key={item.getId()}
-            className="treeitem-parent"
-            style={{ marginLeft: `${item.getItemMeta().level * 20}px` }}
-          >
+          <Fragment key={item.getId()}>
             {item.isRenaming() ? (
-              <div className="treeitem">
+              <div
+                className="renaming-item"
+                style={{ marginLeft: `${item.getItemMeta().level * 20}px` }}
+              >
                 <input
                   {...item.getRenameInputProps()}
                   ref={(i) => i?.focus()}
@@ -70,17 +69,21 @@ export const CanRenameConfigurability = () => {
               <button
                 {...item.getProps()}
                 ref={item.registerElement}
-                className={cx("treeitem", {
-                  focused: item.isFocused(),
-                  expanded: item.isExpanded(),
-                  selected: item.isSelected(),
-                  folder: item.isFolder(),
-                })}
+                style={{ paddingLeft: `${item.getItemMeta().level * 20}px` }}
               >
-                {item.getItemName()}
+                <div
+                  className={cx("treeitem", {
+                    focused: item.isFocused(),
+                    expanded: item.isExpanded(),
+                    selected: item.isSelected(),
+                    folder: item.isFolder(),
+                  })}
+                >
+                  {item.getItemName()}
+                </div>
               </button>
             )}
-          </div>
+          </Fragment>
         ))}
       </div>
     </>

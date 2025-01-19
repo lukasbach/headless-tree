@@ -1,7 +1,6 @@
 import type { Meta } from "@storybook/react";
 import React from "react";
 import {
-  dragAndDropFeature,
   hotkeysCoreFeature,
   selectionFeature,
   syncDataLoaderFeature,
@@ -47,26 +46,23 @@ export const ItemDataObjects = () => {
       getItem: (itemId) => items[itemId],
       getChildren: (itemId) => items[itemId].children ?? [],
     },
-    features: [
-      syncDataLoaderFeature,
-      selectionFeature,
-      hotkeysCoreFeature,
-      dragAndDropFeature,
-    ],
+    indent: 20,
+    features: [syncDataLoaderFeature, selectionFeature, hotkeysCoreFeature],
   });
 
   return (
     <div ref={tree.registerElement} className="tree">
       {tree.getItems().map((item) => (
-        <div
+        <button
+          {...item.getProps()}
+          ref={item.registerElement}
           key={item.getId()}
-          className="treeitem-parent"
-          style={{ marginLeft: `${item.getItemMeta().level * 20}px` }}
+          style={{
+            paddingLeft: `${item.getItemMeta().level * 20}px`,
+            color: item.getItemData().isRed ? "red" : undefined,
+          }}
         >
-          <button
-            {...item.getProps()}
-            ref={item.registerElement}
-            style={{ color: item.getItemData().isRed ? "red" : undefined }}
+          <div
             className={cx("treeitem", {
               focused: item.isFocused(),
               expanded: item.isExpanded(),
@@ -75,8 +71,8 @@ export const ItemDataObjects = () => {
             })}
           >
             {item.getItemName()}
-          </button>
-        </div>
+          </div>
+        </button>
       ))}
     </div>
   );

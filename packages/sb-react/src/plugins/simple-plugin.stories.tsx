@@ -1,7 +1,6 @@
 import type { Meta } from "@storybook/react";
 import React from "react";
 import {
-  dragAndDropFeature,
   hotkeysCoreFeature,
   selectionFeature,
   syncDataLoaderFeature,
@@ -29,6 +28,7 @@ export const SimplePlugin = () => {
     rootItemId: "folder",
     getItemName: (item) => item.getItemData(),
     isItemFolder: (item) => !item.getItemData().endsWith("item"),
+    indent: 20,
     dataLoader: {
       getItem: (itemId) => itemId,
       getChildren: (itemId) => [
@@ -43,7 +43,6 @@ export const SimplePlugin = () => {
       syncDataLoaderFeature,
       selectionFeature,
       hotkeysCoreFeature,
-      dragAndDropFeature,
       {
         itemInstance: {
           alertChildren: ({ item }) => {
@@ -62,14 +61,13 @@ export const SimplePlugin = () => {
   return (
     <div ref={tree.registerElement} className="tree">
       {tree.getItems().map((item) => (
-        <div
+        <button
+          {...item.getProps()}
+          ref={item.registerElement}
           key={item.getId()}
-          className="treeitem-parent"
-          style={{ marginLeft: `${item.getItemMeta().level * 20}px` }}
+          style={{ paddingLeft: `${item.getItemMeta().level * 20}px` }}
         >
-          <button
-            {...item.getProps()}
-            ref={item.registerElement}
+          <div
             className={cx("treeitem", {
               focused: item.isFocused(),
               expanded: item.isExpanded(),
@@ -78,9 +76,9 @@ export const SimplePlugin = () => {
             })}
           >
             {item.getItemName()}
-          </button>
+          </div>
           <button onClick={item.alertChildren}>X</button>
-        </div>
+        </button>
       ))}
     </div>
   );

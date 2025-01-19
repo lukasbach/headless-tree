@@ -29,41 +29,53 @@ export const dragAndDropFeature: FeatureImplementation<
 
     getDragLineData: ({ tree }): DragLineData | null => {
       const target = tree.getDropTarget();
-      const intend = (target?.item.getItemMeta().level ?? 0) + 1;
+      const intend = (target?.item.getItemMeta().level ?? 0) + 1; // TODO rename to indent
 
       if (!target || target.childIndex === null) return null;
 
-      const children = target.item.getChildren();
+      const leftOffset = target.dragLineLevel * (tree.getConfig().indent ?? 1);
+      const targetItem = tree.getItems()[target.dragLineIndex];
 
-      if (target.childIndex === children.length) {
-        const bb = children[target.childIndex - 1]
-          ?.getElement()
+      if (!targetItem) {
+        const bb = tree
+          .getItems()
+          [target.dragLineIndex - 1]?.getElement()
           ?.getBoundingClientRect();
 
         if (bb) {
           return {
             intend,
             top: bb.bottom,
-            left: bb.left,
+            left: bb.left + leftOffset,
             right: bb.right,
           };
         }
       }
 
-      const bb = children[target.childIndex]
-        ?.getElement()
-        ?.getBoundingClientRect();
+      const bb = targetItem.getElement()?.getBoundingClientRect();
 
       if (bb) {
         return {
           intend,
           top: bb.top,
-          left: bb.left,
+          left: bb.left + leftOffset,
           right: bb.right,
         };
       }
 
       return null;
+    },
+
+    getDragLineStyle: ({ tree }, topOffset = -1, leftOffset = -8) => {
+      const dragLine = tree.getDragLineData();
+      return dragLine
+        ? {
+            top: `${dragLine.top + topOffset}px`,
+            left: `${dragLine.left + leftOffset}px`,
+            width: `${dragLine.right - dragLine.left - leftOffset}px`,
+            pointerEvents: "none", // important to prevent capturing drag events
+          }
+        : { display: "none" };
     },
   },
 
@@ -100,8 +112,14 @@ export const dragAndDropFeature: FeatureImplementation<
       }),
 
       onDragOver: item.getMemoizedProp("dnd/onDragOver", () => (e) => {
-        const target = getDropTarget(e, item, tree);
         const dataRef = tree.getDataRef<DndDataRef>();
+        const nextDragCode = getDragCode(e, item, tree);
+        if (nextDragCode === dataRef.current.lastDragCode) {
+          return;
+        }
+        dataRef.current.lastDragCode = nextDragCode;
+
+        const target = getDropTarget(e, item, tree);
 
         if (
           !tree.getState().dnd?.draggedItems &&
@@ -115,13 +133,6 @@ export const dragAndDropFeature: FeatureImplementation<
         }
 
         e.preventDefault();
-        const nextDragCode = getDragCode(target);
-
-        if (nextDragCode === dataRef.current.lastDragCode) {
-          return;
-        }
-
-        dataRef.current.lastDragCode = nextDragCode;
 
         tree.applySubStateUpdate("dnd", (state) => ({
           ...state,

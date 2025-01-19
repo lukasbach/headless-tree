@@ -2,7 +2,6 @@ import type { Meta } from "@storybook/react";
 import React from "react";
 import {
   asyncDataLoaderFeature,
-  dragAndDropFeature,
   expandAllFeature,
   hotkeysCoreFeature,
   selectionFeature,
@@ -42,12 +41,12 @@ export const AsyncData = () => {
           `${itemId}-3item`,
         ]),
     },
+    indent: 20,
     dataLoader: null as any,
     features: [
       asyncDataLoaderFeature,
       selectionFeature,
       hotkeysCoreFeature,
-      dragAndDropFeature,
       expandAllFeature,
     ],
   });
@@ -74,22 +73,24 @@ export const AsyncData = () => {
       </button>
       <div ref={tree.registerElement} className="tree">
         {tree.getItems().map((item) => (
-          <div
-            key={item.getId()}
-            className="treeitem-parent"
-            style={{ marginLeft: `${item.getItemMeta().level * 20}px` }}
-          >
+          <div style={{ display: "flex" }}>
+            {/* TODO */}
             <button
               {...item.getProps()}
               ref={item.registerElement}
-              className={cx("treeitem", {
-                focused: item.isFocused(),
-                expanded: item.isExpanded(),
-                selected: item.isSelected(),
-                folder: item.isFolder(),
-              })}
+              key={item.getId()}
+              style={{ paddingLeft: `${item.getItemMeta().level * 20}px` }}
             >
-              {item.getItemName()}
+              <div
+                className={cx("treeitem", {
+                  focused: item.isFocused(),
+                  expanded: item.isExpanded(),
+                  selected: item.isSelected(),
+                  folder: item.isFolder(),
+                })}
+              >
+                {item.getItemName()}
+              </div>
             </button>
             <button onClick={() => item.expandAll(cancelToken)}>+</button>
             <button onClick={item.collapseAll}>-</button>

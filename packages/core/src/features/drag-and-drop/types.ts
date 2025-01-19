@@ -22,11 +22,15 @@ export type DropTarget<T> =
       item: ItemInstance<T>;
       childIndex: number;
       insertionIndex: number;
+      dragLineIndex: number;
+      dragLineLevel: number;
     }
   | {
       item: ItemInstance<T>;
       childIndex: null;
       insertionIndex: null;
+      dragLineIndex: number;
+      dragLineLevel: number;
     };
 
 export enum DropTargetPosition {
@@ -42,13 +46,17 @@ export type DragAndDropFeatureDef<T> = {
   config: {
     setDndState?: SetStateFn<DndState<T> | null>;
 
-    topLinePercentage?: number;
-    bottomLinePercentage?: number;
+    /** Defines the size of the area at the top and bottom of an item where, when an item is dropped, the item willö
+     * be placed above or below the item within the same parent, as opposed to being placed inside the item.
+     * If `canDropInbetween` is `false`, this is ignored. */
+    reorderAreaPercentage?: number;
     canDropInbetween?: boolean;
 
     isItemDraggable?: (item: ItemInstance<T>) => boolean;
     canDrag?: (items: ItemInstance<T>[]) => boolean;
     canDrop?: (items: ItemInstance<T>[], target: DropTarget<T>) => boolean;
+
+    indent?: number;
 
     createForeignDragObject?: (items: ItemInstance<T>[]) => {
       format: string;
@@ -78,6 +86,10 @@ export type DragAndDropFeatureDef<T> = {
   treeInstance: {
     getDropTarget: () => DropTarget<T> | null;
     getDragLineData: () => DragLineData | null;
+    getDragLineStyle: (
+      topOffset?: number,
+      leftOffset?: number,
+    ) => Record<string, any>;
   };
   itemInstance: {
     isDropTarget: () => boolean;

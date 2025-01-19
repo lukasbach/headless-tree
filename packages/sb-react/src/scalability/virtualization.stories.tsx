@@ -95,39 +95,35 @@ const Inner = forwardRef<Virtualizer<HTMLDivElement, Element>, any>(
           {virtualizer.getVirtualItems().map((virtualItem) => {
             const item = tree.getItems()[virtualItem.index];
             return (
-              <div
+              <button
+                {...item.getProps()}
+                ref={item.registerElement}
                 key={item.getId()}
-                className="treeitem-parent"
                 style={{
                   position: "absolute",
                   top: 0,
                   left: 0,
                   width: "100%",
                   transform: `translateY(${virtualItem.start}px)`,
-                  marginLeft: `${item.getItemMeta().level * 20}px`,
+                  paddingLeft: `${item.getItemMeta().level * 20}px`,
                 }}
               >
-                <button
-                  {...item.getProps()}
-                  ref={item.registerElement}
+                <div
                   className={cx("treeitem", {
                     focused: item.isFocused(),
                     expanded: item.isExpanded(),
                     selected: item.isSelected(),
                     folder: item.isFolder(),
-                    drop: item.isDropTarget() && item.isDraggingOver(),
-                    dropabove:
-                      item.isDropTargetAbove() && item.isDraggingOver(),
-                    dropbelow:
-                      item.isDropTargetBelow() && item.isDraggingOver(),
+                    drop: item.isDropTarget(),
                   })}
                 >
                   {item.getItemName()}
-                </button>
-              </div>
+                </div>
+              </button>
             );
           })}
         </div>
+        <div style={tree.getDragLineStyle()} className="dragline" />
       </div>
     );
   },
@@ -155,6 +151,7 @@ export const BasicVirtualization = ({
       virtualizer.current?.scrollToIndex(item.getItemMeta().index);
     },
     canDropInbetween: true,
+    indent: 20,
     dataLoader: {
       getItem: (itemId) => itemId,
       getChildren: (itemId) => {

@@ -2,9 +2,13 @@
     max-width: 300px;
 }
 
-.treeitem-parent {
+.tree button[role="treeitem"] {
     margin-bottom: 2px;
     display: flex;
+    background: transparent;
+    border: none;
+    width: 100%;
+    padding: 0;
 }
 
 .treeitem {
@@ -13,6 +17,19 @@
     background-color: white;
     border: 1px solid #ccc;
     padding: 4px 6px;
+}
+
+.renaming-item {
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 4px 6px;
+    margin-bottom: 2px;
+}
+.renaming-item input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: transparent;
 }
 
 .treeitem:hover {
@@ -32,15 +49,8 @@
 }
 
 .treeitem.drop {
-    border-color: red;
-}
-
-.treeitem.dropabove {
-    border-top: 1px solid red;
-}
-
-.treeitem.dropbelow {
-    border-bottom: 1px solid red;
+    border-color: #00aff4;
+    background-color: #e1f1f8;
 }
 
 .treeitem.searchmatch {
@@ -71,7 +81,7 @@
 
 .dragline {
     position: absolute;
-    height: 3px;
+    height: 2px;
     width: unset;
     margin-top: -1px;
     background-color: #00aff4;
@@ -82,8 +92,9 @@
     position: absolute;
     left: 0;
     top: -3px;
-    height: 8px;
-    width: 8px;
-    background-color: #00aff4;
+    height: 4px;
+    width: 4px;
+    background: #fff;
+    border: 2px solid #00aff4;
     border-radius: 99px;
 }

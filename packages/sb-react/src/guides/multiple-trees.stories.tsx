@@ -48,10 +48,11 @@ const Tree = (props: { data: Record<string, Item>; prefix: string }) => {
     getItemName: (item) => item.getItemData().name,
     isItemFolder: (item) => item.getItemData().children !== undefined,
     canDropInbetween: true,
+    indent: 20,
 
     // onDrop is only called when moving items WITHIN one tree.
     // This handles the entire move operation.
-    // Normally you can use `createOnDropHandler` for that, this just shows
+    // Normally you can use `createOnDropHandler` for that, the following just
     // demonstrates how to do with the individual handlers.
     onDrop: (items, target) => {
       const itemIds = items.map((item) => item.getId());
@@ -99,28 +100,26 @@ const Tree = (props: { data: Record<string, Item>; prefix: string }) => {
   return (
     <div ref={tree.registerElement} className="tree">
       {tree.getItems().map((item) => (
-        <div
+        <button
+          {...item.getProps()}
+          ref={item.registerElement}
           key={item.getId()}
-          className="treeitem-parent"
-          style={{ marginLeft: `${item.getItemMeta().level * 20}px` }}
+          style={{ paddingLeft: `${item.getItemMeta().level * 20}px` }}
         >
-          <button
-            {...item.getProps()}
-            ref={item.registerElement}
+          <div
             className={cx("treeitem", {
               focused: item.isFocused(),
               expanded: item.isExpanded(),
               selected: item.isSelected(),
               folder: item.isFolder(),
-              drop: item.isDropTarget() && item.isDraggingOver(),
-              dropabove: item.isDropTargetAbove() && item.isDraggingOver(),
-              dropbelow: item.isDropTargetBelow() && item.isDraggingOver(),
+              drop: item.isDropTarget(),
             })}
           >
             {item.getItemName()}
-          </button>
-        </div>
+          </div>
+        </button>
       ))}
+      <div style={tree.getDragLineStyle()} className="dragline" />
     </div>
   );
 };

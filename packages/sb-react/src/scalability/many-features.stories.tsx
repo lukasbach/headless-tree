@@ -1,7 +1,6 @@
 import type { Meta } from "@storybook/react";
 import React, { useState } from "react";
 import {
-  dragAndDropFeature,
   hotkeysCoreFeature,
   selectionFeature,
   syncDataLoaderFeature,
@@ -57,6 +56,7 @@ export const ManyFeatures = ({ featureCount }) => {
     rootItemId: "folder",
     getItemName: (item) => item.getItemData(),
     isItemFolder: (item) => !item.getItemData().endsWith("item"),
+    indent: 20,
     hotkeys: {
       customEvent: {
         hotkey: "Escape",
@@ -78,7 +78,6 @@ export const ManyFeatures = ({ featureCount }) => {
       syncDataLoaderFeature,
       selectionFeature,
       hotkeysCoreFeature,
-      dragAndDropFeature,
       ...Array.from({ length: featureCount }, createFeature),
     ],
   });
@@ -86,14 +85,13 @@ export const ManyFeatures = ({ featureCount }) => {
   return (
     <div ref={tree.registerElement} className="tree">
       {tree.getItems().map((item) => (
-        <div
+        <button
+          {...item.getProps()}
+          ref={item.registerElement}
           key={item.getId()}
-          className="treeitem-parent"
-          style={{ marginLeft: `${item.getItemMeta().level * 20}px` }}
+          style={{ paddingLeft: `${item.getItemMeta().level * 20}px` }}
         >
-          <button
-            {...item.getProps()}
-            ref={item.registerElement}
+          <div
             className={cx("treeitem", {
               focused: item.isFocused(),
               expanded: item.isExpanded(),
@@ -102,10 +100,10 @@ export const ManyFeatures = ({ featureCount }) => {
             })}
           >
             {item.getItemName()}
-          </button>
+          </div>
           <button onClick={() => item.logSomething()}>normal</button>
           <button onClick={() => item.logCascading(0)}>cascade</button>
-        </div>
+        </button>
       ))}
     </div>
   );

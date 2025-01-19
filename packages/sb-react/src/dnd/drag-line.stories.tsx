@@ -1,6 +1,7 @@
 import type { Meta } from "@storybook/react";
 import React, { useState } from "react";
 import {
+  TreeState,
   dragAndDropFeature,
   hotkeysCoreFeature,
   selectionFeature,
@@ -18,7 +19,9 @@ export default meta;
 
 // story-start
 export const DragLine = () => {
-  const [state, setState] = useState({});
+  const [state, setState] = useState<Partial<TreeState<any>>>({
+    expandedItems: ["root-1", "root-1-2"],
+  });
   const tree = useTree<string>({
     state,
     setState,
@@ -33,6 +36,7 @@ export const DragLine = () => {
         )} on ${target.item.getId()}, index ${target.childIndex}`,
       );
     },
+    indent: 20,
     dataLoader: {
       getItem: (itemId) => itemId,
       getChildren: (itemId) => [
@@ -53,42 +57,30 @@ export const DragLine = () => {
   });
 
   const dragLine = tree.getDragLineData();
-  console.log(dragLine);
 
   return (
     <div ref={tree.registerElement} className="tree">
       {tree.getItems().map((item) => (
-        <div
+        <button
+          {...item.getProps()}
+          ref={item.registerElement}
           key={item.getId()}
-          className="treeitem-parent"
-          style={{ marginLeft: `${item.getItemMeta().level * 20}px` }}
+          style={{ paddingLeft: `${item.getItemMeta().level * 20}px` }}
         >
-          <button
-            {...item.getProps()}
-            ref={item.registerElement}
+          <div
             className={cx("treeitem", {
               focused: item.isFocused(),
               expanded: item.isExpanded(),
               selected: item.isSelected(),
               folder: item.isFolder(),
-              drop: item.isDropTarget() && item.isDraggingOver(),
+              drop: item.isDropTarget(),
             })}
           >
             {item.getItemName()}
-          </button>
-        </div>
+          </div>
+        </button>
       ))}
-      {dragLine && (
-        <div
-          style={{
-            top: `${dragLine.top}px`,
-            left: `${dragLine.left - 10}px`,
-            width: `${dragLine.right - dragLine.left + 10}px`,
-            pointerEvents: "none", // important to prevent capturing drag events
-          }}
-          className="dragline"
-        />
-      )}
+      <div style={tree.getDragLineStyle()} className="dragline" />
       <pre>
         {JSON.stringify(
           {

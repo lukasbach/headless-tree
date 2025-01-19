@@ -40,6 +40,7 @@ export const DragOutside = () => {
         .map((item) => item.getId())
         .join(",")}`,
     }),
+    indent: 20,
     dataLoader,
     onCompleteForeignDrop: (items) => {
       removeItemsFromParents(items, (item, newChildren) => {
@@ -58,28 +59,26 @@ export const DragOutside = () => {
     <>
       <div ref={tree.registerElement} className="tree">
         {tree.getItems().map((item) => (
-          <div
+          <button
+            {...item.getProps()}
+            ref={item.registerElement}
             key={item.getId()}
-            className="treeitem-parent"
-            style={{ marginLeft: `${item.getItemMeta().level * 20}px` }}
+            style={{ paddingLeft: `${item.getItemMeta().level * 20}px` }}
           >
-            <button
-              {...item.getProps()}
-              ref={item.registerElement}
+            <div
               className={cx("treeitem", {
                 focused: item.isFocused(),
                 expanded: item.isExpanded(),
                 selected: item.isSelected(),
                 folder: item.isFolder(),
-                drop: item.isDropTarget() && item.isDraggingOver(),
-                dropabove: item.isDropTargetAbove() && item.isDraggingOver(),
-                dropbelow: item.isDropTargetBelow() && item.isDraggingOver(),
+                drop: item.isDropTarget(),
               })}
             >
               {item.getItemName()}
-            </button>
-          </div>
+            </div>
+          </button>
         ))}
+        <div style={tree.getDragLineStyle()} className="dragline" />
       </div>
       <div
         style={{ marginTop: "40px" }}

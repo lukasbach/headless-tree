@@ -196,6 +196,10 @@ export const treeFeature: FeatureImplementation<
       tree.retrieveItemData(item.getItemMeta().itemId),
     isExpanded: ({ tree, item }) =>
       tree.getState().expandedItems.includes(item.getItemMeta().itemId),
+    isDescendentOf: ({ item }, parentId) => {
+      const parent = item.getParent();
+      return parent?.getId() === parentId || parent?.isDescendentOf(parentId);
+    },
     isFocused: ({ tree, item }) =>
       tree.getState().focusedItem === item.getItemMeta().itemId ||
       (tree.getState().focusedItem === null && item.getItemMeta().index === 0),

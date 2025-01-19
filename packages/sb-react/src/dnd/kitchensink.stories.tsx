@@ -20,11 +20,7 @@ const meta = {
     canDropForeignDragObject: {
       control: "boolean",
     },
-    topLinePercentage: {
-      control: { type: "number", min: 0, max: 1, step: 0.1 },
-      defaultValue: 0.2,
-    },
-    bottomLinePercentage: {
+    reorderAreaPercentage: {
       control: { type: "number", min: 0, max: 1, step: 0.1 },
       defaultValue: 0.2,
     },
@@ -41,8 +37,7 @@ export default meta;
 export const KitchenSink = ({
   canDropInbetween,
   canDropForeignDragObject,
-  topLinePercentage,
-  bottomLinePercentage,
+  reorderAreaPercentage,
 }) => {
   const [state, setState] = useState({});
   const tree = useTree<string>({
@@ -61,8 +56,8 @@ export const KitchenSink = ({
         .join(",")}`,
     }),
     canDropForeignDragObject: () => canDropForeignDragObject,
-    topLinePercentage,
-    bottomLinePercentage,
+    reorderAreaPercentage,
+    indent: 20,
     dataLoader: {
       getItem: (itemId) => itemId,
       getChildren: (itemId) => [
@@ -86,28 +81,26 @@ export const KitchenSink = ({
     <>
       <div ref={tree.registerElement} className="tree">
         {tree.getItems().map((item) => (
-          <div
+          <button
+            {...item.getProps()}
+            ref={item.registerElement}
             key={item.getId()}
-            className="treeitem-parent"
-            style={{ marginLeft: `${item.getItemMeta().level * 20}px` }}
+            style={{ paddingLeft: `${item.getItemMeta().level * 20}px` }}
           >
-            <button
-              {...item.getProps()}
-              ref={item.registerElement}
+            <div
               className={cx("treeitem", {
                 focused: item.isFocused(),
                 expanded: item.isExpanded(),
                 selected: item.isSelected(),
                 folder: item.isFolder(),
-                drop: item.isDropTarget() && item.isDraggingOver(),
-                dropabove: item.isDropTargetAbove() && item.isDraggingOver(),
-                dropbelow: item.isDropTargetBelow() && item.isDraggingOver(),
+                drop: item.isDropTarget(),
               })}
             >
               {item.getItemName()}
-            </button>
-          </div>
+            </div>
+          </button>
         ))}
+        <div style={tree.getDragLineStyle()} className="dragline" />
       </div>
       <div
         style={{ marginTop: "40px" }}
