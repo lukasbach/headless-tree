@@ -1,7 +1,6 @@
 import type { Meta } from "@storybook/react";
 import React, { useState } from "react";
 import {
-  dragAndDropFeature,
   hotkeysCoreFeature,
   selectionFeature,
   syncDataLoaderFeature,
@@ -42,12 +41,7 @@ export const Example = () => {
       ],
     },
     indent: 20,
-    features: [
-      syncDataLoaderFeature,
-      selectionFeature,
-      hotkeysCoreFeature,
-      dragAndDropFeature,
-    ],
+    features: [syncDataLoaderFeature, selectionFeature, hotkeysCoreFeature],
   });
 
   return (

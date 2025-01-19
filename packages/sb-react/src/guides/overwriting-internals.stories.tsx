@@ -1,7 +1,6 @@
 import type { Meta } from "@storybook/react";
 import React from "react";
 import {
-  dragAndDropFeature,
   hotkeysCoreFeature,
   selectionFeature,
   syncDataLoaderFeature,
@@ -36,7 +35,6 @@ export const OverwritingInternals = () => {
       syncDataLoaderFeature,
       selectionFeature,
       hotkeysCoreFeature,
-      dragAndDropFeature,
       {
         itemInstance: {
           getProps: ({ prev, item }) => ({

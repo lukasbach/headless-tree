@@ -1,7 +1,6 @@
 import type { Meta } from "@storybook/react";
 import React, { useState } from "react";
 import {
-  dragAndDropFeature,
   hotkeysCoreFeature,
   selectionFeature,
   syncDataLoaderFeature,
@@ -79,7 +78,6 @@ export const ManyFeatures = ({ featureCount }) => {
       syncDataLoaderFeature,
       selectionFeature,
       hotkeysCoreFeature,
-      dragAndDropFeature,
       ...Array.from({ length: featureCount }, createFeature),
     ],
   });
