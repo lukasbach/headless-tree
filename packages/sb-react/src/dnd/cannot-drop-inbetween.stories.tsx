@@ -1,6 +1,7 @@
 import type { Meta } from "@storybook/react";
 import React, { useState } from "react";
 import {
+  TreeState,
   dragAndDropFeature,
   hotkeysCoreFeature,
   selectionFeature,
@@ -16,15 +17,19 @@ const meta = {
 
 export default meta;
 
+// TODO dragging on root-1-2-1 should make the parent hover-effect
+
 // story-start
 export const CannotDropInbetween = () => {
-  const [state, setState] = useState({});
+  const [state, setState] = useState<Partial<TreeState<any>>>({
+    expandedItems: ["root-1", "root-1-2"],
+  });
   const tree = useTree<string>({
     state,
     setState,
     rootItemId: "root",
     getItemName: (item) => item.getItemData(),
-    isItemFolder: () => true,
+    isItemFolder: (item) => item.getItemMeta().level < 2,
     canDropInbetween: false,
     onDrop: (items, target) => {
       alert(

@@ -25,7 +25,7 @@ export const CanDrop = () => {
     rootItemId: "root",
     getItemName: (item) => item.getItemData(),
     isItemFolder: () => true,
-    canDropInbetween: true,
+    canDropInbetween: true, // TODO! invert for error
     canDrop: (items, { item }) =>
       item.getItemName().endsWith("1") || item.getItemName().endsWith("2"),
     onDrop: (items, target) => {
