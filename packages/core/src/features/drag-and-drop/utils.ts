@@ -171,6 +171,7 @@ export const getDropTarget = (
 
   if (!canDropInbetween) {
     if (!canBecomeSibling) {
+      // TODO! this breaks in story DND/Can Drop. Maybe move this logic into a composable DropTargetStrategy[] ?
       return getDropTarget(e, item.getParent(), tree, false);
     }
     return itemTarget;
