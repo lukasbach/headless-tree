@@ -11,7 +11,8 @@
     "start:docs": "lerna run start --parallel --scope @headless-tree/docs",
     "build": "lerna run build,build:cjs,build:esm,build:docs,build:sb --concurrency 1",
     "build:core": "lerna run build,build:cjs,build:esm --concurrency 1",
-    "build:web": "lerna run build:docs,build:sb --concurrency 1"
+    "build:web": "lerna run build:docs,build:sb --concurrency 1",
+    "test": "lerna run test --stream"
   },
   "dependencies": {
     "@changesets/cli": "^2.27.5",
