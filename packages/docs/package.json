@@ -31,7 +31,7 @@
     "@headless-tree/sb-react": "workspace:*",
     "docusaurus-plugin-typedoc": "^1.0.1",
     "docusaurus-plugin-typedoc-api": "^4.2.0",
-    "typescript": "~5.2.2"
+    "typescript": "^5.7.3"
   },
   "browserslist": {
     "production": [
