@@ -17,7 +17,7 @@
   "dependencies": {
     "@changesets/cli": "^2.27.5",
     "@lukasbach/eslint-config-deps": "^1.0.7",
-    "@types/node": "20.11.28",
+    "@types/node": "22.10.7",
     "@types/react": "18.2.66",
     "@types/react-dom": "18.2.22",
     "eslint": "^8.57.0",
@@ -27,9 +27,8 @@
     "zx": "^7.2.3"
   },
   "volta": {
-    "node": "20.11.1",
-    "yarn": "4.1.1",
-    "npm": "9.6.7"
+    "node": "23.6.1",
+    "yarn": "4.1.1"
   },
   "eslintConfig": {
     "extends": "@lukasbach/base/react",
