@@ -1,67 +1,220 @@
 import { describe, expect, it } from "vitest";
 import { TestTree } from "../../test-utils/test-tree";
-import { syncDataLoaderFeature } from "../sync-data-loader/feature";
 import { selectionFeature } from "./feature";
 
+const factory = TestTree.default({}).withFeatures(selectionFeature);
+
+// it("test", async () => {
+//   const tree = await factory.suits.async().tree.createDebugTree();
+//   const setSelectedItems = tree.mockedHandler("setSelectedItems");
+//   const setFocusedItem = tree.mockedHandler("setFocusedItem");
+//
+//   tree.do.selectItem("x111");
+//   tree.do.ctrlSelectItem("x112");
+//   tree.do.ctrlSelectItem("x113");
+//
+//   expect(setSelectedItems).toHaveBeenCalledWith(["x111", "x112", "x113"]);
+//   expect(setFocusedItem).toHaveBeenCalledWith("x113");
+// });
+
 describe("core-feature/selections", () => {
-  // describe.for([syncTree, asyncTree, proxifiedSyncTree, proxifiedAsyncTree], () => {});
-  const tree = TestTree.default({})
-    .withFeatures(syncDataLoaderFeature, selectionFeature)
-    .withResetBeforeEach();
+  factory.forSuits((tree) => {
+    it("sets aria-selected to false", () => {
+      expect(
+        tree.instance.getItemInstance("x111").getProps()["aria-selected"],
+      ).toBe("false");
+    });
 
-  it("sets aria-selected to false", () => {
-    expect(
-      tree.instance.getItemInstance("x111").getProps()["aria-selected"],
-    ).toBe("false");
-  });
-
-  it("sets aria-selected to true", () => {
-    tree.do.selectItem("x111");
-    expect(
-      tree.instance.getItemInstance("x111").getProps()["aria-selected"],
-    ).toBe("true");
-  });
-
-  describe("select and control select", () => {
-    it("should make isSelected true", () => {
+    it("sets aria-selected to true", () => {
       tree.do.selectItem("x111");
-      tree.do.ctrlSelectItem("x112");
-      tree.do.ctrlSelectItem("x113");
+      expect(
+        tree.instance.getItemInstance("x111").getProps()["aria-selected"],
+      ).toBe("true");
+    });
 
-      expect(tree.instance.getItemInstance("x111").isSelected()).toBe(true);
+    it("resets old selection after new select", () => {
+      tree.do.selectItem("x111");
+      tree.do.selectItem("x112");
+      expect(
+        tree.instance.getItemInstance("x111").getProps()["aria-selected"],
+      ).toBe("false");
+      expect(
+        tree.instance.getItemInstance("x112").getProps()["aria-selected"],
+      ).toBe("true");
+      expect(tree.instance.getItemInstance("x111").isSelected()).toBe(false);
       expect(tree.instance.getItemInstance("x112").isSelected()).toBe(true);
-      expect(tree.instance.getItemInstance("x113").isSelected()).toBe(true);
     });
 
-    it("should call individual state setters", () => {
-      const setSelectedItems = tree.mockedHandler("setSelectedItems");
-      const setFocusedItem = tree.mockedHandler("setFocusedItem");
+    describe("select and control select", () => {
+      it("should make isSelected true", () => {
+        tree.do.selectItem("x111");
+        tree.do.ctrlSelectItem("x112");
+        tree.do.ctrlSelectItem("x113");
 
-      tree.do.selectItem("x111");
-      tree.do.ctrlSelectItem("x112");
-      tree.do.ctrlSelectItem("x113");
+        expect(tree.instance.getItemInstance("x111").isSelected()).toBe(true);
+        expect(tree.instance.getItemInstance("x112").isSelected()).toBe(true);
+        expect(tree.instance.getItemInstance("x113").isSelected()).toBe(true);
+      });
 
-      expect(setSelectedItems).toHaveBeenCalledWith(["x111", "x112", "x113"]);
-      expect(setFocusedItem).toHaveBeenCalledWith("x113");
+      it("should call individual state setters", () => {
+        const setSelectedItems = tree.mockedHandler("setSelectedItems");
+        const setFocusedItem = tree.mockedHandler("setFocusedItem");
+
+        tree.do.selectItem("x111");
+        tree.do.ctrlSelectItem("x112");
+        tree.do.ctrlSelectItem("x113");
+
+        expect(setSelectedItems).toHaveBeenCalledWith(["x111", "x112", "x113"]);
+        expect(setFocusedItem).toHaveBeenCalledWith("x113");
+      });
+
+      it("should call joint state setter", () => {
+        const setState = tree.mockedHandler("setState");
+
+        tree.do.selectItem("x111");
+        tree.do.ctrlSelectItem("x112");
+        tree.do.ctrlSelectItem("x113");
+
+        expect(setState).toHaveBeenCalledWith(
+          expect.objectContaining({
+            selectedItems: ["x111", "x112", "x113"],
+            focusedItem: "x113",
+          }),
+        );
+      });
     });
 
-    it("should call joint state setter", () => {
-      const setState = tree.mockedHandler("setState");
+    describe("shift select", () => {
+      it("should make isSelected true", () => {
+        tree.do.selectItem("x111");
+        tree.do.shiftSelectItem("x113");
+        tree.do.ctrlSelectItem("x2");
 
-      tree.do.selectItem("x111");
-      tree.do.ctrlSelectItem("x112");
-      tree.do.ctrlSelectItem("x113");
+        expect(tree.instance.getItemInstance("x111").isSelected()).toBe(true);
+        expect(tree.instance.getItemInstance("x112").isSelected()).toBe(true);
+        expect(tree.instance.getItemInstance("x113").isSelected()).toBe(true);
+        expect(tree.instance.getItemInstance("x2").isSelected()).toBe(true);
+      });
 
-      expect(setState).toHaveBeenCalledWith(
-        expect.objectContaining({
-          selectedItems: ["x111", "x112", "x113"],
-          focusedItem: "x113",
-        }),
-      );
+      it("should call individual state setters", () => {
+        const setSelectedItems = tree.mockedHandler("setSelectedItems");
+        const setFocusedItem = tree.mockedHandler("setFocusedItem");
+
+        tree.do.selectItem("x111");
+        tree.do.shiftSelectItem("x113");
+        expect(setFocusedItem).toHaveBeenCalledWith("x113");
+
+        tree.do.ctrlSelectItem("x2");
+
+        expect(setSelectedItems).toHaveBeenCalledWith([
+          "x111",
+          "x112",
+          "x113",
+          "x2",
+        ]);
+
+        expect(setFocusedItem).toHaveBeenCalledWith("x2");
+      });
+
+      it("should call joint state setter", () => {
+        const setState = tree.mockedHandler("setState");
+
+        tree.do.selectItem("x111");
+        tree.do.shiftSelectItem("x113");
+        expect(setState).toHaveBeenCalledWith(
+          expect.objectContaining({
+            selectedItems: ["x111", "x112", "x113"],
+            focusedItem: "x113",
+          }),
+        );
+
+        tree.do.ctrlSelectItem("x2");
+
+        expect(setState).toHaveBeenCalledWith(
+          expect.objectContaining({
+            selectedItems: ["x111", "x112", "x113", "x2"],
+            focusedItem: "x2",
+          }),
+        );
+      });
+    });
+
+    describe("programmatic select", () => {
+      describe("item instance actions", () => {
+        it("should handle select", () => {
+          const setSelectedItems = tree.mockedHandler("setSelectedItems");
+          tree.instance.getItemInstance("x111").select();
+          expect(setSelectedItems).toHaveBeenCalledWith(["x111"]);
+          expect(tree.instance.getItemInstance("x111").isSelected()).toBe(true);
+        });
+
+        it("should handle deselect", () => {
+          const setSelectedItems = tree.mockedHandler("setSelectedItems");
+          tree.instance.getItemInstance("x111").select();
+          tree.instance.getItemInstance("x111").deselect();
+          expect(setSelectedItems).toHaveBeenCalledWith([]);
+          expect(tree.instance.getItemInstance("x111").isSelected()).toBe(
+            false,
+          );
+        });
+
+        it("should handle toggle select on", () => {
+          const setSelectedItems = tree.mockedHandler("setSelectedItems");
+          tree.instance.getItemInstance("x111").toggleSelect();
+          expect(setSelectedItems).toHaveBeenCalledWith(["x111"]);
+          expect(tree.instance.getItemInstance("x111").isSelected()).toBe(true);
+        });
+
+        it("should handle toggle select off", () => {
+          const setSelectedItems = tree.mockedHandler("setSelectedItems");
+          tree.instance.getItemInstance("x111").select();
+          tree.instance.getItemInstance("x111").toggleSelect();
+          expect(setSelectedItems).toHaveBeenCalledWith([]);
+          expect(tree.instance.getItemInstance("x111").isSelected()).toBe(
+            false,
+          );
+        });
+
+        it("should handle selectUpTo without ctrl", () => {
+          const setSelectedItems = tree.mockedHandler("setSelectedItems");
+          tree.instance.getItemInstance("x111").toggleSelect();
+          tree.instance.getItemInstance("x112").toggleSelect();
+          tree.instance.getItemInstance("x112").setFocused();
+          tree.instance.getItemInstance("x114").selectUpTo(false);
+          expect(setSelectedItems).toHaveBeenCalledWith([
+            "x112",
+            "x113",
+            "x114",
+          ]);
+          expect(tree.instance.getItemInstance("x112").isSelected()).toBe(true);
+        });
+
+        it("should handle selectUpTo with ctrl", () => {
+          const setSelectedItems = tree.mockedHandler("setSelectedItems");
+          tree.instance.getItemInstance("x111").toggleSelect();
+          tree.instance.getItemInstance("x112").toggleSelect();
+          tree.instance.getItemInstance("x112").setFocused();
+          tree.instance.getItemInstance("x114").selectUpTo(true);
+          expect(setSelectedItems).toHaveBeenCalledWith([
+            "x111",
+            "x112",
+            "x113",
+            "x114",
+          ]);
+          expect(tree.instance.getItemInstance("x112").isSelected()).toBe(true);
+        });
+      });
+
+      it("should handle getters", () => {
+        const setSelectedItems = tree.mockedHandler("setSelectedItems");
+        tree.instance.setSelectedItems(["x111", "x112"]);
+        expect(setSelectedItems).toHaveBeenCalledWith(["x111", "x112"]);
+        expect(tree.instance.getItemInstance("x111").isSelected()).toBe(true);
+        expect(tree.instance.getItemInstance("x112").isSelected()).toBe(true);
+        expect(tree.instance.getSelectedItems()[0].getId()).toEqual("x111");
+        expect(tree.instance.getSelectedItems()[1].getId()).toEqual("x112");
+        expect(tree.instance.getSelectedItems().length).toBe(2);
+      });
     });
   });
-
-  describe("shift select", () => {});
-  describe("resets old selection after new select", () => {});
-  describe("programmatic select", () => {});
 });

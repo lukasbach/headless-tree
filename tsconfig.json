@@ -4,7 +4,7 @@
     "declaration": true,
     "strictNullChecks": true,
     "esModuleInterop": true,
-    "module": "ES2015",
+    "module": "ES2022",
     "target": "ES6",
     "moduleResolution": "Node",
     "jsx": "react",
