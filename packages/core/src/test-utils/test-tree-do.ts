@@ -1,11 +1,15 @@
 import { TestTree } from "./test-tree";
 
 export class TestTreeDo<T> {
-  private itemProps(itemId: string) {
-    return this.tree.instance.getItemInstance(itemId).getProps();
+  protected itemInstance(itemId: string) {
+    return this.tree.instance.getItemInstance(itemId);
   }
 
-  constructor(private tree: TestTree<T>) {}
+  protected itemProps(itemId: string) {
+    return this.itemInstance(itemId).getProps();
+  }
+
+  constructor(protected tree: TestTree<T>) {}
 
   selectItem(id: string) {
     this.itemProps(id).onClick({});
@@ -17,5 +21,9 @@ export class TestTreeDo<T> {
 
   ctrlSelectItem(id: string) {
     this.itemProps(id).onClick({ ctrlKey: true });
+  }
+
+  ctrlShiftSelectItem(id: string) {
+    this.itemProps(id).onClick({ shiftKey: true, ctrlKey: true });
   }
 }
