@@ -16,12 +16,7 @@ export type DemoBoxProps = {
   all?: boolean;
 };
 
-export const DemoBox: FC<DemoBoxProps> = ({
-  stories,
-  initialStory,
-  tags,
-  all,
-}) => {
+export const DemoBox: FC<DemoBoxProps> = ({ stories, tags, all }) => {
   const tagStories = useStoriesByTags(tags);
   const idStories = useStories(stories);
   const allStories = useAllStories(!all);

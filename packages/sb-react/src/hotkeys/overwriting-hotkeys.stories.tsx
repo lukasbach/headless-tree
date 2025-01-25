@@ -47,8 +47,9 @@ export const OverwritingHotkeys = () => {
     <>
       <p className="description">
         In this example, the hotkeys for moving the focus up and down are bound
-        to "ArrowLeft" and "ArrowRight", overwriting the hotkeys for expanding
-        and collapsing (by default, the hotkeys are ArrowUp and ArrowDown).
+        to &quot;ArrowLeft&quot; and &quot;ArrowRight&quot;, overwriting the
+        hotkeys for expanding and collapsing (by default, the hotkeys are
+        ArrowUp and ArrowDown).
       </p>
       <div ref={tree.registerElement} className="tree">
         {tree.getItems().map((item) => (

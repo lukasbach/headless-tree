@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { beforeEach, describe, vi } from "vitest";
 import { TreeConfig, TreeInstance } from "../types/core";
 import { createTree } from "../core/create-tree";

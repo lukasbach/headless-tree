@@ -64,9 +64,9 @@ export const CustomHotkeys = () => {
   return (
     <>
       <p className="description">
-        In this example, two additional custom hotkeys are defined: Press "q"
-        while the tree is focused to expand all items, and press "w" to collapse
-        all items.
+        In this example, two additional custom hotkeys are defined: Press
+        &quot;q&quot; while the tree is focused to expand all items, and press
+        &quot;w&quot; to collapse all items.
       </p>
       <div ref={tree.registerElement} className="tree">
         {tree.getItems().map((item) => (

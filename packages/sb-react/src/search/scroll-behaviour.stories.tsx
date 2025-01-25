@@ -59,7 +59,8 @@ export const ScrollBehaviour = () => {
           the focused item when navigating with the keyboard.
         </p>
         <p>
-          Try searching for "1-1", then press the down-arrow-key multiple times.
+          Try searching for &quot;1-1&quot;, then press the down-arrow-key
+          multiple times.
         </p>
       </div>
       <p>

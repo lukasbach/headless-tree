@@ -39,7 +39,7 @@ export const CustomMatcher = () => {
         itemId === "root"
           ? rootItem
           : coloredItems.find((item) => item.name === itemId)!,
-      getChildren: (itemId) => coloredItems.map((item) => item.name),
+      getChildren: () => coloredItems.map((item) => item.name),
     },
     isSearchMatchingItem: (searchQuery, item) =>
       item.getItemData().color.includes(searchQuery),
@@ -65,7 +65,8 @@ export const CustomMatcher = () => {
     <>
       <p className="description">
         This example uses a custom matcher that matches the name of the item
-        color, not the name. Try searching for "blue" or "red".
+        color, not the name. Try searching for &quot;blue&quot; or
+        &quot;red&quot;.
       </p>
       <p>
         <button onClick={() => tree.openSearch()}>Open Search</button> or press
