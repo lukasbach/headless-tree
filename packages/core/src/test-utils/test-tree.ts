@@ -8,6 +8,8 @@ import { syncDataLoaderFeature } from "../features/sync-data-loader/feature";
 import { asyncDataLoaderFeature } from "../features/async-data-loader/feature";
 import { buildProxiedInstance } from "../core/build-proxified-instance";
 
+vi.useFakeTimers({ shouldAdvanceTime: true });
+
 export class TestTree<T = string> {
   public readonly do = new TestTreeDo(this);
 
@@ -108,6 +110,7 @@ export class TestTree<T = string> {
         expandedItems: ["x1", "x11"],
       },
       features: [],
+      ...config,
     });
   }
 
