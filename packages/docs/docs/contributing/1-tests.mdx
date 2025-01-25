@@ -1,0 +1,105 @@
+---
+slug: "/contributing/tests"
+title: "Tests"
+category: contributing
+---
+
+# Tests
+
+Headless Tree uses an extensive unit test suite for ensuring stable behavior. You can run all tests
+in the repo with `yarn test` in the root folder.
+
+This is the basic anatomy of a unit test suite for a Headless Tree Feature:
+
+```tsx
+import { describe, expect, it } from "vitest";
+import { TestTree } from "../../test-utils/test-tree";
+import { selectionFeature } from "../selection/feature";
+
+const factory = TestTree.default({}).withFeatures(
+  selectionFeature,
+);
+
+describe("core-feature/search", () => {
+  factory.forSuits((tree) => {
+      it("should make isSelected true", () => {
+        tree.do.selectItem("x111");
+        tree.do.ctrlSelectItem("x112");
+
+        expect(tree.instance.getItemInstance("x111").isSelected()).toBe(true);
+        expect(tree.instance.getItemInstance("x112").isSelected()).toBe(true);
+      });
+  });
+});
+```
+
+When creating new features, make sure to test all variations of behavior in individual tests. You
+can have a look at existing suites as an orientation for how other features are being tested.
+
+The `factory` created at the top creates a definition for a test tree that will be used in all
+tests of that suite. You can customize it in its parameter, as well as with various chained `.withXXX(...)`
+calls.
+
+The `factory.forSuits` wraps a `describe.for()` call with several variations of trees, such as
+an sync dataloader tree, async dataloader tree, tree with static item builders and tree with
+proxified item builders.
+
+:::note
+
+Since Headless Tree Core is technically independent of DOM, there is also no DOM mock like jsdom
+loaded in the tests. All interactions is made on the tree instance directly, though generated props
+on items (and some other elements) can be called with either `testTree.instance.getItemInstance(itemId).getProps().onClick()`
+or `testTree.do.selectItem(itemId)`.
+
+:::
+
+# Issues with tests on async trees
+
+The Test Tree with an async data loader doesn't automatically resolve all pending data loader
+promises that are created during rendering. You can force the test tree to resolve all pending
+promises by calling `await tree.resolveAsyncVisibleItems()` before making any assertions.
+
+This is automatically done before each test for the initially rendered tree.
+
+# Visually experimenting with the tree
+
+You can see and experiment with the tree variant that is used during tests with this storybook
+instance:
+
+https://headless-tree.lukasbach.com/storybook/react/?path=/story/react-misc-sync-tree-used-in-unit-tests--unit-test-async
+
+# Debugging tests
+
+Since unit tests are wrapped with `factory.forSuits`, IDEs usually do not show test-specific run- and debug-options.
+
+You can copy an individual test to the top level and change it as follows to create a temporary standalone
+version of a test that can be run and debugged individually:
+
+```tsx
+describe("core-feature/search", () => {
+  factory.forSuits((tree) => {
+    it("should make isSelected true", () => {
+      tree.do.selectItem("x111");
+      tree.do.ctrlSelectItem("x112");
+
+      expect(tree.instance.getItemInstance("x111").isSelected()).toBe(true);
+      expect(tree.instance.getItemInstance("x112").isSelected()).toBe(true);
+    });
+  });
+});
+```
+
+to:
+
+```tsx
+it("test", async () => {
+  // Replace .sync() with the suite you want to test with
+  const tree = await factory.suits.sync().tree.createDebugTree();
+
+  tree.do.selectItem("x111");
+  tree.do.ctrlSelectItem("x112");
+
+  expect(tree.instance.getItemInstance("x111").isSelected()).toBe(true);
+  expect(tree.instance.getItemInstance("x112").isSelected()).toBe(true);
+});
+```
