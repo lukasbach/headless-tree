@@ -19,5 +19,6 @@ jobs:
       - uses: volta-cli/action@v4.1.1
       - run: yarn
       - run: yarn lint:test
+      - run: yarn test
       - run: yarn build:core
       - run: yarn build:web
