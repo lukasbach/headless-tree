@@ -156,7 +156,7 @@ export const treeFeature: FeatureImplementation<
     scrollTo: async ({ tree, item }, scrollIntoViewArg) => {
       tree.getConfig().scrollToItem?.(item as any);
       await poll(() => item.getElement() !== null, 20);
-      item.getElement()!.scrollIntoView(scrollIntoViewArg);
+      item.getElement()?.scrollIntoView(scrollIntoViewArg);
     },
     getId: ({ item }) => item.getItemMeta().itemId,
     getProps: ({ item, prev }) => {
