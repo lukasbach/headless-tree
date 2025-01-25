@@ -69,6 +69,13 @@ export class TestTree<T = string> {
     }
   }
 
+  async resolveAsyncVisibleItems() {
+    this.instance.getItems();
+    await TestTree.resolveAsyncLoaders();
+    this.instance.getItems().forEach((i) => i.getItemName());
+    await TestTree.resolveAsyncLoaders();
+  }
+
   static default(config: Partial<TreeConfig<string>>) {
     return new TestTree({
       rootItemId: "x",
@@ -80,12 +87,14 @@ export class TestTree<T = string> {
       asyncDataLoader: {
         getItem: async (id) => {
           await new Promise<void>((r) => {
+            (r as any).debugName = `Loading getItem ${id}`;
             TestTree.asyncLoaderResolvers.push(r);
           });
           return id;
         },
         getChildren: async (id) => {
           await new Promise<void>((r) => {
+            (r as any).debugName = `Loading getChildren ${id}`;
             TestTree.asyncLoaderResolvers.push(r);
           });
           return [`${id}1`, `${id}2`, `${id}3`, `${id}4`];
@@ -112,17 +121,14 @@ export class TestTree<T = string> {
       // trigger instance creation
       // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       this.instance;
-      await TestTree.resolveAsyncLoaders();
+      await this.resolveAsyncVisibleItems();
     });
   }
 
   async createDebugTree() {
     this.reset();
     vi.clearAllMocks();
-    // trigger instance creation
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    this.instance;
-    await TestTree.resolveAsyncLoaders();
+    await this.resolveAsyncVisibleItems();
     return this;
   }
 
@@ -158,7 +164,7 @@ export class TestTree<T = string> {
           [
             "  ".repeat(item.getItemMeta().level),
             '"',
-            item.getItemMeta().itemId,
+            item.getItemName(),
             '"',
           ].join(""),
         )

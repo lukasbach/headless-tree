@@ -14,7 +14,6 @@ export type SearchFeatureDef<T> = {
     setSearch?: SetStateFn<string | null>;
     onOpenSearch?: () => void;
     onCloseSearch?: () => void;
-    onSearchMatchesItems?: (search: string, items: ItemInstance<T>[]) => void;
     isSearchMatchingItem?: (search: string, item: ItemInstance<T>) => boolean;
   };
   treeInstance: {

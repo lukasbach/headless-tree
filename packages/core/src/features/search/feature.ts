@@ -40,12 +40,14 @@ export const searchFeature: FeatureImplementation<
     },
     openSearch: ({ tree }, initialValue = "") => {
       tree.setSearch(initialValue);
+      tree.getConfig().onOpenSearch?.();
       setTimeout(() => {
         tree.getDataRef<SearchFeatureDataRef>().current.searchInput?.focus();
       });
     },
     closeSearch: ({ tree }) => {
       tree.setSearch(null);
+      tree.getConfig().onCloseSearch?.();
       tree.updateDomFocus();
     },
     isSearchOpen: ({ tree }) => tree.getState().search !== null,
