@@ -34,7 +34,10 @@ export class TestTreeDo<T> {
       ...this.tree.instance.getHotkeyPresets()[hotkey],
       ...this.tree.instance.getConfig().hotkeys?.[hotkey],
     };
-    if (!hotkeyConfig.isEnabled?.(this.tree.instance)) {
+    if (
+      hotkeyConfig.isEnabled &&
+      !hotkeyConfig.isEnabled?.(this.tree.instance)
+    ) {
       throw new Error(`Hotkey "${hotkey}" is disabled`);
     }
     if (!hotkeyConfig.handler) {
