@@ -22,4 +22,10 @@ export class TestTreeExpect<T> {
       ).toBe(false);
     }
   }
+
+  hasChildren(itemId: string, children: string[]) {
+    const item = this.tree.instance.getItemInstance(itemId);
+    const itemChildren = item.getChildren().map((child) => child.getId());
+    expect(itemChildren).toEqual(children);
+  }
 }
