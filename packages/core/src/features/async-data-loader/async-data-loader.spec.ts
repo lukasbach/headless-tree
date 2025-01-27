@@ -141,7 +141,5 @@ describe("core-feature/selections", () => {
     });
   });
 
-  describe("getChildrenWithData", () => {
-    // TODO
-  });
+  describe.todo("getChildrenWithData");
 });
