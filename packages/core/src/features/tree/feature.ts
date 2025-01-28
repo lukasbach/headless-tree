@@ -8,6 +8,7 @@ import { makeStateUpdater, memo, poll } from "../../utils";
 import { MainFeatureDef } from "../main/types";
 import { HotkeysCoreFeatureDef } from "../hotkeys-core/types";
 import { SyncDataLoaderFeatureDef } from "../sync-data-loader/types";
+import { SearchFeatureDef } from "../search/types";
 
 export const treeFeature: FeatureImplementation<
   any,
@@ -16,6 +17,7 @@ export const treeFeature: FeatureImplementation<
   | TreeFeatureDef<any>
   | HotkeysCoreFeatureDef<any>
   | SyncDataLoaderFeatureDef<any>
+  | SearchFeatureDef<any>
 > = {
   key: "tree",
 
@@ -145,11 +147,14 @@ export const treeFeature: FeatureImplementation<
     },
 
     getContainerProps: ({ prev }) => ({
-      ...prev(),
+      ...prev?.(),
       role: "tree",
       ariaLabel: "",
       ariaActivedescendant: "",
     }),
+
+    // relevant for hotkeys of this feature
+    isSearchOpen: () => false,
   },
 
   itemInstance: {
@@ -198,7 +203,9 @@ export const treeFeature: FeatureImplementation<
       tree.getState().expandedItems.includes(item.getItemMeta().itemId),
     isDescendentOf: ({ item }, parentId) => {
       const parent = item.getParent();
-      return parent?.getId() === parentId || parent?.isDescendentOf(parentId);
+      return Boolean(
+        parent?.getId() === parentId || parent?.isDescendentOf(parentId),
+      );
     },
     isFocused: ({ tree, item }) =>
       tree.getState().focusedItem === item.getItemMeta().itemId ||

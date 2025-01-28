@@ -138,7 +138,7 @@ export type ItemInstanceOpts<
   item: ItemInstance;
   tree: TreeInstance;
   itemId: string;
-  prev: MayReturnNull<ItemInstance[Key]>;
+  prev?: MayReturnNull<ItemInstance[Key]>;
 };
 
 export type TreeInstanceOpts<
@@ -146,7 +146,7 @@ export type TreeInstanceOpts<
   Key extends keyof TreeInstance = any,
 > = {
   tree: TreeInstance;
-  prev: MayReturnNull<TreeInstance[Key]>;
+  prev?: MayReturnNull<TreeInstance[Key]>;
 };
 
 export type FeatureImplementation<
