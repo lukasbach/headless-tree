@@ -100,7 +100,7 @@ export const selectionFeature: FeatureImplementation<
           tree.setSelectedItems([item.getItemMeta().itemId]);
         }
 
-        prev()?.onClick?.(e);
+        prev?.()?.onClick?.(e);
       }),
     }),
   },
