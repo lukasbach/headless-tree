@@ -1,8 +1,4 @@
-import {
-  FeatureImplementation,
-  ItemInstance,
-  ItemInstanceOpts,
-} from "../../types/core";
+import { FeatureImplementation, ItemInstance } from "../../types/core";
 import { ItemMeta, TreeFeatureDef, TreeItemDataRef } from "./types";
 import { makeStateUpdater, memo, poll } from "../../utils";
 import { MainFeatureDef } from "../main/types";
@@ -221,6 +217,7 @@ export const treeFeature: FeatureImplementation<
     primaryAction: ({ tree, item }) =>
       tree.getConfig().onPrimaryAction?.(item as ItemInstance<any>),
     getParent: memo(
+      ({ item, tree }) => [item.getItemMeta(), tree], // TODO does this still work?
       (itemMeta, tree) => {
         if (itemMeta.index === -1) return null;
         for (let i = itemMeta.index - 1; i >= 0; i--) {
@@ -231,7 +228,6 @@ export const treeFeature: FeatureImplementation<
         }
         return tree.getItemInstance(tree.getConfig().rootItemId);
       },
-      ({ item, tree }: ItemInstanceOpts) => [item.getItemMeta(), tree], // TODO does this still work?
     ),
     // TODO remove
     getIndexInParent: ({ item }) => item.getItemMeta().posInSet,

@@ -9,7 +9,7 @@ describe("utilities", () => {
       const fn = vi.fn(
         (a: number, b: number, c: number, d: number) => a + b + c + d,
       );
-      const memoized = memo(fn, (c: number, d: number) => [1, 1, c, d]);
+      const memoized = memo((c: number, d: number) => [1, 1, c, d], fn);
       expect(memoized(1, 1)).toBe(4);
       expect(memoized(1, 1)).toBe(4);
       expect(memoized(1, 1)).toBe(4);
@@ -20,7 +20,7 @@ describe("utilities", () => {
       const fn = vi.fn(
         (a: number, b: number, c: number, d: number) => a + b + c + d,
       );
-      const memoized = memo(fn, (c: number, d: number) => [1, 1, c, d]);
+      const memoized = memo((c: number, d: number) => [1, 1, c, d], fn);
       expect(memoized(1, 1)).toBe(4);
       expect(memoized(1, 2)).toBe(5);
       expect(memoized(1, 2)).toBe(5);

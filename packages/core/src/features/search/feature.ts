@@ -69,13 +69,13 @@ export const searchFeature: FeatureImplementation<
     }),
 
     getSearchMatchingItems: memo(
-      (search, items, isSearchMatchingItem) =>
-        items.filter((item) => search && isSearchMatchingItem?.(search, item)),
       ({ tree }) => [
         tree.getSearchValue(),
         tree.getItems(),
         tree.getConfig().isSearchMatchingItem,
       ],
+      (search, items, isSearchMatchingItem) =>
+        items.filter((item) => search && isSearchMatchingItem?.(search, item)),
     ),
   },
 
