@@ -152,7 +152,7 @@ export type TreeInstanceOpts<
 export type FeatureImplementation<
   T = any,
   SelfFeatureDef extends FeatureDef = any,
-  DepFeaturesDef extends FeatureDef = EmptyFeatureDef,
+  DepFeaturesDef extends FeatureDef = any,
   // /** @internal */
   // AllFeatures extends FeatureDef = MergedFeatures<
   //   DepFeaturesDef | SelfFeatureDef

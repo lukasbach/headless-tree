@@ -27,7 +27,7 @@ export type MainFeatureDef<T = any> = {
     features?: FeatureImplementation<any>[];
     initialState?: Partial<TreeState<T>>;
     state?: Partial<TreeState<T>>;
-    setState?: SetStateFn<TreeState<T>>;
+    setState?: SetStateFn<Partial<TreeState<T>>>;
     instanceBuilder?: InstanceBuilder;
   };
   treeInstance: {
