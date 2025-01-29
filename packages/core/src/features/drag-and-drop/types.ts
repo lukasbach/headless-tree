@@ -53,6 +53,7 @@ export type DragAndDropFeatureDef<T> = {
     reorderAreaPercentage?: number;
     canDropInbetween?: boolean;
 
+    // TODO better document difference to canDrag(), or unify both
     isItemDraggable?: (item: ItemInstance<T>) => boolean;
     canDrag?: (items: ItemInstance<T>[]) => boolean;
     canDrop?: (items: ItemInstance<T>[], target: DropTarget<T>) => boolean;
@@ -94,8 +95,8 @@ export type DragAndDropFeatureDef<T> = {
   };
   itemInstance: {
     isDropTarget: () => boolean;
-    isDropTargetAbove: () => boolean;
-    isDropTargetBelow: () => boolean;
+    isDropTargetAbove: () => boolean; // TODO still correct?
+    isDropTargetBelow: () => boolean; // TODO still correct?
     isDraggingOver: () => boolean;
   };
   hotkeys: never;
