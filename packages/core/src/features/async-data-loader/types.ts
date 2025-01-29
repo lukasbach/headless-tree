@@ -35,7 +35,7 @@ export type AsyncDataLoaderFeatureDef<T> = {
   itemInstance: SyncDataLoaderFeatureDef<T>["itemInstance"] & {
     invalidateItemData: () => void;
     invalidateChildrenIds: () => void;
-    isLoading: () => void; // TODO! boolean?
+    isLoading: () => boolean;
   };
   hotkeys: SyncDataLoaderFeatureDef<T>["hotkeys"];
 };
