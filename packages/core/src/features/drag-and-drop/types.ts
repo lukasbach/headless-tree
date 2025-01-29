@@ -64,12 +64,12 @@ export type DragAndDropFeatureDef<T> = {
       data: any;
     };
     canDropForeignDragObject?: (
-      dataTransfer: DataTransfer | null, // TODO dont call if null
+      dataTransfer: DataTransfer,
       target: DropTarget<T>,
     ) => boolean;
     onDrop?: (items: ItemInstance<T>[], target: DropTarget<T>) => void;
     onDropForeignDragObject?: (
-      dataTransfer: DataTransfer | null, // TODO dont call if null
+      dataTransfer: DataTransfer,
       target: DropTarget<T>,
     ) => void;
 

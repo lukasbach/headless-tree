@@ -131,7 +131,10 @@ export const dragAndDropFeature: FeatureImplementation<
 
           if (
             !tree.getState().dnd?.draggedItems &&
-            !tree.getConfig().canDropForeignDragObject?.(e.dataTransfer, target)
+            (!e.dataTransfer ||
+              !tree
+                .getConfig()
+                .canDropForeignDragObject?.(e.dataTransfer, target))
           ) {
             dataRef.current.lastAllowDrop = false;
             return;
@@ -189,7 +192,7 @@ export const dragAndDropFeature: FeatureImplementation<
 
         if (draggedItems) {
           config.onDrop?.(draggedItems, target);
-        } else {
+        } else if (e.dataTransfer) {
           config.onDropForeignDragObject?.(e.dataTransfer, target);
         }
         // TODO rebuild tree?
