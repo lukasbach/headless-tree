@@ -66,7 +66,7 @@ export const buildProxiedInstance: InstanceBuilder = (
     {
       get(target, key: string | symbol) {
         if (typeof key === "symbol") {
-          throw new Error(`HeadlessTree: symbol access`);
+          return undefined;
         }
         if (key === "toJSON") {
           return {};
