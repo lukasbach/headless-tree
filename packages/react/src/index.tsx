@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { TreeConfig, createTree } from "@headless-tree/core";
+import { TreeConfig, TreeState, createTree } from "@headless-tree/core";
 
 export const useTree = <T,>(config: TreeConfig<T>) => {
   const [tree] = useState(() => ({ current: createTree(config) }));
-  const [state, setState] = useState(() => tree.current.getState());
+  const [state, setState] = useState<Partial<TreeState<T>>>(() =>
+    tree.current.getState(),
+  );
 
   tree.current.setConfig((prev) => ({
     ...prev,
