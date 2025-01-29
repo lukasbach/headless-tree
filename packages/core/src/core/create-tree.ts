@@ -5,6 +5,7 @@ import {
   TreeConfig,
   TreeInstance,
   TreeState,
+  Updater,
 } from "../types/core";
 import { MainFeatureDef } from "../features/main/types";
 import { treeFeature } from "../features/tree/feature";
@@ -58,12 +59,13 @@ export const createTree = <T>(
     initialConfig.initialState ?? initialConfig.state ?? {},
   ) as TreeState<T>;
   let config = additionalFeatures.reduce(
-    (acc, feature) => feature.getDefaultConfig?.(acc, treeInstance) ?? acc,
+    (acc, feature) =>
+      (feature.getDefaultConfig?.(acc, treeInstance) as TreeConfig<T>) ?? acc,
     initialConfig,
   ) as TreeConfig<T>;
   const stateHandlerNames = additionalFeatures.reduce(
     (acc, feature) => ({ ...acc, ...feature.stateHandlerNames }),
-    {} as Record<string, string>,
+    {} as Record<string, keyof TreeConfig<T>>,
   );
 
   let treeElement: HTMLElement | undefined | null;
@@ -139,13 +141,16 @@ export const createTree = <T>(
         config.setState?.(state); // TODO this cant be right... This doesnt allow external state updates
       },
       applySubStateUpdate: <K extends keyof TreeState<any>>(
-        _,
+        {},
         stateName: K,
-        updater,
+        updater: Updater<TreeState<T>[K]>,
       ) => {
         state[stateName] =
           typeof updater === "function" ? updater(state[stateName]) : updater;
-        config[stateHandlerNames[stateName]]!(state[stateName]);
+        const externalStateSetter = config[
+          stateHandlerNames[stateName]
+        ] as Function;
+        externalStateSetter?.(state[stateName]);
       },
       // TODO rebuildSubTree: (itemId: string) => void;
       rebuildTree: () => {

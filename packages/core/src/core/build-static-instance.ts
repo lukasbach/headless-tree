@@ -7,7 +7,7 @@ export const buildStaticInstance: InstanceBuilder = (
   instanceType,
   buildOpts,
 ) => {
-  const instance = {};
+  const instance: any = {};
   const finalize = () => {
     const opts = buildOpts(instance);
     featureLoop: for (let i = 0; i < features.length; i++) {
@@ -18,7 +18,7 @@ export const buildStaticInstance: InstanceBuilder = (
       methodLoop: for (const [key, method] of Object.entries(definition)) {
         if (!method) continue methodLoop;
         const prev = instance[key];
-        instance[key] = (...args) => {
+        instance[key] = (...args: any[]) => {
           return method({ ...opts, prev }, ...args);
         };
       }

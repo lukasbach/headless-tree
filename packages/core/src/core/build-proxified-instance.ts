@@ -66,12 +66,12 @@ export const buildProxiedInstance: InstanceBuilder = (
     {
       get(target, key: string | symbol) {
         if (typeof key === "symbol") {
-          return target[key];
+          throw new Error(`HeadlessTree: symbol access`);
         }
         if (key === "toJSON") {
           return {};
         }
-        return (...args) => {
+        return (...args: any[]) => {
           const featureIndex = findPrevInstanceMethod(
             features,
             instanceType,

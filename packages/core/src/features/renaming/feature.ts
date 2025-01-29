@@ -64,8 +64,9 @@ export const renamingFeature: FeatureImplementation<
     getRenameInputProps: ({ tree }) => ({
       onBlur: () => tree.abortRenaming(),
       value: tree.getRenamingValue(),
-      onChange: (e) => {
-        tree.applySubStateUpdate("renamingValue", e.target.value);
+      onChange: (e: any) => {
+        // TODO custom type with e.target.value
+        tree.applySubStateUpdate("renamingValue", e.target?.value);
       },
     }),
 

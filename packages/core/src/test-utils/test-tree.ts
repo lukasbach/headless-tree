@@ -150,7 +150,7 @@ export class TestTree<T = string> {
         [handlerName as any]: mock,
       }));
     } else {
-      this.config[handlerName as any] = mock;
+      (this.config as any)[handlerName as any] = mock;
     }
     return mock;
   }

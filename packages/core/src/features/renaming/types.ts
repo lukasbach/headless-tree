@@ -6,7 +6,7 @@ export type RenamingFeatureDef<T> = {
     renamingValue?: string;
   };
   config: {
-    setRenamingItem?: SetStateFn<string | null>;
+    setRenamingItem?: SetStateFn<string | null | undefined>;
     setRenamingValue?: SetStateFn<string | undefined>;
     canRename?: (item: ItemInstance<T>) => boolean;
     onRename?: (item: ItemInstance<T>, value: string) => void;

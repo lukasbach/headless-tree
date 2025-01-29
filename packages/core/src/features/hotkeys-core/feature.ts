@@ -39,7 +39,7 @@ const findHotkeyMatch = (
 ) => {
   return Object.entries({ ...config1, ...config2 }).find(([, hotkey]) =>
     testHotkeyMatch(pressedKeys, tree, hotkey),
-  )?.[0];
+  )?.[0] as keyof HotkeysConfig<any> | undefined;
 };
 
 export const hotkeysCoreFeature: FeatureImplementation<

@@ -30,7 +30,6 @@ describe("core-feature/selections", () => {
     it("has loaded items after expanding and loading", async () => {
       tree.do.selectItem("x12");
       await tree.resolveAsyncVisibleItems();
-      tree.debug();
       tree.expect.hasChildren("x12", ["x121", "x122", "x123", "x124"]);
       tree.expect.hasChildren("x12", ["x121", "x122", "x123", "x124"]);
     });
@@ -106,7 +105,6 @@ describe("core-feature/selections", () => {
       suiteTree.instance.invalidateChildrenIds("x1");
       await suiteTree.resolveAsyncVisibleItems();
       expect(getChildren).toHaveBeenCalledWith("x1");
-      suiteTree.debug();
       suiteTree.expect.hasChildren("x1", ["new1", "new2"]);
     });
 

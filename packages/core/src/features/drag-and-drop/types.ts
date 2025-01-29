@@ -45,7 +45,7 @@ export type DragAndDropFeatureDef<T> = {
     dnd?: DndState<T> | null;
   };
   config: {
-    setDndState?: SetStateFn<DndState<T> | null>;
+    setDndState?: SetStateFn<DndState<T> | undefined | null>;
 
     /** Defines the size of the area at the top and bottom of an item where, when an item is dropped, the item willö
      * be placed above or below the item within the same parent, as opposed to being placed inside the item.
@@ -64,12 +64,12 @@ export type DragAndDropFeatureDef<T> = {
       data: any;
     };
     canDropForeignDragObject?: (
-      dataTransfer: DataTransfer,
+      dataTransfer: DataTransfer | null, // TODO dont call if null
       target: DropTarget<T>,
     ) => boolean;
     onDrop?: (items: ItemInstance<T>[], target: DropTarget<T>) => void;
     onDropForeignDragObject?: (
-      dataTransfer: DataTransfer,
+      dataTransfer: DataTransfer | null, // TODO dont call if null
       target: DropTarget<T>,
     ) => void;
 

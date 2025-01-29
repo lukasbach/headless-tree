@@ -1,8 +1,9 @@
-import { TreeState, Updater } from "./types/core";
+import { SetStateFn, TreeState, Updater } from "./types/core";
 
 export type NoInfer<T> = [T][T extends any ? 0 : never];
 
 export const memo = <D extends readonly any[], P extends readonly any[], R>(
+  // TODO swap parameters, makes fn parameters typesafe
   fn: (...args: [...D]) => R,
   deps: (...args: [...P]) => [...D],
 ) => {
@@ -41,7 +42,7 @@ export function functionalUpdate<T>(updater: Updater<T>, input: T): T {
 export function makeStateUpdater<K extends keyof TreeState<any>>(
   key: K,
   instance: unknown,
-) {
+): SetStateFn<TreeState<any>[K]> {
   return (updater: Updater<TreeState<any>[K]>) => {
     (instance as any).setState(<TTableState>(old: TTableState) => {
       return {

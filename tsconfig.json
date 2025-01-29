@@ -8,7 +8,8 @@
     "target": "ES6",
     "moduleResolution": "Node",
     "jsx": "react",
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "strict": true
   },
   "include": ["packages"],
   "exclude": ["src/**/template-*", "packages/docs"]

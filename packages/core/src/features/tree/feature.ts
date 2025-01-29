@@ -175,7 +175,7 @@ export const treeFeature: FeatureImplementation<
         "aria-label": item.getItemName(),
         "aria-level": itemMeta.level,
         tabIndex: item.isFocused() ? 0 : -1,
-        onClick: item.getMemoizedProp("tree/onClick", () => (e) => {
+        onClick: item.getMemoizedProp("tree/onClick", () => (e: MouseEvent) => {
           item.setFocused();
           item.primaryAction();
 
