@@ -1,6 +1,6 @@
 import { FeatureImplementation, ItemInstance } from "../../types/core";
 import { ItemMeta, TreeFeatureDef, TreeItemDataRef } from "./types";
-import { makeStateUpdater, memo, poll } from "../../utils";
+import { makeStateUpdater, poll } from "../../utils";
 import { MainFeatureDef } from "../main/types";
 import { HotkeysCoreFeatureDef } from "../hotkeys-core/types";
 import { SyncDataLoaderFeatureDef } from "../sync-data-loader/types";
@@ -216,19 +216,10 @@ export const treeFeature: FeatureImplementation<
     setFocused: ({ tree, item }) => tree.focusItem(item.getItemMeta().itemId),
     primaryAction: ({ tree, item }) =>
       tree.getConfig().onPrimaryAction?.(item as ItemInstance<any>),
-    getParent: memo(
-      ({ item, tree }) => [item.getItemMeta(), tree], // TODO does this still work?
-      (itemMeta, tree) => {
-        if (itemMeta.index === -1) return null;
-        for (let i = itemMeta.index - 1; i >= 0; i--) {
-          const potentialParent = tree.getItems()[i];
-          if (potentialParent.getItemMeta().level < itemMeta.level) {
-            return potentialParent;
-          }
-        }
-        return tree.getItemInstance(tree.getConfig().rootItemId);
-      },
-    ),
+    getParent: ({ tree, item }) =>
+      item.getItemMeta().parentId
+        ? tree.getItemInstance(item.getItemMeta().parentId)
+        : undefined,
     // TODO remove
     getIndexInParent: ({ item }) => item.getItemMeta().posInSet,
     getChildren: ({ tree, item }) =>
