@@ -31,6 +31,10 @@ export class TestTreeDo<T> {
     this.itemProps(id).onClick({ shiftKey: true, ctrlKey: true });
   }
 
+  selectMultiple(...ids: string[]) {
+    ids.forEach((id) => this.ctrlSelectItem(id));
+  }
+
   hotkey(hotkey: HotkeyName, e: Partial<KeyboardEvent> = {}) {
     const hotkeyConfig: HotkeyConfig<any> = {
       ...this.tree.instance.getHotkeyPresets()[hotkey],
@@ -56,15 +60,14 @@ export class TestTreeDo<T> {
   }
 
   startDrag(itemId: string, event?: DragEvent) {
-    const itemProps = this.itemProps(itemId);
-    if (!itemProps.draggable) {
+    if (!this.itemProps(itemId).draggable) {
       throw new Error(
         `Can't drag item ${itemId}, has attribute draggable=false`,
       );
     }
 
     const e = event ?? TestTree.dragEvent();
-    itemProps.onDragStart(event);
+    this.itemProps(itemId).onDragStart(e);
     return e;
   }
 

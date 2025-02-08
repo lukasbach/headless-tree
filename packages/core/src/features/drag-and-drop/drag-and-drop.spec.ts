@@ -68,7 +68,8 @@ describe("core-feature/drag-and-drop", () => {
     it("drop above item", () => {
       tree.do.ctrlSelectItem("x111");
       tree.do.startDrag("x111");
-      const event = tree.createTopDragEvent("x212");
+      tree.setElementBoundingBox("x212");
+      const event = tree.createTopDragEvent();
       tree.do.dragOverAndDrop("x212", event);
       tree.expect.dropped(["x111"], {
         dragLineIndex: 12,
@@ -96,6 +97,7 @@ describe("core-feature/drag-and-drop", () => {
     it("drop not reparented", () => {
       tree.do.ctrlSelectItem("x111");
       tree.do.startDrag("x111");
+      tree.setElementBoundingBox("x114");
       const event = tree.createBottomDragEvent(2);
       tree.do.dragOverAndDrop("x114", event);
       tree.expect.dropped(["x111"], {
@@ -110,6 +112,7 @@ describe("core-feature/drag-and-drop", () => {
     it("drop reparented one level", () => {
       tree.do.ctrlSelectItem("x111");
       tree.do.startDrag("x111");
+      tree.setElementBoundingBox("x114");
       const event = tree.createBottomDragEvent(1);
       tree.do.dragOverAndDrop("x114", event);
       tree.expect.dropped(["x111"], {
@@ -206,7 +209,7 @@ describe("core-feature/drag-and-drop", () => {
     it("drop above item", () => {
       tree.do.ctrlSelectItem("x111");
       tree.do.startDrag("x111");
-      const event = tree.createTopDragEvent("x212");
+      const event = tree.createTopDragEvent();
       tree.setElementBoundingBox("x212");
       tree.do.dragOver("x212", event);
       tree.expect.defaultDragLineProps(2);
@@ -253,9 +256,84 @@ describe("core-feature/drag-and-drop", () => {
   });
 
   describe("foreign dnd", () => {
-    it.todo("drags tree item outside to foreign object");
-    it.todo("drags foreign object inside tree, on folder");
-    it.todo("drags foreign object inside tree, between items");
+    const data = Symbol("foreignObject");
+    const format = "application/json";
+
+    const createForeignDragObject = tree
+      .mockedHandler("createForeignDragObject")
+      .mockReturnValue({ data, format });
+    const onCompleteForeignDrop = tree.mockedHandler("onCompleteForeignDrop");
+
+    it("drags tree item outside to foreign object", () => {
+      tree.do.selectMultiple("x111", "x112");
+      const event = tree.do.startDrag("x111");
+      tree.do.dragEnd("x111");
+      expect(event.dataTransfer.setData).toHaveBeenCalledWith(format, data);
+      expect(createForeignDragObject).toHaveBeenCalledWith([
+        tree.item("x111"),
+        tree.item("x112"),
+      ]);
+      expect(onCompleteForeignDrop).toHaveBeenCalledWith([
+        tree.item("x111"),
+        tree.item("x112"),
+      ]);
+    });
+
+    it("drags foreign object inside tree, on folder", () => {
+      tree.mockedHandler("canDropForeignDragObject").mockReturnValue(true);
+      const onDropForeignDragObject = tree.mockedHandler(
+        "onDropForeignDragObject",
+      );
+      const event = TestTree.dragEvent();
+      tree.do.dragOver("x11", event);
+      tree.do.drop("x11", event);
+      expect(onDropForeignDragObject).toHaveBeenCalledWith(event.dataTransfer, {
+        childIndex: null,
+        dragLineIndex: 1,
+        dragLineLevel: 1,
+        insertionIndex: null,
+        item: tree.item("x11"),
+      });
+    });
+
+    it("drags foreign object inside tree, between items", () => {
+      tree
+        .mockedHandler("canDropForeignDragObject")
+        .mockImplementation((_, target) => target.item.isFolder());
+      const onDropForeignDragObject = tree.mockedHandler(
+        "onDropForeignDragObject",
+      );
+      const event = tree.createBottomDragEvent(2);
+      tree.setElementBoundingBox("x212");
+      tree.setElementBoundingBox("x213");
+      tree.do.dragOver("x112", event);
+      tree.do.drop("x112", event);
+      expect(onDropForeignDragObject).toHaveBeenCalledWith(event.dataTransfer, {
+        childIndex: 2,
+        dragLineIndex: 4,
+        dragLineLevel: 2,
+        insertionIndex: 2,
+        item: tree.item("x11"),
+      });
+    });
+
+    it.todo("doesnt drag foreign object inside tree if not allowed", () => {
+      // TODO doesnt work
+      tree.mockedHandler("canDropForeignDragObject").mockReturnValue(false);
+      const onDropForeignDragObject = tree.mockedHandler(
+        "onDropForeignDragObject",
+      );
+      const event = TestTree.dragEvent();
+      tree.do.dragOver("x11", event);
+      tree.do.drop("x11", event);
+      expect(onDropForeignDragObject).toHaveBeenCalledWith(event.dataTransfer, {
+        childIndex: null,
+        dragLineIndex: 1,
+        dragLineLevel: 1,
+        insertionIndex: null,
+        item: tree.item("x11"),
+      });
+    });
   });
 
   describe("with insertion handlers", () => {

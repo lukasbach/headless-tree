@@ -209,13 +209,7 @@ export class TestTree<T = string> {
     } as unknown as DragEvent;
   }
 
-  createTopDragEvent(itemId: string, indent = 0) {
-    this.setElementBoundingBox(itemId, {
-      left: 0,
-      right: 100,
-      top: 0,
-      height: 20,
-    });
+  createTopDragEvent(indent = 0) {
     return TestTree.dragEvent(indent * 20, 1);
   }
 
