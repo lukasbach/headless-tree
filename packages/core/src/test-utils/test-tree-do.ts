@@ -1,3 +1,5 @@
+import { DragEvent } from "react";
+import { Mock, expect, vi } from "vitest";
 import { TestTree } from "./test-tree";
 import { HotkeyName } from "../types/core";
 import { HotkeyConfig } from "../features/hotkeys-core/types";
@@ -51,5 +53,67 @@ export class TestTreeDo<T> {
       } as any,
       this.tree.instance,
     );
+  }
+
+  startDrag(itemId: string, event?: DragEvent) {
+    const itemProps = this.itemProps(itemId);
+    if (!itemProps.draggable) {
+      throw new Error(
+        `Can't drag item ${itemId}, has attribute draggable=false`,
+      );
+    }
+
+    const e = event ?? TestTree.dragEvent();
+    itemProps.onDragStart(event);
+    return e;
+  }
+
+  dragOver(itemId: string, event?: DragEvent) {
+    const e = event ?? TestTree.dragEvent();
+    (e.preventDefault as Mock).mockClear();
+    this.itemProps(itemId).onDragOver(e);
+    this.itemProps(itemId).onDragOver(e);
+    this.itemProps(itemId).onDragOver(e);
+    expect(e.preventDefault).toBeCalledTimes(3);
+
+    this.consistentCalls(e.preventDefault);
+    this.consistentCalls(e.stopPropagation);
+    return e;
+  }
+
+  dragLeave(itemId: string) {
+    this.itemProps(itemId).onDragLeave({});
+  }
+
+  dragEnd(itemId: string, event?: DragEvent) {
+    const e = event ?? TestTree.dragEvent();
+    this.itemProps(itemId).onDragEnd(e);
+    return e;
+  }
+
+  drop(itemId: string, event?: DragEvent) {
+    const e = event ?? TestTree.dragEvent();
+    this.itemProps(itemId).onDrop(e);
+    return e;
+  }
+
+  dragOverAndDrop(itemId: string, event?: DragEvent) {
+    const e = event ?? TestTree.dragEvent();
+    this.dragOver(itemId, e);
+    return this.drop(itemId, e);
+  }
+
+  private consistentCalls(fn: any) {
+    if (!vi.isMockFunction(fn)) {
+      throw new Error("fn is not a mock");
+    }
+    expect(
+      fn.mock.calls.length,
+      "function called inconsistent times",
+    ).toBeOneOf([0, 3]);
+    expect(
+      new Set(fn.mock.calls.map((call) => call.join("__"))).size,
+      "function called with inconsistent parameters",
+    ).toBeOneOf([0, 1]);
   }
 }

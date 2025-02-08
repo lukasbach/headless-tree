@@ -1,36 +1,48 @@
 import type { Meta } from "@storybook/react";
 import React from "react";
 import {
+  createOnDropHandler,
+  dragAndDropFeature,
   hotkeysCoreFeature,
   selectionFeature,
   syncDataLoaderFeature,
 } from "@headless-tree/core";
 import { useTree } from "@headless-tree/react";
 import cx from "classnames";
+import { DemoItem, createDemoData, unitTestTree } from "./data";
 
 const meta = {
   title: "React/Misc/Sync Tree used in Unit Tests",
   tags: ["misc/unittest"],
 } satisfies Meta;
 
+const [dataLoader, data] = createDemoData(unitTestTree);
+
 export default meta;
 
 // story-start
 export const UnitTestAsync = () => {
-  const tree = useTree<string>({
+  const tree = useTree<DemoItem>({
     rootItemId: "x",
-    createLoadingItemData: () => "loading",
-    dataLoader: {
-      getItem: (id) => id,
-      getChildren: (id) => [`${id}1`, `${id}2`, `${id}3`, ` ${id}4`],
-    },
-    getItemName: (item) => item.getItemData(),
+    createLoadingItemData: () => ({ name: "Loading" }),
+    dataLoader,
+    getItemName: (item) => item.getItemData().name,
     indent: 20,
     isItemFolder: (item) => item.getItemMeta().level < 2,
     initialState: {
-      expandedItems: ["x1", "x11"],
+      expandedItems: ["x1", "x11", "x2", "x21"],
     },
-    features: [syncDataLoaderFeature, selectionFeature, hotkeysCoreFeature],
+    canDropInbetween: true,
+    onDrop: createOnDropHandler((item, newChildren) => {
+      console.log("!!", item.getId(), newChildren); // TODO doesnt work!
+      data[item.getId()].children = newChildren;
+    }),
+    features: [
+      syncDataLoaderFeature,
+      selectionFeature,
+      hotkeysCoreFeature,
+      dragAndDropFeature,
+    ],
   });
 
   return (
@@ -48,12 +60,14 @@ export const UnitTestAsync = () => {
               expanded: item.isExpanded(),
               selected: item.isSelected(),
               folder: item.isFolder(),
+              drop: item.isDropTarget(),
             })}
           >
             {item.getItemName()}
           </div>
         </button>
       ))}
+      <div style={tree.getDragLineStyle()} className="dragline" />
     </div>
   );
 };

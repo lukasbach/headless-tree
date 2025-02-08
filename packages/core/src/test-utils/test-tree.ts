@@ -1,5 +1,6 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { beforeEach, describe, vi } from "vitest";
+import { DragEvent } from "react";
 import { TreeConfig, TreeInstance } from "../types/core";
 import { createTree } from "../core/create-tree";
 import { TestTreeDo } from "./test-tree-do";
@@ -155,6 +156,10 @@ export class TestTree<T = string> {
     return mock;
   }
 
+  item(itemId: string) {
+    return this.instance.getItemInstance(itemId);
+  }
+
   reset() {
     this.treeInstance = null;
     TestTree.asyncLoaderResolvers = [];
@@ -174,5 +179,47 @@ export class TestTree<T = string> {
         )
         .join("\n"),
     );
+  }
+
+  setElementBoundingBox(
+    itemId: string,
+    bb: Partial<DOMRect> = {
+      left: 0,
+      right: 100,
+      top: 0,
+      height: 20,
+    },
+  ) {
+    this.instance.getItemInstance(itemId).registerElement({
+      getBoundingClientRect: () => bb as DOMRect,
+    } as HTMLElement);
+  }
+
+  static dragEvent(pageX = 1000, pageY = 0) {
+    return {
+      preventDefault: vi.fn(),
+      stopPropagation: vi.fn(),
+      dataTransfer: {
+        setData: vi.fn(),
+        getData: vi.fn(),
+        dropEffect: "unchaged-from-test",
+      },
+      pageX,
+      pageY,
+    } as unknown as DragEvent;
+  }
+
+  createTopDragEvent(itemId: string, indent = 0) {
+    this.setElementBoundingBox(itemId, {
+      left: 0,
+      right: 100,
+      top: 0,
+      height: 20,
+    });
+    return TestTree.dragEvent(indent * 20, 1);
+  }
+
+  createBottomDragEvent(indent = 0) {
+    return TestTree.dragEvent(indent * 20, 19);
   }
 }

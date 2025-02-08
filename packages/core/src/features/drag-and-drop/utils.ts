@@ -174,7 +174,7 @@ export const getDropTarget = (
       // TODO! this breaks in story DND/Can Drop. Maybe move this logic into a composable DropTargetStrategy[] ?
       return getDropTarget(e, item.getParent(), tree, false);
     }
-    return itemTarget;
+    // return itemTarget; // TODO ?
   }
 
   const canMakeChild = canDrop(e.dataTransfer, itemTarget, tree);

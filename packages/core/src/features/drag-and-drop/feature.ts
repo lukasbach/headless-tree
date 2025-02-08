@@ -151,6 +151,7 @@ export const dragAndDropFeature: FeatureImplementation<
             draggingOverItem: item,
           }));
           dataRef.current.lastAllowDrop = true;
+          e.preventDefault();
         },
       ),
 
