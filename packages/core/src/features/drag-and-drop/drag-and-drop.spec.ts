@@ -317,22 +317,15 @@ describe("core-feature/drag-and-drop", () => {
       });
     });
 
-    it.todo("doesnt drag foreign object inside tree if not allowed", () => {
-      // TODO doesnt work
+    it("doesnt drag foreign object inside tree if not allowed", () => {
       tree.mockedHandler("canDropForeignDragObject").mockReturnValue(false);
       const onDropForeignDragObject = tree.mockedHandler(
         "onDropForeignDragObject",
       );
       const event = TestTree.dragEvent();
-      tree.do.dragOver("x11", event);
+      tree.do.dragOverNotAllowed("x11", event);
       tree.do.drop("x11", event);
-      expect(onDropForeignDragObject).toHaveBeenCalledWith(event.dataTransfer, {
-        childIndex: null,
-        dragLineIndex: 1,
-        dragLineLevel: 1,
-        insertionIndex: null,
-        item: tree.item("x11"),
-      });
+      expect(onDropForeignDragObject).not.toHaveBeenCalled();
     });
   });
 

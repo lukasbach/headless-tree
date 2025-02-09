@@ -65,7 +65,8 @@ const getItemDropCategory = (item: ItemInstance<any>) => {
     return ItemDropCategory.ExpandedFolder;
   }
 
-  if (item.getIndexInParent() === item.getParent().getItemMeta().setSize - 1) {
+  const parent = item.getParent();
+  if (parent && item.getIndexInParent() === parent.getItemMeta().setSize - 1) {
     return ItemDropCategory.LastInGroup;
   }
 
@@ -141,7 +142,7 @@ const getNthParent = (
   if (n === item.getItemMeta().level) {
     return item;
   }
-  return getNthParent(item.getParent(), n);
+  return getNthParent(item.getParent()!, n);
 };
 
 export const getDropTarget = (
@@ -152,7 +153,7 @@ export const getDropTarget = (
 ): DropTarget<any> => {
   const draggedItems = tree.getState().dnd?.draggedItems ?? [];
   const itemMeta = item.getItemMeta();
-  const parentMeta = item.getParent().getItemMeta();
+  const parent = item.getParent();
   const itemTarget = {
     item,
     childIndex: null,
@@ -160,19 +161,22 @@ export const getDropTarget = (
     dragLineIndex: itemMeta.index,
     dragLineLevel: itemMeta.level,
   };
-  const parentTarget: DropTarget<any> = {
-    item: item.getParent(),
-    childIndex: null,
-    insertionIndex: null,
-    dragLineIndex: parentMeta.index,
-    dragLineLevel: parentMeta.level,
-  };
-  const canBecomeSibling = canDrop(e.dataTransfer, parentTarget, tree);
+  const parentTarget: DropTarget<any> | null = parent
+    ? {
+        item: parent,
+        childIndex: null,
+        insertionIndex: null,
+        dragLineIndex: parent.getItemMeta().index,
+        dragLineLevel: parent.getItemMeta().level,
+      }
+    : null;
+  const canBecomeSibling =
+    parentTarget && canDrop(e.dataTransfer, parentTarget, tree);
 
   if (!canDropInbetween) {
-    if (!canBecomeSibling) {
+    if (!canBecomeSibling && parent) {
       // TODO! this breaks in story DND/Can Drop. Maybe move this logic into a composable DropTargetStrategy[] ?
-      return getDropTarget(e, item.getParent(), tree, false);
+      return getDropTarget(e, parent, tree, false);
     }
     // return itemTarget; // TODO ?
   }
@@ -180,12 +184,17 @@ export const getDropTarget = (
   const canMakeChild = canDrop(e.dataTransfer, itemTarget, tree);
   const placement = getTargetPlacement(e, item, tree, canMakeChild);
 
+  if (!parent) {
+    // Shouldn't happen, but if dropped "next" to root item, just drop it inside
+    return itemTarget;
+  }
+
   if (placement.type === PlacementType.MakeChild) {
     return itemTarget;
   }
 
   if (!canBecomeSibling) {
-    return getDropTarget(e, item.getParent(), tree, false);
+    return getDropTarget(e, parent, tree, false);
   }
 
   if (placement.type === PlacementType.Reparent) {
@@ -208,20 +217,20 @@ export const getDropTarget = (
     placement.type === PlacementType.ReorderAbove ? 0 : 1;
   const childIndex = item.getIndexInParent() + maybeAddOneForBelow;
 
-  const numberOfDragItemsBeforeTarget = item
-    .getParent()
-    .getChildren()
-    .slice(0, childIndex)
-    .reduce(
-      (counter, child) =>
-        child && draggedItems?.some((i) => i.getId() === child.getId())
-          ? ++counter
-          : counter,
-      0,
-    );
+  const numberOfDragItemsBeforeTarget =
+    parent
+      .getChildren()
+      .slice(0, childIndex)
+      .reduce(
+        (counter, child) =>
+          child && draggedItems?.some((i) => i.getId() === child.getId())
+            ? ++counter
+            : counter,
+        0,
+      ) ?? 0;
 
   return {
-    item: item.getParent(),
+    item: parent,
     dragLineIndex: itemMeta.index + maybeAddOneForBelow,
     dragLineLevel: itemMeta.level,
     childIndex,
