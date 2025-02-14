@@ -3,6 +3,7 @@ import { TestTree } from "../../test-utils/test-tree";
 import { dragAndDropFeature } from "./feature";
 import { selectionFeature } from "../selection/feature";
 import { ItemInstance } from "../../types/core";
+import { createOnDropHandler } from "../../utilities/create-on-drop-handler";
 
 const isItem = (item: unknown): item is ItemInstance<any> =>
   !!item && typeof item === "object" && "getId" in item;
@@ -24,6 +25,7 @@ const factory = TestTree.default({
 describe("core-feature/drag-and-drop", () => {
   const { tree } = factory.suits.async();
   tree.resetBeforeEach();
+
   // factory.forSuits((tree) => {
   describe("happy paths", () => {
     it("drop on expanded folder with leafs", () => {
@@ -330,13 +332,144 @@ describe("core-feature/drag-and-drop", () => {
   });
 
   describe("with insertion handlers", () => {
-    it.todo("drags within same tree");
-    it.todo("drags to another tree");
-    it.todo("drags outside");
-    it.todo("drags inside");
-    it.todo("drags multiple within in retained order (correct order)");
-    it.todo("drags multiple within in retained order (inverse order)");
-    it.todo("drags multiple within in retained order (scrambled order)");
+    const changeChildren = vi.fn();
+    const suiteTree = tree.with({
+      onDrop: createOnDropHandler((item, newChildren) => {
+        changeChildren(item.getId(), newChildren);
+      }),
+    });
+
+    suiteTree.resetBeforeEach();
+
+    it("drags within same tree on folder", () => {
+      suiteTree.do.selectMultiple("x111", "x112");
+      suiteTree.do.startDrag("x111");
+      suiteTree.do.dragOverAndDrop("x21");
+      expect(changeChildren).toHaveBeenCalledWith("x11", ["x113", "x114"]);
+      expect(changeChildren).toHaveBeenCalledWith("x21", [
+        "x211",
+        "x212",
+        "x213",
+        "x214",
+        "x111",
+        "x112",
+      ]);
+    });
+
+    it("drags within same tree inside folder", () => {
+      suiteTree.do.selectMultiple("x111", "x112");
+      suiteTree.do.startDrag("x111");
+      suiteTree.do.dragOverAndDrop("x212", suiteTree.createBottomDragEvent(2));
+      expect(changeChildren).toHaveBeenCalledWith("x11", ["x113", "x114"]);
+      expect(changeChildren).toHaveBeenCalledWith("x21", [
+        "x211",
+        "x212",
+        "x111",
+        "x112",
+        "x213",
+        "x214",
+      ]);
+    });
+
+    it("drags outside", () => {
+      const createForeignDragObject = suiteTree
+        .mockedHandler("createForeignDragObject")
+        .mockReturnValue({ format: "format", data: "data" });
+      const onCompleteForeignDrop = suiteTree.mockedHandler(
+        "onCompleteForeignDrop",
+      );
+      suiteTree.do.selectMultiple("x111", "x112");
+      const e = suiteTree.do.startDrag("x111");
+      expect(e.dataTransfer.setData).toHaveBeenCalledWith("format", "data");
+      expect(createForeignDragObject).toHaveBeenCalledWith([
+        suiteTree.item("x111"),
+        suiteTree.item("x112"),
+      ]);
+      suiteTree.do.dragEnd("x111");
+      expect(onCompleteForeignDrop).toHaveBeenCalledWith([
+        suiteTree.item("x111"),
+        suiteTree.item("x112"),
+      ]);
+    });
+
+    it("drags inside if allowed", () => {
+      suiteTree.mockedHandler("canDropForeignDragObject").mockReturnValue(true);
+      const onDropForeignDragObject = suiteTree.mockedHandler(
+        "onDropForeignDragObject",
+      );
+      const e = TestTree.dragEvent();
+      suiteTree.do.drop("x21", e);
+      expect(onDropForeignDragObject).toBeCalledWith(e.dataTransfer, {
+        childIndex: null,
+        dragLineIndex: 10,
+        dragLineLevel: 1,
+        insertionIndex: null,
+        item: suiteTree.item("x21"),
+      });
+    });
+
+    it("doesnt drag inside if not allowed", () => {
+      suiteTree
+        .mockedHandler("canDropForeignDragObject")
+        .mockReturnValue(false);
+      const onDropForeignDragObject = suiteTree.mockedHandler(
+        "onDropForeignDragObject",
+      );
+      const e = TestTree.dragEvent();
+      suiteTree.do.drop("x21", e);
+      expect(onDropForeignDragObject).not.toHaveBeenCalled();
+    });
+
+    it("drags multiple within in retained order (correct order)", () => {
+      suiteTree.do.selectMultiple("x111", "x112", "x113", "x114");
+      suiteTree.do.startDrag("x111");
+      suiteTree.do.dragOverAndDrop("x212", suiteTree.createBottomDragEvent());
+      expect(changeChildren).toHaveBeenCalledWith("x11", []);
+      expect(changeChildren).toHaveBeenCalledWith("x21", [
+        "x211",
+        "x212",
+        "x111",
+        "x112",
+        "x113",
+        "x114",
+        "x213",
+        "x214",
+      ]);
+    });
+
+    it("drags multiple within in retained order (inverse order)", () => {
+      suiteTree.do.selectMultiple("x114", "x113", "x112", "x111");
+      suiteTree.do.startDrag("x111");
+      suiteTree.do.dragOverAndDrop("x212", suiteTree.createBottomDragEvent());
+      expect(changeChildren).toHaveBeenCalledWith("x11", []);
+      expect(changeChildren).toHaveBeenCalledWith("x21", [
+        "x211",
+        "x212",
+        "x114",
+        "x113",
+        "x112",
+        "x111",
+        "x213",
+        "x214",
+      ]);
+    });
+
+    it("drags multiple within in retained order (scrambled order)", () => {
+      suiteTree.do.selectMultiple("x111", "x114", "x112", "x113");
+      suiteTree.do.startDrag("x111");
+      suiteTree.do.dragOverAndDrop("x212", suiteTree.createBottomDragEvent());
+      expect(changeChildren).toHaveBeenCalledWith("x11", []);
+      expect(changeChildren).toHaveBeenCalledWith("x21", [
+        "x211",
+        "x212",
+        "x111",
+        "x114",
+        "x112",
+        "x113",
+        "x213",
+        "x214",
+      ]);
+    });
   });
 
   describe("special cases", () => {
@@ -355,7 +488,6 @@ describe("core-feature/drag-and-drop", () => {
     it.todo("does not reparent at top of a subtree");
     it.todo("cannot drop on item with canDrop=false");
     it.todo("cannot drag item with canDrag=false");
-    it.todo("cannot drop foreign object with canDropForeignDragObject=false");
     it.todo("cancels drag");
     it.todo("drags prev selected if drag started with ctrl click");
     it.todo("doesnt drag prev selected if drag started with non-ctrl click");
