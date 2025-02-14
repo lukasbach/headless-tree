@@ -1,0 +1,1 @@
+- Auto-open folders when dragging onto them for 1 second
