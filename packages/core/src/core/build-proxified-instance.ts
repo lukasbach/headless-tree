@@ -64,6 +64,21 @@ export const buildProxiedInstance: InstanceBuilder = (
   const item = new Proxy(
     {},
     {
+      has(target, key: string | symbol) {
+        if (typeof key === "symbol") {
+          return false;
+        }
+        if (key === "toJSON") {
+          return false;
+        }
+        const hasInstanceMethod = findPrevInstanceMethod(
+          features,
+          instanceType,
+          key,
+          features.length - 1,
+        );
+        return Boolean(hasInstanceMethod);
+      },
       get(target, key: string | symbol) {
         if (typeof key === "symbol") {
           return undefined;

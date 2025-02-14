@@ -12,7 +12,9 @@ export const insertItemsAtTarget = <T>(
       ...target.item.getChildren().map((item) => item.getId()),
       ...itemIds,
     ]);
-    target.item.invalidateChildrenIds?.();
+    if (target.item && "invalidateChildrenIds" in target.item) {
+      target.item.invalidateChildrenIds();
+    }
     target.item.getTree().rebuildTree();
     return;
   }
@@ -27,6 +29,8 @@ export const insertItemsAtTarget = <T>(
 
   onChangeChildren(target.item, newChildren);
 
-  target.item.invalidateChildrenIds?.();
+  if (target.item && "invalidateChildrenIds" in target.item) {
+    target.item.invalidateChildrenIds();
+  }
   target.item.getTree().rebuildTree();
 };

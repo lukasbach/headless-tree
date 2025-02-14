@@ -22,7 +22,9 @@ export const removeItemsFromParents = <T>(
   }
 
   for (const parent of uniqueParents) {
-    parent?.invalidateChildrenIds?.();
+    if (parent && "invalidateChildrenIds" in parent) {
+      parent?.invalidateChildrenIds();
+    }
   }
 
   movedItems[0].getTree().rebuildTree();
