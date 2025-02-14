@@ -195,6 +195,7 @@ export const treeFeature: FeatureImplementation<
     collapse: ({ tree, item }) => tree.collapseItem(item.getItemMeta().itemId),
     getItemData: ({ tree, item }) =>
       tree.retrieveItemData(item.getItemMeta().itemId),
+    equals: ({ item }, other) => item.getId() === other?.getId(),
     isExpanded: ({ tree, item }) =>
       tree.getState().expandedItems.includes(item.getItemMeta().itemId),
     isDescendentOf: ({ item }, parentId) => {

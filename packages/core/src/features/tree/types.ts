@@ -50,6 +50,7 @@ export type TreeFeatureDef<T> = {
     getProps: () => Record<string, any>;
     getItemName: () => string;
     getItemData: () => T;
+    equals: (other?: ItemInstance<any> | null) => boolean;
     expand: () => void;
     collapse: () => void;
     isExpanded: () => boolean;
