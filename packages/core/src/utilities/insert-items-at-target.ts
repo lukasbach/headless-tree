@@ -12,7 +12,8 @@ export const insertItemsAtTarget = <T>(
       ...target.item.getChildren().map((item) => item.getId()),
       ...itemIds,
     ]);
-    // TODO items[0].getTree().rebuildTree();
+    target.item.invalidateChildrenIds?.();
+    target.item.getTree().rebuildTree();
     return;
   }
 
@@ -26,5 +27,6 @@ export const insertItemsAtTarget = <T>(
 
   onChangeChildren(target.item, newChildren);
 
+  target.item.invalidateChildrenIds?.();
   target.item.getTree().rebuildTree();
 };

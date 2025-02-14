@@ -71,6 +71,10 @@ const Tree = (props: { data: Record<string, Item>; prefix: string }) => {
       data: JSON.stringify(items.map((item) => item.getId())),
     }),
 
+    // This is called in the target tree to verify if foreign drag objects
+    // are permitted to be dropped there.
+    canDropForeignDragObject: () => true,
+
     // This is called in the target tree when the foreign drag object is
     // dropped. This handler inserts the moved items
     onDropForeignDragObject: (dataTransfer, target) => {
@@ -87,7 +91,6 @@ const Tree = (props: { data: Record<string, Item>; prefix: string }) => {
         item.getItemData().children = newChildren;
       });
     },
-    canDropForeignDragObject: () => true,
     features: [
       syncDataLoaderFeature,
       selectionFeature,
