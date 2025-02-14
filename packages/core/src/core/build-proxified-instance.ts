@@ -1,5 +1,6 @@
 import { FeatureImplementation } from "../types/core";
 import { InstanceBuilder, InstanceTypeMap } from "../features/main/types";
+import { throwError } from "../utilities/errors";
 
 const noop = () => {};
 
@@ -95,7 +96,7 @@ export const buildProxiedInstance: InstanceBuilder = (
           );
 
           if (featureIndex === null) {
-            throw new Error(`HeadlessTree: feature missing for method ${key}`);
+            throw throwError(`feature missing for method ${key}`);
           }
           return invokeInstanceMethod(
             features,

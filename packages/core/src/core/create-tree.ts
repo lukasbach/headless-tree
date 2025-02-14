@@ -11,6 +11,7 @@ import { MainFeatureDef } from "../features/main/types";
 import { treeFeature } from "../features/tree/feature";
 import { ItemMeta } from "../features/tree/types";
 import { buildStaticInstance } from "./build-static-instance";
+import { throwError } from "../utilities/errors";
 
 const verifyFeatures = (features: FeatureImplementation[] | undefined) => {
   const loadedFeatures = features?.map((feature) => feature.key);
@@ -19,7 +20,7 @@ const verifyFeatures = (features: FeatureImplementation[] | undefined) => {
       (dep) => !loadedFeatures?.includes(dep),
     );
     if (missingDependency) {
-      throw new Error(`${feature.key} needs ${missingDependency}`);
+      throw throwError(`${feature.key} needs ${missingDependency}`);
     }
   }
 };
