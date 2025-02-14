@@ -19,7 +19,7 @@ const meta = {
 
 export default meta;
 
-const [dataLoader, data] = createDemoData();
+const { data, syncDataLoader } = createDemoData();
 
 // story-start
 export const DragOutside = () => {
@@ -41,7 +41,7 @@ export const DragOutside = () => {
         .join(",")}`,
     }),
     indent: 20,
-    dataLoader,
+    dataLoader: syncDataLoader,
     onCompleteForeignDrop: (items) => {
       removeItemsFromParents(items, (item, newChildren) => {
         item.getItemData().children = newChildren;

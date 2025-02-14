@@ -228,11 +228,22 @@ export const unitTestTree: Record<string, DemoItem> = {
   x444: { name: "X444" },
 };
 
+const wait = (ms: number) =>
+  new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+
 export const createDemoData = (data = sampleTree) => {
-  const dataLoader = {
+  const syncDataLoader = {
     getItem: (id: string) => data[id],
     getChildren: (id: string) => data[id]?.children ?? [],
   };
 
-  return [dataLoader, data] as const;
+  const asyncDataLoader = {
+    getItem: (itemId: string) => wait(500).then(() => data[itemId]),
+    getChildren: (itemId: string) =>
+      wait(800).then(() => data[itemId]?.children ?? []),
+  };
+
+  return { data, syncDataLoader, asyncDataLoader };
 };

@@ -19,7 +19,7 @@ const meta = {
 
 export default meta;
 
-const [dataLoader, data] = createDemoData();
+const { syncDataLoader, data } = createDemoData();
 let newItemId = 0;
 
 // story-start
@@ -51,7 +51,7 @@ export const DragInside = () => {
     },
     canDropForeignDragObject: (_, target) => target.item.isFolder(),
     indent: 20,
-    dataLoader,
+    dataLoader: syncDataLoader,
     features: [
       syncDataLoaderFeature,
       selectionFeature,

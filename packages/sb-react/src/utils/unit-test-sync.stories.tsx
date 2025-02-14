@@ -1,11 +1,11 @@
 import type { Meta } from "@storybook/react";
 import React from "react";
 import {
-  asyncDataLoaderFeature,
   createOnDropHandler,
   dragAndDropFeature,
   hotkeysCoreFeature,
   selectionFeature,
+  syncDataLoaderFeature,
 } from "@headless-tree/core";
 import { useTree } from "@headless-tree/react";
 import cx from "classnames";
@@ -16,16 +16,16 @@ const meta = {
   tags: ["misc/unittest"],
 } satisfies Meta;
 
-const { data, asyncDataLoader } = createDemoData(unitTestTree);
+const { data, syncDataLoader } = createDemoData(unitTestTree);
 
 export default meta;
 
 // story-start
-export const UnitTestAsync = () => {
+export const UnitTestSync = () => {
   const tree = useTree<DemoItem>({
     rootItemId: "x",
     createLoadingItemData: () => ({ name: "Loading" }),
-    asyncDataLoader,
+    dataLoader: syncDataLoader,
     getItemName: (item) => item.getItemData().name,
     indent: 20,
     isItemFolder: (item) => item.getItemMeta().level < 2,
@@ -38,7 +38,7 @@ export const UnitTestAsync = () => {
       data[item.getId()].children = newChildren;
     }),
     features: [
-      asyncDataLoaderFeature,
+      syncDataLoaderFeature,
       selectionFeature,
       hotkeysCoreFeature,
       dragAndDropFeature,
