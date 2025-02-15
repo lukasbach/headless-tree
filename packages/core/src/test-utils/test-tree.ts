@@ -121,18 +121,16 @@ export class TestTree<T = string> {
 
   resetBeforeEach() {
     beforeEach(async () => {
-      this.reset();
-      vi.clearAllMocks();
-      // trigger instance creation
-      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-      this.instance;
-      await this.resolveAsyncVisibleItems();
+      await this.createTestCaseTree();
     });
   }
 
-  async createDebugTree() {
+  async createTestCaseTree() {
     this.reset();
     vi.clearAllMocks();
+    // trigger instance creation
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    this.instance;
     await this.resolveAsyncVisibleItems();
     return this;
   }

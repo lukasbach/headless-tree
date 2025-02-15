@@ -80,6 +80,13 @@ const getTargetPlacement = (
   canMakeChild: boolean,
 ): TargetPlacement => {
   const config = tree.getConfig();
+
+  if (!config.canDropInbetween) {
+    return canMakeChild
+      ? { type: PlacementType.MakeChild }
+      : { type: PlacementType.ReorderBelow };
+  }
+
   const bb = item.getElement()?.getBoundingClientRect();
   const topPercent = bb ? (e.pageY - bb.top) / bb.height : 0.5;
   const leftPixels = bb ? e.pageX - bb.left : 0;
@@ -154,35 +161,41 @@ export const getDropTarget = (
   const draggedItems = tree.getState().dnd?.draggedItems ?? [];
   const itemMeta = item.getItemMeta();
   const parent = item.getParent();
-  const itemTarget = {
+  const itemTarget: DropTarget<any> = {
     item,
     childIndex: null,
     insertionIndex: null,
-    dragLineIndex: itemMeta.index,
-    dragLineLevel: itemMeta.level,
+    dragLineIndex: null,
+    dragLineLevel: null,
   };
   const parentTarget: DropTarget<any> | null = parent
     ? {
         item: parent,
         childIndex: null,
         insertionIndex: null,
-        dragLineIndex: parent.getItemMeta().index,
-        dragLineLevel: parent.getItemMeta().level,
+        dragLineIndex: null,
+        dragLineLevel: null,
       }
     : null;
   const canBecomeSibling =
     parentTarget && canDrop(e.dataTransfer, parentTarget, tree);
 
-  if (!canDropInbetween) {
-    if (!canBecomeSibling && parent) {
-      // TODO! this breaks in story DND/Can Drop. Maybe move this logic into a composable DropTargetStrategy[] ?
-      return getDropTarget(e, parent, tree, false);
-    }
-    // return itemTarget; // TODO ?
-  }
-
   const canMakeChild = canDrop(e.dataTransfer, itemTarget, tree);
   const placement = getTargetPlacement(e, item, tree, canMakeChild);
+
+  if (
+    !canDropInbetween &&
+    parent &&
+    canBecomeSibling &&
+    placement.type !== PlacementType.MakeChild
+  ) {
+    return parentTarget;
+  }
+
+  if (!canDropInbetween && parent && !canBecomeSibling) {
+    // TODO! this breaks in story DND/Can Drop. Maybe move this logic into a composable DropTargetStrategy[] ?
+    return getDropTarget(e, parent, tree, false);
+  }
 
   if (!parent) {
     // Shouldn't happen, but if dropped "next" to root item, just drop it inside

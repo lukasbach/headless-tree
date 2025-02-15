@@ -33,8 +33,8 @@ describe("core-feature/drag-and-drop", () => {
       tree.do.startDrag("x111");
       tree.do.dragOverAndDrop("x21");
       tree.expect.dropped(["x111"], {
-        dragLineIndex: 10,
-        dragLineLevel: 1,
+        dragLineIndex: null,
+        dragLineLevel: null,
         childIndex: null,
         insertionIndex: null,
         item: tree.item("x21"),
@@ -46,8 +46,8 @@ describe("core-feature/drag-and-drop", () => {
       tree.do.startDrag("x111");
       tree.do.dragOverAndDrop("x2");
       tree.expect.dropped(["x111"], {
-        dragLineIndex: 9,
-        dragLineLevel: 0,
+        dragLineIndex: null,
+        dragLineLevel: null,
         childIndex: null,
         insertionIndex: null,
         item: tree.item("x2"),
@@ -59,8 +59,8 @@ describe("core-feature/drag-and-drop", () => {
       tree.do.startDrag("x111");
       tree.do.dragOverAndDrop("x12");
       tree.expect.dropped(["x111"], {
-        dragLineIndex: 6,
-        dragLineLevel: 1,
+        dragLineIndex: null,
+        dragLineLevel: null,
         childIndex: null,
         insertionIndex: null,
         item: tree.item("x12"),
@@ -148,8 +148,8 @@ describe("core-feature/drag-and-drop", () => {
       tree.do.startDrag("x111");
       tree.do.dragOverAndDrop("x21");
       tree.expect.dropped(["x111", "x112", "x113", "x114"], {
-        dragLineIndex: 10,
-        dragLineLevel: 1,
+        dragLineIndex: null,
+        dragLineLevel: null,
         childIndex: null,
         insertionIndex: null,
         item: tree.item("x21"),
@@ -164,8 +164,8 @@ describe("core-feature/drag-and-drop", () => {
       tree.do.startDrag("x111");
       tree.do.dragOverAndDrop("x21");
       tree.expect.dropped(["x111", "x112", "x113", "x114"], {
-        dragLineIndex: 10,
-        dragLineLevel: 1,
+        dragLineIndex: null,
+        dragLineLevel: null,
         childIndex: null,
         insertionIndex: null,
         item: tree.item("x21"),
@@ -180,8 +180,8 @@ describe("core-feature/drag-and-drop", () => {
       tree.do.startDrag("x111");
       tree.do.dragOverAndDrop("x21");
       tree.expect.dropped(["x111", "x112", "x113", "x114"], {
-        dragLineIndex: 10,
-        dragLineLevel: 1,
+        dragLineIndex: null,
+        dragLineLevel: null,
         childIndex: null,
         insertionIndex: null,
         item: tree.item("x21"),
@@ -291,8 +291,8 @@ describe("core-feature/drag-and-drop", () => {
       tree.do.drop("x11", event);
       expect(onDropForeignDragObject).toHaveBeenCalledWith(event.dataTransfer, {
         childIndex: null,
-        dragLineIndex: 1,
-        dragLineLevel: 1,
+        dragLineIndex: null,
+        dragLineLevel: null,
         insertionIndex: null,
         item: tree.item("x11"),
       });
@@ -401,8 +401,8 @@ describe("core-feature/drag-and-drop", () => {
       suiteTree.do.drop("x21", e);
       expect(onDropForeignDragObject).toBeCalledWith(e.dataTransfer, {
         childIndex: null,
-        dragLineIndex: 10,
-        dragLineLevel: 1,
+        dragLineIndex: null,
+        dragLineLevel: null,
         insertionIndex: null,
         item: suiteTree.item("x21"),
       });
@@ -477,8 +477,35 @@ describe("core-feature/drag-and-drop", () => {
   });
 
   describe("drop redirection", () => {
-    it.todo("redirects to parent folder without inbetween dropping");
-    it.todo("doesnt redirect to parent folder with inbetween dropping");
+    it("redirects to parent folder without inbetween dropping", async () => {
+      const testTree = await tree
+        .with({ canDropInbetween: false })
+        .createTestCaseTree();
+      testTree.do.startDrag("x111");
+      testTree.do.dragOverAndDrop("x212", testTree.createBottomDragEvent(2));
+      testTree.expect.dropped(["x111"], {
+        dragLineIndex: null,
+        dragLineLevel: null,
+        childIndex: null,
+        insertionIndex: null,
+        item: tree.item("x21"),
+      });
+    });
+
+    it("doesnt redirect to parent folder with inbetween dropping", async () => {
+      const testTree = await tree
+        .with({ canDropInbetween: true })
+        .createTestCaseTree();
+      testTree.do.startDrag("x111");
+      testTree.do.dragOverAndDrop("x212", testTree.createBottomDragEvent(2));
+      testTree.expect.dropped(["x111"], {
+        childIndex: 2,
+        dragLineIndex: 13,
+        dragLineLevel: 2,
+        insertionIndex: 2,
+        item: tree.item("x21"),
+      });
+    });
   });
 
   describe("dnd restrictions", () => {
