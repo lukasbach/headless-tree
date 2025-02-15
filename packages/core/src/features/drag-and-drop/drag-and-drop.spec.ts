@@ -642,12 +642,46 @@ describe("core-feature/drag-and-drop", () => {
   });
 
   describe("item instance methods", () => {
-    it.todo("returns isDropTarget() correct for true");
-    it.todo("returns isDropTarget() correct for false");
-    it.todo("returns isDraggingOver() correct for true");
-    it.todo("returns isDraggingOver() correct for false");
+    it("returns isDropTarget() correct for folders", () => {
+      tree.do.startDrag("x111");
+      tree.do.dragOver("x21");
+      expect(tree.instance.getItemInstance("x21").isDropTarget()).toBe(true);
+      expect(tree.instance.getItemInstance("x211").isDropTarget()).toBe(false);
+    });
+
+    it("returns isDropTarget() correct for items", () => {
+      tree.do.startDrag("x111");
+      tree.do.dragOver("x211");
+      expect(tree.instance.getItemInstance("x21").isDropTarget()).toBe(true);
+      expect(tree.instance.getItemInstance("x211").isDropTarget()).toBe(false);
+    });
+
+    it("returns isDraggingOver() correct for folders", () => {
+      tree.do.startDrag("x111");
+      tree.do.dragOver("x21");
+      expect(tree.instance.getItemInstance("x21").isDraggingOver()).toBe(true);
+      expect(tree.instance.getItemInstance("x211").isDraggingOver()).toBe(
+        false,
+      );
+    });
+
+    it("returns isDraggingOver() correct for items", () => {
+      tree.do.startDrag("x111");
+      tree.do.dragOver("x211");
+      expect(tree.instance.getItemInstance("x211").isDraggingOver()).toBe(true);
+      expect(tree.instance.getItemInstance("x21").isDraggingOver()).toBe(false);
+    });
   });
 
-  describe.todo("retains last drag state with dragcode");
+  describe("retains last drag state with dragcode", () => {
+    it("uses constant number of calls to canDrop", () => {
+      const canDrop = tree.mockedHandler("canDrop").mockReturnValue(true);
+      tree.do.startDrag("x111");
+      Array.from({ length: 30 }).forEach(() => {
+        tree.do.dragOver("x12");
+      });
+      expect(canDrop).toBeCalledTimes(3);
+    });
+  });
   // });
 });
