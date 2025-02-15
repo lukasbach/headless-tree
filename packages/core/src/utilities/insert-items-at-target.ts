@@ -8,12 +8,13 @@ export const insertItemsAtTarget = <T>(
 ) => {
   // add moved items to new common parent, if dropped onto parent
   if (target.childIndex === null) {
-    onChangeChildren(target.item, [
+    const newChildren = [
       ...target.item.getChildren().map((item) => item.getId()),
       ...itemIds,
-    ]);
-    if (target.item && "invalidateChildrenIds" in target.item) {
-      target.item.invalidateChildrenIds();
+    ];
+    onChangeChildren(target.item, newChildren);
+    if (target.item && "updateCachedChildrenIds" in target.item) {
+      target.item.updateCachedChildrenIds(newChildren);
     }
     target.item.getTree().rebuildTree();
     return;
@@ -29,8 +30,8 @@ export const insertItemsAtTarget = <T>(
 
   onChangeChildren(target.item, newChildren);
 
-  if (target.item && "invalidateChildrenIds" in target.item) {
-    target.item.invalidateChildrenIds();
+  if (target.item && "updateCachedChildrenIds" in target.item) {
+    target.item.updateCachedChildrenIds(newChildren);
   }
   target.item.getTree().rebuildTree();
 };

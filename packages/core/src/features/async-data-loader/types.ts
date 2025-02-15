@@ -31,10 +31,12 @@ export type AsyncDataLoaderFeatureDef<T> = {
     /** Invalidate fetched data for item, and triggers a refetch and subsequent rerender if the item is visible */
     invalidateItemData: (itemId: string) => void;
     invalidateChildrenIds: (itemId: string) => void;
+    // TODO deprecate tree instance methods, move to item instance
   };
   itemInstance: SyncDataLoaderFeatureDef<T>["itemInstance"] & {
     invalidateItemData: () => void;
     invalidateChildrenIds: () => void;
+    updateCachedChildrenIds: (childrenIds: string[]) => void;
     isLoading: () => boolean;
   };
   hotkeys: SyncDataLoaderFeatureDef<T>["hotkeys"];

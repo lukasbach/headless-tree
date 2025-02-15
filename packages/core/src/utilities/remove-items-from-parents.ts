@@ -12,18 +12,13 @@ export const removeItemsFromParents = <T>(
   for (const parent of uniqueParents) {
     const siblings = parent?.getChildren();
     if (siblings && parent) {
-      onChangeChildren(
-        parent,
-        siblings
-          .filter((sibling) => !movedItemsIds.includes(sibling.getId()))
-          .map((i) => i.getId()),
-      );
-    }
-  }
-
-  for (const parent of uniqueParents) {
-    if (parent && "invalidateChildrenIds" in parent) {
-      parent?.invalidateChildrenIds();
+      const newChildren = siblings
+        .filter((sibling) => !movedItemsIds.includes(sibling.getId()))
+        .map((i) => i.getId());
+      onChangeChildren(parent, newChildren);
+      if (parent && "updateCachedChildrenIds" in parent) {
+        parent?.updateCachedChildrenIds(newChildren);
+      }
     }
   }
 

@@ -119,5 +119,10 @@ export const asyncDataLoaderFeature: FeatureImplementation<
       tree.invalidateItemData(item.getItemMeta().itemId),
     invalidateChildrenIds: ({ tree, item }) =>
       tree.invalidateChildrenIds(item.getItemMeta().itemId),
+    updateCachedChildrenIds: ({ tree, itemId }, childrenIds) => {
+      const dataRef = tree.getDataRef<AsyncDataLoaderRef>();
+      dataRef.current.childrenIds[itemId] = childrenIds;
+      tree.rebuildTree();
+    },
   },
 };
