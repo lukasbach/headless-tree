@@ -127,6 +127,7 @@ describe("core-feature/drag-and-drop", () => {
     });
 
     it("drop reparented two levels", () => {
+      // TODO reparenting two levels should work at x144, but not at x114
       tree.do.ctrlSelectItem("x111");
       tree.do.startDrag("x111");
       const event = tree.createBottomDragEvent(0);
@@ -186,6 +187,29 @@ describe("core-feature/drag-and-drop", () => {
         insertionIndex: null,
         item: tree.item("x21"),
       });
+    });
+
+    it("updates dnd state", () => {
+      const setDndState = tree.mockedHandler("setDndState");
+      tree.do.startDrag("x111");
+      expect(setDndState).toBeCalledWith({
+        draggedItems: [tree.item("x111")],
+        draggingOverItem: tree.item("x1"),
+      });
+      tree.do.dragOver("x21");
+      expect(setDndState).toBeCalledWith({
+        draggedItems: [tree.item("x111")],
+        draggingOverItem: tree.item("x21"),
+        dragTarget: {
+          childIndex: null,
+          dragLineIndex: null,
+          dragLineLevel: null,
+          insertionIndex: null,
+          item: tree.item("x21"),
+        },
+      });
+      tree.do.drop("x22");
+      expect(setDndState).toBeCalledWith(null);
     });
   });
 
@@ -531,16 +555,90 @@ describe("core-feature/drag-and-drop", () => {
       tree.expect.dragOverNotAllowed("x112");
     });
 
-    it.todo("does not reparent into itself");
-    it.todo("does not reparent in the middle of a subtree");
-    it.todo("does not reparent at top of a subtree");
-    it.todo("cannot drop on item with canDrop=false");
-    it.todo("cannot drag item with canDrag=false");
+    it.todo("does not reparent into itself", () => {
+      tree.do.startDrag("x11");
+      tree.setElementBoundingBox("x114");
+      const event = tree.createBottomDragEvent(1);
+      tree.expect.dragOverNotAllowed("x114", event);
+    });
+
+    it.for([0, 1, 2])("does not reparent at level %i of a subtree", (i) => {
+      tree.do.ctrlSelectItem("x111");
+      tree.do.startDrag("x111");
+      tree.setElementBoundingBox("x112");
+      const event = tree.createBottomDragEvent(i);
+      tree.do.dragOverAndDrop("x112", event);
+      tree.expect.dropped(["x111"], {
+        dragLineIndex: 4,
+        dragLineLevel: 2,
+        childIndex: 2,
+        insertionIndex: 1,
+        item: tree.item("x11"),
+      });
+    });
+
+    it("cannot drop on item with canDrop=false", () => {
+      const canDrop = tree.mockedHandler("canDrop").mockReturnValue(false);
+      tree.do.startDrag("x111");
+      tree.expect.dragOverNotAllowed("x2");
+      expect(canDrop).toHaveBeenCalledWith([tree.item("x111")], {
+        item: tree.item("x2"),
+        childIndex: null,
+        dragLineIndex: null,
+        dragLineLevel: null,
+        insertionIndex: null,
+      });
+    });
+
+    it.todo("item with canDrag=false is not draggable", () => {
+      const canDrag = tree.mockedHandler("canDrag").mockReturnValue(false);
+      expect(tree.instance.getItemInstance("x111").getProps().draggable).toBe(
+        false,
+      );
+      expect(canDrag).toHaveBeenCalledWith([tree.item("x111")]);
+    });
+
+    it("item with canDrag=false does not invoke drag handler when dragged", () => {
+      const canDrag = tree.mockedHandler("canDrag").mockReturnValue(false);
+      const setDndState = tree.mockedHandler("setDndState");
+      const e = TestTree.dragEvent();
+      tree.instance.getItemInstance("x111").getProps().onDragStart(e);
+      expect(canDrag).toHaveBeenCalledWith([tree.item("x111")]);
+      expect(e.preventDefault).toBeCalled();
+      expect(setDndState).not.toBeCalled();
+    });
+
     it.todo("cancels drag");
-    it.todo("drags prev selected if drag started with ctrl click");
-    it.todo("doesnt drag prev selected if drag started with non-ctrl click");
-    it.todo("doesnt drop if dragged outside of tree");
-    it.todo("doesnt drop if dragged from valid to invalid position");
+
+    it("drags all selected if drag is started within selection", () => {
+      tree.do.ctrlSelectItem("x111");
+      tree.do.ctrlSelectItem("x112");
+      tree.do.ctrlSelectItem("x113");
+      tree.do.startDrag("x111");
+      tree.do.dragOverAndDrop("x21");
+      tree.expect.dropped(["x111", "x112", "x113"], {
+        dragLineIndex: null,
+        dragLineLevel: null,
+        childIndex: null,
+        insertionIndex: null,
+        item: tree.item("x21"),
+      });
+    });
+
+    it("drags all only new item if drag is started outside previous selection", () => {
+      tree.do.ctrlSelectItem("x111");
+      tree.do.ctrlSelectItem("x112");
+      tree.do.ctrlSelectItem("x113");
+      tree.do.startDrag("x114");
+      tree.do.dragOverAndDrop("x21");
+      tree.expect.dropped(["x114"], {
+        dragLineIndex: null,
+        dragLineLevel: null,
+        childIndex: null,
+        insertionIndex: null,
+        item: tree.item("x21"),
+      });
+    });
   });
 
   describe("item instance methods", () => {

@@ -52,7 +52,20 @@ export class TestTreeExpect<T> {
     this.itemProps(itemId).onDragOver(e);
     this.itemProps(itemId).onDragOver(e);
     this.itemProps(itemId).onDragOver(e);
-    expect(e.preventDefault).not.toBeCalled();
+    expect(
+      e.preventDefault,
+      "onDragOver shouldn't call e.preventDefault if drag is not allowed",
+    ).not.toBeCalled();
+
+    this.itemProps(itemId).onDrop(e);
+    expect(
+      e.preventDefault,
+      "onDrop shouldn't call e.preventDefault if drag is not allowed",
+    ).not.toBeCalled();
+    expect(
+      this.tree.instance.getConfig().onDrop,
+      "onDrop handler shouldn't be called if drag is not allowed",
+    ).not.toBeCalled();
     return e;
   }
 
