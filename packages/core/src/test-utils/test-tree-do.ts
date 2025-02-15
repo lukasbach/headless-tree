@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import { DragEvent } from "react";
 import { Mock, expect, vi } from "vitest";
 import { TestTree } from "./test-tree";

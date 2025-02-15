@@ -1,4 +1,4 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
+/* eslint-disable import/no-extraneous-dependencies */
 import { beforeEach, describe, vi } from "vitest";
 import { DragEvent } from "react";
 import { TreeConfig, TreeInstance } from "../types/core";

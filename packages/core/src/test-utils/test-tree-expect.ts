@@ -1,4 +1,4 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
+/* eslint-disable import/no-extraneous-dependencies */
 import { Mock, expect } from "vitest";
 import { DragEvent } from "react";
 import { TestTree } from "./test-tree";
