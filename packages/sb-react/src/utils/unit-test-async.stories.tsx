@@ -12,7 +12,7 @@ import cx from "classnames";
 import { DemoItem, createDemoData, unitTestTree } from "./data";
 
 const meta = {
-  title: "React/Misc/Sync Tree used in Unit Tests",
+  title: "React/Misc/Async Tree used in Unit Tests",
   tags: ["misc/unittest"],
 } satisfies Meta;
 

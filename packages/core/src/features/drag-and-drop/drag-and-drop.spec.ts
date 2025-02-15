@@ -371,6 +371,18 @@ describe("core-feature/drag-and-drop", () => {
       ]);
     });
 
+    it("drags within within one folder", () => {
+      suiteTree.do.selectMultiple("x111", "x112");
+      suiteTree.do.startDrag("x111");
+      suiteTree.do.dragOverAndDrop("x113", suiteTree.createBottomDragEvent(2));
+      expect(changeChildren).toHaveBeenCalledWith("x11", [
+        "x112",
+        "x113",
+        "x111",
+        "x112",
+      ]);
+    });
+
     it("drags outside", () => {
       const createForeignDragObject = suiteTree
         .mockedHandler("createForeignDragObject")
@@ -509,7 +521,16 @@ describe("core-feature/drag-and-drop", () => {
   });
 
   describe("dnd restrictions", () => {
-    it.todo("cannot drop on self");
+    it("cannot drop on self", () => {
+      tree.do.startDrag("x11");
+      tree.expect.dragOverNotAllowed("x112");
+    });
+
+    it("cannot drop on self, nested additional layer", () => {
+      tree.do.startDrag("x1");
+      tree.expect.dragOverNotAllowed("x112");
+    });
+
     it.todo("does not reparent into itself");
     it.todo("does not reparent in the middle of a subtree");
     it.todo("does not reparent at top of a subtree");
