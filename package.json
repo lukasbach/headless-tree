@@ -12,7 +12,8 @@
     "build": "lerna run build,build:cjs,build:esm,build:docs,build:sb --concurrency 1",
     "build:core": "lerna run build,build:cjs,build:esm --concurrency 1",
     "build:web": "lerna run build:docs,build:sb --concurrency 1",
-    "test": "lerna run test --stream"
+    "test": "lerna run test --stream",
+    "postinstall": "zx scripts/prepare.mjs"
   },
   "dependencies": {
     "@changesets/cli": "^2.27.5",
@@ -24,7 +25,7 @@
     "lerna": "^8.1.3",
     "typedoc": "^0.25.13",
     "typedoc-plugin-markdown": "^3.17.1",
-    "zx": "^7.2.3"
+    "zx": "^8.3.2"
   },
   "volta": {
     "node": "23.6.1",
