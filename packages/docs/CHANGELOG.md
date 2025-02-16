@@ -1,5 +1,11 @@
 # @headless-tree/docs
 
+## 0.0.3
+
+### Patch Changes
+
+- 7ed33ac: dev release
+
 ## 0.0.2
 
 ### Patch Changes
