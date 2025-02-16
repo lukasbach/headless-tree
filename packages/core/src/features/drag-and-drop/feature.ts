@@ -31,7 +31,7 @@ export const dragAndDropFeature: FeatureImplementation<
     getDragLineData: ({ tree }): DragLineData | null => {
       // TODO doesnt work if scrolled down!
       const target = tree.getDropTarget();
-      const intend = (target?.item.getItemMeta().level ?? 0) + 1; // TODO rename to indent
+      const indent = (target?.item.getItemMeta().level ?? 0) + 1; // TODO rename to indent
 
       if (!target || target.childIndex === null) return null;
 
@@ -46,7 +46,7 @@ export const dragAndDropFeature: FeatureImplementation<
 
         if (bb) {
           return {
-            intend,
+            indent,
             top: bb.bottom,
             left: bb.left + leftOffset,
             right: bb.right,
@@ -58,7 +58,7 @@ export const dragAndDropFeature: FeatureImplementation<
 
       if (bb) {
         return {
-          intend,
+          indent,
           top: bb.top,
           left: bb.left + leftOffset,
           right: bb.right,

@@ -71,7 +71,7 @@ export class TestTreeExpect<T> {
 
   defaultDragLineProps(indent = 0) {
     expect(this.tree.instance.getDragLineData()).toEqual({
-      intend: indent,
+      indent,
       left: indent * 20,
       right: 100,
       top: 0,

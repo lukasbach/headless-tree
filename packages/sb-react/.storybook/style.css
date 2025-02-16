@@ -3,12 +3,11 @@
 }
 
 .tree button[role="treeitem"] {
-    margin-bottom: 2px;
     display: flex;
     background: transparent;
     border: none;
     width: 100%;
-    padding: 0;
+    padding: 0 0 2px 0;
 }
 
 .treeitem {

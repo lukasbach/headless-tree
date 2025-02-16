@@ -17,8 +17,6 @@ const meta = {
 
 export default meta;
 
-// TODO dragging on root-1-2-1 should make the parent hover-effect
-
 // story-start
 export const CannotDropInbetween = () => {
   const [state, setState] = useState<Partial<TreeState<any>>>({

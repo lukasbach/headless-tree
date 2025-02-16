@@ -12,7 +12,7 @@ export type DndState<T> = {
 };
 
 export type DragLineData = {
-  intend: number;
+  indent: number;
   top: number;
   left: number;
   right: number;

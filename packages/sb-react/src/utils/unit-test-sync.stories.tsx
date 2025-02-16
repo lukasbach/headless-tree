@@ -34,7 +34,6 @@ export const UnitTestSync = () => {
     },
     canDropInbetween: true,
     onDrop: createOnDropHandler((item, newChildren) => {
-      console.log("!!", item.getId(), newChildren); // TODO doesnt work!
       data[item.getId()].children = newChildren;
     }),
     features: [
