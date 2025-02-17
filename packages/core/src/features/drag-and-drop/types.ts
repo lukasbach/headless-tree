@@ -51,7 +51,7 @@ export type DragAndDropFeatureDef<T> = {
      * be placed above or below the item within the same parent, as opposed to being placed inside the item.
      * If `canDropInbetween` is `false`, this is ignored. */
     reorderAreaPercentage?: number;
-    canDropInbetween?: boolean;
+    canDropInbetween?: boolean; // TODO rename to canReorder
 
     // TODO better document difference to canDrag(), or unify both
     isItemDraggable?: (item: ItemInstance<T>) => boolean;

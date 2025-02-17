@@ -5,3 +5,67 @@ category: draganddrop
 ---
 
 # Overview
+
+```jsx typescript
+import {
+  syncDataLoaderFeature,
+  createOnDropHandler,
+  dragAndDropFeature,
+  hotkeysCoreFeature,
+  selectionFeature,
+} from "@headless-tree/core";
+
+const tree = useTree<Item>({
+  indent: 20,
+  canDropInbetween: true,
+  onDrop: createOnDropHandler((item, newChildren) => {
+    // set newChildren to item
+  }),
+  features: [
+    syncDataLoaderFeature,
+    selectionFeature,
+    hotkeysCoreFeature,
+    dragAndDropFeature,
+  ],
+});
+```
+
+```jsx
+<div ref={tree.registerElement} className="tree">
+  {tree.getItems().map((item) => (
+    <button
+      {...item.getProps()}
+      ref={item.registerElement}
+      key={item.getId()}
+      style={{ paddingLeft: `${item.getItemMeta().level * 20}px` }}
+    >
+      <div
+        className={`folder ${item.isFolder() && "folder"}`}
+      >
+        {item.getItemName()}
+      </div>
+    </button>
+  ))}
+  <div style={tree.getDragLineStyle()} className="dragline" />
+</div>
+```
+
+<DemoBox tags={["feature/dnd"]} stories={["react-drag-and-drop-basic--basic"]} />
+
+## Updated caches in async data loaders
+
+```jsx typescript
+const tree = useTree<Item>({
+  indent: 20,
+  canDropInbetween: true,
+  onDrop: createOnDropHandler((item, newChildren) => {}),
+  features: [
+    asyncDataLoaderFeature,
+    selectionFeature,
+    hotkeysCoreFeature,
+    dragAndDropFeature,
+  ],
+});
+```
+
+## Reading DragAndDrop state
