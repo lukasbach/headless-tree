@@ -24,17 +24,6 @@ export const renamingFeature: FeatureImplementation<
   },
 
   treeInstance: {
-    startRenamingItem: ({ tree }, itemId) => {
-      const item = tree.getItemInstance(itemId);
-
-      if (!item.canRename()) {
-        return;
-      }
-
-      tree.applySubStateUpdate("renamingItem", itemId);
-      tree.applySubStateUpdate("renamingValue", item.getItemName());
-    },
-
     getRenamingItem: ({ tree }) => {
       const itemId = tree.getState().renamingItem;
       return itemId ? tree.getItemInstance(itemId) : null;
@@ -61,6 +50,15 @@ export const renamingFeature: FeatureImplementation<
   },
 
   itemInstance: {
+    startRenaming: ({ tree, item, itemId }) => {
+      if (!item.canRename()) {
+        return;
+      }
+
+      tree.applySubStateUpdate("renamingItem", itemId);
+      tree.applySubStateUpdate("renamingValue", item.getItemName());
+    },
+
     getRenameInputProps: ({ tree }) => ({
       onBlur: () => tree.abortRenaming(),
       value: tree.getRenamingValue(),
@@ -81,7 +79,7 @@ export const renamingFeature: FeatureImplementation<
     renameItem: {
       hotkey: "F2",
       handler: (e, tree) => {
-        tree.startRenamingItem(tree.getFocusedItem().getId());
+        tree.getFocusedItem().startRenaming();
       },
     },
 

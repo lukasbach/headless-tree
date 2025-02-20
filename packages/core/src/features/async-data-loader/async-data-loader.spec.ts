@@ -75,44 +75,21 @@ describe("core-feature/selections", () => {
     const suiteTree = tree.with({ asyncDataLoader: { getItem, getChildren } });
     suiteTree.resetBeforeEach();
 
-    it("invalidates item data on tree instance", async () => {
-      getItem.mockClear();
-      getItem.mockResolvedValueOnce("new");
-      suiteTree.instance.invalidateItemData("x1");
-      await suiteTree.resolveAsyncVisibleItems();
-      expect(getItem).toHaveBeenCalledWith("x1");
-      expect(suiteTree.instance.getItemInstance("x1").getItemData()).toBe(
-        "new",
-      );
-    });
-
     it("invalidates item data on item instance", async () => {
       getItem.mockClear();
       await suiteTree.resolveAsyncVisibleItems();
       getItem.mockResolvedValueOnce("new");
-      suiteTree.instance.getItemInstance("x1").invalidateItemData();
+      suiteTree.item("x1").invalidateItemData();
       await suiteTree.resolveAsyncVisibleItems();
       expect(getItem).toHaveBeenCalledWith("x1");
-      expect(suiteTree.instance.getItemInstance("x1").getItemData()).toBe(
-        "new",
-      );
-    });
-
-    it("invalidates children ids on tree instance", async () => {
-      getChildren.mockClear();
-      await suiteTree.resolveAsyncVisibleItems();
-      getChildren.mockResolvedValueOnce(["new1", "new2"]);
-      suiteTree.instance.invalidateChildrenIds("x1");
-      await suiteTree.resolveAsyncVisibleItems();
-      expect(getChildren).toHaveBeenCalledWith("x1");
-      suiteTree.expect.hasChildren("x1", ["new1", "new2"]);
+      expect(suiteTree.item("x1").getItemData()).toBe("new");
     });
 
     it("invalidates children ids on item instance", async () => {
       getChildren.mockClear();
       await suiteTree.resolveAsyncVisibleItems();
       getChildren.mockResolvedValueOnce(["new1", "new2"]);
-      suiteTree.instance.getItemInstance("x1").invalidateChildrenIds();
+      suiteTree.item("x1").invalidateChildrenIds();
       await suiteTree.resolveAsyncVisibleItems();
       expect(getChildren).toHaveBeenCalledWith("x1");
       suiteTree.expect.hasChildren("x1", ["new1", "new2"]);
@@ -121,17 +98,17 @@ describe("core-feature/selections", () => {
     it("doesnt call item data getter twice", async () => {
       await suiteTree.resolveAsyncVisibleItems();
       getItem.mockClear();
-      suiteTree.instance.invalidateItemData("x1");
+      suiteTree.item("x1").invalidateItemData();
       await suiteTree.resolveAsyncVisibleItems();
-      expect(suiteTree.instance.getItemInstance("x1").getItemData()).toBe("x1");
-      expect(suiteTree.instance.getItemInstance("x1").getItemData()).toBe("x1");
+      expect(suiteTree.item("x1").getItemData()).toBe("x1");
+      expect(suiteTree.item("x1").getItemData()).toBe("x1");
       expect(getItem).toHaveBeenCalledTimes(1);
     });
 
     it("doesnt call children getter twice", async () => {
       await suiteTree.resolveAsyncVisibleItems();
       getChildren.mockClear();
-      suiteTree.instance.invalidateChildrenIds("x1");
+      suiteTree.item("x1").invalidateChildrenIds();
       await suiteTree.resolveAsyncVisibleItems();
       suiteTree.expect.hasChildren("x1", ["x11", "x12", "x13", "x14"]);
       suiteTree.expect.hasChildren("x1", ["x11", "x12", "x13", "x14"]);

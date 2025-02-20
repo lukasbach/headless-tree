@@ -33,11 +33,6 @@ export type TreeFeatureDef<T> = {
     /** @internal */
     getItemsMeta: () => ItemMeta[];
 
-    expandItem: (itemId: string) => void;
-    collapseItem: (itemId: string) => void;
-    isItemExpanded: (itemId: string) => boolean;
-
-    focusItem: (itemId: string) => void;
     getFocusedItem: () => ItemInstance<any>;
     focusNextItem: () => void;
     focusPreviousItem: () => void;

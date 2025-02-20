@@ -12,7 +12,6 @@ export type RenamingFeatureDef<T> = {
     onRename?: (item: ItemInstance<T>, value: string) => void;
   };
   treeInstance: {
-    startRenamingItem: (itemId: string) => void;
     getRenamingItem: () => ItemInstance<T> | null;
     getRenamingValue: () => string;
     abortRenaming: () => void;
@@ -23,6 +22,7 @@ export type RenamingFeatureDef<T> = {
     getRenameInputProps: () => any;
     canRename: () => boolean;
     isRenaming: () => boolean;
+    startRenaming: () => void;
   };
   hotkeys: "renameItem" | "abortRenaming" | "completeRenaming";
 };

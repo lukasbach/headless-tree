@@ -11,7 +11,7 @@ const factory = TestTree.default({}).withFeatures(
 describe("core-feature/renaming", () => {
   factory.forSuits((tree) => {
     it("starts and aborts renaming", () => {
-      tree.instance.startRenamingItem("x1");
+      tree.item("x1").startRenaming();
       expect(tree.instance.isRenamingItem()).toBe(true);
       expect(tree.instance.getRenamingValue()).toBe("x1");
       tree.instance.abortRenaming();
@@ -19,7 +19,7 @@ describe("core-feature/renaming", () => {
     });
 
     it("stops renaming by blurring", () => {
-      tree.instance.startRenamingItem("x1");
+      tree.item("x1").startRenaming();
       tree.instance.getRenamingItem()!.getRenameInputProps().onBlur();
       expect(tree.instance.isRenamingItem()).toBe(false);
     });
@@ -27,7 +27,7 @@ describe("core-feature/renaming", () => {
     it("completes renaming programmatically", () => {
       const onRename = tree.mockedHandler("onRename");
 
-      tree.instance.startRenamingItem("x1");
+      tree.item("x1").startRenaming();
       expect(tree.instance.getRenamingItem()!.getRenameInputProps().value).toBe(
         "x1",
       );
@@ -51,7 +51,7 @@ describe("core-feature/renaming", () => {
     it("invokes state setters when aborting", () => {
       const setRenamingItem = tree.mockedHandler("setRenamingItem");
       const setRenamingValue = tree.mockedHandler("setRenamingValue");
-      tree.instance.startRenamingItem("x1");
+      tree.item("x1").startRenaming();
       expect(setRenamingItem).toHaveBeenCalledWith("x1");
       expect(setRenamingValue).toHaveBeenCalledWith("x1");
       tree.instance.abortRenaming();
@@ -61,7 +61,7 @@ describe("core-feature/renaming", () => {
     it("invokes state setters when completing", () => {
       const setRenamingItem = tree.mockedHandler("setRenamingItem");
       const setRenamingValue = tree.mockedHandler("setRenamingValue");
-      tree.instance.startRenamingItem("x1");
+      tree.item("x1").startRenaming();
       tree.instance
         .getRenamingItem()!
         .getRenameInputProps()
@@ -76,7 +76,7 @@ describe("core-feature/renaming", () => {
 
     it("changes renaming input content with input props", () => {
       const setRenamingValue = tree.mockedHandler("setRenamingValue");
-      tree.instance.startRenamingItem("x1");
+      tree.item("x1").startRenaming();
       tree.instance
         .getRenamingItem()!
         .getRenameInputProps()
@@ -86,7 +86,7 @@ describe("core-feature/renaming", () => {
 
     it("aborts renaming with input props", () => {
       const setRenamingItem = tree.mockedHandler("setRenamingItem");
-      tree.instance.startRenamingItem("x1");
+      tree.item("x1").startRenaming();
       tree.instance.getRenamingItem()!.getRenameInputProps().onBlur();
       expect(setRenamingItem).toHaveBeenCalledWith(null);
     });
@@ -100,14 +100,14 @@ describe("core-feature/renaming", () => {
 
       it("aborts renaming with Escape key", () => {
         const setRenamingItem = tree.mockedHandler("setRenamingItem");
-        tree.instance.startRenamingItem("x1");
+        tree.item("x1").startRenaming();
         tree.do.hotkey("abortRenaming");
         expect(setRenamingItem).toHaveBeenCalledWith(null);
       });
 
       it("completes renaming with Enter key", () => {
         const onRename = tree.mockedHandler("onRename");
-        tree.instance.startRenamingItem("x1");
+        tree.item("x1").startRenaming();
         tree.instance
           .getRenamingItem()!
           .getRenameInputProps()

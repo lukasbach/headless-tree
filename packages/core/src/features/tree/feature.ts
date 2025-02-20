@@ -35,9 +35,6 @@ export const treeFeature: FeatureImplementation<
   },
 
   treeInstance: {
-    isItemExpanded: ({ tree }, itemId) =>
-      tree.getState().expandedItems.includes(itemId),
-
     getItemsMeta: ({ tree }) => {
       const { rootItemId } = tree.getConfig();
       const { expandedItems } = tree.getState();
@@ -79,33 +76,6 @@ export const treeFeature: FeatureImplementation<
       return flatItems;
     },
 
-    expandItem: ({ tree }, itemId) => {
-      if (!tree.getItemInstance(itemId).isFolder()) {
-        return;
-      }
-
-      if (tree.getState().loadingItems?.includes(itemId)) {
-        return;
-      }
-
-      tree.applySubStateUpdate("expandedItems", (expandedItems) => [
-        ...expandedItems,
-        itemId,
-      ]);
-      tree.rebuildTree();
-    },
-
-    collapseItem: ({ tree }, itemId) => {
-      if (!tree.getItemInstance(itemId).isFolder()) {
-        return;
-      }
-
-      tree.applySubStateUpdate("expandedItems", (expandedItems) =>
-        expandedItems.filter((id) => id !== itemId),
-      );
-      tree.rebuildTree();
-    },
-
     // TODO memo
     getFocusedItem: ({ tree }) => {
       return (
@@ -114,20 +84,16 @@ export const treeFeature: FeatureImplementation<
       );
     },
 
-    focusItem: ({ tree }, itemId) => {
-      tree.applySubStateUpdate("focusedItem", itemId);
-    },
-
     focusNextItem: ({ tree }) => {
       const { index } = tree.getFocusedItem().getItemMeta();
       const nextIndex = Math.min(index + 1, tree.getItems().length - 1);
-      tree.focusItem(tree.getItems()[nextIndex].getId());
+      tree.getItems()[nextIndex]?.setFocused();
     },
 
     focusPreviousItem: ({ tree }) => {
       const { index } = tree.getFocusedItem().getItemMeta();
       const nextIndex = Math.max(index - 1, 0);
-      tree.focusItem(tree.getItems()[nextIndex].getId());
+      tree.getItems()[nextIndex]?.setFocused();
     },
 
     updateDomFocus: ({ tree }) => {
@@ -191,21 +157,43 @@ export const treeFeature: FeatureImplementation<
         }),
       };
     },
-    expand: ({ tree, item }) => tree.expandItem(item.getItemMeta().itemId),
-    collapse: ({ tree, item }) => tree.collapseItem(item.getItemMeta().itemId),
-    getItemData: ({ tree, item }) =>
-      tree.retrieveItemData(item.getItemMeta().itemId),
+    expand: ({ tree, item, itemId }) => {
+      if (!item.isFolder()) {
+        return;
+      }
+
+      if (tree.getState().loadingItems?.includes(itemId)) {
+        return;
+      }
+
+      tree.applySubStateUpdate("expandedItems", (expandedItems) => [
+        ...expandedItems,
+        itemId,
+      ]);
+      tree.rebuildTree();
+    },
+    collapse: ({ tree, item, itemId }) => {
+      if (!item.isFolder()) {
+        return;
+      }
+
+      tree.applySubStateUpdate("expandedItems", (expandedItems) =>
+        expandedItems.filter((id) => id !== itemId),
+      );
+      tree.rebuildTree();
+    },
+    getItemData: ({ tree, itemId }) => tree.retrieveItemData(itemId),
     equals: ({ item }, other) => item.getId() === other?.getId(),
-    isExpanded: ({ tree, item }) =>
-      tree.getState().expandedItems.includes(item.getItemMeta().itemId),
+    isExpanded: ({ tree, itemId }) =>
+      tree.getState().expandedItems.includes(itemId),
     isDescendentOf: ({ item }, parentId) => {
       const parent = item.getParent();
       return Boolean(
         parent?.getId() === parentId || parent?.isDescendentOf(parentId),
       );
     },
-    isFocused: ({ tree, item }) =>
-      tree.getState().focusedItem === item.getItemMeta().itemId ||
+    isFocused: ({ tree, item, itemId }) =>
+      tree.getState().focusedItem === itemId ||
       (tree.getState().focusedItem === null && item.getItemMeta().index === 0),
     isFolder: ({ tree, item }) =>
       item.getItemMeta().level === -1 ||
@@ -214,14 +202,15 @@ export const treeFeature: FeatureImplementation<
       const config = tree.getConfig();
       return config.getItemName(item as ItemInstance<any>);
     },
-    setFocused: ({ tree, item }) => tree.focusItem(item.getItemMeta().itemId),
+    setFocused: ({ tree, itemId }) => {
+      tree.applySubStateUpdate("focusedItem", itemId);
+    },
     primaryAction: ({ tree, item }) =>
       tree.getConfig().onPrimaryAction?.(item as ItemInstance<any>),
     getParent: ({ tree, item }) =>
       item.getItemMeta().parentId
         ? tree.getItemInstance(item.getItemMeta().parentId)
         : undefined,
-    // TODO remove
     getIndexInParent: ({ item }) => item.getItemMeta().posInSet,
     getChildren: ({ tree, item }) =>
       tree
@@ -306,14 +295,14 @@ export const treeFeature: FeatureImplementation<
     focusFirstItem: {
       hotkey: "Home",
       handler: (e, tree) => {
-        tree.focusItem(tree.getItems()[0].getId());
+        tree.getItems()[0]?.setFocused();
         tree.updateDomFocus();
       },
     },
     focusLastItem: {
       hotkey: "End",
       handler: (e, tree) => {
-        tree.focusItem(tree.getItems()[tree.getItems().length - 1].getId());
+        tree.getItems()[tree.getItems().length - 1]?.setFocused();
         tree.updateDomFocus();
       },
     },

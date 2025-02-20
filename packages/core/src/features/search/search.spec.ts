@@ -85,7 +85,7 @@ describe("core-feature/search", () => {
       it("selects focused item when search is submitted", () => {
         const setSelectedItems = tree.mockedHandler("setSelectedItems");
         const onCloseSearch = tree.mockedHandler("onCloseSearch");
-        tree.instance.focusItem("x1");
+        tree.item("x1").setFocused();
         tree.do.hotkey("openSearch");
         tree.do.hotkey("submitSearch");
         expect(setSelectedItems).toHaveBeenCalledWith(["x1"]);

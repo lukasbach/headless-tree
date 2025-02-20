@@ -27,13 +27,9 @@ export type AsyncDataLoaderFeatureDef<T> = {
     onLoadedChildren?: (itemId: string, childrenIds: string[]) => void;
     asyncDataLoader?: AsyncTreeDataLoader<T>;
   };
-  treeInstance: SyncDataLoaderFeatureDef<T>["treeInstance"] & {
-    /** Invalidate fetched data for item, and triggers a refetch and subsequent rerender if the item is visible */
-    invalidateItemData: (itemId: string) => void;
-    invalidateChildrenIds: (itemId: string) => void;
-    // TODO deprecate tree instance methods, move to item instance
-  };
+  treeInstance: SyncDataLoaderFeatureDef<T>["treeInstance"];
   itemInstance: SyncDataLoaderFeatureDef<T>["itemInstance"] & {
+    /** Invalidate fetched data for item, and triggers a refetch and subsequent rerender if the item is visible */
     invalidateItemData: () => void;
     invalidateChildrenIds: () => void;
     updateCachedChildrenIds: (childrenIds: string[]) => void;

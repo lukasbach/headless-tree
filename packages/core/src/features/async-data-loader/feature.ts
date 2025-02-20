@@ -98,27 +98,21 @@ export const asyncDataLoaderFeature: FeatureImplementation<
 
       return [];
     },
-
-    invalidateItemData: ({ tree }, itemId) => {
-      const dataRef = tree.getDataRef<AsyncDataLoaderRef>();
-      delete dataRef.current.itemData?.[itemId];
-      tree.retrieveItemData(itemId);
-    },
-
-    invalidateChildrenIds: ({ tree }, itemId) => {
-      const dataRef = tree.getDataRef<AsyncDataLoaderRef>();
-      delete dataRef.current.childrenIds?.[itemId];
-      tree.retrieveChildrenIds(itemId);
-    },
   },
 
   itemInstance: {
     isLoading: ({ tree, item }) =>
       tree.getState().loadingItems.includes(item.getItemMeta().itemId),
-    invalidateItemData: ({ tree, item }) =>
-      tree.invalidateItemData(item.getItemMeta().itemId),
-    invalidateChildrenIds: ({ tree, item }) =>
-      tree.invalidateChildrenIds(item.getItemMeta().itemId),
+    invalidateItemData: ({ tree, itemId }) => {
+      const dataRef = tree.getDataRef<AsyncDataLoaderRef>();
+      delete dataRef.current.itemData?.[itemId];
+      tree.retrieveItemData(itemId);
+    },
+    invalidateChildrenIds: ({ tree, itemId }) => {
+      const dataRef = tree.getDataRef<AsyncDataLoaderRef>();
+      delete dataRef.current.childrenIds?.[itemId];
+      tree.retrieveChildrenIds(itemId);
+    },
     updateCachedChildrenIds: ({ tree, itemId }, childrenIds) => {
       const dataRef = tree.getDataRef<AsyncDataLoaderRef>();
       dataRef.current.childrenIds[itemId] = childrenIds;

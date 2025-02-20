@@ -8,7 +8,7 @@ describe("core-feature/selections", () => {
     describe("expanded items", () => {
       it("can expand via tree instance", () => {
         const setExpandedItems = tree.mockedHandler("setExpandedItems");
-        tree.instance.expandItem("x2");
+        tree.item("x2").expand();
         expect(setExpandedItems).toHaveBeenCalledWith(["x1", "x11", "x2"]);
       });
 
@@ -19,14 +19,14 @@ describe("core-feature/selections", () => {
       });
 
       it("returns correct isItemExpanded value", () => {
-        expect(tree.instance.isItemExpanded("x2")).toBe(false);
-        tree.instance.expandItem("x2");
-        expect(tree.instance.isItemExpanded("x2")).toBe(true);
+        expect(tree.item("x2").isExpanded()).toBe(false);
+        tree.item("x2").expand();
+        expect(tree.item("x2").isExpanded()).toBe(true);
       });
 
       it("calls setState", () => {
         const setState = tree.mockedHandler("setState");
-        tree.instance.expandItem("x2");
+        tree.item("x2").expand();
         expect(setState).toBeCalledWith(
           expect.objectContaining({ expandedItems: ["x1", "x11", "x2"] }),
         );
@@ -42,7 +42,7 @@ describe("core-feature/selections", () => {
     describe("collapsed items", () => {
       it("can collapse via tree instance", () => {
         const setExpandedItems = tree.mockedHandler("setExpandedItems");
-        tree.instance.collapseItem("x1");
+        tree.item("x1").collapse();
         expect(setExpandedItems).toHaveBeenCalledWith(["x11"]);
       });
 
@@ -53,14 +53,14 @@ describe("core-feature/selections", () => {
       });
 
       it("returns correct isItemExpanded value", () => {
-        expect(tree.instance.isItemExpanded("x1")).toBe(true);
-        tree.instance.collapseItem("x1");
-        expect(tree.instance.isItemExpanded("x1")).toBe(false);
+        expect(tree.item("x1").isExpanded()).toBe(true);
+        tree.item("x1").collapse();
+        expect(tree.item("x1").isExpanded()).toBe(false);
       });
 
       it("calls setState", () => {
         const setState = tree.mockedHandler("setState");
-        tree.instance.collapseItem("x1");
+        tree.item("x1").collapse();
         expect(setState).toBeCalledWith(
           expect.objectContaining({ expandedItems: ["x11"] }),
         );
@@ -74,15 +74,9 @@ describe("core-feature/selections", () => {
     });
 
     describe("focused item", () => {
-      it("focuses item on tree instance", () => {
+      it("focuses item", () => {
         const setFocusedItem = tree.mockedHandler("setFocusedItem");
-        tree.instance.focusItem("x11");
-        expect(setFocusedItem).toHaveBeenCalledWith("x11");
-      });
-
-      it("focuses item on item instance", () => {
-        const setFocusedItem = tree.mockedHandler("setFocusedItem");
-        tree.instance.getItemInstance("x11").setFocused();
+        tree.item("x11").setFocused();
         expect(setFocusedItem).toHaveBeenCalledWith("x11");
       });
 
@@ -91,13 +85,13 @@ describe("core-feature/selections", () => {
       });
 
       it("returns correct focused item", () => {
-        tree.instance.focusItem("x11");
+        tree.item("x11").setFocused();
         expect(tree.instance.getFocusedItem().getId()).toBe("x11");
       });
 
       it("calls setState", () => {
         const setState = tree.mockedHandler("setState");
-        tree.instance.focusItem("x1");
+        tree.item("x1").setFocused();
         expect(setState).toBeCalledWith(
           expect.objectContaining({ focusedItem: "x1" }),
         );
@@ -107,7 +101,7 @@ describe("core-feature/selections", () => {
         const scrollToItem = tree.mockedHandler("scrollToItem");
         const element = { focus: vi.fn() };
         tree.instance.getItemInstance("x2").registerElement(element as any);
-        tree.instance.focusItem("x2");
+        tree.item("x2").setFocused();
         tree.instance.updateDomFocus();
         vi.runAllTimers();
         await vi.waitFor(() =>
@@ -118,21 +112,21 @@ describe("core-feature/selections", () => {
 
       describe("move focus", () => {
         it("focuses next item", () => {
-          tree.instance.focusItem("x2");
+          tree.item("x2").setFocused();
           const setFocusedItem = tree.mockedHandler("setFocusedItem");
           tree.instance.focusNextItem();
           expect(setFocusedItem).toHaveBeenCalledWith("x3");
         });
 
         it("focuses previous item", () => {
-          tree.instance.focusItem("x2");
+          tree.item("x2").setFocused();
           const setFocusedItem = tree.mockedHandler("setFocusedItem");
           tree.instance.focusPreviousItem();
           expect(setFocusedItem).toHaveBeenCalledWith("x14");
         });
 
         it("remains at last item when focus is at bottom", () => {
-          tree.instance.focusItem("x4");
+          tree.item("x4").setFocused();
           const setFocusedItem = tree.mockedHandler("setFocusedItem");
           tree.instance.focusNextItem();
           expect(setFocusedItem).toHaveBeenCalledWith("x4");
@@ -140,7 +134,7 @@ describe("core-feature/selections", () => {
         });
 
         it("remains at first item when focus is at top", () => {
-          tree.instance.focusItem("x1");
+          tree.item("x1").setFocused();
           const setFocusedItem = tree.mockedHandler("setFocusedItem");
           tree.instance.focusPreviousItem();
           expect(setFocusedItem).toHaveBeenCalledWith("x1");
@@ -320,7 +314,7 @@ describe("core-feature/selections", () => {
       });
 
       it("returns correctly for getParent()", () => {
-        expect(tree.instance.getItemInstance("x111").getParent().getId()).toBe(
+        expect(tree.instance.getItemInstance("x111").getParent()?.getId()).toBe(
           "x11",
         );
       });
