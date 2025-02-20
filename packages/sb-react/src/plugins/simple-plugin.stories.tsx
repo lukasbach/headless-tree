@@ -1,6 +1,7 @@
 import type { Meta } from "@storybook/react";
 import React from "react";
 import {
+  FeatureImplementation,
   hotkeysCoreFeature,
   selectionFeature,
   syncDataLoaderFeature,
@@ -23,6 +24,19 @@ declare module "@headless-tree/core" {
   }
 }
 
+const customFeature: FeatureImplementation = {
+  itemInstance: {
+    alertChildren: ({ item }) => {
+      alert(
+        item
+          .getChildren()
+          .map((child) => child.getItemName())
+          .join(", "),
+      );
+    },
+  },
+};
+
 export const SimplePlugin = () => {
   const tree = useTree<string>({
     rootItemId: "folder",
@@ -43,18 +57,7 @@ export const SimplePlugin = () => {
       syncDataLoaderFeature,
       selectionFeature,
       hotkeysCoreFeature,
-      {
-        itemInstance: {
-          alertChildren: ({ item }) => {
-            alert(
-              item
-                .getChildren()
-                .map((child) => child.getItemName())
-                .join(", "),
-            );
-          },
-        },
-      },
+      customFeature,
     ],
   });
 
