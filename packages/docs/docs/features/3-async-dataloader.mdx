@@ -35,7 +35,7 @@ rootItemId: "root",
 });
 ```
 
-# Loading Items
+## Loading Items
 
 The Async Data Loader provides functionality for marking items as "loading" and displaying them as such. While item
 data is loading through the `getItem` function, it is considered "loading" and is intended to be displayed as such.
@@ -47,7 +47,7 @@ loading. For a given item, you can check if it is loading by calling `item.isLoa
 When an item is loading, its item data will be set to the value returned by `config.createLoadingItemData`. This
 way, you can customize how loading items are displayed.
 
-# Invalidating Item Data
+## Invalidating Item Data
 
 While the Sync Data Loader does not provide a data invalidation concept since it refetches all data during every render
 anyway, the Async Data Loader caches item data and does not refetch it unless it is invalidated. Methods for invalidating

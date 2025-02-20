@@ -50,7 +50,6 @@ type MergedFeatures<F extends FeatureDef> = {
 export type RegisteredFeatures<T> =
   | MainFeatureDef<T>
   | TreeFeatureDef<T>
-  // TODO remove remaining from this
   | SelectionFeatureDef<T>
   | DragAndDropFeatureDef<T>
   | HotkeysCoreFeatureDef<T>

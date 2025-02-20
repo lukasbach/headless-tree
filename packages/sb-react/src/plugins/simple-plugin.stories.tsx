@@ -64,24 +64,26 @@ export const SimplePlugin = () => {
   return (
     <div ref={tree.registerElement} className="tree">
       {tree.getItems().map((item) => (
-        <button
-          {...item.getProps()}
-          ref={item.registerElement}
-          key={item.getId()}
-          style={{ paddingLeft: `${item.getItemMeta().level * 20}px` }}
-        >
-          <div
-            className={cx("treeitem", {
-              focused: item.isFocused(),
-              expanded: item.isExpanded(),
-              selected: item.isSelected(),
-              folder: item.isFolder(),
-            })}
+        <div className="outeritem" key={item.getId()}>
+          <button
+            {...item.getProps()}
+            ref={item.registerElement}
+            key={item.getId()}
+            style={{ paddingLeft: `${item.getItemMeta().level * 20}px` }}
           >
-            {item.getItemName()}
-          </div>
-          <button onClick={item.alertChildren}>X</button>
-        </button>
+            <div
+              className={cx("treeitem", {
+                focused: item.isFocused(),
+                expanded: item.isExpanded(),
+                selected: item.isSelected(),
+                folder: item.isFolder(),
+              })}
+            >
+              {item.getItemName()}
+            </div>
+          </button>
+          <button onClick={item.alertChildren}>alert</button>
+        </div>
       ))}
     </div>
   );
