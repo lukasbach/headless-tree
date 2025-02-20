@@ -1,6 +1,7 @@
 import type { Meta } from "@storybook/react";
 import React from "react";
 import {
+  FeatureImplementation,
   hotkeysCoreFeature,
   selectionFeature,
   syncDataLoaderFeature,
@@ -15,6 +16,28 @@ const meta = {
 export default meta;
 
 // story-start
+const customFeature: FeatureImplementation = {
+  itemInstance: {
+    getProps: ({ prev, item }) => ({
+      ...prev?.(),
+      onMouseOver: () => {
+        console.log("Mouse over!", item.getId());
+      },
+    }),
+    expand: ({ prev, itemId }) => {
+      // Run the original implementation
+      prev?.(itemId);
+
+      alert(`Item ${itemId} expanded!`);
+    },
+  },
+  onItemMount: (item, element) => {
+    // You can also hook into various lifecycle events. This runs
+    // when a tree item is mounted into the DOM.
+    console.log("Item mounts!", item.getId(), element);
+  },
+};
+
 export const OverwritingInternals = () => {
   const tree = useTree<string>({
     rootItemId: "folder",
@@ -35,35 +58,7 @@ export const OverwritingInternals = () => {
       syncDataLoaderFeature,
       selectionFeature,
       hotkeysCoreFeature,
-      {
-        itemInstance: {
-          getProps: ({ prev, item }) => ({
-            ...prev(),
-            onMouseOver: () => {
-              console.log("Mouse over!", item.getId());
-            },
-          }),
-        },
-        treeInstance: {
-          expandItem: ({ prev }, itemId) => {
-            // Run the original implementation
-            prev(itemId);
-
-            alert(`Item ${itemId} expanded!`);
-          },
-          focusNextItem: ({ prev }) => {
-            // Run the original implementation
-            prev();
-
-            alert("Next item focused!");
-          },
-        },
-        onItemMount: (item, element) => {
-          // You can also hook into various lifecycle events. This runs
-          // when a tree item is mounted into the DOM.
-          console.log("Item mounts!", item.getId(), element);
-        },
-      } as any, // TODO type
+      customFeature,
     ],
   });
 
