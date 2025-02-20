@@ -1,14 +1,7 @@
 import { FeatureImplementation } from "../../types/core";
-import { SelectionFeatureDef } from "./types";
-import { MainFeatureDef } from "../main/types";
-import { TreeFeatureDef } from "../tree/types";
 import { makeStateUpdater } from "../../utils";
 
-export const selectionFeature: FeatureImplementation<
-  any,
-  SelectionFeatureDef<any>,
-  MainFeatureDef | TreeFeatureDef<any> | SelectionFeatureDef<any>
-> = {
+export const selectionFeature: FeatureImplementation = {
   key: "selection",
 
   getInitialState: (initialState) => ({

@@ -1,18 +1,7 @@
 import { FeatureImplementation } from "../../types/core";
-import { ExpandAllFeatureDef } from "./types";
-import { MainFeatureDef } from "../main/types";
-import { TreeFeatureDef } from "../tree/types";
-import { SyncDataLoaderFeatureDef } from "../sync-data-loader/types";
 import { poll } from "../../utils";
 
-export const expandAllFeature: FeatureImplementation<
-  any,
-  ExpandAllFeatureDef,
-  | MainFeatureDef
-  | TreeFeatureDef<any>
-  | SyncDataLoaderFeatureDef<any>
-  | ExpandAllFeatureDef
-> = {
+export const expandAllFeature: FeatureImplementation = {
   key: "expand-all",
 
   treeInstance: {

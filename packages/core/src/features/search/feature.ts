@@ -1,14 +1,8 @@
 import { FeatureImplementation } from "../../types/core";
-import { SearchFeatureDataRef, SearchFeatureDef } from "./types";
-import { MainFeatureDef } from "../main/types";
-import { TreeFeatureDef } from "../tree/types";
+import { SearchFeatureDataRef } from "./types";
 import { makeStateUpdater, memo } from "../../utils";
 
-export const searchFeature: FeatureImplementation<
-  any,
-  SearchFeatureDef<any>,
-  MainFeatureDef | TreeFeatureDef<any> | SearchFeatureDef<any>
-> = {
+export const searchFeature: FeatureImplementation = {
   key: "search",
 
   getInitialState: (initialState) => ({

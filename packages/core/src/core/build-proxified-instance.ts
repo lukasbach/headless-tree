@@ -12,7 +12,7 @@ const findPrevInstanceMethod = (
 ) => {
   for (let i = featureSearchIndex; i >= 0; i--) {
     const feature = features[i];
-    const itemInstanceMethod = feature[instanceType]?.[methodKey];
+    const itemInstanceMethod = (feature[instanceType] as any)?.[methodKey];
     if (itemInstanceMethod) {
       return i;
     }
@@ -34,13 +34,15 @@ const invokeInstanceMethod = (
     methodKey,
     featureIndex - 1,
   );
-  const itemInstanceMethod = features[featureIndex][instanceType]?.[methodKey]!;
+  const itemInstanceMethod = (features[featureIndex][instanceType] as any)?.[
+    methodKey
+  ]!;
   return itemInstanceMethod(
     {
       ...opts,
       prev:
         prevIndex !== null
-          ? (...newArgs) =>
+          ? (...newArgs: any[]) =>
               invokeInstanceMethod(
                 features,
                 instanceType,

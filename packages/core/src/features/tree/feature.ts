@@ -1,20 +1,8 @@
 import { FeatureImplementation, ItemInstance } from "../../types/core";
-import { ItemMeta, TreeFeatureDef, TreeItemDataRef } from "./types";
+import { ItemMeta, TreeItemDataRef } from "./types";
 import { makeStateUpdater, poll } from "../../utils";
-import { MainFeatureDef } from "../main/types";
-import { HotkeysCoreFeatureDef } from "../hotkeys-core/types";
-import { SyncDataLoaderFeatureDef } from "../sync-data-loader/types";
-import { SearchFeatureDef } from "../search/types";
 
-export const treeFeature: FeatureImplementation<
-  any,
-  TreeFeatureDef<any>,
-  | MainFeatureDef
-  | TreeFeatureDef<any>
-  | HotkeysCoreFeatureDef<any>
-  | SyncDataLoaderFeatureDef<any>
-  | SearchFeatureDef<any>
-> = {
+export const treeFeature: FeatureImplementation<any> = {
   key: "tree",
 
   getInitialState: (initialState) => ({

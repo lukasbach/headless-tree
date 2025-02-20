@@ -1,14 +1,7 @@
 import { FeatureImplementation, ItemInstance } from "../../types/core";
-import { RenamingFeatureDef } from "./types";
-import { MainFeatureDef } from "../main/types";
-import { TreeFeatureDef } from "../tree/types";
 import { makeStateUpdater } from "../../utils";
 
-export const renamingFeature: FeatureImplementation<
-  any,
-  RenamingFeatureDef<any>,
-  MainFeatureDef | TreeFeatureDef<any> | RenamingFeatureDef<any>
-> = {
+export const renamingFeature: FeatureImplementation = {
   key: "renaming",
 
   getDefaultConfig: (defaultConfig, tree) => ({

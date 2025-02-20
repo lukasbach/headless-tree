@@ -3,12 +3,7 @@ import {
   HotkeysConfig,
   TreeInstance,
 } from "../../types/core";
-import {
-  HotkeyConfig,
-  HotkeysCoreDataRef,
-  HotkeysCoreFeatureDef,
-} from "./types";
-import { MainFeatureDef } from "../main/types";
+import { HotkeyConfig, HotkeysCoreDataRef } from "./types";
 
 const specialKeys: Record<string, RegExp> = {
   Letter: /^[a-z]$/,
@@ -34,19 +29,15 @@ const testHotkeyMatch = (
 const findHotkeyMatch = (
   pressedKeys: Set<string>,
   tree: TreeInstance<any>,
-  config1: HotkeysConfig<any, any>,
-  config2: HotkeysConfig<any, any>,
+  config1: HotkeysConfig<any>,
+  config2: HotkeysConfig<any>,
 ) => {
   return Object.entries({ ...config1, ...config2 }).find(([, hotkey]) =>
     testHotkeyMatch(pressedKeys, tree, hotkey),
   )?.[0] as keyof HotkeysConfig<any> | undefined;
 };
 
-export const hotkeysCoreFeature: FeatureImplementation<
-  any,
-  HotkeysCoreFeatureDef<any>,
-  MainFeatureDef | HotkeysCoreFeatureDef<any>
-> = {
+export const hotkeysCoreFeature: FeatureImplementation = {
   key: "hotkeys-core",
 
   onTreeMount: (tree, element) => {

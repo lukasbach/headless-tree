@@ -1,14 +1,8 @@
 import { FeatureImplementation } from "../../types/core";
-import { AsyncDataLoaderFeatureDef, AsyncDataLoaderRef } from "./types";
-import { MainFeatureDef } from "../main/types";
+import { AsyncDataLoaderRef } from "./types";
 import { makeStateUpdater } from "../../utils";
-import { TreeFeatureDef } from "../tree/types";
 
-export const asyncDataLoaderFeature: FeatureImplementation<
-  any,
-  AsyncDataLoaderFeatureDef<any>,
-  MainFeatureDef | TreeFeatureDef<any> | AsyncDataLoaderFeatureDef<any>
-> = {
+export const asyncDataLoaderFeature: FeatureImplementation = {
   key: "async-data-loader",
 
   getInitialState: (initialState) => ({

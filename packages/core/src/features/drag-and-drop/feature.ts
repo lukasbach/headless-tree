@@ -1,13 +1,9 @@
-import { FeatureDefs, FeatureImplementation } from "../../types/core";
-import { DndDataRef, DragAndDropFeatureDef, DragLineData } from "./types";
+import { FeatureImplementation } from "../../types/core";
+import { DndDataRef, DragLineData } from "./types";
 import { canDrop, getDragCode, getDropTarget } from "./utils";
 import { makeStateUpdater } from "../../utils";
 
-export const dragAndDropFeature: FeatureImplementation<
-  any,
-  DragAndDropFeatureDef<any>,
-  FeatureDefs<any>
-> = {
+export const dragAndDropFeature: FeatureImplementation = {
   key: "dragAndDrop",
   deps: ["selection"],
 
