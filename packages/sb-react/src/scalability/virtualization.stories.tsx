@@ -150,7 +150,7 @@ export const BasicVirtualization = ({
     scrollToItem: (item) => {
       virtualizer.current?.scrollToIndex(item.getItemMeta().index);
     },
-    canDropInbetween: true,
+    canReorder: true,
     indent: 20,
     dataLoader: {
       getItem: (itemId) => itemId,

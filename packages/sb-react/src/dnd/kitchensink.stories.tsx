@@ -14,7 +14,7 @@ const meta = {
   title: "React/Drag and Drop/Kitchen Sink",
   tags: ["feature/dnd", "complex-story"],
   argTypes: {
-    canDropInbetween: {
+    canReorder: {
       control: "boolean",
     },
     canDropForeignDragObject: {
@@ -26,7 +26,7 @@ const meta = {
     },
   },
   args: {
-    canDropInbetween: true,
+    canReorder: true,
     canDropForeignDragObject: true,
   },
 } satisfies Meta;
@@ -35,7 +35,7 @@ export default meta;
 
 // story-start
 export const KitchenSink = ({
-  canDropInbetween,
+  canReorder,
   canDropForeignDragObject,
   reorderAreaPercentage,
 }) => {
@@ -46,7 +46,7 @@ export const KitchenSink = ({
     rootItemId: "root",
     getItemName: (item) => item.getItemData(),
     isItemFolder: () => true,
-    canDropInbetween,
+    canReorder,
     onDrop: action("onDrop"),
     onDropForeignDragObject: action("onDropForeignDragObject"),
     createForeignDragObject: (items) => ({

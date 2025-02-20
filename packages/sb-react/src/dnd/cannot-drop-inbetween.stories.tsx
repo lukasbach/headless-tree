@@ -28,7 +28,7 @@ export const CannotDropInbetween = () => {
     rootItemId: "root",
     getItemName: (item) => item.getItemData(),
     isItemFolder: (item) => item.getItemMeta().level < 2,
-    canDropInbetween: false,
+    canReorder: false,
     onDrop: (items, target) => {
       alert(
         `Dropped ${items.map((item) =>

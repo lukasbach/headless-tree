@@ -25,7 +25,7 @@ export const CanDrag = () => {
     rootItemId: "root",
     getItemName: (item) => item.getItemData(),
     isItemFolder: () => true,
-    canDropInbetween: true,
+    canReorder: true,
     canDrag: (items) =>
       items.every(
         (i) => i.getItemName().endsWith("1") || i.getItemName().endsWith("2"),

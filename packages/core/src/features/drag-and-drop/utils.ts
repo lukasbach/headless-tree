@@ -81,7 +81,7 @@ const getTargetPlacement = (
 ): TargetPlacement => {
   const config = tree.getConfig();
 
-  if (!config.canDropInbetween) {
+  if (!config.canReorder) {
     return canMakeChild
       ? { type: PlacementType.MakeChild }
       : { type: PlacementType.ReorderBelow };
@@ -156,7 +156,7 @@ export const getDropTarget = (
   e: any,
   item: ItemInstance<any>,
   tree: TreeInstance<any>,
-  canDropInbetween = tree.getConfig().canDropInbetween,
+  canReorder = tree.getConfig().canReorder,
 ): DropTarget<any> => {
   const draggedItems = tree.getState().dnd?.draggedItems ?? [];
   const itemMeta = item.getItemMeta();
@@ -184,7 +184,7 @@ export const getDropTarget = (
   const placement = getTargetPlacement(e, item, tree, canMakeChild);
 
   if (
-    !canDropInbetween &&
+    !canReorder &&
     parent &&
     canBecomeSibling &&
     placement.type !== PlacementType.MakeChild
@@ -192,7 +192,7 @@ export const getDropTarget = (
     return parentTarget;
   }
 
-  if (!canDropInbetween && parent && !canBecomeSibling) {
+  if (!canReorder && parent && !canBecomeSibling) {
     // TODO! this breaks in story DND/Can Drop. Maybe move this logic into a composable DropTargetStrategy[] ?
     return getDropTarget(e, parent, tree, false);
   }

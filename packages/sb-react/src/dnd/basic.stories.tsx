@@ -28,7 +28,7 @@ export const Basic = () => {
     rootItemId: "root",
     getItemName: (item) => item.getItemData(),
     isItemFolder: () => true,
-    canDropInbetween: true,
+    canReorder: true,
     onDrop: (items, target) => {
       alert(
         `Dropped ${items.map((item) =>

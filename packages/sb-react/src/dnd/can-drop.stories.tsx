@@ -25,7 +25,7 @@ export const CanDrop = () => {
     rootItemId: "root",
     getItemName: (item) => item.getItemData(),
     isItemFolder: () => true,
-    canDropInbetween: true, // TODO! invert for error, still allows to drop even if drop is not shown
+    canReorder: true, // TODO! invert for error, still allows to drop even if drop is not shown
     canDrop: (items, { item }) =>
       item.getItemName().endsWith("1") || item.getItemName().endsWith("2"),
     onDrop: (items, target) => {

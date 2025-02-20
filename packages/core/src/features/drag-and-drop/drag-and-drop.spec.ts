@@ -534,7 +534,7 @@ describe("core-feature/drag-and-drop", () => {
     describe("drop redirection", () => {
       it("redirects to parent folder without inbetween dropping", async () => {
         const testTree = await tree
-          .with({ canDropInbetween: false })
+          .with({ canReorder: false })
           .createTestCaseTree();
         testTree.do.startDrag("x111");
         testTree.do.dragOverAndDrop("x212", testTree.createBottomDragEvent(2));
@@ -549,7 +549,7 @@ describe("core-feature/drag-and-drop", () => {
 
       it("doesnt redirect to parent folder with inbetween dropping", async () => {
         const testTree = await tree
-          .with({ canDropInbetween: true })
+          .with({ canReorder: true })
           .createTestCaseTree();
         testTree.do.startDrag("x111");
         testTree.do.dragOverAndDrop("x212", testTree.createBottomDragEvent(2));

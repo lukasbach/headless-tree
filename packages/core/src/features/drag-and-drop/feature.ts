@@ -11,7 +11,7 @@ export const dragAndDropFeature: FeatureImplementation = {
     canDrop: (_, target) => target.item.isFolder(),
     canDropForeignDragObject: () => false,
     setDndState: makeStateUpdater("dnd", tree),
-    canDropInbetween: true,
+    canReorder: true,
     ...defaultConfig,
   }),
 
@@ -27,7 +27,7 @@ export const dragAndDropFeature: FeatureImplementation = {
     getDragLineData: ({ tree }): DragLineData | null => {
       // TODO doesnt work if scrolled down!
       const target = tree.getDropTarget();
-      const indent = (target?.item.getItemMeta().level ?? 0) + 1; // TODO rename to indent
+      const indent = (target?.item.getItemMeta().level ?? 0) + 1;
 
       if (!target || target.childIndex === null) return null;
 

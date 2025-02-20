@@ -32,7 +32,7 @@ export const UnitTestSync = () => {
     initialState: {
       expandedItems: ["x1", "x11", "x2", "x21"],
     },
-    canDropInbetween: true,
+    canReorder: true,
     onDrop: createOnDropHandler((item, newChildren) => {
       data[item.getId()].children = newChildren;
     }),

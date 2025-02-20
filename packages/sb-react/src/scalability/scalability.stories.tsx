@@ -70,7 +70,7 @@ export const BigTree = ({ itemsPerLevel, openLevels, useProxyInstances }) => {
     rootItemId: "folder",
     getItemName: (item) => item.getItemData(),
     isItemFolder: (item) => !item.getItemData().endsWith("item"),
-    canDropInbetween: true,
+    canReorder: true,
     hotkeys: {
       customEvent: {
         hotkey: "Escape",

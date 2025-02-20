@@ -31,7 +31,7 @@ export const DragInside = () => {
     rootItemId: "root",
     getItemName: (item) => item.getItemData().name,
     isItemFolder: (item) => !!item.getItemData().children,
-    canDropInbetween: true,
+    canReorder: true,
     onDrop: createOnDropHandler((item, newChildren) => {
       data[item.getId()].children = newChildren;
     }),
