@@ -30,20 +30,18 @@ export const selectionFeature: FeatureImplementation = {
   },
 
   itemInstance: {
-    select: ({ tree, item }) => {
+    select: ({ tree, itemId }) => {
       const { selectedItems } = tree.getState();
       tree.setSelectedItems(
-        selectedItems.includes(item.getItemMeta().itemId)
+        selectedItems.includes(itemId)
           ? selectedItems
-          : [...selectedItems, item.getItemMeta().itemId],
+          : [...selectedItems, itemId],
       );
     },
 
-    deselect: ({ tree, item }) => {
+    deselect: ({ tree, itemId }) => {
       const { selectedItems } = tree.getState();
-      tree.setSelectedItems(
-        selectedItems.filter((id) => id !== item.getItemMeta().itemId),
-      );
+      tree.setSelectedItems(selectedItems.filter((id) => id !== itemId));
     },
 
     isSelected: ({ tree, item }) => {
@@ -115,27 +113,37 @@ export const selectionFeature: FeatureImplementation = {
       },
     },
     selectUpwards: {
-      hotkey: "shift+ArrowUp",
-      handler: () => {
-        // TODO
+      hotkey: "Shift+ArrowUp",
+      handler: (e, tree) => {
+        const focused = tree.getFocusedItem();
+        const above = focused.getItemAbove();
+        if (!above) return;
+
+        if (focused.isSelected() && above.isSelected()) {
+          focused.deselect();
+        } else {
+          above.select();
+        }
+
+        above.setFocused();
+        tree.updateDomFocus();
       },
     },
     selectDownwards: {
-      hotkey: "shift+ArrowDown",
-      handler: () => {
-        // TODO
-      },
-    },
-    selectUpwardsCtrl: {
-      hotkey: "shift+ctrl+ArrowUp",
-      handler: () => {
-        // TODO
-      },
-    },
-    selectDownwardsCtrl: {
-      hotkey: "shift+ctrl+ArrowUp",
-      handler: () => {
-        // TODO
+      hotkey: "Shift+ArrowDown",
+      handler: (e, tree) => {
+        const focused = tree.getFocusedItem();
+        const below = focused.getItemBelow();
+        if (!below) return;
+
+        if (focused.isSelected() && below.isSelected()) {
+          focused.deselect();
+        } else {
+          below.select();
+        }
+
+        below.setFocused();
+        tree.updateDomFocus();
       },
     },
     selectAll: {

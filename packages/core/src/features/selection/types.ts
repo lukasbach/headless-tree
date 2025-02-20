@@ -22,7 +22,5 @@ export type SelectionFeatureDef<T> = {
     | "toggleSelectItem"
     | "selectUpwards"
     | "selectDownwards"
-    | "selectUpwardsCtrl"
-    | "selectDownwardsCtrl"
     | "selectAll";
 };
