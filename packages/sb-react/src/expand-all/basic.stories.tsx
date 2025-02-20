@@ -68,25 +68,26 @@ export const Basic = () => {
       </button>
       <div ref={tree.registerElement} className="tree">
         {tree.getItems().map((item) => (
-          <button
-            {...item.getProps()}
-            ref={item.registerElement}
-            key={item.getId()}
-            style={{ paddingLeft: `${item.getItemMeta().level * 20}px` }}
-          >
-            <div
-              className={cx("treeitem", {
-                focused: item.isFocused(),
-                expanded: item.isExpanded(),
-                selected: item.isSelected(),
-                folder: item.isFolder(),
-              })}
+          <div className="outeritem" key={item.getId()}>
+            <button
+              {...item.getProps()}
+              ref={item.registerElement}
+              style={{ paddingLeft: `${item.getItemMeta().level * 20}px` }}
             >
-              {item.getItemName()}
-            </div>
+              <div
+                className={cx("treeitem", {
+                  focused: item.isFocused(),
+                  expanded: item.isExpanded(),
+                  selected: item.isSelected(),
+                  folder: item.isFolder(),
+                })}
+              >
+                {item.getItemName()}
+              </div>
+            </button>
             <button onClick={() => item.expandAll(cancelToken)}>+</button>
             <button onClick={item.collapseAll}>-</button>
-          </button>
+          </div>
         ))}
       </div>
     </>

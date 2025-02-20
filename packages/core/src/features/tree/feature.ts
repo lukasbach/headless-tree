@@ -125,7 +125,7 @@ export const treeFeature: FeatureImplementation<
       await poll(() => item.getElement() !== null, 20);
       item.getElement()?.scrollIntoView(scrollIntoViewArg);
     },
-    getId: ({ item }) => item.getItemMeta().itemId,
+    getId: ({ itemId }) => itemId,
     getProps: ({ item, prev }) => {
       const itemMeta = item.getItemMeta();
       return {

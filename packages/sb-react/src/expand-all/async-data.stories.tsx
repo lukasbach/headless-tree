@@ -73,12 +73,10 @@ export const AsyncData = () => {
       </button>
       <div ref={tree.registerElement} className="tree">
         {tree.getItems().map((item) => (
-          <div style={{ display: "flex" }}>
-            {/* TODO */}
+          <div className="outeritem" key={item.getId()}>
             <button
               {...item.getProps()}
               ref={item.registerElement}
-              key={item.getId()}
               style={{ paddingLeft: `${item.getItemMeta().level * 20}px` }}
             >
               <div

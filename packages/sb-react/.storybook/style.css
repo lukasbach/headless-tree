@@ -96,3 +96,13 @@
     border: 2px solid #00aff4;
     border-radius: 99px;
 }
+
+.outeritem {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+.outeritem button:not([role="treeitem"]) {
+    padding: 2px 4px;
+    height: 80%;
+}

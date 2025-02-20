@@ -6,7 +6,7 @@ export type DndDataRef = {
 };
 
 export type DndState<T> = {
-  draggedItems?: ItemInstance<T>[]; // TODO not used anymore?
+  draggedItems?: ItemInstance<T>[];
   draggingOverItem?: ItemInstance<T>;
   dragTarget?: DropTarget<T>;
 };
