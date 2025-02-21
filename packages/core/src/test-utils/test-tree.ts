@@ -183,11 +183,21 @@ export class TestTree<T = string> {
     itemId: string,
     bb: Partial<DOMRect> = {
       left: 0,
-      right: 100,
+      width: 100,
       top: 0,
       height: 20,
     },
   ) {
+    this.instance.registerElement({
+      getBoundingClientRect: () =>
+        ({
+          left: 0,
+          width: 100,
+          top: 0,
+          height: 10000,
+        }) as DOMRect,
+    } as HTMLElement);
+
     this.instance.getItemInstance(itemId).registerElement({
       getBoundingClientRect: () => bb as DOMRect,
     } as HTMLElement);

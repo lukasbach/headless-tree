@@ -96,11 +96,11 @@ export const treeFeature: FeatureImplementation<any> = {
       });
     },
 
+    // TODO add label parameter
     getContainerProps: ({ prev }) => ({
       ...prev?.(),
       role: "tree",
-      ariaLabel: "",
-      ariaActivedescendant: "",
+      "aria-label": "",
     }),
 
     // relevant for hotkeys of this feature

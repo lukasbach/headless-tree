@@ -25,11 +25,12 @@ export const dragAndDropFeature: FeatureImplementation = {
     },
 
     getDragLineData: ({ tree }): DragLineData | null => {
-      // TODO doesnt work if scrolled down!
       const target = tree.getDropTarget();
       const indent = (target?.item.getItemMeta().level ?? 0) + 1;
 
-      if (!target || target.childIndex === null) return null;
+      const treeBb = tree.getElement()?.getBoundingClientRect();
+
+      if (!target || !treeBb || target.childIndex === null) return null;
 
       const leftOffset = target.dragLineLevel * (tree.getConfig().indent ?? 1);
       const targetItem = tree.getItems()[target.dragLineIndex];
@@ -43,9 +44,9 @@ export const dragAndDropFeature: FeatureImplementation = {
         if (bb) {
           return {
             indent,
-            top: bb.bottom,
-            left: bb.left + leftOffset,
-            right: bb.right,
+            top: bb.bottom - treeBb.bottom,
+            left: bb.left + leftOffset - treeBb.left,
+            width: bb.width - leftOffset,
           };
         }
       }
@@ -55,9 +56,9 @@ export const dragAndDropFeature: FeatureImplementation = {
       if (bb) {
         return {
           indent,
-          top: bb.top,
-          left: bb.left + leftOffset,
-          right: bb.right,
+          top: bb.top - treeBb.top,
+          left: bb.left + leftOffset - treeBb.left,
+          width: bb.width - leftOffset,
         };
       }
 
@@ -70,10 +71,21 @@ export const dragAndDropFeature: FeatureImplementation = {
         ? {
             top: `${dragLine.top + topOffset}px`,
             left: `${dragLine.left + leftOffset}px`,
-            width: `${dragLine.right - dragLine.left - leftOffset}px`,
+            width: `${dragLine.width - leftOffset}px`,
             pointerEvents: "none", // important to prevent capturing drag events
           }
         : { display: "none" };
+    },
+
+    getContainerProps: ({ prev }) => {
+      const prevProps = prev?.();
+      return {
+        ...prevProps,
+        style: {
+          ...prevProps?.style,
+          position: "relative",
+        },
+      };
     },
   },
 

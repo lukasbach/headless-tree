@@ -57,7 +57,11 @@ export const Basic = () => {
   });
 
   return (
-    <div ref={tree.registerElement} className="tree">
+    <div
+      ref={tree.registerElement}
+      {...tree.getContainerProps()}
+      className="tree"
+    >
       {tree.getItems().map((item) => (
         <button
           {...item.getProps()}

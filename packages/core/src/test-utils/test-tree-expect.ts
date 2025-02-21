@@ -73,7 +73,7 @@ export class TestTreeExpect<T> {
     expect(this.tree.instance.getDragLineData()).toEqual({
       indent,
       left: indent * 20,
-      right: 100,
+      width: 100 - indent * 20,
       top: 0,
     });
     expect(this.tree.instance.getDragLineStyle(0, 0)).toEqual({

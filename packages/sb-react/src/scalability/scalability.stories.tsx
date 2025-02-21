@@ -60,7 +60,7 @@ const getExpandedItemIds = (
 export const BigTree = ({ itemsPerLevel, openLevels, useProxyInstances }) => {
   const [state, setState] = useState(() => ({
     expandedItems: getExpandedItemIds(itemsPerLevel, openLevels),
-  }));
+  })); // TODO type error
   const tree = useTree<string>({
     instanceBuilder: useProxyInstances
       ? buildProxiedInstance
@@ -95,9 +95,15 @@ export const BigTree = ({ itemsPerLevel, openLevels, useProxyInstances }) => {
       dragAndDropFeature,
     ],
   });
+  // TODO drag defaults to bottom-drag always
+  // TODO expanding is super slow
 
   return (
-    <div ref={tree.registerElement} className="tree">
+    <div
+      ref={tree.registerElement}
+      {...tree.getContainerProps()} // TODO make sure this is defined everywhere
+      className="tree"
+    >
       {tree.getItems().map((item) => (
         <button
           {...item.getProps()}

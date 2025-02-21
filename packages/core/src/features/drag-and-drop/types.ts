@@ -15,7 +15,7 @@ export type DragLineData = {
   indent: number;
   top: number;
   left: number;
-  right: number;
+  width: number;
 };
 
 export type DropTarget<T> =
