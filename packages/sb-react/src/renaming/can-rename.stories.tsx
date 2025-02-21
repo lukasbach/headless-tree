@@ -47,12 +47,16 @@ export const CanRenameConfigurability = () => {
   return (
     <>
       <p className="description">
-        <button onClick={() => tree.startRenamingItem("root-4 (can rename)")}>
+        <button
+          onClick={() =>
+            tree.getItemInstance("root-4 (can rename)").startRenaming()
+          }
+        >
           Rename root-4
         </button>{" "}
         or press F2 when an item is focused.
       </p>
-      <div ref={tree.registerElement} className="tree">
+      <div {...tree.getContainerProps()} className="tree">
         {tree.getItems().map((item) => (
           <Fragment key={item.getId()}>
             {item.isRenaming() ? (
@@ -68,7 +72,6 @@ export const CanRenameConfigurability = () => {
             ) : (
               <button
                 {...item.getProps()}
-                ref={item.registerElement}
                 style={{ paddingLeft: `${item.getItemMeta().level * 20}px` }}
               >
                 <div

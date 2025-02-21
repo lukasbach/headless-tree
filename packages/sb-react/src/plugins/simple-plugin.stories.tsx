@@ -62,12 +62,11 @@ export const SimplePlugin = () => {
   });
 
   return (
-    <div ref={tree.registerElement} className="tree">
+    <div {...tree.getContainerProps()} className="tree">
       {tree.getItems().map((item) => (
         <div className="outeritem" key={item.getId()}>
           <button
             {...item.getProps()}
-            ref={item.registerElement}
             key={item.getId()}
             style={{ paddingLeft: `${item.getItemMeta().level * 20}px` }}
           >

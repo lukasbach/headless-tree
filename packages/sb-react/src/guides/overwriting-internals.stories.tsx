@@ -26,7 +26,7 @@ const customFeature: FeatureImplementation = {
     }),
     expand: ({ prev, itemId }) => {
       // Run the original implementation
-      prev?.(itemId);
+      prev?.();
 
       alert(`Item ${itemId} expanded!`);
     },
@@ -63,11 +63,10 @@ export const OverwritingInternals = () => {
   });
 
   return (
-    <div ref={tree.registerElement} className="tree">
+    <div {...tree.getContainerProps()} className="tree">
       {tree.getItems().map((item) => (
         <button
           {...item.getProps()}
-          ref={item.registerElement}
           key={item.getId()}
           style={{ paddingLeft: `${item.getItemMeta().level * 20}px` }}
         >

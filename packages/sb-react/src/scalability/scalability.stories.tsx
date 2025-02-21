@@ -99,15 +99,10 @@ export const BigTree = ({ itemsPerLevel, openLevels, useProxyInstances }) => {
   // TODO expanding is super slow
 
   return (
-    <div
-      ref={tree.registerElement}
-      {...tree.getContainerProps()} // TODO make sure this is defined everywhere
-      className="tree"
-    >
+    <div {...tree.getContainerProps()} className="tree">
       {tree.getItems().map((item) => (
         <button
           {...item.getProps()}
-          ref={item.registerElement}
           key={item.getId()}
           style={{ paddingLeft: `${item.getItemMeta().level * 20}px` }}
         >

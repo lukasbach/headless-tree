@@ -45,12 +45,12 @@ export const Basic = () => {
   return (
     <>
       <p className="description">
-        <button onClick={() => tree.startRenamingItem("root-2")}>
+        <button onClick={() => tree.getItemInstance("root-2").startRenaming()}>
           Rename root-2
         </button>{" "}
         or press F2 when an item is focused.
       </p>
-      <div ref={tree.registerElement} className="tree">
+      <div {...tree.getContainerProps()} className="tree">
         {tree.getItems().map((item) => (
           <Fragment key={item.getId()}>
             {item.isRenaming() ? (
@@ -66,7 +66,6 @@ export const Basic = () => {
             ) : (
               <button
                 {...item.getProps()}
-                ref={item.registerElement}
                 style={{ paddingLeft: `${item.getItemMeta().level * 20}px` }}
               >
                 <div

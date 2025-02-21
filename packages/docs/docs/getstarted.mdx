@@ -54,10 +54,7 @@ each item and get the necessary props to render it.
 
 When rendering your tree, don't forget to
 
-- provide `tree.registerElement` as ref to the tree root, or otherwise call `tree.registerElements` with the
-  root element of your tree during mounting and with `null` during unmount if you are not using React.
-- provide `item.registerElement` as ref to each item element, or otherwise call `item.registerElements` with the
-  item element during mounting and with `null` during unmount if you are not using React.
+- Spread the return value of `tree.getContainerProps()` as props into the container component containing your tree items.
 - Spread the return value of `item.getProps()` as props into your tree item elements.
 - You probably want to indent your items based on their depth, which you can get via `item.getItemMeta().level`.
 

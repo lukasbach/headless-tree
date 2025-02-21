@@ -62,11 +62,10 @@ export const CanDrag = () => {
       <p className="description">
         Only items that end with 1 or 2 can be dragged.
       </p>
-      <div ref={tree.registerElement} className="tree">
+      <div {...tree.getContainerProps()} className="tree">
         {tree.getItems().map((item) => (
           <button
             {...item.getProps()}
-            ref={item.registerElement}
             key={item.getId()}
             style={{ paddingLeft: `${item.getItemMeta().level * 20}px` }}
           >

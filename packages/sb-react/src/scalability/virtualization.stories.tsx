@@ -84,7 +84,7 @@ const Inner = forwardRef<Virtualizer<HTMLDivElement, Element>, any>(
         }}
       >
         <div
-          ref={tree.registerElement}
+          {...tree.getContainerProps()}
           className="tree"
           style={{
             height: `${virtualizer.getTotalSize()}px`,
@@ -97,7 +97,6 @@ const Inner = forwardRef<Virtualizer<HTMLDivElement, Element>, any>(
             return (
               <button
                 {...item.getProps()}
-                ref={item.registerElement}
                 key={item.getId()}
                 style={{
                   position: "absolute",

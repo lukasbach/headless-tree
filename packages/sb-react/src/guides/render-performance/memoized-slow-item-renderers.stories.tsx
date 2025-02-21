@@ -63,11 +63,10 @@ export const MemoizedSlowItemRenderers = () => {
   });
 
   return (
-    <div ref={tree.registerElement} className="tree">
+    <div {...tree.getContainerProps()} className="tree">
       {tree.getItems().map((item) => (
         <MemoizedItem
           {...item.getProps()}
-          ref={item.registerElement}
           key={item.getId()}
           level={item.getItemMeta().level}
           innerClass={cx("treeitem", {

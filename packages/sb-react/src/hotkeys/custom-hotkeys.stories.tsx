@@ -68,11 +68,10 @@ export const CustomHotkeys = () => {
         &quot;q&quot; while the tree is focused to expand all items, and press
         &quot;w&quot; to collapse all items.
       </p>
-      <div ref={tree.registerElement} className="tree">
+      <div {...tree.getContainerProps()} className="tree">
         {tree.getItems().map((item) => (
           <button
             {...item.getProps()}
-            ref={item.registerElement}
             key={item.getId()}
             style={{ paddingLeft: `${item.getItemMeta().level * 20}px` }}
           >
