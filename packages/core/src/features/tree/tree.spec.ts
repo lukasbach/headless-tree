@@ -377,43 +377,6 @@ describe("core-feature/selections", () => {
       });
     });
 
-    describe("memoized props", () => {
-      it("runs memoized props correctly", () => {
-        const fn = vi.fn().mockReturnValue("result");
-        const memoizedProp = tree.instance
-          .getItemInstance("x1")
-          .getMemoizedProp("fn", () => fn);
-        expect(memoizedProp(1, 2, 3)).toBe("result");
-        expect(fn).toBeCalledWith(1, 2, 3);
-      });
-
-      it("runs just once", () => {
-        const fn = vi.fn().mockImplementation(() => () => "result");
-        tree.instance.getItemInstance("x1").getMemoizedProp("fn", fn)(1);
-        tree.instance.getItemInstance("x1").getMemoizedProp("fn", fn)(1);
-        tree.instance.getItemInstance("x1").getMemoizedProp("fn", fn)(1);
-        expect(fn).toBeCalledTimes(1);
-      });
-
-      it("reruns if dependencies changed", () => {
-        const fn = vi.fn().mockImplementation(() => () => "result");
-        tree.instance.getItemInstance("x1").getMemoizedProp("fn", fn, [1])(1);
-        tree.instance.getItemInstance("x1").getMemoizedProp("fn", fn, [1])(1);
-        tree.instance.getItemInstance("x1").getMemoizedProp("fn", fn, [2])(1);
-        expect(fn).toBeCalledTimes(2);
-      });
-
-      it("seperates functions by name", () => {
-        const fn1 = vi.fn().mockImplementation(() => () => "result");
-        const fn2 = vi.fn().mockImplementation(() => () => "result");
-        tree.instance.getItemInstance("x1").getMemoizedProp("fn", fn1, [1])(1);
-        tree.instance.getItemInstance("x1").getMemoizedProp("fn", fn1, [1])(1);
-        tree.instance.getItemInstance("x1").getMemoizedProp("fn2", fn2, [1])(1);
-        expect(fn1).toBeCalledTimes(1);
-        expect(fn2).toBeCalledTimes(1);
-      });
-    });
-
     describe("hotkeys", () => {
       it("focuses next item", () => {
         const setFocusedItem = tree.mockedHandler("setFocusedItem");

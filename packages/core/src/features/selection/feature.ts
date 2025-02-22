@@ -82,20 +82,17 @@ export const selectionFeature: FeatureImplementation = {
     getProps: ({ tree, item, prev }) => ({
       ...prev?.(),
       "aria-selected": item.isSelected() ? "true" : "false",
-      onClick: item.getMemoizedProp(
-        "selection/onClick",
-        () => (e: MouseEvent) => {
-          if (e.shiftKey) {
-            item.selectUpTo(e.ctrlKey || e.metaKey);
-          } else if (e.ctrlKey || e.metaKey) {
-            item.toggleSelect();
-          } else {
-            tree.setSelectedItems([item.getItemMeta().itemId]);
-          }
+      onClick: (e: MouseEvent) => {
+        if (e.shiftKey) {
+          item.selectUpTo(e.ctrlKey || e.metaKey);
+        } else if (e.ctrlKey || e.metaKey) {
+          item.toggleSelect();
+        } else {
+          tree.setSelectedItems([item.getItemMeta().itemId]);
+        }
 
-          prev?.()?.onClick?.(e);
-        },
-      ),
+        prev?.()?.onClick?.(e);
+      },
     }),
   },
 

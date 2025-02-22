@@ -60,7 +60,6 @@ export type TreeFeatureDef<T> = {
     getTree: () => TreeInstance<T>;
     getItemAbove: () => ItemInstance<T> | undefined;
     getItemBelow: () => ItemInstance<T> | undefined;
-    getMemoizedProp: <X>(name: string, create: () => X, deps?: any[]) => X;
     scrollTo: (
       scrollIntoViewArg?: boolean | ScrollIntoViewOptions,
     ) => Promise<void>;
