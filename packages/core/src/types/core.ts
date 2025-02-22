@@ -11,6 +11,7 @@ import { AsyncDataLoaderFeatureDef } from "../features/async-data-loader/types";
 import { SearchFeatureDef } from "../features/search/types";
 import { RenamingFeatureDef } from "../features/renaming/types";
 import { ExpandAllFeatureDef } from "../features/expand-all/types";
+import { PropMemoizationFeatureDef } from "../features/prop-memoization/types";
 
 export type Updater<T> = T | ((old: T) => T);
 export type SetStateFn<T> = (updaterOrValue: Updater<T>) => void;
@@ -57,7 +58,8 @@ export type RegisteredFeatures<T> =
   | AsyncDataLoaderFeatureDef<T>
   | SearchFeatureDef<T>
   | RenamingFeatureDef<T>
-  | ExpandAllFeatureDef;
+  | ExpandAllFeatureDef
+  | PropMemoizationFeatureDef;
 
 type TreeStateType<T> = MergedFeatures<RegisteredFeatures<T>>["state"];
 export interface TreeState<T> extends TreeStateType<T> {}

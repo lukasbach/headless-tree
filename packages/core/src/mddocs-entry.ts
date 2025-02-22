@@ -8,6 +8,7 @@ import { SearchFeatureDef } from "./features/search/types";
 import { SelectionFeatureDef } from "./features/selection/types";
 import { SyncDataLoaderFeatureDef } from "./features/sync-data-loader/types";
 import { TreeFeatureDef } from "./features/tree/types";
+import { PropMemoizationFeatureDef } from "./features/prop-memoization/types";
 
 export * from ".";
 
@@ -79,6 +80,18 @@ export type MainFeatureTreeInstance = MainFeatureDef["treeInstance"];
 /** @interface */
 export type MainFeatureItemInstance = MainFeatureDef["itemInstance"];
 export type MainFeatureHotkeys = MainFeatureDef["hotkeys"];
+
+/** @interface */
+export type PropMemoizationConfig = PropMemoizationFeatureDef["config"];
+/** @interface */
+export type PropMemoizationState = PropMemoizationFeatureDef["state"];
+/** @interface */
+export type PropMemoizationTreeInstance =
+  PropMemoizationFeatureDef["treeInstance"];
+/** @interface */
+export type PropMemoizationItemInstance =
+  PropMemoizationFeatureDef["itemInstance"];
+export type PropMemoizationHotkeys = PropMemoizationFeatureDef["hotkeys"];
 
 /** @interface */
 export type RenamingFeatureConfig<T> = RenamingFeatureDef<T>["config"];
