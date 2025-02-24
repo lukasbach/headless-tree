@@ -11,8 +11,7 @@ export const buildStaticInstance: InstanceBuilder = (
   const finalize = () => {
     const opts = buildOpts(instance);
     featureLoop: for (let i = 0; i < features.length; i++) {
-      // Loop goes in forward order, because later features overwrite previous ones
-      // TODO loop order correct? I think so...
+      // Loop goes in forward order, each features overwrite previous ones and wraps those in a prev() fn
       const definition = features[i][instanceType];
       if (!definition) continue featureLoop;
       methodLoop: for (const [key, method] of Object.entries(definition)) {

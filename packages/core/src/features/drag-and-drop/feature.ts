@@ -4,7 +4,7 @@ import { canDrop, getDragCode, getDropTarget } from "./utils";
 import { makeStateUpdater } from "../../utils";
 
 export const dragAndDropFeature: FeatureImplementation = {
-  key: "dragAndDrop",
+  key: "drag-and-drop",
   deps: ["selection"],
 
   getDefaultConfig: (defaultConfig, tree) => ({

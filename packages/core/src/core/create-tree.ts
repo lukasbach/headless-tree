@@ -24,18 +24,20 @@ const verifyFeatures = (features: FeatureImplementation[] | undefined) => {
   }
 };
 
-const compareFeatures = (
-  feature1: FeatureImplementation,
-  feature2: FeatureImplementation,
-) => {
-  if (feature2.key && feature1.overwrites?.includes(feature2.key)) {
-    return 1;
-  }
-  return -1;
-};
+const compareFeatures =
+  (originalOrder: FeatureImplementation[]) =>
+  (feature1: FeatureImplementation, feature2: FeatureImplementation) => {
+    if (feature2.key && feature1.overwrites?.includes(feature2.key)) {
+      return 1;
+    }
+    if (feature1.key && feature2.overwrites?.includes(feature1.key)) {
+      return -1;
+    }
+    return originalOrder.indexOf(feature1) - originalOrder.indexOf(feature2);
+  };
 
 const sortFeatures = (features: FeatureImplementation[] = []) =>
-  features.sort(compareFeatures);
+  features.sort(compareFeatures(features));
 
 export const createTree = <T>(
   initialConfig: TreeConfig<T>,
