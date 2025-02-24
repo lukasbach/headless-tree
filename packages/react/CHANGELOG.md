@@ -1,5 +1,12 @@
 # @headless-tree/react
 
+## 0.0.12
+
+### Patch Changes
+
+- Updated dependencies [7236907]
+  - @headless-tree/core@0.0.12
+
 ## 0.0.11
 
 ### Patch Changes
