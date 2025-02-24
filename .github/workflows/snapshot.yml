@@ -1,4 +1,4 @@
-name: Publish
+name: Snapshot Release
 on:
   push:
     branches:
@@ -10,7 +10,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  publish:
+  snapshot:
     runs-on: ubuntu-latest
     name: Publish
     steps:
