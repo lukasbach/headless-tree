@@ -1,8 +1,12 @@
 import { describe, it } from "vitest";
 import { TestTree } from "../../test-utils/test-tree";
 import { expandAllFeature } from "./feature";
+import { propMemoizationFeature } from "../prop-memoization/feature";
 
-const factory = TestTree.default({}).withFeatures(expandAllFeature);
+const factory = TestTree.default({}).withFeatures(
+  expandAllFeature,
+  propMemoizationFeature,
+);
 
 describe("core-feature/expand-all", () => {
   factory.forSuits((tree) => {

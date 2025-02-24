@@ -2,10 +2,12 @@ import { describe, expect, it } from "vitest";
 import { TestTree } from "../../test-utils/test-tree";
 import { renamingFeature } from "./feature";
 import { selectionFeature } from "../selection/feature";
+import { propMemoizationFeature } from "../prop-memoization/feature";
 
 const factory = TestTree.default({}).withFeatures(
   renamingFeature,
   selectionFeature,
+  propMemoizationFeature,
 );
 
 describe("core-feature/renaming", () => {

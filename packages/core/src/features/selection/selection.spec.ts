@@ -1,23 +1,22 @@
 import { describe, expect, it } from "vitest";
 import { TestTree } from "../../test-utils/test-tree";
 import { selectionFeature } from "./feature";
+import { propMemoizationFeature } from "../prop-memoization/feature";
 
-const factory = TestTree.default({}).withFeatures(selectionFeature);
-
-// it("test", async () => {
-//   const tree = await factory.suits.async().tree.createDebugTree();
-//   const setSelectedItems = tree.mockedHandler("setSelectedItems");
-//   const setFocusedItem = tree.mockedHandler("setFocusedItem");
-//
-//   tree.do.selectItem("x111");
-//   tree.do.ctrlSelectItem("x112");
-//   tree.do.ctrlSelectItem("x113");
-//
-//   expect(setSelectedItems).toHaveBeenCalledWith(["x111", "x112", "x113"]);
-//   expect(setFocusedItem).toHaveBeenCalledWith("x113");
-// });
+const factory = TestTree.default({}).withFeatures(
+  selectionFeature,
+  propMemoizationFeature,
+);
 
 describe("core-feature/selections", () => {
+  it("test", async () => {
+    const tree = await factory.suits.proxifiedSync().tree.createTestCaseTree();
+    tree.do.selectItem("x111");
+    expect(
+      tree.instance.getItemInstance("x111").getProps()["aria-selected"],
+    ).toBe("true");
+  });
+
   factory.forSuits((tree) => {
     it("sets aria-selected to false", () => {
       expect(

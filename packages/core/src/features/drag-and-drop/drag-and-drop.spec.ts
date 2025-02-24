@@ -4,6 +4,7 @@ import { dragAndDropFeature } from "./feature";
 import { selectionFeature } from "../selection/feature";
 import { ItemInstance } from "../../types/core";
 import { createOnDropHandler } from "../../utilities/create-on-drop-handler";
+import { propMemoizationFeature } from "../prop-memoization/feature";
 
 const isItem = (item: unknown): item is ItemInstance<any> =>
   !!item && typeof item === "object" && "getId" in item;
@@ -20,7 +21,7 @@ const factory = TestTree.default({
     expandedItems: ["x1", "x11", "x2", "x21"],
   },
   onDrop: vi.fn(),
-}).withFeatures(selectionFeature, dragAndDropFeature);
+}).withFeatures(selectionFeature, dragAndDropFeature, propMemoizationFeature);
 
 describe("core-feature/drag-and-drop", () => {
   factory.forSuits((tree) => {

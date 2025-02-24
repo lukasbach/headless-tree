@@ -1,7 +1,8 @@
 import { describe, expect, it, vi } from "vitest";
 import { TestTree } from "../../test-utils/test-tree";
+import { propMemoizationFeature } from "../prop-memoization/feature";
 
-const factory = TestTree.default({});
+const factory = TestTree.default({}).withFeatures(propMemoizationFeature);
 
 describe("core-feature/selections", () => {
   factory.forSuits((tree) => {
@@ -239,6 +240,7 @@ describe("core-feature/selections", () => {
           "aria-selected": "false",
           "aria-setsize": 4,
           onClick: expect.any(Function),
+          ref: expect.any(Function),
           role: "treeitem",
           tabIndex: -1,
         });
@@ -252,6 +254,7 @@ describe("core-feature/selections", () => {
           "aria-selected": "false",
           "aria-setsize": 4,
           onClick: expect.any(Function),
+          ref: expect.any(Function),
           role: "treeitem",
           tabIndex: 0,
         });

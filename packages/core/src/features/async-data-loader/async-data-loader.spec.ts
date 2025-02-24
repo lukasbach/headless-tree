@@ -1,8 +1,12 @@
 import { describe, expect, it, vi } from "vitest";
 import { TestTree } from "../../test-utils/test-tree";
 import { asyncDataLoaderFeature } from "./feature";
+import { propMemoizationFeature } from "../prop-memoization/feature";
 
-const tree = TestTree.default({}).withFeatures(asyncDataLoaderFeature);
+const tree = TestTree.default({}).withFeatures(
+  asyncDataLoaderFeature,
+  propMemoizationFeature,
+);
 
 describe("core-feature/selections", () => {
   tree.resetBeforeEach();
