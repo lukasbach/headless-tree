@@ -1,5 +1,5 @@
 export type PropMemoizationDataRef = {
-  memoizedProps: Record<string, any>;
+  memoizedProps?: Record<string, any>;
 };
 
 export type PropMemoizationFeatureDef = {

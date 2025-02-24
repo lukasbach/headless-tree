@@ -5,6 +5,7 @@ const memoize = (
   props: Record<string, any>,
   dataRef: PropMemoizationDataRef,
 ) => {
+  dataRef.memoizedProps ??= {};
   for (const key in props) {
     if (typeof props[key] === "function") {
       if (key in dataRef.memoizedProps) {
@@ -19,6 +20,18 @@ const memoize = (
 
 export const propMemoizationFeature: FeatureImplementation = {
   key: "prop-memoization",
+
+  overwrites: [
+    "main",
+    "async-data-loader",
+    "sync-data-loader",
+    "drag-and-drop",
+    "expand-all",
+    "hotkeys-core",
+    "renaming",
+    "search",
+    "selection",
+  ],
 
   treeInstance: {
     getContainerProps: ({ tree, prev }) => {
