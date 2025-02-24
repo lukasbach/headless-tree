@@ -37,8 +37,15 @@ jobs:
 
       - name: Snapshot Versioning
         run: yarn changeset version --snapshot
+
       - name: Snapshot Release
-        run: yarn changeset publish --no-git-tag --tag snapshot
+        run: |
+          if git diff --quiet; then
+            echo "No changes detected"
+            exit 0
+          else
+            yarn changeset publish --no-git-tag --tag snapshot
+          fi
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
