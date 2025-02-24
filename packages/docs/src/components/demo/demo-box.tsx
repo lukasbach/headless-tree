@@ -1,5 +1,5 @@
 /* eslint-disable react/no-array-index-key */
-import { FC, useMemo, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import { useStories } from "@site/src/util/use-stories";
 import { useStoriesByTags } from "@site/src/util/use-stories-by-tags";
 import { Highlight } from "prism-react-renderer";
@@ -16,7 +16,12 @@ export type DemoBoxProps = {
   all?: boolean;
 };
 
-export const DemoBox: FC<DemoBoxProps> = ({ stories, tags, all }) => {
+export const DemoBox: FC<DemoBoxProps> = ({
+  stories,
+  tags,
+  all,
+  initialStory,
+}) => {
   const tagStories = useStoriesByTags(tags);
   const idStories = useStories(stories);
   const allStories = useAllStories(!all);
@@ -30,6 +35,15 @@ export const DemoBox: FC<DemoBoxProps> = ({ stories, tags, all }) => {
     () => storyData?.[selectedStory] ?? null,
     [selectedStory, storyData],
   );
+
+  useEffect(() => {
+    if (initialStory && storyData) {
+      const initialIndex = storyData.findIndex((s) => s.id === initialStory);
+      if (initialIndex >= 0) {
+        setSelectedStory(initialIndex);
+      }
+    }
+  }, [storyData, initialStory]);
 
   const code = useCleanedCode(story?.code ?? "");
 
