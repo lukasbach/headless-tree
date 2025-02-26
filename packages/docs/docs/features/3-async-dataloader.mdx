@@ -51,15 +51,7 @@ way, you can customize how loading items are displayed.
 
 While the Sync Data Loader does not provide a data invalidation concept since it refetches all data during every render
 anyway, the Async Data Loader caches item data and does not refetch it unless it is invalidated. Methods for invalidating
-certain items are provided both on the tree instance...
-
-```ts
-tree.invalidateItemData(itemId);
-
-tree.invalidateChildrenIds(itemId);
-```
-
-...and on the item instance:
+certain items are provided on the item instance:
 
 ```ts
 item.invalidateItemData();

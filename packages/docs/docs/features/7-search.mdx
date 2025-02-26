@@ -16,4 +16,33 @@ import { FeaturePageHeader } from "../../src/components/docs-page/feature-page-h
 
 <DemoBox tags={["feature/search"]} />
 
-TODO
+The Search feature provides the functionality for users to quickly find a certain item by typing
+a part of its name. This fulfills the accessibility feature of a typeahead search, and is particularly
+useful in large trees where the user might not be able to find the item they are looking for by
+scrolling through the tree, while also making its use a bit more obvious by showing the search
+input field. This is consistent with similar tree implementations such as the file tree in JetBrains IDEs,
+where typing in the tree will show a search input field.
+
+The items will not be shown in a filtered view, but instead search matches will be visually highlighted,
+the tree will be scrolled and focused to the first search match, and navigating through the items with
+up or down arrow keys will move the focus only between matched items.
+
+The search input field will automatically be opened when the user starts typing while focusing the tree,
+but it can also be opened programmatically by calling `tree.openSearch()`. Blurring the input field, pressing
+Escape (if the Hotkeys Core Feature is included), or invoking `tree.closeSearch()` will close the search.
+`tree.isSearchOpen()` can be used to check if the search input field is currently open and should be rendered.
+
+Similar to the remaining tree integration, it is up to the library consumer to render the search input field
+correctly. Pass `tree.getSearchInputElementProps()` as props to the search input to hook it up with change
+handlers and register its element with Headless Tree.
+
+```jsx
+{tree.isSearchOpen() && (
+  <>
+    <input {...tree.getSearchInputElementProps()} />
+    ({tree.getSearchMatchingItems().length} matches)
+  </>
+)}
+```
+
+Then, use `item.isMatchingSearch()` to determine if an item is currently a search match, and style it accordingly.

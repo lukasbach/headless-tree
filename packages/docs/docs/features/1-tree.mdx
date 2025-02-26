@@ -15,8 +15,58 @@ import { FeaturePageHeader } from "../../src/components/docs-page/feature-page-h
     isCore={true}
 />
 
-<DemoBox tags={["feature/tree"]} />
+<!-- TODO add sample with primary action, focus, and expanding -->
 
 The tree core feature is always included by Headless Tree, and does not need to be explicitly imported and
 added to your tree config. It provides basic tree-related features, like expanding or collapsing items and moving
 the focus. Its state is composed of a list of expanded items, and the ID of the currently focused item.
+
+## Retrieving React Props
+
+Part of what this feature provides is also the default props for both the tree container element, and each
+of the tree items. You can retrieve these props by calling `tree.getContainerProps()` or `item.getProps()`.
+These props are meant to be spread into the respective elements in your render function, and will provide both
+the necessary event handlers and ARIA attributes to make the tree accessible.
+
+Note that both will also provide a `ref` property, which will register a reference to the respective element
+to Headless Tree. Alternatively, you can also manually register or deregister elements with `tree.registerElement(el)`
+and `item.registerElement(el)`.
+
+```jsx
+<div {...tree.getContainerProps()} className="tree">
+  {tree.getItems().map((item) => (
+    <button
+      {...item.getProps()}
+      key={item.getId()}
+      style={{ paddingLeft: `${item.getItemMeta().level * 20}px` }}
+    >
+      {item.getItemName()}
+    </button>
+  ))}
+</div>
+```
+
+## Primary action
+
+Headless Tree exposes a concept called "primary action", which is invoked when the user clicks on an item
+with the intent to perform an action on that item. A handler `onPrimaryAction` can be provided in the tree
+configuration. By default it will be clicked when the user clicks on an item, or when `item.primaryAction()`
+is invoked programmatically.
+
+By customizing the implementation of `item.getProps().onClick()`, the behavior of calling this function
+can be customized.
+
+## Managing the focused item
+
+By default, Headless Tree will maintain the focused item in its internal state. If a `setState` or `setFocusedItem`
+function is provided in the tree configuration, you can manage the focused item yourself (see [Managing State](/guides/state)).
+
+You can also use the `item.setFocused()` method to focus an item programmatically. You likely want to follow
+this up with a call to `tree.updateDomFocus()` to update the focused item in DOM and scroll to that item.
+
+## Expanding and collapsing folders
+
+Similarly to the focused item, Headless Tree will maintain the list of expanded items in its internal state.
+Provide a `setExpandedItems` function in the tree configuration to manage the expanded items yourself, otherwise
+Headless Tree will manage the expanded items for you (see [Managing State](/guides/state)). Call `item.expand()`
+or `item.collapse()` to expand or collapse an item, or `item.isExpanded()` to check if an item is expanded.

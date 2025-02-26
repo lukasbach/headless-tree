@@ -16,4 +16,13 @@ import { FeaturePageHeader } from "../../src/components/docs-page/feature-page-h
 
 <DemoBox tags={["feature/hotkeys"]} />
 
-TODO
+The Hotkeys Core feature is necessary for any keyboard-based interaction via hotkeys to work.
+Each of the features define their own hotkeys configurations (e.g. the Selection Feature provides the `selectAll` hotkey
+defaulting to `Ctrl+A`), which can be customized or extended in the tree configuration.
+However, only the Hotkeys Core feature implements the logic to listen for and handle keyboard events, and
+is necessary for any hotkeys of other features to work.
+
+The feature also makes it very easy to add custom hotkeys with arbitrary keybindings and implementations.
+
+Look into the [Guide on Hotkeys](/guides/hotkeys) for details on how to use the Hotkeys Core Feature, and how to
+overwrite or add custom hotkeys.

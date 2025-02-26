@@ -15,4 +15,14 @@ import {FeaturePageHeader} from "../../src/components/docs-page/feature-page-hea
 />
 <DemoBox tags={["feature/selection"]} />
 
-TODO
+The selection feature provides the ability of multiselect, allowing users to select multiple items at once.
+Without it, Headless Tree just allows users to focus a single item, and act on it through that.
+This feature is particularly useful in combination with the [drag-and-drop](/features/dnd) feature, as it allows users to
+select multiple items and drag them all at once.
+
+By default, Headless Tree will maintain the selected items in its internal state. If a `setState` or `setSelectedItems`
+function is provided in the tree configuration, you can manage the focused item yourself (see [Managing State](/guides/state)).
+
+Call `item.select()`, `item.deselect()` or `item.toggleSelection()` to change the selection state of an item. The feature
+will also add behavior to the `onClick` handler provided as prop for each of the tree items for ctrl-clicking and
+shift-clicking to select multiple items at once.
