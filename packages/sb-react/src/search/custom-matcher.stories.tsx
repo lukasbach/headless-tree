@@ -73,15 +73,10 @@ export const CustomMatcher = () => {
         any letter keys while focusing the tree to search.
       </p>
       {tree.isSearchOpen() && (
-        <p>Navigate between search results with ArrowUp and ArrowDown.</p>
-      )}
-      {tree.isSearchOpen() && (
         <>
-          <input
-            {...tree.getSearchInputElementProps()}
-            ref={tree.registerSearchInputElement}
-          />{" "}
-          ({tree.getSearchMatchingItems().length} matches)
+          <p>Navigate between search results with ArrowUp and ArrowDown.</p>
+          <input {...tree.getSearchInputElementProps()} /> (
+          {tree.getSearchMatchingItems().length} matches)
         </>
       )}
       <div {...tree.getContainerProps()} className="tree">

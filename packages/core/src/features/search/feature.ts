@@ -56,10 +56,12 @@ export const searchFeature: FeatureImplementation = {
     getSearchInputElement: ({ tree }) =>
       tree.getDataRef<SearchFeatureDataRef>().current.searchInput ?? null,
 
+    // TODO memoize with propMemoizationFeature
     getSearchInputElementProps: ({ tree }) => ({
       value: tree.getSearchValue(),
       onChange: (e: any) => tree.setSearch(e.target.value),
       onBlur: () => tree.closeSearch(),
+      ref: tree.registerSearchInputElement,
     }),
 
     getSearchMatchingItems: memo(
