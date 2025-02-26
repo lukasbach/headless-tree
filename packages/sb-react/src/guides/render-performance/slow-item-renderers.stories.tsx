@@ -11,6 +11,7 @@ import cx from "classnames";
 
 const meta = {
   title: "React/Guides/Render Performance/Slow Item Renderers",
+  tags: ["feature/propmemoization"],
 } satisfies Meta;
 
 export default meta;

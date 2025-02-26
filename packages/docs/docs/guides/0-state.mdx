@@ -7,6 +7,8 @@ category: guide
 
 import { DemoBox } from "../../src/components/demo/demo-box";
 
+# Managing State
+
 With Headless Tree, there are multiple ways how to manage the state of the tree. By default, Headless Tree
 manages all parts of the state itself, and you just need to provide the data. Alternatively, you can opt into
 managing the entirety of the tree state yourself, which is useful if you want to change the state from outside,
@@ -24,7 +26,7 @@ Another important part to keep in mind is that which parts of the state are expo
 are included. The aforementioned `dnd` state property will be completely ignored if the `dragAndDropFeature` is
 not included in the tree configuration, as will be dnd-related update handlers.
 
-# Letting headless-tree manage the state
+## Letting headless-tree manage the state
 
 The simplest option is to let Headless Tree manage the entirety of the state. This is done by default, so you
 do not have to do anything. You can also supply a `initialState` prop in the tree configuration to define
@@ -32,7 +34,7 @@ the initial state.
 
 <DemoBox tags={["guides/state"]} initialStory="react-state-internal-state--internal-state" />
 
-# Managing individual feature states
+## Managing individual feature states
 
 If you are interested in specific parts of the state, you can opt into managing those parts of the state while
 still leaving the rest up to Headless Tree. To manage one part of the state, you need to provide the sub property
@@ -76,7 +78,7 @@ useTree({
 
 <DemoBox tags={["guides/state"]} initialStory="react-state-distinct-state-handlers--distinct-state-handlers" />
 
-# Manage the entire state yourself
+## Manage the entire state yourself
 
 As another alternative, you can also choose to manage the entirety of the state yourself. Instead of passing
 individual sub properties through the `state` config prop, you can pass the entire state object as that property.

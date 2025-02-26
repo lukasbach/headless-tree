@@ -2,6 +2,7 @@ import type { Meta } from "@storybook/react";
 import React, { HTMLProps, forwardRef, memo } from "react";
 import {
   hotkeysCoreFeature,
+  propMemoizationFeature,
   selectionFeature,
   syncDataLoaderFeature,
 } from "@headless-tree/core";
@@ -11,6 +12,7 @@ import cx from "classnames";
 
 const meta = {
   title: "React/Guides/Render Performance/Memoized Slow Item Renderers",
+  tags: ["feature/propmemoization"],
 } satisfies Meta;
 
 export default meta;
@@ -59,7 +61,12 @@ export const MemoizedSlowItemRenderers = () => {
         `${itemId}-2item`,
       ],
     },
-    features: [syncDataLoaderFeature, selectionFeature, hotkeysCoreFeature],
+    features: [
+      syncDataLoaderFeature,
+      selectionFeature,
+      hotkeysCoreFeature,
+      propMemoizationFeature,
+    ],
   });
 
   return (

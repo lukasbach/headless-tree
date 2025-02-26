@@ -14,6 +14,35 @@ import { FeaturePageHeader } from "../../src/components/docs-page/feature-page-h
     feature="renaming"
 />
 
-<DemoBox tags={["feature/renaming"]} />
+<DemoBox tags={["feature/renaming"]} initialStory="react-renaming-basic--basic" />
 
-TODO
+The renaming feature allows you to allow users to rename items in the tree. They can either start renaming
+an item via the `renameItem` hotkey (defaulting to F2), or when the `item.startRenaming()` method is called.
+You can hook this up to e.g. double-clicking an item-name or to a context menu option.
+
+The feature exposes two state variables, `renamingItem` to keep track of the item that is currently being renamed,
+and `renamingValue` to keep track of the new name that the user is typing in. When
+[maintaining individual states](/guides/state#managing-individual-feature-states), you can hook into changes to
+those states via the `setRenamingItem` and `setRenamingValue` config methods.
+
+## Rendering the Rename Input
+
+Similar to other Headless Tree Features, the library only provides the functionality, but not the UI. For any tree
+item, you can determine whether it should render a renaming behavior with `item.isRenaming()`. Make sure to
+pass `item.getRenameInputProps()` to the input element to hook up the renaming behavior to the input field.
+
+```jsx
+if (item.isRenaming()) {
+  return (
+    <input {...item.getRenameInputProps()} />
+  );
+}
+
+// otherwise, render the item as usual
+```
+
+## Customizing which items can be renamed
+
+You can also customize which items can be renamed by providing a `canRename` function in the tree configuration.
+
+<DemoBox tags={["feature/renaming"]} initialStory="react-renaming-can-rename-configurability--can-rename-configurability" />

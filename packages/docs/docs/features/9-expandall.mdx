@@ -16,4 +16,24 @@ import { FeaturePageHeader } from "../../src/components/docs-page/feature-page-h
 
 <DemoBox tags={["feature/expand-all"]} />
 
-TODO
+The expand-all feature exposes methods both on any item instance and the tree instance to expand or collapse
+all of its items. When called on the tree instance, it will expand or collapse all items in the tree, otherwise
+it will only affect all children of the item.
+
+When used in conjunction with the [async data loader](/features/async-dataloader), the expand-all feature will
+wait for children to load in during each step, before triggering the expanding of the next level. You can also
+programmatically abort the expanding process at any time when this happens. When calling the `expandAll` method,
+you can pass an object with a `current` variable. Setting this to `false` during the expanding progress will
+cancel the expanding process while it is happening.
+
+```ts
+const cancelToken = { current: false };
+
+const expand = () => {
+  cancelToken.current = false;
+  tree.expandAll(cancelToken);
+};
+const cancelExpanding = () => {
+  cancelToken.current = true;
+};
+```
