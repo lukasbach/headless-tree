@@ -3,11 +3,21 @@ slug: "/dnd/foreign-dnd"
 title: "Dragging in or out of tree"
 category: draganddrop
 ---
+import {DemoBox} from "../../src/components/demo/demo-box";
+
+<!-- TODO rendering the initial story doesnt work -->
 
 # Dragging in or out of tree
 
+
 ## Dragging tree items out of tree
+
+<DemoBox tags={["feature/dnd"]} initialStory="react-drag-and-drop-drag-outside--drag-outside" />
 
 ## Dragging foreign objects inside of tree
 
+<DemoBox tags={["feature/dnd"]} initialStory="react-drag-and-drop-drag-inside--drag-inside" />
+
 ## Interactions between multiple instances of Headless Tree
+
+<DemoBox tags={["feature/dnd"]} initialStory="react-guides-multiple-trees--multiple-trees" />
