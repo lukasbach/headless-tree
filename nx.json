@@ -28,7 +28,9 @@
     },
     "build:docs": {
       "outputs": [
-        "{projectRoot}/public"
+        "{projectRoot}/public",
+        "{projectRoot}/build",
+        "{projectRoot}/.docusaurus"
       ]
     },
     "build:sb": {
