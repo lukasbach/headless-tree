@@ -74,7 +74,7 @@ export const DemoBox: FC<DemoBoxProps> = ({
             target="_blank"
             rel="noreferrer noopener"
           >
-            Code
+            Full Code
           </a>
           <a
             href={`https://headless-tree.lukasbach.com/storybook/react/index.html?path=/story/${story.id}`}

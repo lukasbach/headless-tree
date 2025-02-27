@@ -16,7 +16,7 @@
 }
 
 .topRight a {
-    margin-left: .5rem;
+    margin-left: 1rem;
 }
 
 .storySelector {
@@ -34,6 +34,7 @@
 
 .sidebyside {
     display: flex;
+    gap: 1rem;
 }
 
 .left, .right {
@@ -48,6 +49,8 @@
     font-size: .8rem;
     flex-grow: 1;
     min-width: 0;
+    border-radius: 16px;
+    overflow: hidden;
 }
 
 .right pre {
