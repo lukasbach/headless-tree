@@ -1,72 +1,202 @@
 ---
 slug: "/dnd/overview"
 title: "Overview"
+hide_title: true
 category: draganddrop
 ---
 
 import { DemoBox } from "../../src/components/demo/demo-box";
+import {FeaturePageHeader} from "../../src/components/docs-page/feature-page-header";
+
+<FeaturePageHeader
+    title="Drag and Drop"
+    subtitle="Drag-and-drop Capabilities for tree items and external drag objects"
+    feature="drag-and-drop"
+/>
 
 # Overview
+
+<DemoBox tags={["feature/dnd"]} />
+
+The Drag-And-Drop Feature provides drag-and-drop capabilities. It allows to drag a single tree item (or many of the
+[selection feature](/features/selection) is included in the tree config) and drop it somewhere else in the tree.
+The feature also allows you to create interactions between the tree and external drag objects, allowing you to drag
+tree items out of the tree, or foreign data objects from outside the tree inside. As extension of that, this can
+also be used to implement drag behavior between several trees.
+
+This page explains the general idea of how Dnd works in Headless Tree, and how to get started with dragging items
+within a tree. The guides following after will go into more depth about
+
+- TODO
+
+## Configuring Drag and Drop
+
+The gist of configuring Drag and Drop in Headless Tree, is to
+
+- add the `dragAndDropFeature` to the tree config,
+- define the indent of your tree items in the config variable `indent`, and
+- handle the `onDrop` event in the tree config.
+
+Note that the `indent` property is not required in the core tree configuration, since you can just use a custom
+indentation when rendering your items. For Drag and Drop it is required however to determine the drop position
+when the user is trying to reparent an item. (TODO link)
+
+<!-- TODO render types as interfaces in typedoc, then fix links here -->
+The Dnd Feature also exposes a [Dnd State](/api/core#DndState) that you can [handle yourself if you want to](/guides/state).
 
 ```jsx typescript
 import {
   syncDataLoaderFeature,
-  createOnDropHandler,
   dragAndDropFeature,
-  hotkeysCoreFeature,
   selectionFeature,
 } from "@headless-tree/core";
 
 const tree = useTree<Item>({
   indent: 20,
   canReorder: true,
-  onDrop: createOnDropHandler((item, newChildren) => {
-    // set newChildren to item
-  }),
+  onDrop: (items, target) => {
+      // handle drop
+  },
   features: [
     syncDataLoaderFeature,
     selectionFeature,
-    hotkeysCoreFeature,
     dragAndDropFeature,
   ],
 });
 ```
 
+## The Drop Event
+
+When the user drops tree items onto a target within the tree, the [`onDrop`](/api/core/interface/dragAndDropFeatureConfig#onDrop) event is called
+with the list of items that were dragged, and a [drop target](/api/core#DropTarget). This drop target is an object that contains
+either
+
+- the `item` that is dropped to, if the user dragged on the title of an item with the intent to make it a child of that item
+
+or, if the user dragged between items while the `canReorder` config option is set to true:
+
+- the `item` that should become the new parent
+- the `childIndex`, describing the index within the `item` where the user dropped
+- the `insertionIndex`, describing the index within the `item` where the items should be placed (see details below)
+- `dragLineIndex` and `dragLineLevel` describing the position of the drag line that is rendered while dragging
+
+:::info Difference between `childIndex` and `insertionIndex`
+
+`childIndex` describes the visual location inside the item that is being dropped into, where the user is dragging
+the items to. `insertionIndex` on the other hand also respects the special case that the user might drag items within
+the same folder from further up in a folder, to further down in the same folder.
+
+If items are dragged from a different location into a new folder, `childIndex` and `insertionIndex` will be the same.
+However, if the two top-most items in a folder are dragged two items down, `childIndex` will be 4, but `insertionIndex`
+will be 2, since removing those two items will shift the items up by two.
+
+:::
+
+## Rendering a Tree with Drag and Drop
+
+The only difference between rendering a normal HT Tree, and rendering one with Drag and Drop capabilities, is that you
+need to render a drag line that shows the user where the items will be dropped. You just need to render an additional
+div with the style `tree.getDragLineStyle()`, and style it however you want. The computed stylings will automatically
+add `display: none` if the user is not currently dragging items, and will compute relative positioning based on the
+item rendered with `tree.getContainerProps()`.
+
+Below are examples of how to render a tree with Drag and Drop capabilities, as well as the exemplary CSS stylings
+used in the demo.
+
 ```jsx
 <div {...tree.getContainerProps()} className="tree">
   {tree.getItems().map((item) => (
-    <button
-      {...item.getProps()}
-      key={item.getId()}
-      style={{ paddingLeft: `${item.getItemMeta().level * 20}px` }}
-    >
-      <div
-        className={`folder ${item.isFolder() && "folder"}`}
-      >
-        {item.getItemName()}
-      </div>
-    </button>
+    <MyTreeItem key={item.id} item={item} />
   ))}
   <div style={tree.getDragLineStyle()} className="dragline" />
 </div>
 ```
 
-<DemoBox tags={["feature/dnd"]} stories={["react-drag-and-drop-basic--basic"]} />
+```css
+.dragline {
+    position: absolute;
+    height: 2px;
+    width: unset;
+    margin-top: -1px;
+    background-color: #00aff4;
+}
 
-## Updated caches in async data loaders
+/* Render the circle at the left of the dragline */
+.dragline::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: -3px;
+    height: 4px;
+    width: 4px;
+    background: #fff;
+    border: 2px solid #00aff4;
+    border-radius: 99px;
+}
+```
+
+
+## Mutating your data after the Drop
+
+When the drop event is registered with `onDrop`, you will likely want to mutate your data source to reflect
+the new order of items after the drag. Headless Tree provides three utility methods that make this very easy:
+
+- [`removeItemsFromParents(movedItems, onChangeChildren)`](/api/core/function/removeItemsFromParents): Calls the provided
+  `onChangeChildren` handler to remove the items defined in the first argument from their parents.
+- [`insertItemsAtTarget(itemIds, target, onChangeChildren)`](/api/core/function/insertItemsAtTarget): Calls the provided
+  `onChangeChildren` handler to insert the items defined in the first argument at the target defined in the second argument.
+- [`createOnDropHandler(onChangeChildren)`](/api/core/function/createOnDropHandler): Combines the two methods above to
+  create a drop handler that removes the items from their parents and inserts them at the target. This can directly be passed to the `onDrop` config option.
+
+`itemIds` and `movedItems` are arrays of item instances, and thus the same type as what the `onDrop` config option provides.
+Similarly, `target` is the same type as the drop target that is provided in the `onDrop` event.
+
+In most situations, it is sufficient to call `createOnDropHandler` with a function that mutates your data source, and
+use that to handle drop events of items within a single tree. The other methods are useful for interactions between
+several trees (imagine items being removed from one tree and then inserted in another), handling cases where foreign
+data is dragged into a tree to create a new tree item or tree items being dragged out of the tree to external drop targets,
+or handling other more complicated use cases.
+<!-- TODO add links to other guides for those cases -->
 
 ```jsx typescript
+import { createOnDropHandler } from "@headless-tree/core";
+
 const tree = useTree<Item>({
   indent: 20,
   canReorder: true,
-  onDrop: createOnDropHandler((item, newChildren) => {}),
+  onDrop: createOnDropHandler((item, newChildren) => {
+    myData[item.getId()].children = newChildren;
+  }),
   features: [
-    asyncDataLoaderFeature,
+    syncDataLoaderFeature,
     selectionFeature,
-    hotkeysCoreFeature,
     dragAndDropFeature,
   ],
 });
 ```
 
-## Reading DragAndDrop state
+## Updated caches in async data loaders
+
+:::info
+
+You can ignore this when using `removeItemsFromParents`, `removeItemsFromParents` or `createOnDropHandler` to handle
+the drop event, as those handlers do this for you.
+
+:::
+
+When you handle the drop event yourself while using the async data loader, note that the async data loader caches
+tree data and does not automatically update the cache when you mutate the data source.
+
+When you update the childrens assigned to an item as response to a drop event, you can update the cache with
+[`item.updateCachedChildrenIds(children: string[])`](/api/core/interface/AsyncDataLoaderFeatureItemInstance#updateCachedChildrenIds):
+
+```typescript
+// Update your data source
+myData[parent.getId()].children = newChildren;
+
+// Update cache of async data loader
+parent.updateCachedChildrenIds(newChildren);
+
+// Trigger the recomputation of the internal tree structure
+tree.rebuildTree();
+```
