@@ -32,7 +32,7 @@ const meta = {
   },
   args: {
     itemsPerLevel: 10,
-    openLevels: 2,
+    openLevels: 4,
     useProxyInstances: true,
   },
 } satisfies Meta;

@@ -7,6 +7,25 @@ category: recipe
 
 import { DemoBox } from "../../src/components/demo/demo-box";
 
+Sometimes, rendering tree items can be expensive. This can cause slow usage of the Tree react component,
+since all items are rendered as part of a single flat list, and mutations to the displayed tree structure,
+such as expanding or collapsing items or changing the tree will trigger a re-render of all items.
+
 <DemoBox stories={["react-guides-render-performance-slow-item-renderers--slow-item-renderers"]} />
 
+Memoizing the individual tree item render methods can help reduce the performance impact of rendering
+expensive tree items. This can be done using the `React.memo` function, which will only re-render the
+component if the props have changed.
+
+`React.memo` will only rerender its contents if any of its props have changed. Headless Tree doesn't
+memoize props generated with `tree.getContainerProps()` and `item.getProps()` by default, and will
+create new props during each render. By including the [Prop Memoization Feature](/features/propmemoization)
+however, these props will be memoized automatically, making memoization of render items feasible.
+
+Note that, in the sample below, expanding or collapsing individual items is much more efficient than
+in the sample above, since now only those items that actually change will be rerendered.
+
 <DemoBox stories={["react-guides-render-performance-memoized-slow-item-renderers--memoized-slow-item-renderers"]} />
+
+You can further improve performance on large trees by making use of Virtualization, which is explained in
+the [Virtualization Guide](/recipe/virtualization).

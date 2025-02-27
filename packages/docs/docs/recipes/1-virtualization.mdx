@@ -7,4 +7,25 @@ category: recipe
 
 import { DemoBox } from "../../src/components/demo/demo-box";
 
+Large trees can have a significant impact on render and usage performance, and cause slow
+interactions. Virtualization is a concept, where the performance hit of a very large list of items
+is mitigated by only rendering the items that are currently visible in the viewport.
+
+While this is not trivial to do with nested structures like trees, Headless Tree makes this
+easy by flattening the tree structure and providing the tree items as flat list. Virtualization
+is not a included feature of Headless Tree, but you can easily pass this flat list to any virtualization
+library of your choice, and use that to create a tree that only renders the visible items.
+
+In the sample below, `react-virtual` is used to virtualize the tree and render 100k items while
+still being performant in rendering and interaction.
+
 <DemoBox stories={["react-scalability-basic-virtualization--basic-virtualization"]} />
+
+:::warning
+
+You likely will want to use proxified item instances instead of static item instances when
+using trees with many items. Read this guide to learn more about [Proxy Item Instances](/recipe/proxy-instances).
+You can use them by setting the `instanceBuilder` tree config option to [`buildProxiedInstance`](/api/core/function/buildProxiedInstance),
+a symbol that you can import from `@headless-tree/core`.
+
+:::
