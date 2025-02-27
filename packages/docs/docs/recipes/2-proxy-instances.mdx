@@ -1,0 +1,52 @@
+---
+slug: "/recipe/proxy-instances"
+title: "Proxy Item Instances"
+category: recipe
+---
+
+Proxy Item Instances are an advanced concept, and is only required if you handle a large number of items
+that is loaded in at the same time. Usually this happens in situations where also [virtualization](/recipe/virtualization)
+is employed. It is suggested to only use this feature if you already notice a performance impact of memory
+usage with the default implementation.
+
+Whenever Headless Tree reacts to changes in the tree structure, e.g. items are expanded or collapsed, or the tree
+structure is mutated (or more specifically, whenever `tree.rebuildTree()` is called), an item instance object
+is created for every item that is part of the tree. This object will contain a reference to every tree item function of every
+feature that is included in the tree. Both the instantiation of the item and keeping it in memory is generally
+a trivial overhead, but with many hundreds or thousands or millions of items, this can still cause a noticable
+memory usage.
+
+The instantiation of tree items is a configurable method, that can be defined with the `instanceBuilder` option.
+This defaults to the `buildStaticInstance` method exposed by Headless Tree, which creates a new static object
+with all the tree item functions resolved inside.
+
+An alternative is the `buildProxiedInstance` method, which creates a proxy object that will only resolve individual
+tree item functions when they are actually called. This reduces memory, since now every item is only a very thin
+proxy object, and all feature-related functions are only maintained in memory once instead of n times.
+
+```ts
+import {
+  buildProxiedInstance,
+  buildStaticInstance,
+} from "@headless-tree/core";
+```
+
+```ts
+const tree = useTree({
+  // ...remaining tree options
+  instanceBuilder: buildProxiedInstance,
+});
+```
+
+This will already do everything needed to use proxy instances instead of the default static instances. The most
+notable difference is, that now function references in item instances are not stable anymore:
+
+```ts
+const item = tree.getItemInstance("some-id");
+
+item.getId === item.getId; // This will be true with static instances, but false with proxied instances
+```
+
+The results of executing those methods will of course not be affected. Don't confuse this with the behavior of
+the [Prop Memoization Feature](/features/propmemoization), which will memoize the props of the tree item functions,
+i.e. the results of calling the `item.getProps()` method, which is not related to this topic.
