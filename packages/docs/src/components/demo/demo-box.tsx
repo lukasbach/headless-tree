@@ -16,6 +16,11 @@ export type DemoBoxProps = {
   all?: boolean;
 };
 
+const storybookRoot =
+  window.location.hostname === "localhost"
+    ? "http://localhost:6006"
+    : "https://headless-tree.lukasbach.com/storybook/react";
+
 export const DemoBox: FC<DemoBoxProps> = ({
   stories,
   tags,
@@ -29,7 +34,7 @@ export const DemoBox: FC<DemoBoxProps> = ({
     () => [...(tagStories ?? []), ...(idStories ?? []), ...(allStories ?? [])],
     [idStories, tagStories, allStories],
   );
-  const [selectedStory, setSelectedStory] = useState(0);
+  const [selectedStory, setSelectedStory] = useState(-1);
 
   const story = useMemo(
     () => storyData?.[selectedStory] ?? null,
@@ -37,11 +42,15 @@ export const DemoBox: FC<DemoBoxProps> = ({
   );
 
   useEffect(() => {
-    if (initialStory && storyData) {
+    if (!storyData) return;
+
+    if (initialStory) {
       const initialIndex = storyData.findIndex((s) => s.id === initialStory);
       if (initialIndex >= 0) {
         setSelectedStory(initialIndex);
       }
+    } else {
+      setSelectedStory(0);
     }
   }, [storyData, initialStory]);
 
@@ -89,7 +98,7 @@ export const DemoBox: FC<DemoBoxProps> = ({
         <div className={styles.left}>
           <iframe
             title="Demo"
-            src={`https://headless-tree.lukasbach.com/storybook/react/iframe.html?path=/story/${story.id}`}
+            src={`${storybookRoot}/iframe.html?path=/story/${story.id}`}
             width="100%"
             height="100%"
           />

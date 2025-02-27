@@ -1,0 +1,49 @@
+---
+slug: "/dnd/customizability"
+title: "Customizability"
+category: draganddrop
+---
+
+import { DemoBox } from "../../src/components/demo/demo-box";
+
+# Customizability
+
+The Drag and Drop Feature provides several options to customize the behavior of the drag-and-drop interaction,
+including several ways to restrict what and when users can drag and drop items.
+
+## No reordering
+
+Set the config option `canReorder` to false, to disable users from being able to choose arbitrary drop locations
+within a specific item. Drag lines will not be rendered, and can be omitted from the render implementation.
+Dragging an item between several items will either always target the specific item that is hovered over as new parent,
+or the parent of the item that is currently being hovered over if the direct hover target is not a folder.
+
+The [Drop event described earlier](/dnd/overview#the-drop-event) will always contain only an item as target,
+never `childIndex`, `insertionIndex`, `dragLineIndex` and `dragLineLevel`.
+
+<DemoBox tags={["feature/dnd"]} initialStory="react-drag-and-drop-cannot-drop-inbetween--cannot-drop-inbetween" />
+
+## Limiting which items can be dragged
+
+Implement a [`canDrag`](/api/core/interface/DragAndDropFeatureConfig#canDrag)
+handler that specifies which items can be dragged. This will be called everytime the user
+tries to start dragging items, and will pass the items to drag as parameter. Returning false in the handler
+will prevent the drag from starting.
+
+<DemoBox tags={["feature/dnd"]} initialStory="react-drag-and-drop-can-drag--can-drag" />
+
+## Limiting where users can drop items
+
+Similarly, implement a [`canDrop`](/api/core/interface/DragAndDropFeatureConfig#canDrop)
+handler that specifies where items can be dropped. This will be called everytime
+the user drags items over a potential drop target (not on every single mousemove event, just when a different drop
+target is hovered on), and will pass the items to drop and the target as parameters. Returning false in the handler
+will prevent the drop from finalizing and calling the `onDrop` method, as well as visually indicating that the
+drop is not allowed at that location.
+
+Note that this doesn't concern [dragging foreign data inside](/dnd/foreign-dnd#dragging-foreign-objects-inside-of-tree),
+which can be controlled with [`canDropForeignDragObject`](/api/core/interface/DragAndDropFeatureConfig#canDropForeignDragObject)
+instead.
+
+<DemoBox tags={["feature/dnd"]} initialStory="react-drag-and-drop-can-drop--can-drop" />
+

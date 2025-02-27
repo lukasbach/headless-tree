@@ -9,15 +9,66 @@ import {DemoBox} from "../../src/components/demo/demo-box";
 
 # Dragging in or out of tree
 
+With the [`createOnDropHandler`](/api/core/function/createOnDropHandler) method, it is fairly easy to set up drag-and-drop to
+allow users to drag items within a tree. With some additional effort, it is also possible
+to implement the ability to drag items out of the tree, optionally removing them from the
+tree on the drop event, or dragging foreign objects from outside into the tree, inserting
+them as newly created tree items.
+
+This can also be combined to make the tree interact with other instances of Headless Tree
+on the same page or different locations in the application.
+
+Headless Tree introduces a concept called *foreign drag objects*, which are is data that can
+be transferred using the [DataTransfer Browser API](https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer)
+to attach information to drag events. Dragging data from outside the tree inside works by
+attaching your data to the drag event, and letting Headless Tree know how to interpret whether
+it can handle this data as a tree item, and how.
+
+Similarly, dragging data out works by letting Headless Tree know how to attach selected items
+into the drag event, and then handling the drag event elsewhere in your app.
+
 
 ## Dragging tree items out of tree
+
+The gist of allowing users to drag tree items out of the tree, is to just implement the
+[`createForeignDragObject`](/api/core/interface/DragAndDropFeatureConfig#createForeignDragObject)
+method in the tree config. When users will start dragging items, this will be called with the items
+to attach arbitrary information to the [dataTransfer object](https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer)
+of the drag event, that you can then handle elsewhere.
+
+Optionally, you can also implement the [`onCompleteForeignDrop`](/api/core/interface/DragAndDropFeatureConfig#onCompleteForeignDrop)
+to handle the event that the user has dropped the item outside of the tree. If a drop target has accepted the
+dropped data, this method will be called, making it easy to handle the finalization of the drag within Headless
+Tree, e.g. by removing the items that where dragged out of the tree. This can easily be achieved
+using the [`removeItemsFromParents(movedItems, onChangeChildren)`](/api/core/function/removeItemsFromParents) method introduced in the previous guide.
 
 <DemoBox tags={["feature/dnd"]} initialStory="react-drag-and-drop-drag-outside--drag-outside" />
 
 ## Dragging foreign objects inside of tree
 
+Allowing users to drag data into the tree from outside consists of two steps:
+
+- Implement the [`canDropForeignDragObject`](/api/core/interface/DragAndDropFeatureConfig#canDropForeignDragObject)
+  method in the tree config, to determine whether the tree can handle the data that is being dragged. It will be called
+  on every viable drop target location with the `dataTransfer` object of the drag event and the target drop location,
+  and should return a boolean indicating whether the data can be dropped there.
+- Implement the [`onDropForeignDragObject`](/api/core/interface/DragAndDropFeatureConfig#onDropForeignDragObject)
+  method in the tree config, to handle the drop event when the user has dropped the data. This method will be called
+  with the `dataTransfer` object of the drag event and the target drop location.
+
+The `onDropForeignDragObject` method can be used to create new tree items from the data that was dragged in.
+Again, the previously introduced [`insertItemsAtTarget`](/api/core/function/insertItemsAtTarget) method can be used
+to insert items at the target location after you created them based on the data from the `dataTransfer` object.
+
+In the sample below, the `onDropForeignDragObject` method is implemented to create a single new tree item, and then
+insert it at the target location with the `insertItemsAtTarget` method.
+
 <DemoBox tags={["feature/dnd"]} initialStory="react-drag-and-drop-drag-inside--drag-inside" />
 
 ## Interactions between multiple instances of Headless Tree
+
+The concepts introduced above can be combined to allow interactions between multiple instances of Headless Tree.
+The following sample demonstrates how to set up two trees that can interact with each other, allowing users to drag
+items from one tree to the other.
 
 <DemoBox tags={["feature/dnd"]} initialStory="react-guides-multiple-trees--multiple-trees" />
