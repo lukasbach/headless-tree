@@ -16,4 +16,3 @@ they are breaking or not by running ``yarn changeset`` prior to committing.
 
 TODO: The following steps need to be improved for a good contributing community:
 - Documentation on library architecture
-- Test Automation

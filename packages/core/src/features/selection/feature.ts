@@ -23,7 +23,6 @@ export const selectionFeature: FeatureImplementation = {
       tree.applySubStateUpdate("selectedItems", selectedItems);
     },
 
-    // TODO memo
     getSelectedItems: ({ tree }) => {
       return tree.getState().selectedItems.map(tree.getItemInstance);
     },

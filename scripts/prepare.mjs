@@ -16,3 +16,7 @@ const copyChangelog = async (pkg) => {
 
 await copyChangelog('core');
 await copyChangelog('react');
+await fs.copy(
+    path.join(__dirname, `../CONTRIBUTING.md`),
+    path.join(__dirname, `../packages/docs/docs/contributing/1-overview.mdx`)
+);
