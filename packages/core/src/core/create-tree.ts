@@ -186,7 +186,6 @@ export const createTree = <T>(
       getHotkeyPresets: () => hotkeyPresets,
     },
     itemInstance: {
-      // TODO just change to a getRef method that memoizes, maybe as part of getProps
       registerElement: ({ itemId, item }, element) => {
         if (itemElementsMap[itemId] === element) {
           return;

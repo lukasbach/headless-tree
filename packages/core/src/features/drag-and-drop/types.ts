@@ -49,8 +49,6 @@ export type DragAndDropFeatureDef<T> = {
     reorderAreaPercentage?: number;
     canReorder?: boolean;
 
-    // TODO better document difference to canDrag(), or unify both
-    isItemDraggable?: (item: ItemInstance<T>) => boolean;
     canDrag?: (items: ItemInstance<T>[]) => boolean;
     canDrop?: (items: ItemInstance<T>[], target: DropTarget<T>) => boolean;
 
@@ -69,16 +67,6 @@ export type DragAndDropFeatureDef<T> = {
       dataTransfer: DataTransfer,
       target: DropTarget<T>,
     ) => void;
-
-    /** Runs in the onDragEnd event, if `ev.dataTransfer.dropEffect` is not `none`, i.e. the drop
-     * was not aborted. No target is provided as parameter since the target may be a foreign drop target.
-     * This is useful to seperate out the logic to move dragged items out of their previous parents.
-     * Use `onDrop` to handle drop-related logic.
-     *
-     * This ignores the `canDrop` handler, since the drop target is unknown in this handler.
-     */
-    // onSuccessfulDragEnd?: (items: ItemInstance<T>[]) => void;
-
     onCompleteForeignDrop?: (items: ItemInstance<T>[]) => void;
   };
   treeInstance: {
@@ -91,8 +79,8 @@ export type DragAndDropFeatureDef<T> = {
   };
   itemInstance: {
     isDropTarget: () => boolean;
-    isDropTargetAbove: () => boolean; // TODO still correct?
-    isDropTargetBelow: () => boolean; // TODO still correct?
+    isDropTargetAbove: () => boolean;
+    isDropTargetBelow: () => boolean;
     isDraggingOver: () => boolean;
   };
   hotkeys: never;

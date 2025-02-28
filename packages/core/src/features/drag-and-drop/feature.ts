@@ -93,7 +93,7 @@ export const dragAndDropFeature: FeatureImplementation = {
     getProps: ({ tree, item, prev }) => ({
       ...prev?.(),
 
-      draggable: tree.getConfig().isItemDraggable?.(item) ?? true,
+      draggable: true,
 
       onDragStart: (e: DragEvent) => {
         const selectedItems = tree.getSelectedItems();
@@ -199,7 +199,6 @@ export const dragAndDropFeature: FeatureImplementation = {
         } else if (e.dataTransfer) {
           config.onDropForeignDragObject?.(e.dataTransfer, target);
         }
-        // TODO rebuild tree?
       },
     }),
 
