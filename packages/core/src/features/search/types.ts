@@ -1,10 +1,10 @@
 import { ItemInstance, SetStateFn } from "../../types/core";
 import { HotkeysCoreDataRef } from "../hotkeys-core/types";
 
-export type SearchFeatureDataRef<T = any> = HotkeysCoreDataRef & {
+export interface SearchFeatureDataRef<T = any> extends HotkeysCoreDataRef {
   matchingItems: ItemInstance<T>[];
   searchInput: HTMLInputElement | null;
-};
+}
 
 export type SearchFeatureDef<T> = {
   state: {

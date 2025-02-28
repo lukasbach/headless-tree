@@ -1,18 +1,18 @@
 import { ItemInstance, SetStateFn, TreeInstance } from "../../types/core";
 
-export type ItemMeta = {
+export interface ItemMeta {
   itemId: string;
   parentId: string;
   level: number;
   index: number;
   setSize: number;
   posInSet: number;
-};
+}
 
-export type TreeItemDataRef = {
+export interface TreeItemDataRef {
   memoizedValues: Record<string, any>;
   memoizedDeps: Record<string, any[] | undefined>;
-};
+}
 
 export type TreeFeatureDef<T> = {
   state: {

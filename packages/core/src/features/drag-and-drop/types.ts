@@ -1,22 +1,22 @@
 import { ItemInstance, SetStateFn } from "../../types/core";
 
-export type DndDataRef = {
+export interface DndDataRef {
   lastDragCode?: string;
   lastAllowDrop?: boolean;
-};
+}
 
-export type DndState<T> = {
+export interface DndState<T> {
   draggedItems?: ItemInstance<T>[];
   draggingOverItem?: ItemInstance<T>;
   dragTarget?: DropTarget<T>;
-};
+}
 
-export type DragLineData = {
+export interface DragLineData {
   indent: number;
   top: number;
   left: number;
   width: number;
-};
+}
 
 export type DropTarget<T> =
   | {

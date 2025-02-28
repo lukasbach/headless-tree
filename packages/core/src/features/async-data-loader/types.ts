@@ -1,16 +1,16 @@
 import { SetStateFn } from "../../types/core";
 import { SyncDataLoaderFeatureDef } from "../sync-data-loader/types";
 
-export type AsyncTreeDataLoader<T> = {
+export interface AsyncTreeDataLoader<T> {
   getItem: (itemId: string) => Promise<T>;
   getChildren: (itemId: string) => Promise<string[]>;
   getChildrenWithData?: (itemId: string) => Promise<{ id: string; data: T }[]>;
-};
+}
 
-export type AsyncDataLoaderRef<T = any> = {
+export interface AsyncDataLoaderRef<T = any> {
   itemData: Record<string, T>;
   childrenIds: Record<string, string[]>;
-};
+}
 
 /**
  * @category Async Data Loader/General

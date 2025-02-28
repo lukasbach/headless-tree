@@ -1,7 +1,7 @@
-export type SyncTreeDataLoader<T> = {
+export interface SyncTreeDataLoader<T> {
   getItem: (itemId: string) => T;
   getChildren: (itemId: string) => string[];
-};
+}
 
 export type SyncDataLoaderFeatureDef<T> = {
   state: {};
