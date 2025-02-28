@@ -13,7 +13,8 @@
     "build:core": "lerna run build,build:cjs,build:esm --concurrency 1",
     "build:web": "lerna run build:docs,build:sb --concurrency 1",
     "test": "lerna run test --stream",
-    "postinstall": "zx scripts/prepare.mjs"
+    "postinstall": "zx scripts/prepare.mjs",
+    "verify": "yarn lint && lerna run build,build:esm,test --stream"
   },
   "dependencies": {
     "@changesets/cli": "^2.27.5",
