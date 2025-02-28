@@ -27,11 +27,7 @@ export type DropTarget<T> =
       dragLineLevel: number;
     }
   | {
-      item: ItemInstance<T>; // TODO just omit values instead of nulls; or maybe just make it union of dropTarget+itemInstance?
-      childIndex: null;
-      insertionIndex: null;
-      dragLineIndex: null;
-      dragLineLevel: null;
+      item: ItemInstance<T>;
     };
 
 export enum DropTargetPosition {

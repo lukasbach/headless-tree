@@ -161,22 +161,8 @@ export const getDropTarget = (
   const draggedItems = tree.getState().dnd?.draggedItems ?? [];
   const itemMeta = item.getItemMeta();
   const parent = item.getParent();
-  const itemTarget: DropTarget<any> = {
-    item,
-    childIndex: null,
-    insertionIndex: null,
-    dragLineIndex: null,
-    dragLineLevel: null,
-  };
-  const parentTarget: DropTarget<any> | null = parent
-    ? {
-        item: parent,
-        childIndex: null,
-        insertionIndex: null,
-        dragLineIndex: null,
-        dragLineLevel: null,
-      }
-    : null;
+  const itemTarget: DropTarget<any> = { item };
+  const parentTarget: DropTarget<any> | null = parent ? { item: parent } : null;
   const canBecomeSibling =
     parentTarget && canDrop(e.dataTransfer, parentTarget, tree);
 

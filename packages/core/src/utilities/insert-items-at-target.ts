@@ -7,7 +7,7 @@ export const insertItemsAtTarget = <T>(
   onChangeChildren: (item: ItemInstance<T>, newChildrenIds: string[]) => void,
 ) => {
   // add moved items to new common parent, if dropped onto parent
-  if (target.childIndex === null) {
+  if (!("childIndex" in target)) {
     const newChildren = [
       ...target.item.getChildren().map((item) => item.getId()),
       ...itemIds,

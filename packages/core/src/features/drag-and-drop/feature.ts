@@ -30,7 +30,7 @@ export const dragAndDropFeature: FeatureImplementation = {
 
       const treeBb = tree.getElement()?.getBoundingClientRect();
 
-      if (!target || !treeBb || target.childIndex === null) return null;
+      if (!target || !treeBb || !("childIndex" in target)) return null;
 
       const leftOffset = target.dragLineLevel * (tree.getConfig().indent ?? 1);
       const targetItem = tree.getItems()[target.dragLineIndex];
@@ -213,7 +213,7 @@ export const dragAndDropFeature: FeatureImplementation = {
 
       if (
         !target ||
-        target.childIndex === null ||
+        !("childIndex" in target) ||
         target.item !== item.getParent()
       )
         return false;
@@ -225,7 +225,7 @@ export const dragAndDropFeature: FeatureImplementation = {
 
       if (
         !target ||
-        target.childIndex === null ||
+        !("childIndex" in target) ||
         target.item !== item.getParent()
       )
         return false;
