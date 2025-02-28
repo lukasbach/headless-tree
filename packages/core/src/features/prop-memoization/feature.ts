@@ -34,9 +34,9 @@ export const propMemoizationFeature: FeatureImplementation = {
   ],
 
   treeInstance: {
-    getContainerProps: ({ tree, prev }) => {
+    getContainerProps: ({ tree, prev }, treeLabel) => {
       const dataRef = tree.getDataRef<PropMemoizationDataRef>();
-      const props = prev?.() ?? {};
+      const props = prev?.(treeLabel) ?? {};
       return memoize(props, dataRef.current);
     },
   },

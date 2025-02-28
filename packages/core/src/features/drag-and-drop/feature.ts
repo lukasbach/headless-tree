@@ -77,8 +77,8 @@ export const dragAndDropFeature: FeatureImplementation = {
         : { display: "none" };
     },
 
-    getContainerProps: ({ prev }) => {
-      const prevProps = prev?.();
+    getContainerProps: ({ prev }, treeLabel) => {
+      const prevProps = prev?.(treeLabel);
       return {
         ...prevProps,
         style: {

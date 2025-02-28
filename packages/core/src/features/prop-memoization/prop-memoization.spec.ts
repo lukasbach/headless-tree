@@ -17,8 +17,8 @@ const customFeature: FeatureImplementation = {
     }),
   },
   treeInstance: {
-    getContainerProps: ({ prev }) => ({
-      ...prev?.(),
+    getContainerProps: ({ prev }, treeLabel) => ({
+      ...prev?.(treeLabel),
       customValue: createTreeValue(),
       onCustomEvent: () => treeHandler(),
     }),

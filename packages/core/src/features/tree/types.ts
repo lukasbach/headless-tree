@@ -38,7 +38,9 @@ export type TreeFeatureDef<T> = {
     focusPreviousItem: () => void;
     updateDomFocus: () => void;
 
-    getContainerProps: () => Record<string, any>;
+    /** Pass to the container rendering the tree children. The `treeLabel` parameter
+     * will be passed as `aria-label` parameter, and is recommended to be set. */
+    getContainerProps: (treeLabel?: string) => Record<string, any>;
   };
   itemInstance: {
     getId: () => string;

@@ -97,11 +97,11 @@ export const treeFeature: FeatureImplementation<any> = {
     },
 
     // TODO add label parameter
-    getContainerProps: ({ prev, tree }) => ({
+    getContainerProps: ({ prev, tree }, treeLabel) => ({
       ...prev?.(),
       role: "tree",
-      "aria-label": "",
-      ref: tree.registerElement, // TODO memo
+      "aria-label": treeLabel ?? "",
+      ref: tree.registerElement,
     }),
 
     // relevant for hotkeys of this feature
@@ -119,7 +119,7 @@ export const treeFeature: FeatureImplementation<any> = {
       const itemMeta = item.getItemMeta();
       return {
         ...prev?.(),
-        ref: item.registerElement, // TODO memo
+        ref: item.registerElement,
         role: "treeitem",
         "aria-setsize": itemMeta.setSize,
         "aria-posinset": itemMeta.posInSet,

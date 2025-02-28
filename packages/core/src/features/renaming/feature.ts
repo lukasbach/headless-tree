@@ -1,6 +1,12 @@
 import { FeatureImplementation, ItemInstance } from "../../types/core";
 import { makeStateUpdater } from "../../utils";
 
+type InputEvent = {
+  target?: {
+    value: string;
+  };
+};
+
 export const renamingFeature: FeatureImplementation = {
   key: "renaming",
 
@@ -55,8 +61,7 @@ export const renamingFeature: FeatureImplementation = {
     getRenameInputProps: ({ tree }) => ({
       onBlur: () => tree.abortRenaming(),
       value: tree.getRenamingValue(),
-      onChange: (e: any) => {
-        // TODO custom type with e.target.value
+      onChange: (e: InputEvent) => {
         tree.applySubStateUpdate("renamingValue", e.target?.value);
       },
     }),
