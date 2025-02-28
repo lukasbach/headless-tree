@@ -39,10 +39,37 @@ export const expandAllFeature: FeatureImplementation = {
     },
 
     collapseAll: ({ item }) => {
+      if (!item.isExpanded()) return;
       for (const child of item.getChildren()) {
         child?.collapseAll();
       }
       item.collapse();
+    },
+  },
+
+  hotkeys: {
+    expandSelected: {
+      hotkey: "Control+Shift+Plus",
+      handler: async (_, tree) => {
+        const cancelToken = { current: false };
+        const cancelHandler = (e: KeyboardEvent) => {
+          if (e.key === "Escape") {
+            cancelToken.current = true;
+          }
+        };
+        document.addEventListener("keydown", cancelHandler);
+        await Promise.all(
+          tree.getSelectedItems().map((item) => item.expandAll(cancelToken)),
+        );
+        document.removeEventListener("keydown", cancelHandler);
+      },
+    },
+
+    collapseSelected: {
+      hotkey: "Control+Shift+-",
+      handler: (_, tree) => {
+        tree.getSelectedItems().forEach((item) => item.collapseAll());
+      },
     },
   },
 };

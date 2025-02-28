@@ -8,6 +8,7 @@ import { HotkeyConfig, HotkeysCoreDataRef } from "./types";
 const specialKeys: Record<string, RegExp> = {
   Letter: /^[a-z]$/,
   LetterOrNumber: /^[a-z0-9]$/,
+  Plus: /^\+$/,
 };
 
 const testHotkeyMatch = (

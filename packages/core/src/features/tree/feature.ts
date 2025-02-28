@@ -202,10 +202,8 @@ export const treeFeature: FeatureImplementation<any> = {
         ? tree.getItemInstance(item.getItemMeta().parentId)
         : undefined,
     getIndexInParent: ({ item }) => item.getItemMeta().posInSet,
-    getChildren: ({ tree, item }) =>
-      tree
-        .retrieveChildrenIds(item.getItemMeta().itemId)
-        .map((id) => tree.getItemInstance(id)),
+    getChildren: ({ tree, itemId }) =>
+      tree.retrieveChildrenIds(itemId).map((id) => tree.getItemInstance(id)),
     getTree: ({ tree }) => tree as any,
     getItemAbove: ({ tree, item }) =>
       tree.getItems()[item.getItemMeta().index - 1],

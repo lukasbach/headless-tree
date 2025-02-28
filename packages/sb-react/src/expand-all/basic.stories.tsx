@@ -89,6 +89,10 @@ export const Basic = () => {
           </div>
         ))}
       </div>
+      <p className="description">
+        You can also press "Control+Shift+Plus" to expand all selected items, or
+        "Control+Shift+Minus" to collapse them.
+      </p>
     </>
   );
 };

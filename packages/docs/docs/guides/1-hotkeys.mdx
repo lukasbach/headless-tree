@@ -6,8 +6,6 @@ category: guide
 
 import { DemoBox } from "../../src/components/demo/demo-box";
 
-# Hotkeys
-
 Headless Tree provides its own implementation of keybindings that can be customized and extended.
 
 Further down on this page, you can find a list of all available hotkeys. Note that the availability of hotkeys
@@ -30,7 +28,7 @@ export interface HotkeyConfig<T> {
 }
 ```
 
-# Overwriting Hotkeys
+## Overwriting Hotkeys
 
 You can pass an object of partial hotkey implementations in the `hotkeys` config property to your tree.
 Default hotkeys and your custom hotkeys will be merged together during runtime, with your custom hotkeys
@@ -41,7 +39,7 @@ Use the tables at the bottom of the page for reference of the hotkey names.
 
 <DemoBox stories={["react-hotkeys-overwriting-hotkeys--overwriting-hotkeys"]} />
 
-# Adding custom Hotkeys
+## Adding custom Hotkeys
 
 You can also very easily add custom hotkeys, with arbitrary keybindings and implementations. While you can
 technically use any names for the hotkeys, the TypeScript type is implemented to only support the official
@@ -49,9 +47,16 @@ hotkey names and any names that are prefixed with `custom` to avoid mistakes.
 
 <DemoBox stories={["react-hotkeys-custom-hotkeys--custom-hotkeys"]} />
 
-# Available Hotkeys
+The names of keys are based on the [HTML Key value](https://developer.mozilla.org/en-US/docs/Web/API/UI_Events/Keyboard_event_key_values).
+The following additional key names are supported:
 
-## General Hotkeys
+- `LetterOrNumber`: Any letter or number key, `/^[a-z0-9]$/`
+- `Letter`: Any letter key, `/^[a-z]$/`
+- `Plus`: The symbol plus, `/^\+$/`. Useful since the "+" symbol is used in keybinding strings to concatenate individual keys.
+
+## Available Hotkeys
+
+### General Hotkeys
 
 The following hotkeys need the `hotkeysCoreFeature` feature added.
 
@@ -64,7 +69,7 @@ The following hotkeys need the `hotkeysCoreFeature` feature added.
 | `focusFirstItem` | `Home` | Focuses the first item in the list. |
 | `focusLastItem` | `End` | Focuses the last item in the list. |
 
-## Selections
+### Selections
 
 The following hotkeys need the `hotkeysCoreFeature` and `selectionFeature` features added.
 
@@ -75,13 +80,13 @@ The following hotkeys need the `hotkeysCoreFeature` and `selectionFeature` featu
 | `selectDownwards` | `Shift+ArrowDown` | Expands the current selection by the item after the focused item, and moves focus downwards. Discards non-connected selection blocks. |
 | `selectAll` | `Ctrl+A` | Selects all items in the list. |
 
-## Drag And Drop
+### Drag And Drop
 
 The following hotkeys need the `hotkeysCoreFeature` and `dragAndDropFeature` features added.
 
 DnD Keybindings aren't implemented yet (TODO).
 
-## Search
+### Search
 
 The following hotkeys need the `hotkeysCoreFeature` and `searchFeature` features added.
 
@@ -93,7 +98,7 @@ The following hotkeys need the `hotkeysCoreFeature` and `searchFeature` features
 | `nextSearchItem` | `ArrowDown` | Focuses the next search result item. |
 | `previousSearchItem` | `ArrowUp` | Focuses the previous search result item. |
 
-## Renaming
+### Renaming
 
 The following hotkeys need the `hotkeysCoreFeature` and `renamingFeature` features added.
 
@@ -103,8 +108,11 @@ The following hotkeys need the `hotkeysCoreFeature` and `renamingFeature` featur
 | `abortRename` | `Escape` | Close the rename input. |
 | `completeRenaming` | `Enter` | Close the rename input, and call the `config.onRename(item, newNameValue)` config property. |
 
-## Expand All
+### Expand All
 
 The following hotkeys need the `hotkeysCoreFeature` and `expandAllFeature` features added.
 
-TODO not implemented yet.
+| Key | Default Keybinding | Description |
+| --- | --- | --- |
+| `expandSelected` | `Control+Shift+Plus` | Expand all selected items and their descendants. When running async, pressing Escape afterwards will cancel the expand process. |
+| `collapseSelected` | `Control+Shift+-` | Collapse all selected items and their descendants. |

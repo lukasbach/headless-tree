@@ -1,3 +1,5 @@
+export interface ExpandAllDataRef {}
+
 export type ExpandAllFeatureDef = {
   state: {};
   config: {};
@@ -9,5 +11,5 @@ export type ExpandAllFeatureDef = {
     expandAll: (cancelToken?: { current: boolean }) => Promise<void>;
     collapseAll: () => void;
   };
-  hotkeys: never;
+  hotkeys: "expandSelected" | "collapseSelected";
 };
