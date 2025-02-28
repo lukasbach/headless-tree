@@ -3787,7 +3787,7 @@ __metadata:
   resolution: "@headless-tree/core@workspace:packages/core"
   dependencies:
     jsdom: "npm:^26.0.0"
-    typescript: "npm:^5.7.3"
+    typescript: "npm:^5.7.2"
     vitest: "npm:^3.0.3"
   languageName: unknown
   linkType: soft
@@ -3810,7 +3810,7 @@ __metadata:
     react: "npm:^18.0.0"
     react-dom: "npm:^18.0.0"
     react-syntax-highlighter: "npm:^15.5.0"
-    typescript: "npm:^5.7.3"
+    typescript: "npm:^5.7.2"
   languageName: unknown
   linkType: soft
 
@@ -3825,7 +3825,7 @@ __metadata:
     prop-types: "npm:15.8.1"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
-    typescript: "npm:^5.7.3"
+    typescript: "npm:^5.7.2"
   peerDependencies:
     "@headless-tree/core": "*"
     react: "*"
@@ -3858,7 +3858,7 @@ __metadata:
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
     storybook: "npm:^8.6.0-alpha.0"
-    typescript: "npm:^5.7.3"
+    typescript: "npm:^5.7.2"
     vite: "npm:^4.3.3"
   languageName: unknown
   linkType: soft
@@ -21745,7 +21745,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^5.7.3":
+"typescript@npm:^5.7.2":
   version: 5.7.3
   resolution: "typescript@npm:5.7.3"
   bin:
@@ -21765,7 +21765,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A^5.7.3#optional!builtin<compat/typescript>":
+"typescript@patch:typescript@npm%3A^5.7.2#optional!builtin<compat/typescript>":
   version: 5.7.3
   resolution: "typescript@patch:typescript@npm%3A5.7.3#optional!builtin<compat/typescript>::version=5.7.3&hash=5adc0c"
   bin:
