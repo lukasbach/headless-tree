@@ -360,10 +360,10 @@ describe("core-feature/drag-and-drop", () => {
 
       suiteTree.resetBeforeEach();
 
-      it("drags within same tree on folder", () => {
+      it("drags within same tree on expanded folder", async () => {
         suiteTree.do.selectMultiple("x111", "x112");
         suiteTree.do.startDrag("x111");
-        suiteTree.do.dragOverAndDrop("x21");
+        await suiteTree.do.dragOverAndDrop("x21");
         expect(changeChildren).toHaveBeenCalledWith("x11", ["x113", "x114"]);
         expect(changeChildren).toHaveBeenCalledWith("x21", [
           "x211",
@@ -375,10 +375,25 @@ describe("core-feature/drag-and-drop", () => {
         ]);
       });
 
-      it("drags within same tree inside folder", () => {
+      it.skip("drags within same tree on collapsed folder", async () => {
         suiteTree.do.selectMultiple("x111", "x112");
         suiteTree.do.startDrag("x111");
-        suiteTree.do.dragOverAndDrop(
+        await suiteTree.do.dragOverAndDrop("x22");
+        expect(changeChildren).toHaveBeenCalledWith("x11", ["x113", "x114"]);
+        expect(changeChildren).toHaveBeenCalledWith("x22", [
+          "x221",
+          "x222",
+          "x223",
+          "x224",
+          "x111",
+          "x112",
+        ]);
+      });
+
+      it("drags within same tree inside folder", async () => {
+        suiteTree.do.selectMultiple("x111", "x112");
+        suiteTree.do.startDrag("x111");
+        await suiteTree.do.dragOverAndDrop(
           "x212",
           suiteTree.createBottomDragEvent(2),
         );
@@ -461,10 +476,13 @@ describe("core-feature/drag-and-drop", () => {
         expect(onDropForeignDragObject).not.toHaveBeenCalled();
       });
 
-      it("drags multiple within in retained order (correct order)", () => {
+      it("drags multiple within in retained order (correct order)", async () => {
         suiteTree.do.selectMultiple("x111", "x112", "x113", "x114");
         suiteTree.do.startDrag("x111");
-        suiteTree.do.dragOverAndDrop("x212", suiteTree.createBottomDragEvent());
+        await suiteTree.do.dragOverAndDrop(
+          "x212",
+          suiteTree.createBottomDragEvent(),
+        );
         expect(changeChildren).toHaveBeenCalledWith("x11", []);
         expect(changeChildren).toHaveBeenCalledWith("x21", [
           "x211",
@@ -478,10 +496,13 @@ describe("core-feature/drag-and-drop", () => {
         ]);
       });
 
-      it("drags multiple within in retained order (inverse order)", () => {
+      it("drags multiple within in retained order (inverse order)", async () => {
         suiteTree.do.selectMultiple("x114", "x113", "x112", "x111");
         suiteTree.do.startDrag("x111");
-        suiteTree.do.dragOverAndDrop("x212", suiteTree.createBottomDragEvent());
+        await suiteTree.do.dragOverAndDrop(
+          "x212",
+          suiteTree.createBottomDragEvent(),
+        );
         expect(changeChildren).toHaveBeenCalledWith("x11", []);
         expect(changeChildren).toHaveBeenCalledWith("x21", [
           "x211",
@@ -495,10 +516,13 @@ describe("core-feature/drag-and-drop", () => {
         ]);
       });
 
-      it("drags multiple within in retained order (scrambled order)", () => {
+      it("drags multiple within in retained order (scrambled order)", async () => {
         suiteTree.do.selectMultiple("x111", "x114", "x112", "x113");
         suiteTree.do.startDrag("x111");
-        suiteTree.do.dragOverAndDrop("x212", suiteTree.createBottomDragEvent());
+        await suiteTree.do.dragOverAndDrop(
+          "x212",
+          suiteTree.createBottomDragEvent(),
+        );
         expect(changeChildren).toHaveBeenCalledWith("x11", []);
         expect(changeChildren).toHaveBeenCalledWith("x21", [
           "x211",

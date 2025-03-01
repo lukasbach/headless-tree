@@ -108,13 +108,13 @@ export class TestTreeDo<T> {
     return e;
   }
 
-  drop(itemId: string, event?: DragEvent) {
+  async drop(itemId: string, event?: DragEvent) {
     const e = event ?? TestTree.dragEvent();
-    this.itemProps(itemId).onDrop(e);
+    await this.itemProps(itemId).onDrop(e);
     return e;
   }
 
-  dragOverAndDrop(itemId: string, event?: DragEvent) {
+  async dragOverAndDrop(itemId: string, event?: DragEvent) {
     const e = event ?? TestTree.dragEvent();
     this.dragOver(itemId, e);
     return this.drop(itemId, e);
