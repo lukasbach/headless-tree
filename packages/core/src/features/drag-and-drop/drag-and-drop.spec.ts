@@ -97,11 +97,45 @@ describe("core-feature/drag-and-drop", () => {
         });
       });
 
-      it("drop reparented one level", () => {
+      it("drop reparented one level", async () => {
+        tree.item("x14").expand();
+        await tree.resolveAsyncVisibleItems();
+        tree.do.ctrlSelectItem("x111");
+        tree.do.startDrag("x111");
+        tree.setElementBoundingBox("x144");
+        const event = tree.createBottomDragEvent(1);
+        tree.do.dragOverAndDrop("x144", event);
+        tree.expect.dropped(["x111"], {
+          dragLineIndex: 13,
+          dragLineLevel: 1,
+          childIndex: 4,
+          insertionIndex: 4,
+          item: tree.item("x1"),
+        });
+      });
+
+      it("drop reparented two levels", async () => {
+        tree.item("x14").expand();
+        await tree.resolveAsyncVisibleItems();
+        tree.do.ctrlSelectItem("x111");
+        tree.do.startDrag("x111");
+        tree.setElementBoundingBox("x144");
+        const event = tree.createBottomDragEvent(0);
+        tree.do.dragOverAndDrop("x144", event);
+        tree.expect.dropped(["x111"], {
+          dragLineIndex: 13,
+          dragLineLevel: 0,
+          childIndex: 1,
+          insertionIndex: 1,
+          item: tree.item("x"),
+        });
+      });
+
+      it("doesnt drop reparented higher than it can", () => {
         tree.do.ctrlSelectItem("x111");
         tree.do.startDrag("x111");
         tree.setElementBoundingBox("x114");
-        const event = tree.createBottomDragEvent(1);
+        const event = tree.createBottomDragEvent(0);
         tree.do.dragOverAndDrop("x114", event);
         tree.expect.dropped(["x111"], {
           dragLineIndex: 6,
@@ -109,21 +143,6 @@ describe("core-feature/drag-and-drop", () => {
           childIndex: 1,
           insertionIndex: 1,
           item: tree.item("x1"),
-        });
-      });
-
-      it("drop reparented two levels", () => {
-        // TODO reparenting two levels should work at x144, but not at x114
-        tree.do.ctrlSelectItem("x111");
-        tree.do.startDrag("x111");
-        const event = tree.createBottomDragEvent(0);
-        tree.do.dragOverAndDrop("x114", event);
-        tree.expect.dropped(["x111"], {
-          dragLineIndex: 6,
-          dragLineLevel: 0,
-          childIndex: 1,
-          insertionIndex: 1,
-          item: tree.item("x"),
         });
       });
 
@@ -242,13 +261,15 @@ describe("core-feature/drag-and-drop", () => {
         tree.expect.defaultDragLineProps(1);
       });
 
-      it("drop reparented two levels", () => {
+      it("drop reparented two levels", async () => {
+        tree.item("x14").expand();
+        await tree.resolveAsyncVisibleItems();
         tree.do.ctrlSelectItem("x111");
         tree.do.startDrag("x111");
         const event = tree.createBottomDragEvent(0);
-        tree.setElementBoundingBox("x12");
-        tree.setElementBoundingBox("x114");
-        tree.do.dragOver("x114", event);
+        tree.setElementBoundingBox("x2");
+        tree.setElementBoundingBox("x144");
+        tree.do.dragOver("x144", event);
         tree.expect.defaultDragLineProps(0);
       });
     });
@@ -564,14 +585,6 @@ describe("core-feature/drag-and-drop", () => {
         expect(canDrop).toHaveBeenCalledWith([tree.item("x111")], {
           item: tree.item("x2"),
         });
-      });
-
-      it.todo("item with canDrag=false is not draggable", () => {
-        const canDrag = tree.mockedHandler("canDrag").mockReturnValue(false);
-        expect(tree.instance.getItemInstance("x111").getProps().draggable).toBe(
-          false,
-        );
-        expect(canDrag).toHaveBeenCalledWith([tree.item("x111")]);
       });
 
       it("item with canDrag=false does not invoke drag handler when dragged", () => {

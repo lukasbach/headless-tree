@@ -111,9 +111,10 @@ const getTargetPlacement = (
       if (topPercent < 0.5) {
         return { type: PlacementType.ReorderAbove };
       }
+      const minLevel = item.getItemBelow()?.getItemMeta().level ?? 0;
       return {
         type: PlacementType.Reparent,
-        reparentLevel: Math.floor(leftPixels / indent),
+        reparentLevel: Math.max(minLevel, Math.floor(leftPixels / indent)),
       };
     }
     // if not at left of item area, treat as if it was a normal item
