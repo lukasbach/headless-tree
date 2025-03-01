@@ -1,10 +1,13 @@
 import { ItemInstance } from "../types/core";
 import { DropTarget } from "../features/drag-and-drop/types";
 
-export const insertItemsAtTarget = <T>(
+export const insertItemsAtTarget = async <T>(
   itemIds: string[],
   target: DropTarget<T>,
-  onChangeChildren: (item: ItemInstance<T>, newChildrenIds: string[]) => void,
+  onChangeChildren: (
+    item: ItemInstance<T>,
+    newChildrenIds: string[],
+  ) => Promise<void> | void,
 ) => {
   // add moved items to new common parent, if dropped onto parent
   if (!("childIndex" in target)) {
@@ -12,7 +15,7 @@ export const insertItemsAtTarget = <T>(
       ...target.item.getChildren().map((item) => item.getId()),
       ...itemIds,
     ];
-    onChangeChildren(target.item, newChildren);
+    await onChangeChildren(target.item, newChildren);
     if (target.item && "updateCachedChildrenIds" in target.item) {
       target.item.updateCachedChildrenIds(newChildren);
     }
@@ -28,8 +31,7 @@ export const insertItemsAtTarget = <T>(
     ...oldChildren.slice(target.insertionIndex).map((item) => item.getId()),
   ];
 
-  // TODO allow async
-  onChangeChildren(target.item, newChildren);
+  await onChangeChildren(target.item, newChildren);
 
   if (target.item && "updateCachedChildrenIds" in target.item) {
     target.item.updateCachedChildrenIds(newChildren);

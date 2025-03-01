@@ -7,8 +7,8 @@ export const createOnDropHandler =
   <T>(
     onChangeChildren: (item: ItemInstance<T>, newChildren: string[]) => void,
   ) =>
-  (items: ItemInstance<T>[], target: DropTarget<T>) => {
+  async (items: ItemInstance<T>[], target: DropTarget<T>) => {
     const itemIds = items.map((item) => item.getId());
-    removeItemsFromParents(items, onChangeChildren);
-    insertItemsAtTarget(itemIds, target, onChangeChildren);
+    await removeItemsFromParents(items, onChangeChildren);
+    await insertItemsAtTarget(itemIds, target, onChangeChildren);
   };

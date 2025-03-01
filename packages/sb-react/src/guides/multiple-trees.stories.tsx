@@ -55,12 +55,12 @@ const Tree = (props: { data: Record<string, Item>; prefix: string }) => {
     // This handles the entire move operation.
     // Normally you can use `createOnDropHandler` for that, the following just
     // demonstrates how to do with the individual handlers.
-    onDrop: (items, target) => {
+    onDrop: async (items, target) => {
       const itemIds = items.map((item) => item.getId());
-      removeItemsFromParents(items, (item, newChildren) => {
+      await removeItemsFromParents(items, (item, newChildren) => {
         item.getItemData().children = newChildren;
       });
-      insertItemsAtTarget(itemIds, target, (item, newChildren) => {
+      await insertItemsAtTarget(itemIds, target, (item, newChildren) => {
         item.getItemData().children = newChildren;
       });
     },

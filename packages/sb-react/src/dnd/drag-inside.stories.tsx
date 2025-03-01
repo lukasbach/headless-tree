@@ -46,7 +46,7 @@ export const DragInside = () => {
       alert(
         `Dropped external data with payload "${JSON.stringify(
           dataTransfer.getData("text/plain"),
-        )}" on ${target.item.getId()}, index ${target.childIndex}`,
+        )}" on ${JSON.stringify(target)}`,
       );
     },
     canDropForeignDragObject: (_, target) => target.item.isFolder(),

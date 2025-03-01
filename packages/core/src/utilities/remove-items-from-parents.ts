@@ -1,8 +1,11 @@
 import { ItemInstance } from "../types/core";
 
-export const removeItemsFromParents = <T>(
+export const removeItemsFromParents = async <T>(
   movedItems: ItemInstance<T>[],
-  onChangeChildren: (item: ItemInstance<T>, newChildrenIds: string[]) => void,
+  onChangeChildren: (
+    item: ItemInstance<T>,
+    newChildrenIds: string[],
+  ) => void | Promise<void>,
 ) => {
   const movedItemsIds = movedItems.map((item) => item.getId());
   const uniqueParents = [
@@ -15,7 +18,7 @@ export const removeItemsFromParents = <T>(
       const newChildren = siblings
         .filter((sibling) => !movedItemsIds.includes(sibling.getId()))
         .map((i) => i.getId());
-      onChangeChildren(parent, newChildren);
+      await onChangeChildren(parent, newChildren);
       if (parent && "updateCachedChildrenIds" in parent) {
         parent?.updateCachedChildrenIds(newChildren);
       }
