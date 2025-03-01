@@ -27,7 +27,7 @@ export const treeFeature: FeatureImplementation<any> = {
       const { rootItemId } = tree.getConfig();
       const { expandedItems } = tree.getState();
       const flatItems: ItemMeta[] = [];
-      const expandedItemsSet = new Set(expandedItems);
+      const expandedItemsSet = new Set(expandedItems); // TODO support setting state expandedItems as set instead of array
 
       const recursiveAdd = (
         itemId: string,
@@ -46,7 +46,6 @@ export const treeFeature: FeatureImplementation<any> = {
         });
 
         if (expandedItemsSet.has(itemId)) {
-          // TODO THIS MADE A HUGE DIFFERENCE!
           const children = tree.retrieveChildrenIds(itemId) ?? [];
           let i = 0;
           for (const childId of children) {

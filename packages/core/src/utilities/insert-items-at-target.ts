@@ -28,6 +28,7 @@ export const insertItemsAtTarget = <T>(
     ...oldChildren.slice(target.insertionIndex).map((item) => item.getId()),
   ];
 
+  // TODO allow async
   onChangeChildren(target.item, newChildren);
 
   if (target.item && "updateCachedChildrenIds" in target.item) {

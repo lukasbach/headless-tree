@@ -66,7 +66,7 @@ const getItemDropCategory = (item: ItemInstance<any>) => {
   }
 
   const parent = item.getParent();
-  if (parent && item.getIndexInParent() === parent.getItemMeta().setSize - 1) {
+  if (parent && item.getIndexInParent() === item.getItemMeta().setSize - 1) {
     return ItemDropCategory.LastInGroup;
   }
 
