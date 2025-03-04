@@ -9,18 +9,20 @@ import {
 import { useTree } from "@headless-tree/react";
 import { action } from "@storybook/addon-actions";
 import cx from "classnames";
+import { PropsOfArgtype } from "../argtypes";
 
 const meta = {
   title: "React/Drag and Drop/Kitchen Sink",
   tags: ["feature/dnd", "complex-story"],
   argTypes: {
     canReorder: {
-      control: "boolean",
+      type: "boolean",
     },
     canDropForeignDragObject: {
-      control: "boolean",
+      type: "boolean",
     },
     reorderAreaPercentage: {
+      type: "number",
       control: { type: "number", min: 0, max: 1, step: 0.1 },
       defaultValue: 0.2,
     },
@@ -38,7 +40,7 @@ export const KitchenSink = ({
   canReorder,
   canDropForeignDragObject,
   reorderAreaPercentage,
-}) => {
+}: PropsOfArgtype<typeof meta>) => {
   const [state, setState] = useState({});
   const tree = useTree<string>({
     state,

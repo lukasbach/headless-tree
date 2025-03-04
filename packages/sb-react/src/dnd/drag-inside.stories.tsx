@@ -60,8 +60,6 @@ export const DragInside = () => {
     ],
   });
 
-  // TODO error: Dragging onto an open folder doesnt trigger rerender
-
   return (
     <>
       <div {...tree.getContainerProps()} className="tree">

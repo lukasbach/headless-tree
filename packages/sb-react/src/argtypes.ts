@@ -1,5 +1,5 @@
 type SimplifiedMeta = {
-  argTypes: Record<string | number | symbol, { type: string }>;
+  argTypes: Record<string | number | symbol, { type: string | undefined }>;
 };
 type ResolveType<
   M extends SimplifiedMeta,
@@ -10,7 +10,7 @@ type ResolveType<
     ? boolean
     : M["argTypes"][T]["type"] extends "string"
       ? string
-      : never;
+      : any;
 type RetrieveArgType<M extends SimplifiedMeta> = keyof M["argTypes"];
 export type PropsOfArgtype<M extends SimplifiedMeta> = {
   [K in RetrieveArgType<M>]: ResolveType<M, K>;

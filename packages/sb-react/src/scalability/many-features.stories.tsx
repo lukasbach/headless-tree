@@ -1,12 +1,14 @@
 import type { Meta } from "@storybook/react";
 import React, { useState } from "react";
 import {
+  FeatureImplementation,
   hotkeysCoreFeature,
   selectionFeature,
   syncDataLoaderFeature,
 } from "@headless-tree/core";
 import { useTree } from "@headless-tree/react";
 import cx from "classnames";
+import { PropsOfArgtype } from "../argtypes";
 
 const meta = {
   title: "React/Scalability/Many Features",
@@ -26,20 +28,20 @@ export default meta;
 
 declare module "@headless-tree/core" {
   export interface ItemInstance<T> {
-    logSomething: () => void;
+    logSomething: (value: number) => void;
     logCascading: (counter: number) => void;
   }
 }
 
 let counter = 0;
 
-const createFeature = () => ({
+const createFeature = (): FeatureImplementation => ({
   key: `custom-${counter++}`,
   itemInstance: {
-    logSomething: ({}, value: number) => {
+    logSomething: ({}, value) => {
       console.log("Single call", value);
     },
-    logCascading: ({ prev }, value: number) => {
+    logCascading: ({ prev }, value) => {
       const prevValue = prev?.(value + 1);
       if (!prevValue) {
         console.log("Cascading call", value);
@@ -48,7 +50,7 @@ const createFeature = () => ({
   },
 });
 
-export const ManyFeatures = ({ featureCount }) => {
+export const ManyFeatures = ({ featureCount }: PropsOfArgtype<typeof meta>) => {
   const [state, setState] = useState({});
   const tree = useTree<string>({
     state,
@@ -100,7 +102,7 @@ export const ManyFeatures = ({ featureCount }) => {
           >
             {item.getItemName()}
           </div>
-          <button onClick={() => item.logSomething()}>normal</button>
+          <button onClick={() => item.logSomething(0)}>normal</button>
           <button onClick={() => item.logCascading(0)}>cascade</button>
         </button>
       ))}

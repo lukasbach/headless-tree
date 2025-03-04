@@ -1,6 +1,7 @@
 import type { Meta } from "@storybook/react";
 import React, { useState } from "react";
 import {
+  TreeState,
   buildProxiedInstance,
   buildStaticInstance,
   dragAndDropFeature,
@@ -10,6 +11,7 @@ import {
 } from "@headless-tree/core";
 import { useTree } from "@headless-tree/react";
 import cx from "classnames";
+import { PropsOfArgtype } from "../argtypes";
 
 const meta = {
   title: "React/Scalability/Big Tree",
@@ -38,7 +40,7 @@ const getExpandedItemIds = (
   itemsPerLevel: number,
   openLevels: number,
   prefix = "folder",
-) => {
+): string[] => {
   if (openLevels === 0) {
     return [];
   }
@@ -57,8 +59,12 @@ const getExpandedItemIds = (
   ];
 };
 
-export const BigTree = ({ itemsPerLevel, openLevels, useProxyInstances }) => {
-  const [state, setState] = useState(() => ({
+export const BigTree = ({
+  itemsPerLevel,
+  openLevels,
+  useProxyInstances,
+}: PropsOfArgtype<typeof meta>) => {
+  const [state, setState] = useState<Partial<TreeState<string>>>(() => ({
     expandedItems: getExpandedItemIds(itemsPerLevel, openLevels),
   })); // TODO type error
   const tree = useTree<string>({

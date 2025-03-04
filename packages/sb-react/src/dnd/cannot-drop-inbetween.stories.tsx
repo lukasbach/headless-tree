@@ -33,7 +33,7 @@ export const CannotDropInbetween = () => {
       alert(
         `Dropped ${items.map((item) =>
           item.getId(),
-        )} on ${target.item.getId()}, index ${target.childIndex}`,
+        )} on ${target.item.getId()}, ${JSON.stringify(target)}`,
       );
     },
     indent: 20,

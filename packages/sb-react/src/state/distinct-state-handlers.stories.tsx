@@ -17,9 +17,9 @@ export default meta;
 
 // story-start
 export const DistinctStateHandlers = () => {
-  const [selectedItems, setSelectedItems] = useState([]);
-  const [expandedItems, setExpandedItems] = useState([]);
-  const [focusedItem, setFocusedItem] = useState(null);
+  const [selectedItems, setSelectedItems] = useState<string[]>([]);
+  const [expandedItems, setExpandedItems] = useState<string[]>([]);
+  const [focusedItem, setFocusedItem] = useState<string | null>(null);
 
   const tree = useTree<string>({
     state: { selectedItems, expandedItems, focusedItem },

@@ -93,9 +93,7 @@ export const AsyncData = () => {
           </div>
         ))}
       </div>
-      <pre>
-        Loading: {JSON.stringify(tree.getState().loadingItems, null, 2)}
-      </pre>
+      <pre>State: {JSON.stringify(tree.getState(), null, 2)}</pre>
     </>
   );
 };
