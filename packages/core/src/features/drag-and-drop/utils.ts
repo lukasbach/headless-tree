@@ -88,8 +88,8 @@ const getTargetPlacement = (
   }
 
   const bb = item.getElement()?.getBoundingClientRect();
-  const topPercent = bb ? (e.pageY - bb.top) / bb.height : 0.5;
-  const leftPixels = bb ? e.pageX - bb.left : 0;
+  const topPercent = bb ? (e.clientY - bb.top) / bb.height : 0.5;
+  const leftPixels = bb ? e.clientX - bb.left : 0;
   const targetDropCategory = getItemDropCategory(item);
   const reorderAreaPercentage = !canMakeChild
     ? 0.5

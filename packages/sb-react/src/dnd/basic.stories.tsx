@@ -33,7 +33,7 @@ export const Basic = () => {
       alert(
         `Dropped ${items.map((item) =>
           item.getId(),
-        )} on ${target.item.getId()}, index ${target.childIndex}`,
+        )} on ${target.item.getId()}, ${JSON.stringify(target)}`,
       );
     },
     indent: 20,
@@ -55,6 +55,7 @@ export const Basic = () => {
       dragAndDropFeature,
     ],
   });
+  // console.log(tree.getDragLineData());
 
   return (
     <div {...tree.getContainerProps()} className="tree">

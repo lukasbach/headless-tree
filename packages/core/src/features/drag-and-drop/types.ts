@@ -76,7 +76,6 @@ export type DragAndDropFeatureDef<T> = {
     getDropTarget: () => DropTarget<T> | null;
     getDragLineData: () => DragLineData | null;
 
-    // TODO bug: dragline/drop behavior is incorrect when scrolled down, cant drop on collapsed folders
     getDragLineStyle: (
       topOffset?: number,
       leftOffset?: number,

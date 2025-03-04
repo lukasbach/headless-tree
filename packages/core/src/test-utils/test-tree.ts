@@ -207,7 +207,7 @@ export class TestTree<T = string> {
     } as HTMLElement);
   }
 
-  static dragEvent(pageX = 1000, pageY = 0) {
+  static dragEvent(clientX = 1000, clientY = 0) {
     return {
       preventDefault: vi.fn(),
       stopPropagation: vi.fn(),
@@ -216,8 +216,8 @@ export class TestTree<T = string> {
         getData: vi.fn(),
         dropEffect: "unchaged-from-test",
       },
-      pageX,
-      pageY,
+      clientX,
+      clientY,
     } as unknown as DragEvent;
   }
 
