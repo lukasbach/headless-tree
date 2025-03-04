@@ -16,6 +16,7 @@ import {
 import { useTree } from "@headless-tree/react";
 import { Virtualizer, useVirtualizer } from "@tanstack/react-virtual";
 import cx from "classnames";
+import { PropsOfArgtype } from "../argtypes";
 
 const meta = {
   title: "React/Scalability/Basic Virtualization",
@@ -44,7 +45,7 @@ const getExpandedItemIds = (
   itemsPerLevel: number,
   openLevels: number,
   prefix = "folder",
-) => {
+): string[] => {
   if (openLevels === 0) {
     return [];
   }
@@ -128,11 +129,12 @@ const Inner = forwardRef<Virtualizer<HTMLDivElement, Element>, any>(
   },
 );
 
+// TODO dragline not properly calculated
 export const BasicVirtualization = ({
   itemsPerLevel,
   openLevels,
   useProxyInstances,
-}) => {
+}: PropsOfArgtype<typeof meta>) => {
   const virtualizer = useRef<Virtualizer<HTMLDivElement, Element> | null>(null);
   const [state, setState] = useState(() => ({
     expandedItems: getExpandedItemIds(itemsPerLevel, openLevels),
