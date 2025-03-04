@@ -64,7 +64,9 @@ export const asyncDataLoaderFeature: FeatureImplementation = {
           ...loadingItemData,
           itemId,
         ]);
-        config.asyncDataLoader?.getItem(itemId).then((item) => {
+
+        (async () => {
+          const item = await config.dataLoader.getItem(itemId);
           dataRef.current.itemData[itemId] = item;
           config.onLoadedItem?.(itemId, item);
           tree.applySubStateUpdate("loadingItemData", (loadingItemData) =>
@@ -75,7 +77,7 @@ export const asyncDataLoaderFeature: FeatureImplementation = {
             cb(),
           );
           delete dataRef.current.awaitingItemDataLoading?.[itemId];
-        });
+        })();
       }
 
       return config.createLoadingItemData?.() ?? null;
@@ -98,7 +100,8 @@ export const asyncDataLoaderFeature: FeatureImplementation = {
         (loadingItemChildrens) => [...loadingItemChildrens, itemId],
       );
 
-      config.asyncDataLoader?.getChildren(itemId).then((childrenIds) => {
+      (async () => {
+        const childrenIds = await config.dataLoader.getChildren(itemId);
         dataRef.current.childrenIds[itemId] = childrenIds;
         config.onLoadedChildren?.(itemId, childrenIds);
         tree.applySubStateUpdate(
@@ -112,7 +115,7 @@ export const asyncDataLoaderFeature: FeatureImplementation = {
           cb(),
         );
         delete dataRef.current.awaitingItemChildrensLoading?.[itemId];
-      });
+      })();
 
       return [];
     },

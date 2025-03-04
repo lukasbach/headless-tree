@@ -27,13 +27,16 @@ rootItemId: "root",
     getItemName: (item) => item.getItemData().name,
     isItemFolder: () => item.getItemData().isFolder,
     createLoadingItemData: () => "Loading...",
-    asyncDataLoader: {
+    dataLoader: {
         getItem: async (itemId) =>  await dataSources.getItem(itemId)
-        getChildren: (itemId) => dataSources.getChildren(itemId),
+        getChildren: async (itemId) => await dataSources.getChildren(itemId),
     },
     features: [ asyncDataLoaderFeature ],
 });
 ```
+
+You still hook the tree up to your data source with `dataLoader`, but can now use asynchronous methods for
+retrieving your tree data.
 
 ## Loading Items
 

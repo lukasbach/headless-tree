@@ -43,3 +43,11 @@ render. Therefore, you should make sure that these functions are fast and do not
 Asynchronous data providers on the other hand provide caching out of the box, and only call those functions once
 per item until their data are explicitly invalidated. If your data source provides an synchronous, yet expensive
 interface, you can still use the [Async Data Loader](/features/async-dataloader) instead.
+
+:::warning
+
+You should implement the `dataLoader.getItem` and `dataLoader.getChildren` functions so that they return
+synchronously. If you need to fetch data asynchronously, you should use the [Async Data Loader](/features/async-dataloader)
+instead.
+
+:::

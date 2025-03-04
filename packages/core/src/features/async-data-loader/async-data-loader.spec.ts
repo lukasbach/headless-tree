@@ -82,7 +82,7 @@ describe("core-feature/selections", () => {
       `${id}3`,
       `${id}4`,
     ]);
-    const suiteTree = tree.with({ asyncDataLoader: { getItem, getChildren } });
+    const suiteTree = tree.with({ dataLoader: { getItem, getChildren } });
     suiteTree.resetBeforeEach();
 
     it("invalidates item data on item instance", async () => {

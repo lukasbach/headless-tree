@@ -26,7 +26,7 @@ export const AsyncSearchTree = () => {
     getItemName: (item) => item.getItemData(),
     isItemFolder: () => true,
     createLoadingItemData: () => "Loading...",
-    asyncDataLoader: {
+    dataLoader: {
       getItem: (itemId) => wait(800).then(() => itemId),
       getChildren: (itemId) =>
         wait(800).then(() => [`${itemId}-1`, `${itemId}-2`, `${itemId}-3`]),

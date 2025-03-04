@@ -3,12 +3,6 @@ import { SyncDataLoaderFeatureDef } from "../sync-data-loader/types";
 
 type AwaitingLoaderCallbacks = Record<string, (() => void)[]>;
 
-// TODO unify type with syncDataLoader
-export interface AsyncTreeDataLoader<T> {
-  getItem: (itemId: string) => Promise<T>;
-  getChildren: (itemId: string) => Promise<string[]>;
-}
-
 export interface AsyncDataLoaderDataRef<T = any> {
   itemData: Record<string, T>;
   childrenIds: Record<string, string[]>;
@@ -36,7 +30,6 @@ export type AsyncDataLoaderFeatureDef<T> = {
     setLoadingItemChildrens?: SetStateFn<string[]>;
     onLoadedItem?: (itemId: string, item: T) => void;
     onLoadedChildren?: (itemId: string, childrenIds: string[]) => void;
-    asyncDataLoader?: AsyncTreeDataLoader<T>;
   };
   treeInstance: SyncDataLoaderFeatureDef<T>["treeInstance"] & {
     waitForItemDataLoaded: (itemId: string) => Promise<void>;

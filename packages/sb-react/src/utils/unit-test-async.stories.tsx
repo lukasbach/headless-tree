@@ -25,7 +25,7 @@ export const UnitTestAsync = () => {
   const tree = useTree<DemoItem>({
     rootItemId: "x",
     createLoadingItemData: () => ({ name: "Loading" }),
-    asyncDataLoader,
+    dataLoader: asyncDataLoader,
     getItemName: (item) => item.getItemData().name,
     indent: 20,
     isItemFolder: (item) => item.getItemMeta().level < 2,

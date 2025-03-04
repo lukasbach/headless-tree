@@ -8,6 +8,7 @@ import { TestTreeExpect } from "./test-tree-expect";
 import { syncDataLoaderFeature } from "../features/sync-data-loader/feature";
 import { asyncDataLoaderFeature } from "../features/async-data-loader/feature";
 import { buildProxiedInstance } from "../core/build-proxified-instance";
+import { TreeDataLoader } from "../features/sync-data-loader/types";
 
 vi.useFakeTimers({ shouldAdvanceTime: true });
 
@@ -20,13 +21,32 @@ export class TestTree<T = string> {
 
   private static asyncLoaderResolvers: (() => void)[] = [];
 
+  private asyncDataLoaderImp: TreeDataLoader<T> = {
+    getItem: async (id: string) => {
+      await new Promise<void>((r) => {
+        (r as any).debugName = `Loading getItem ${id}`;
+        TestTree.asyncLoaderResolvers.push(r);
+      });
+      return id as T;
+    },
+    getChildren: async (id: string) => {
+      await new Promise<void>((r) => {
+        (r as any).debugName = `Loading getChildren ${id}`;
+        TestTree.asyncLoaderResolvers.push(r);
+      });
+      return [`${id}1`, `${id}2`, `${id}3`, `${id}4`];
+    },
+  };
+
   suits = {
     sync: () => ({
       tree: this.withFeatures(syncDataLoaderFeature),
       title: "Synchronous Data Loader",
     }),
     async: () => ({
-      tree: this.withFeatures(asyncDataLoaderFeature),
+      tree: this.withFeatures(asyncDataLoaderFeature).with({
+        dataLoader: this.asyncDataLoaderImp,
+      }),
       title: "Asynchronous Data Loader",
     }),
     proxifiedSync: () => ({
@@ -87,22 +107,6 @@ export class TestTree<T = string> {
       dataLoader: {
         getItem: (id) => id,
         getChildren: (id) => [`${id}1`, `${id}2`, `${id}3`, `${id}4`],
-      },
-      asyncDataLoader: {
-        getItem: async (id) => {
-          await new Promise<void>((r) => {
-            (r as any).debugName = `Loading getItem ${id}`;
-            TestTree.asyncLoaderResolvers.push(r);
-          });
-          return id;
-        },
-        getChildren: async (id) => {
-          await new Promise<void>((r) => {
-            (r as any).debugName = `Loading getChildren ${id}`;
-            TestTree.asyncLoaderResolvers.push(r);
-          });
-          return [`${id}1`, `${id}2`, `${id}3`, `${id}4`];
-        },
       },
       getItemName: (item) => item.getItemData(),
       indent: 20,

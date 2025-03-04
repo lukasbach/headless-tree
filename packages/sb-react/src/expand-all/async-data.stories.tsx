@@ -30,7 +30,7 @@ export const AsyncData = () => {
     isItemFolder: (item) =>
       !item.getItemData().endsWith("item") && item.getItemMeta().level < 3,
     createLoadingItemData: () => "Loading...",
-    asyncDataLoader: {
+    dataLoader: {
       getItem: (itemId) => wait(800).then(() => itemId),
       getChildren: (itemId) =>
         wait(800).then(() => [
@@ -42,7 +42,6 @@ export const AsyncData = () => {
         ]),
     },
     indent: 20,
-    dataLoader: null as any,
     features: [
       asyncDataLoaderFeature,
       selectionFeature,

@@ -1,13 +1,13 @@
-export interface SyncTreeDataLoader<T> {
-  getItem: (itemId: string) => T;
-  getChildren: (itemId: string) => string[];
+export interface TreeDataLoader<T> {
+  getItem: (itemId: string) => T | Promise<T>;
+  getChildren: (itemId: string) => string[] | Promise<string[]>;
 }
 
 export type SyncDataLoaderFeatureDef<T> = {
   state: {};
   config: {
     rootItemId: string;
-    dataLoader?: SyncTreeDataLoader<T>;
+    dataLoader: TreeDataLoader<T>;
   };
   treeInstance: {
     retrieveItemData: (itemId: string) => T;

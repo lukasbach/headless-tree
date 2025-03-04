@@ -26,12 +26,11 @@ export const AsyncDataLoading = () => {
     getItemName: (item) => item.getItemData(),
     isItemFolder: () => true,
     createLoadingItemData: () => loaderName,
-    asyncDataLoader: {
+    dataLoader: {
       getItem: (itemId) => wait(800).then(() => itemId),
       getChildren: (itemId) =>
         wait(800).then(() => [`${itemId}-1`, `${itemId}-2`, `${itemId}-3`]),
     },
-    dataLoader: null as any,
     indent: 20,
     features: [asyncDataLoaderFeature, selectionFeature, hotkeysCoreFeature],
   });
