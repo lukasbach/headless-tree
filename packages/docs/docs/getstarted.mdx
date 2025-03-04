@@ -15,7 +15,7 @@ Bug reports and contributions are welcome!
 
 :::
 
-# Installation
+## Installation
 
 To start using Headless Tree, install it to your project as dependency via
 
@@ -33,7 +33,7 @@ During Alpha, releases are published on an irregular basis, and changelogs may n
 The current main branch is always published to NPM under the `snapshot` tag, so you can use
 `npm install @headless-tree/core@snapshot @headless-tree/react@snapshot` to get the latest snapshot deployment.
 
-# Quick Start
+## Quick Start
 
 The React Bindings of Headless Tree provide a hook `useTree` that creates a tree instance, which you can use
 to render your tree however you like. The instance provides methods to get the tree as a flat list of nodes,
@@ -58,7 +58,7 @@ When rendering your tree, don't forget to
 - Spread the return value of `item.getProps()` as props into your tree item elements.
 - You probably want to indent your items based on their depth, which you can get via `item.getItemMeta().level`.
 
-# Importing Features
+## Importing Features
 
 The architecture of Headless Tree separates individual features into distinct objects, that need to be manually
 imported and added to your tree. They are exported from the `@headless-tree/core` package and need to be added to
@@ -94,7 +94,7 @@ All available features are documented with a dedicated guide on how to use them.
 find each feature under its respective name in the "Features" category. The "Tree Core" and "Main Feature"
 features are special features that are always included and do not need to be imported.
 
-# Types
+## Types
 
 Headless Tree is written in TypeScript and provides full TypeScript support. The most important types to keep
 in mind are
@@ -108,7 +108,7 @@ in mind are
 Note that some of the defined functions require that you include the respective feature in your tree config, see
 the section above.
 
-# Hooking up your data structure
+## Hooking up your data structure
 
 As you saw in the previous example, we also added the `syncDataLoaderFeature` feature. Then, you can define
 how Headless Tree reads your tree with a `dataLoader` property in the tree config.
@@ -149,5 +149,3 @@ a more complex payload type, and how to use the `getItemName` and `isItemFolder`
 display name and folder status of an item.
 
 <DemoBox stories={["react-general-item-data-objects--item-data-objects"]} />
-
-TODO-DOCS: Document the concept of data adapters, and mention their availability here.

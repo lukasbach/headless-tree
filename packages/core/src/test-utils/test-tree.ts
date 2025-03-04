@@ -65,12 +65,12 @@ export class TestTree<T = string> {
   private constructor(private config: TreeConfig<T>) {}
 
   static async resolveAsyncLoaders() {
-    while (TestTree.asyncLoaderResolvers.length) {
+    do {
       TestTree.asyncLoaderResolvers.shift()?.();
       await new Promise<void>((r) => {
         setTimeout(r);
       });
-    }
+    } while (TestTree.asyncLoaderResolvers.length);
   }
 
   async resolveAsyncVisibleItems() {

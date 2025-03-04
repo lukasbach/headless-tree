@@ -9,12 +9,14 @@ export const insertItemsAtTarget = async <T>(
     newChildrenIds: string[],
   ) => Promise<void> | void,
 ) => {
+  await target.item.getTree().waitForItemChildrenLoaded(target.item.getId());
+  const oldChildrenIds = target.item
+    .getTree()
+    .retrieveChildrenIds(target.item.getId());
+
   // add moved items to new common parent, if dropped onto parent
   if (!("childIndex" in target)) {
-    const newChildren = [
-      ...target.item.getChildren().map((item) => item.getId()),
-      ...itemIds,
-    ];
+    const newChildren = [...oldChildrenIds, ...itemIds];
     await onChangeChildren(target.item, newChildren);
     if (target.item && "updateCachedChildrenIds" in target.item) {
       target.item.updateCachedChildrenIds(newChildren);
@@ -24,11 +26,10 @@ export const insertItemsAtTarget = async <T>(
   }
 
   // add moved items to new common parent, if dropped between siblings
-  const oldChildren = target.item.getChildren();
   const newChildren = [
-    ...oldChildren.slice(0, target.insertionIndex).map((item) => item.getId()),
+    ...oldChildrenIds.slice(0, target.insertionIndex),
     ...itemIds,
-    ...oldChildren.slice(target.insertionIndex).map((item) => item.getId()),
+    ...oldChildrenIds.slice(target.insertionIndex),
   ];
 
   await onChangeChildren(target.item, newChildren);

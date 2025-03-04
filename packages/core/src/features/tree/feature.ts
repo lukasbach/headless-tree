@@ -151,7 +151,7 @@ export const treeFeature: FeatureImplementation<any> = {
         return;
       }
 
-      if (tree.getState().loadingItems?.includes(itemId)) {
+      if (tree.getState().loadingItemChildrens?.includes(itemId)) {
         return;
       }
 

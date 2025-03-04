@@ -179,7 +179,7 @@ export const dragAndDropFeature: FeatureImplementation = {
         tree.getConfig().onCompleteForeignDrop?.(draggedItems);
       },
 
-      onDrop: (e: DragEvent) => {
+      onDrop: async (e: DragEvent) => {
         const dataRef = tree.getDataRef<DndDataRef>();
         const target = getDropTarget(e, item, tree);
 
@@ -195,9 +195,9 @@ export const dragAndDropFeature: FeatureImplementation = {
         tree.applySubStateUpdate("dnd", null);
 
         if (draggedItems) {
-          config.onDrop?.(draggedItems, target);
+          await config.onDrop?.(draggedItems, target);
         } else if (e.dataTransfer) {
-          config.onDropForeignDragObject?.(e.dataTransfer, target);
+          await config.onDropForeignDragObject?.(e.dataTransfer, target);
         }
       },
     }),

@@ -43,6 +43,7 @@ The same goes for an items children, while their IDs are being fetched through t
 
 The Async Data Loader defines a state for loading items: `state.loadingItems` keeps an array of item IDs which are currently
 loading. For a given item, you can check if it is loading by calling `item.isLoading()`.
+<!-- TODO update to new async data loader api -->
 
 When an item is loading, its item data will be set to the value returned by `config.createLoadingItemData`. This
 way, you can customize how loading items are displayed.

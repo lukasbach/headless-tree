@@ -375,10 +375,11 @@ describe("core-feature/drag-and-drop", () => {
         ]);
       });
 
-      it.skip("drags within same tree on collapsed folder", async () => {
+      it("drags within same tree on collapsed folder", async () => {
         suiteTree.do.selectMultiple("x111", "x112");
         suiteTree.do.startDrag("x111");
-        await suiteTree.do.dragOverAndDrop("x22");
+        suiteTree.do.dragOverAndDrop("x22");
+        await suiteTree.resolveAsyncVisibleItems();
         expect(changeChildren).toHaveBeenCalledWith("x11", ["x113", "x114"]);
         expect(changeChildren).toHaveBeenCalledWith("x22", [
           "x221",

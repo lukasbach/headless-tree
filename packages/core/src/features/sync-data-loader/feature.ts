@@ -5,20 +5,26 @@ export const syncDataLoaderFeature: FeatureImplementation = {
   key: "sync-data-loader",
 
   getInitialState: (initialState) => ({
-    loadingItems: [],
+    loadingItemData: [],
+    loadingItemChildrens: [],
     ...initialState,
   }),
 
   getDefaultConfig: (defaultConfig, tree) => ({
-    setLoadingItems: makeStateUpdater("loadingItems", tree),
+    setLoadingItemData: makeStateUpdater("loadingItemData", tree),
+    setLoadingItemChildrens: makeStateUpdater("loadingItemChildrens", tree),
     ...defaultConfig,
   }),
 
   stateHandlerNames: {
-    loadingItems: "setLoadingItems",
+    loadingItemData: "setLoadingItemData",
+    loadingItemChildrens: "setLoadingItemChildrens",
   },
 
   treeInstance: {
+    waitForItemDataLoaded: async () => {},
+    waitForItemChildrenLoaded: async () => {},
+
     retrieveItemData: ({ tree }, itemId) =>
       tree.getConfig().dataLoader!.getItem(itemId),
 

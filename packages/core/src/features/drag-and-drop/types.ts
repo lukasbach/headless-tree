@@ -62,16 +62,21 @@ export type DragAndDropFeatureDef<T> = {
       dataTransfer: DataTransfer,
       target: DropTarget<T>,
     ) => boolean;
-    onDrop?: (items: ItemInstance<T>[], target: DropTarget<T>) => void;
+    onDrop?: (
+      items: ItemInstance<T>[],
+      target: DropTarget<T>,
+    ) => void | Promise<void>;
     onDropForeignDragObject?: (
       dataTransfer: DataTransfer,
       target: DropTarget<T>,
-    ) => void;
+    ) => void | Promise<void>;
     onCompleteForeignDrop?: (items: ItemInstance<T>[]) => void;
   };
   treeInstance: {
     getDropTarget: () => DropTarget<T> | null;
     getDragLineData: () => DragLineData | null;
+
+    // TODO bug: dragline/drop behavior is incorrect when scrolled down, cant drop on collapsed folders
     getDragLineStyle: (
       topOffset?: number,
       leftOffset?: number,

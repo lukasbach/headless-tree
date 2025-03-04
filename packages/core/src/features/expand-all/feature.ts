@@ -1,5 +1,4 @@
 import { FeatureImplementation } from "../../types/core";
-import { poll } from "../../utils";
 
 export const expandAllFeature: FeatureImplementation = {
   key: "expand-all",
@@ -27,12 +26,10 @@ export const expandAllFeature: FeatureImplementation = {
       }
 
       item.expand();
-      await poll(() => !tree.getState().loadingItems.includes(item.getId()));
+      await tree.waitForItemChildrenLoaded(item.getId());
       await Promise.all(
         item.getChildren().map(async (child) => {
-          await poll(
-            () => !tree.getState().loadingItems.includes(child.getId()),
-          );
+          await tree.waitForItemChildrenLoaded(item.getId());
           await child?.expandAll(cancelToken);
         }),
       );
