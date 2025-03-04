@@ -41,11 +41,17 @@ describe("core-feature/selections", () => {
 
   describe("calls handlers", () => {
     it("updates setLoadingItems", async () => {
-      const setLoadingItems = tree.mockedHandler("setLoadingItems");
+      const setLoadingItemChildrens = tree.mockedHandler(
+        "setLoadingItemChildrens",
+      );
+      const setLoadingItemData = tree.mockedHandler("setLoadingItemData");
       tree.do.selectItem("x12");
-      expect(setLoadingItems).toHaveBeenCalledWith(["x12"]);
+      expect(setLoadingItemChildrens).toHaveBeenCalledWith(["x12"]);
+      expect(setLoadingItemData).not.toHaveBeenCalled();
       await tree.resolveAsyncVisibleItems();
-      expect(setLoadingItems).toHaveBeenCalledWith([]);
+      expect(setLoadingItemChildrens).toHaveBeenCalledWith([]);
+      expect(setLoadingItemData).toHaveBeenCalledWith(["x121"]);
+      expect(setLoadingItemData).toHaveBeenCalledWith([]);
     });
 
     it("calls onLoadedItem", async () => {
