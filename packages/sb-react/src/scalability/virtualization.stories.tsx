@@ -6,6 +6,7 @@ import React, {
   useState,
 } from "react";
 import {
+  TreeState,
   buildProxiedInstance,
   buildStaticInstance,
   dragAndDropFeature,
@@ -41,7 +42,7 @@ const meta = {
 export default meta;
 
 // story-start
-const getExpandedItemIds = (
+const getInitiallyExpandedItemIds = (
   itemsPerLevel: number,
   openLevels: number,
   prefix = "folder",
@@ -59,7 +60,7 @@ const getExpandedItemIds = (
   return [
     ...expandedItems,
     ...expandedItems.flatMap((itemId) =>
-      getExpandedItemIds(itemsPerLevel, openLevels - 1, itemId),
+      getInitiallyExpandedItemIds(itemsPerLevel, openLevels - 1, itemId),
     ),
   ];
 };
@@ -122,22 +123,21 @@ const Inner = forwardRef<Virtualizer<HTMLDivElement, Element>, any>(
               </button>
             );
           })}
+          <div style={tree.getDragLineStyle()} className="dragline" />
         </div>
-        <div style={tree.getDragLineStyle()} className="dragline" />
       </div>
     );
   },
 );
 
-// TODO dragline not properly calculated
 export const BasicVirtualization = ({
   itemsPerLevel,
   openLevels,
   useProxyInstances,
 }: PropsOfArgtype<typeof meta>) => {
   const virtualizer = useRef<Virtualizer<HTMLDivElement, Element> | null>(null);
-  const [state, setState] = useState(() => ({
-    expandedItems: getExpandedItemIds(itemsPerLevel, openLevels),
+  const [state, setState] = useState<Partial<TreeState<string>>>(() => ({
+    expandedItems: getInitiallyExpandedItemIds(itemsPerLevel, openLevels),
   }));
   const tree = useTree<string>({
     instanceBuilder: useProxyInstances

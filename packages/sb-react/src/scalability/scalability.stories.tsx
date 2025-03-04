@@ -95,8 +95,6 @@ export const BigTree = ({ itemsPerLevel, openLevels, useProxyInstances }) => {
       dragAndDropFeature,
     ],
   });
-  // TODO drag defaults to bottom-drag always
-  // TODO expanding is super slow
 
   return (
     <div {...tree.getContainerProps()} className="tree">
