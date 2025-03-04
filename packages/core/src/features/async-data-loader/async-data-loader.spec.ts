@@ -119,6 +119,4 @@ describe("core-feature/selections", () => {
       expect(getChildren).toHaveBeenCalledTimes(1);
     });
   });
-
-  describe.todo("getChildrenWithData");
 });

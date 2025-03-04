@@ -7,7 +7,6 @@ type AwaitingLoaderCallbacks = Record<string, (() => void)[]>;
 export interface AsyncTreeDataLoader<T> {
   getItem: (itemId: string) => Promise<T>;
   getChildren: (itemId: string) => Promise<string[]>;
-  getChildrenWithData?: (itemId: string) => Promise<{ id: string; data: T }[]>;
 }
 
 export interface AsyncDataLoaderDataRef<T = any> {

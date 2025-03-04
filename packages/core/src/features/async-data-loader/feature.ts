@@ -84,7 +84,6 @@ export const asyncDataLoaderFeature: FeatureImplementation = {
     retrieveChildrenIds: ({ tree }, itemId) => {
       const config = tree.getConfig();
       const dataRef = tree.getDataRef<AsyncDataLoaderDataRef>();
-      dataRef.current.itemData ??= {};
       dataRef.current.childrenIds ??= {};
       if (dataRef.current.childrenIds[itemId]) {
         return dataRef.current.childrenIds[itemId];
@@ -99,53 +98,21 @@ export const asyncDataLoaderFeature: FeatureImplementation = {
         (loadingItemChildrens) => [...loadingItemChildrens, itemId],
       );
 
-      if (config.asyncDataLoader?.getChildrenWithData) {
-        // TODO remove for now
-        tree.applySubStateUpdate("loadingItemData", (loadingItemData) => [
-          ...loadingItemData,
-          itemId,
-        ]);
+      config.asyncDataLoader?.getChildren(itemId).then((childrenIds) => {
+        dataRef.current.childrenIds[itemId] = childrenIds;
+        config.onLoadedChildren?.(itemId, childrenIds);
+        tree.applySubStateUpdate(
+          "loadingItemChildrens",
+          (loadingItemChildrens) =>
+            loadingItemChildrens.filter((id) => id !== itemId),
+        );
+        tree.rebuildTree();
 
-        config.asyncDataLoader?.getChildrenWithData(itemId).then((children) => {
-          for (const { id, data } of children) {
-            dataRef.current.itemData[id] = data;
-            config.onLoadedItem?.(id, data);
-          }
-          const childrenIds = children.map(({ id }) => id);
-          dataRef.current.childrenIds[itemId] = childrenIds;
-          config.onLoadedChildren?.(itemId, childrenIds);
-          tree.applySubStateUpdate("loadingItemData", (loadingItemData) =>
-            loadingItemData.filter((id) => id !== itemId),
-          );
-          tree.applySubStateUpdate(
-            "loadingItemChildrens",
-            (loadingItemChildrens) =>
-              loadingItemChildrens.filter((id) => id !== itemId),
-          );
-          tree.rebuildTree();
-
-          dataRef.current.awaitingItemDataLoading?.[itemId].forEach((cb) =>
-            cb(),
-          );
-          delete dataRef.current.awaitingItemDataLoading?.[itemId];
-        });
-      } else {
-        config.asyncDataLoader?.getChildren(itemId).then((childrenIds) => {
-          dataRef.current.childrenIds[itemId] = childrenIds;
-          config.onLoadedChildren?.(itemId, childrenIds);
-          tree.applySubStateUpdate(
-            "loadingItemChildrens",
-            (loadingItemChildrens) =>
-              loadingItemChildrens.filter((id) => id !== itemId),
-          );
-          tree.rebuildTree();
-
-          dataRef.current.awaitingItemChildrensLoading?.[itemId]?.forEach(
-            (cb) => cb(),
-          );
-          delete dataRef.current.awaitingItemChildrensLoading?.[itemId];
-        });
-      }
+        dataRef.current.awaitingItemChildrensLoading?.[itemId]?.forEach((cb) =>
+          cb(),
+        );
+        delete dataRef.current.awaitingItemChildrensLoading?.[itemId];
+      });
 
       return [];
     },
