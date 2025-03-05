@@ -25,6 +25,7 @@
 
   --ifm-menu-color-background-active: color-mix(in srgb, var(--ifm-color-primary) 10%, transparent);
   --ifm-footer-background-color: white;
+  --sidebar-header-color: #1c1c1c;
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
@@ -39,6 +40,7 @@
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 
   --ifm-footer-background-color: black;
+  --sidebar-header-color: white;
 }
 
 .navbar {
@@ -79,6 +81,11 @@
 }
 .menu__link:hover {
   color: inherit !important;
+}
+.menu__list-item-collapsible .menu__link {
+  font-weight: bold;
+  text-transform: uppercase;
+  color: var(--sidebar-header-color);
 }
 .menu__list-item-collapsible:hover {
   background-color: transparent !important;
