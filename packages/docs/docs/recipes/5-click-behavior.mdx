@@ -1,0 +1,36 @@
+---
+slug: "/recipe/click-behavior"
+title: "Custom Click Behavior"
+category: recipe
+---
+import {DemoBox} from "../../src/components/demo/demo-box";
+
+The default behavior of Headless Tree resembles the UX behavior of a VSCode Filetree: Clicking on an item
+will both focus it and make it the sole selection. Control-clicking will add the item to an existing selection.
+If the clicked item is also a folder, it will toggle its expanded-state.
+
+This can be customized very easily by overwriting the generation of the `onClick` (and `onDoubleClick` if you want) handlers
+for generated props of tree items. This expands on the idea that was introduced in the [Guide on Plugins](/recipe/plugins)
+by allowing you to write a small custom plugin that overwrites the behavior of other Headless Tree core features.
+
+## Expand on Double Click
+
+In the following sample, the behavior is changed so that folders are only expanded or collapsed on double-click,
+and the primary action handler is also bound to double-click instead of the typical single-click.
+
+Note that we completely overwrite the `onClick` handler here, so we need to re-implement the selection behavior
+even if it remains unchanged. We do not need to re-implement other props that are generated for tree items,
+since we integrate the existing functionality of other features with the `prev?.()` call.
+If we were to expand the `onClick` behavior instead of overwriting it, we could also expand instead of overwrite
+the `onClick` handler with `prev?.()?.onClick?.(e)`, as is being done in the
+[actual implementation of the selection feature](https://github.com/lukasbach/headless-tree/blob/7f50c2e380f3455c4dfd0413e609ba96b1338fe7/packages/core/src/features/selection/feature.ts#L93).
+
+<DemoBox tags={["guide/clickbehavior"]} initialStory="react-guides-click-behavior-expand-on-double-click--expand-on-double-click" />
+
+## Expand on Arrow-Click
+
+Similar to the previous sample, in the following code snippet we completely remove the expand/collapse behavior
+from the `onClick` handler of tree items, and render dedicated arrow buttons that can be clicked to expand or collapse
+the tree items instead.
+
+<DemoBox tags={["guide/clickbehavior"]} initialStory="react-guides-click-behavior-expand-on-arrow-click--expand-on-arrow-click" />
