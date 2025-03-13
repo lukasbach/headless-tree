@@ -9,6 +9,7 @@ const specialKeys: Record<string, RegExp> = {
   Letter: /^[a-z]$/,
   LetterOrNumber: /^[a-z0-9]$/,
   Plus: /^\+$/,
+  Space: /^ $/,
 };
 
 const testHotkeyMatch = (
@@ -72,6 +73,7 @@ export const hotkeysCoreFeature: FeatureImplementation = {
       if (hotkeyConfig.preventDefault) e.preventDefault();
 
       hotkeyConfig.handler(e, tree as any);
+      tree.getConfig().onTreeHotkey?.(hotkeyName, e);
     };
 
     const keyup = (e: KeyboardEvent) => {

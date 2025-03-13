@@ -1,8 +1,4 @@
-import {
-  CustomHotkeysConfig,
-  ItemInstance,
-  TreeInstance,
-} from "../../types/core";
+import { CustomHotkeysConfig, TreeInstance } from "../../types/core";
 
 export interface HotkeyConfig<T> {
   hotkey: string;
@@ -23,12 +19,7 @@ export type HotkeysCoreFeatureDef<T> = {
   state: {};
   config: {
     hotkeys?: CustomHotkeysConfig<T>;
-    onTreeHotkey?: (name: string, element: HTMLElement) => void;
-    onItemHotkey?: (
-      name: string,
-      item: ItemInstance<T>,
-      element: HTMLElement,
-    ) => void;
+    onTreeHotkey?: (name: string, e: KeyboardEvent) => void;
   };
   treeInstance: {};
   itemInstance: {};

@@ -19,7 +19,7 @@ export type SelectionFeatureDef<T> = {
     selectUpTo: (ctrl: boolean) => void;
   };
   hotkeys:
-    | "toggleSelectItem"
+    | "toggleSelectedItem"
     | "selectUpwards"
     | "selectDownwards"
     | "selectAll";

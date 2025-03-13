@@ -102,9 +102,10 @@ export const selectionFeature: FeatureImplementation = {
     //     tree.setSelectedItems([tree.getFocusedItem().getId()]);
     //   },
     // },
-    toggleSelectItem: {
-      hotkey: "ctrl+space",
-      handler: (e, tree) => {
+    toggleSelectedItem: {
+      hotkey: "Control+Space",
+      preventDefault: true,
+      handler: (_, tree) => {
         tree.getFocusedItem().toggleSelect();
       },
     },
