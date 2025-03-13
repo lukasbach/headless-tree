@@ -20,19 +20,14 @@ export default meta;
 
 declare module "@headless-tree/core" {
   export interface ItemInstance<T> {
-    alertChildren: () => void;
+    alertItem: () => void;
   }
 }
 
 const customFeature: FeatureImplementation = {
   itemInstance: {
-    alertChildren: ({ item }) => {
-      alert(
-        item
-          .getChildren()
-          .map((child) => child.getItemName())
-          .join(", "),
-      );
+    alertItem: ({ item }) => {
+      alert(`Clicked on ${item.getItemName()}`);
     },
   },
 };
@@ -81,7 +76,7 @@ export const SimplePlugin = () => {
               {item.getItemName()}
             </div>
           </button>
-          <button onClick={item.alertChildren}>alert</button>
+          <button onClick={() => item.alertItem()}>alert</button>
         </div>
       ))}
     </div>
