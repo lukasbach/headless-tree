@@ -16,6 +16,7 @@ import {FeaturePageHeader} from "../../src/components/docs-page/feature-page-hea
 
 # Overview
 
+<!-- TODO show DND kitchensink as default sample -->
 <DemoBox tags={["feature/dnd"]} />
 
 The Drag-And-Drop Feature provides drag-and-drop capabilities. It allows to drag a single tree item (or many of the
@@ -27,7 +28,12 @@ also be used to implement drag behavior between several trees.
 This page explains the general idea of how Dnd works in Headless Tree, and how to get started with dragging items
 within a tree. The guides following after will go into more depth about
 
-- TODO
+- How to [drag external data into your tree](/dnd/foreign-dnd#dragging-foreign-objects-inside-of-tree),
+  or [tree items out to external drop targets](/dnd/foreign-dnd#dragging-tree-items-out-of-tree)
+- How to [handle drag events between multiple trees](/dnd/foreign-dnd#interactions-between-multiple-instances-of-headless-tree) on the same page
+- Customizing [which items can be dragged](/dnd/customizability#limiting-which-items-can-be-dragged)
+  or [dropped on](/dnd/customizability#limiting-where-users-can-drop-items)
+- More details on the DnD behavior of Headless Tree
 
 ## Configuring Drag and Drop
 
@@ -39,7 +45,7 @@ The gist of configuring Drag and Drop in Headless Tree, is to
 
 Note that the `indent` property is not required in the core tree configuration, since you can just use a custom
 indentation when rendering your items. For Drag and Drop it is required however to determine the drop position
-when the user is trying to reparent an item. (TODO link)
+when the user is trying to [reparent an item](/dnd/behavior#reparenting).
 
 The Dnd Feature also exposes a [Dnd State](/api/core/interface/DndState) that you can [handle yourself if you want to](/guides/state).
 

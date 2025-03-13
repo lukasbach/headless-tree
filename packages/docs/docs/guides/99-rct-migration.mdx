@@ -5,4 +5,53 @@ subtitle: "Guides on how to migrate from react-complex-tree to headless-tree"
 category: guide
 ---
 
-TODO
+Headless Tree is the official successor of React-Complex-Tree. Migration might not be straight-forward,
+since React Complex Tree did most of the rendering out of the box, whereas Headless Tree expects you
+to write the DOM rendering yourself. However, Headless Tree is much more flexible, which means you will
+likely find an easy solution to most aspects of how you did things in RCT.
+
+## Feature parity
+
+Headless Tree has full feature parity to React Complex Tree except for the following features:
+
+- Keyboard-based drag and drop is not yet supported (planned, coming soon)
+
+## Benefits of Headless Tree
+
+- Headless Tree is compatible with virtualization libraries
+- Much better performance with large trees, supporting several 100k visible items in virtualized trees
+- The rendered DOM is easier to customize since you manage it yourself
+- Headless Tree is more flexible and [easier to expand](/recipe/plugins)
+- Hotkeys can not just be remapped, but also customized in their implementation, and
+  you can [define your additional hotkeys](/guides/hotkeys#adding-custom-hotkeys)
+- Mostly Framework agnostic, support for more frameworks is planned
+
+## Main Differences
+
+- Headless Tree exposes functionality with a React Hook, instead of a component.
+- There are no out-of-the-box renderers anymore. You need to implement the render logic yourself, though
+  that is usually not more than 20-30 LOC.
+- The concept of [controlled](https://rct.lukasbach.com/docs/guides/controlled-environment) and [uncontrolled trees](https://rct.lukasbach.com/docs/guides/uncontrolled-environment)
+  doesn't exist anymore. Instead, you can control [none](/guides/state#letting-headless-tree-manage-the-state),
+  [all](/guides/state#manage-the-entire-state-yourself) or [some individual state atoms](/guides/state#managing-individual-feature-states).
+- Instead of using `StaticTreeDataProvider` or implementing a custom `TreeDataProvider`, you need to implement a
+  [`TreeDataLoader`](/api/core/interface/TreeDataLoader).
+- Propagating data mutation as consequence of drop events is no longer achieved as part of the `TreeDataProvider`,
+  but can be done in the drop handler with the [`createOnDropHandler`](/dnd/overview#mutating-your-data-after-the-drop).
+- When using asynchronous data loading, you need to use the [async data loader feature](/features/async-dataloader)
+  instead of the [sync data loader](/features/sync-dataloader).
+- The old [interaction modes](https://rct.lukasbach.com/docs/guides/interaction-modes), that customize which click
+  behavior expands/selects/focuses items, does not exist anymore. Instead, you can customize this with
+  [a custom feature that overwrites the click behavior](/recipe/click-behavior).
+- [Drag-interactions between multiple trees on the same page](https://rct.lukasbach.com/docs/guides/multiple-trees)
+  is not supported out of the box, the concept of tree environments doesn't exist anymore. You can achieve this
+  by [defining an outgoing DnD interface](/dnd/foreign-dnd#interactions-between-multiple-instances-of-headless-tree).
+  - This can also be used to allow your tree to [accept drag events from outside](/dnd/foreign-dnd#dragging-foreign-objects-inside-of-tree),
+    or [drag your tree items into other components](/dnd/foreign-dnd#dragging-tree-items-out-of-tree), which wasn't
+    supported before.
+- Almost all features are not included by default, but are seperate variables that [need to be imported explicitly](/getstarted#importing-features).
+  This reduces the bundle size to only what you need.
+- [When using the Search Feature, you need to render the search input](/features/search).
+- [When using the Renaming Feature, you need to render the rename input](/features/renaming).
+
+<!-- TODO add kitchen sink -->

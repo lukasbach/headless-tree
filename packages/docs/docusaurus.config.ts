@@ -71,6 +71,15 @@ const config: Config = {
     // Replace with your project's social card
     image: "img/docusaurus-social-card.jpg",
     navbar: {
+      logo: {
+        alt: "Site Logo",
+        src: "img/logo.svg",
+        srcDark: "img/logo.svg",
+        href: "/",
+        target: "_self",
+        width: 32,
+        height: 32,
+      },
       title: "Headless Tree",
       items: [
         {
@@ -88,6 +97,11 @@ const config: Config = {
           href: "https://headless-tree.lukasbach.com/storybook/react/",
           label: "Storybook",
           position: "left",
+        },
+        {
+          href: "https://github.com/sponsors/lukasbach",
+          label: "Support",
+          position: "right",
         },
         {
           href: "https://github.com/lukasbach/headless-tree",
