@@ -13,7 +13,7 @@ import cx from "classnames";
 
 const meta = {
   title: "React/Guides/Multiple Trees",
-  tags: ["feature/dnd"],
+  tags: ["feature/dnd", "homepage"],
 } satisfies Meta;
 
 export default meta;

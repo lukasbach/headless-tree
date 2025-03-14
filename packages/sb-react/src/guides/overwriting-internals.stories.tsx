@@ -11,6 +11,7 @@ import cx from "classnames";
 
 const meta = {
   title: "React/Guides/Overwriting Internals",
+  tags: ["homepage"],
 } satisfies Meta;
 
 export default meta;

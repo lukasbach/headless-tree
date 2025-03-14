@@ -11,7 +11,7 @@ import cx from "classnames";
 
 const meta = {
   title: "React/Hotkeys/Custom Hotkeys",
-  tags: ["feature/hotkeys"],
+  tags: ["feature/hotkeys", "homepage"],
 } satisfies Meta;
 
 export default meta;

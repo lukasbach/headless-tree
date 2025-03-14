@@ -13,7 +13,7 @@ import { PropsOfArgtype } from "../argtypes";
 
 const meta = {
   title: "React/Drag and Drop/Kitchen Sink",
-  tags: ["feature/dnd", "complex-story"],
+  tags: ["feature/dnd", "complex-story", "homepage"],
   argTypes: {
     canReorder: {
       type: "boolean",

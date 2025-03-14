@@ -11,7 +11,7 @@ import cx from "classnames";
 
 const meta = {
   title: "React/Plugins/Simple Plugin",
-  tags: ["guide/plugin", "basic"],
+  tags: ["guide/plugin", "basic", "homepage"],
 } satisfies Meta;
 
 export default meta;

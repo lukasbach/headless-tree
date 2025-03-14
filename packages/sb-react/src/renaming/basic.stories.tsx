@@ -11,7 +11,7 @@ import cx from "classnames";
 
 const meta = {
   title: "React/Renaming/Basic",
-  tags: ["feature/renaming", "basic"],
+  tags: ["feature/renaming", "basic", "homepage"],
 } satisfies Meta;
 
 export default meta;

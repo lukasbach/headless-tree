@@ -10,7 +10,7 @@ import cx from "classnames";
 
 const meta = {
   title: "React/Async Data Loading",
-  tags: ["feature/async-data-loader"],
+  tags: ["feature/async-data-loader", "homepage"],
 } satisfies Meta;
 
 export default meta;

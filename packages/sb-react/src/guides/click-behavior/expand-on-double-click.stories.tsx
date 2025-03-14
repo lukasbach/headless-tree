@@ -12,7 +12,7 @@ import cx from "classnames";
 
 const meta = {
   title: "React/Guides/Click Behavior/Expand On Double Click",
-  tags: ["guide/clickbehavior", "basic"],
+  tags: ["guide/clickbehavior", "basic", "homepage"],
 } satisfies Meta;
 
 export default meta;

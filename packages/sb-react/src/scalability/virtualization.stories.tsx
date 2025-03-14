@@ -21,6 +21,7 @@ import { PropsOfArgtype } from "../argtypes";
 
 const meta = {
   title: "React/Scalability/Basic Virtualization",
+  tags: ["homepage"],
   argTypes: {
     itemsPerLevel: {
       type: "number",

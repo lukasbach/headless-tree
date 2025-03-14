@@ -10,6 +10,7 @@ import cx from "classnames";
 
 const meta = {
   title: "React/General/Simple Example",
+  tags: ["homepage"],
 } satisfies Meta;
 
 export default meta;
