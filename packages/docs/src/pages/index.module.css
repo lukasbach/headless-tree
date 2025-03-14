@@ -3,16 +3,50 @@
  * and scoped locally.
  */
 
+[data-theme='dark'] .heroBanner {
+  background-color: #111112;
+}
+[data-theme='light'] .heroBanner {
+  background-color: #ede8f6;
+}
+
 .heroBanner {
   padding: 4rem 0;
   text-align: center;
   position: relative;
   overflow: hidden;
 }
+.heroBannerInner {
+  display: flex;
+  margin: 0 auto;
+  max-width: 1400px;
+  padding: 0 40px;
+}
+
+.heroLeft {
+  flex-grow: 1;
+}
+.heroRight {}
+
+.heroDemo {
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  height: 100%;
+  width: 280px;
+}
 
 @media screen and (max-width: 996px) {
   .heroBanner {
     padding: 2rem;
+  }
+  .heroBannerInner {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+  .heroDemo {
+    height: 400px;
   }
 }
 
@@ -25,5 +59,33 @@
 .demoBox {
   max-width: 1400px;
   margin: auto;
-padding: 0 1rem;
+  padding: 0 1rem;
+}
+
+.heroTitle {
+  font-family: 'Noto Sans', sans-serif;
+  font-weight: 900;
+  font-size: 6rem;
+  line-height: 1.1;
+  letter-spacing: -2px;
+  color: var(--ifm-color-primary);
+  /*
+  text-transform: uppercase;
+  letter-spacing: -4px;
+   */
+}
+.heroSubtitle {
+  font-family: 'Noto Sans', sans-serif;
+  font-weight: 700;
+  font-size: 2.4rem;
+  line-height: .9;
+  max-width: 650px;
+  margin: 0 auto;
+  margin-bottom: 1rem;
+}
+.heroText {
+  max-width: 650px;
+  margin: 0 auto;
+  margin-bottom: 1rem;
+  color: var(--text-muted);
 }

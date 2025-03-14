@@ -17,6 +17,7 @@ export default meta;
 // story-start
 export const SimpleExample = () => {
   const tree = useTree<string>({
+    initialState: { expandedItems: ["folder-1"] },
     rootItemId: "folder",
     getItemName: (item) => item.getItemData(),
     isItemFolder: (item) => !item.getItemData().endsWith("item"),

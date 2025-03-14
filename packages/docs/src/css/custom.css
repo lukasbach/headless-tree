@@ -1,3 +1,5 @@
+@import url('https://fonts.lukasbach.com/noto.css');
+
 /**
  * Any CSS included here will be global. The classic template
  * bundles Infima by default. Infima is a CSS framework designed to
@@ -26,6 +28,7 @@
   --ifm-menu-color-background-active: color-mix(in srgb, var(--ifm-color-primary) 10%, transparent);
   --ifm-footer-background-color: white;
   --sidebar-header-color: #1c1c1c;
+  --text-muted: #434343;
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
@@ -41,6 +44,7 @@
 
   --ifm-footer-background-color: black;
   --sidebar-header-color: white;
+  --text-muted: #a6a6a6;
 }
 
 .navbar {

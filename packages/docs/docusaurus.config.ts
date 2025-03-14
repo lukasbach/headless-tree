@@ -6,7 +6,7 @@ import { storybookPlugin } from "./storybook-plugin";
 
 const config: Config = {
   title: "Headless Tree",
-  tagline: "Spiritual Successor to react-complex-tree. Work In Progress.",
+  tagline: "The definitive tree component for the Web",
   favicon: "img/favicon.ico",
 
   url: "https://headless-tree.lukasbach.com",

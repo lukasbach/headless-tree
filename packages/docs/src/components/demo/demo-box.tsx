@@ -16,7 +16,7 @@ export type DemoBoxProps = {
   all?: boolean;
 };
 
-const storybookRoot =
+export const storybookRoot =
   process.env.NODE_ENV === "production"
     ? "https://headless-tree.lukasbach.com/storybook/react"
     : "http://localhost:6006";
