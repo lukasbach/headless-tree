@@ -4,7 +4,8 @@ import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import Layout from "@theme/Layout";
 import Heading from "@theme/Heading";
 
-import { DemoBox, storybookRoot } from "@site/src/components/demo/demo-box";
+import { storybookRoot } from "@site/src/components/demo/demo-box";
+import { DemoGrid } from "@site/src/components/home/demo-grid";
 import styles from "./index.module.css";
 
 function HomepageHeader() {
@@ -53,9 +54,7 @@ export default function Home(): JSX.Element {
   return (
     <Layout title={`${siteConfig.title}`} description={siteConfig.tagline}>
       <HomepageHeader />
-      <main className={styles.demoBox}>
-        <DemoBox stories={["react-general-simple-example--simple-example"]} />
-      </main>
+      <DemoGrid />
     </Layout>
   );
 }

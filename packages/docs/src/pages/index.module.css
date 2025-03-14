@@ -57,7 +57,7 @@
 }
 
 .demoBox {
-  max-width: 1400px;
+  width: 100%;
   margin: auto;
   padding: 0 1rem;
 }

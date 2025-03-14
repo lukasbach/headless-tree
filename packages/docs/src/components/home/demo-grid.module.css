@@ -1,0 +1,60 @@
+.container {
+    width: 1000px;
+    padding: 0 20px;
+    margin: auto;
+}
+
+@media screen and (max-width: 1100px) {
+    .container {
+        width: 100%;
+    }
+}
+
+:global([data-theme='light']) {
+    --demobtn-fg: white;
+}
+:global([data-theme='dark']) {
+    --demobtn-fg: black;
+}
+
+.demoButtonGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px 0;
+}
+
+.demoButton {
+    display: flex;
+    flex-direction: column;
+
+    background-color: var(--ifm-color-primary);
+    color: var(--demobtn-fg);
+    border-radius: 8px;
+    cursor: pointer;
+
+    border: none;
+    padding: .4rem;
+}
+.demoButton:hover {
+    background-color: var(--ifm-color-primary-dark);
+}
+.demoButton:active {
+    background-color: var(--ifm-color-primary-darker);
+}
+.demoButtonSelected {
+}
+.demoButtonSelected, .demoButtonSelected:hover, .demoButton:focus-visible {
+    outline: 2px solid var(--ifm-color-primary) !important;
+    outline-offset: 2px;
+}
+
+.demoTitle {
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin: .5rem 0;
+}
+
+.demoText {
+    margin: .2rem 0;
+}
