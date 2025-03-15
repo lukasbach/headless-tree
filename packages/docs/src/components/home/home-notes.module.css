@@ -1,0 +1,17 @@
+.container {
+    width: 1000px;
+    padding: 0 20px;
+    margin: auto;
+    margin-bottom: 4rem;
+}
+
+.container h2 {
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 300;
+    margin-top: 4rem;
+}
+
+.center {
+    text-align: center;
+}

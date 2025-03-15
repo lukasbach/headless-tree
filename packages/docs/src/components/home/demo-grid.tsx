@@ -15,6 +15,11 @@ const demos = [
     story: "react-drag-and-drop-kitchen-sink--kitchen-sink",
   },
   {
+    title: "Scalable",
+    text: "Headless Tree remains performant even with large trees",
+    story: "react-scalability-big-tree--big-tree",
+  },
+  {
     title: "Virtualization Support",
     text: "Compatible with common virtualization library to support 100k+ items",
     story: "react-scalability-basic-virtualization--basic-virtualization",
@@ -22,6 +27,42 @@ const demos = [
   {
     title: "Hotkeys!",
     text: "Lots of hotkeys, fully customizable",
+    story: "react-hotkeys-overwriting-hotkeys--overwriting-hotkeys",
+  },
+  {
+    title: "Search Support",
+    text: "Typeahead anywhere in the tree to quickly search the entire tree",
+    story: "react-search-basic--basic",
+  },
+  {
+    title: "Rename items",
+    text: "Optionally allow users to rename items inside the tree",
+    story: "react-renaming-basic--basic",
+  },
+  {
+    title: "Manage State",
+    text: "Let Headless Tree manage tree state internally, or manage any part of it yourself",
+    story: "react-state-distinct-state-handlers--distinct-state-handlers",
+  },
+  {
+    title: "Customize Behavior",
+    text: "Easily overwrite internal behavior like requiring double clicks on items to expand",
+    story:
+      "react-guides-click-behavior-expand-on-double-click--expand-on-double-click",
+  },
+  {
+    title: "Customize Logic",
+    text: "Overwrite or expand any internal behavior of Headless Tree",
+    story: "react-guides-overwriting-internals--overwriting-internals",
+  },
+  {
+    title: "Async Data Support",
+    text: "Use synchronous or asynchronous data sources for your tree. Headless Tree comes with optional caching for async data",
+    story: "react-async-data-loading--async-data-loading",
+  },
+  {
+    title: "",
+    text: "",
     story: "react-hotkeys-overwriting-hotkeys--overwriting-hotkeys",
   },
 ];
@@ -35,6 +76,7 @@ export const DemoGrid: FC = () => {
         tags={["homepage"]}
         fullWidth
       />
+      <div className={styles.sampleHeader}>Check out some more samples:</div>
       <div className={styles.demoButtonGrid}>
         {demos.map((demo, index) => (
           <button

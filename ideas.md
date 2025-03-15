@@ -1,1 +1,2 @@
 - Auto-open folders when dragging onto them for 1 second
+- Drag item to bottom most location shows dragline at 0

@@ -15,6 +15,15 @@
 }
 :global([data-theme='dark']) {
     --demobtn-fg: black;
+    --demobtn-bg: white;
+    --demobtn-text: #515151;
+}
+
+.sampleHeader {
+    text-align: center;
+    margin: 3rem 0 1rem 0;
+    font-family: 'Noto Sans', sans-serif;
+    font-weight: 300;
 }
 
 .demoButtonGrid {
@@ -25,36 +34,39 @@
 }
 
 .demoButton {
+    font-family: 'Noto Sans', sans-serif;
     display: flex;
     flex-direction: column;
 
-    background-color: var(--ifm-color-primary);
+    background-color: var(--demobtn-bg);
     color: var(--demobtn-fg);
     border-radius: 8px;
     cursor: pointer;
 
     border: none;
-    padding: .4rem;
+    padding: .3rem .6rem;
+    transition: transform .05s;
 }
 .demoButton:hover {
-    background-color: var(--ifm-color-primary-dark);
-}
-.demoButton:active {
-    background-color: var(--ifm-color-primary-darker);
+    transform: translateY(0) scale(1.05);
 }
 .demoButtonSelected {
 }
 .demoButtonSelected, .demoButtonSelected:hover, .demoButton:focus-visible {
-    outline: 2px solid var(--ifm-color-primary) !important;
-    outline-offset: 2px;
+    pointer-events: none;
+    outline: 2px solid var(--demobtn-bg) !important;
+    outline-offset: 3px;
 }
 
 .demoTitle {
-    font-weight: bold;
+    font-weight: 400;
     font-size: 1.2rem;
     margin: .5rem 0;
 }
 
 .demoText {
+    font-weight: 300;
     margin: .2rem 0;
+    color: var(--demobtn-text);
+    font-size: .8rem;
 }

@@ -6,6 +6,7 @@ import Heading from "@theme/Heading";
 
 import { storybookRoot } from "@site/src/components/demo/demo-box";
 import { DemoGrid } from "@site/src/components/home/demo-grid";
+import { HomeNotes } from "@site/src/components/home/home-notes";
 import styles from "./index.module.css";
 
 function HomepageHeader() {
@@ -17,12 +18,15 @@ function HomepageHeader() {
           <Heading as="h1" className={styles.heroTitle}>
             {siteConfig.title}
           </Heading>
-          <p className={styles.heroSubtitle}>{siteConfig.tagline}</p>
+          <p className={styles.heroSubtitle}>
+            The definitive tree component
+            <br /> for the Web
+          </p>
           <p className={styles.heroText}>
             Super-easy integration of complex tree components into React.
             Supports ordered and unordered drag-and-drop, extensive keybindings,
-            search, renaming and more. Fully customizable, accessible. This is
-            the official successor library for{" "}
+            search, renaming and more. Fully customizable, accessible. Headless
+            Tree is the official successor for{" "}
             <Link to="https://rct.lukasbach.com/">React Complex Tree</Link>.
           </p>
           <div className={styles.buttons}>
@@ -55,6 +59,7 @@ export default function Home(): JSX.Element {
     <Layout title={`${siteConfig.title}`} description={siteConfig.tagline}>
       <HomepageHeader />
       <DemoGrid />
+      <HomeNotes />
     </Layout>
   );
 }
