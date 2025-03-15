@@ -42,7 +42,7 @@ function HomepageHeader() {
           <div className={styles.heroDemo}>
             <iframe
               title="Demo"
-              src={`${storybookRoot}/iframe.html?path=/story/react-drag-and-drop-kitchen-sink--kitchen-sink`}
+              src={`${storybookRoot}/iframe.html?path=/story/react-general-comprehensive-sample--comprehensive-sample`}
               width="100%"
               height="100%"
             />

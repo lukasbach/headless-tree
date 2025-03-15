@@ -61,14 +61,16 @@ const demos = [
     story: "react-async-data-loading--async-data-loading",
   },
   {
-    title: "",
-    text: "",
-    story: "react-hotkeys-overwriting-hotkeys--overwriting-hotkeys",
+    title: "Comprehensive Sample",
+    text: "Sample with all features enabled",
+    story: "react-general-comprehensive-sample--comprehensive-sample",
   },
 ];
 
 export const DemoGrid: FC = () => {
-  const [selectedDemo, setSelectedDemo] = useState(0);
+  const [selectedDemo, setSelectedDemo] = useState(
+    Object.keys(demos).length - 1,
+  );
   return (
     <div className={styles.container}>
       <DemoBox

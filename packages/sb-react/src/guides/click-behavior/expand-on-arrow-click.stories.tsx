@@ -67,7 +67,7 @@ export const ExpandOnArrowClick = () => {
   });
 
   return (
-    <div {...tree.getContainerProps()} className="tree">
+    <div {...tree.getContainerProps()} className="tree noarrow">
       {tree.getItems().map((item) => (
         <div
           className="outeritem"

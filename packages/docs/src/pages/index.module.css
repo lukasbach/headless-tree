@@ -18,6 +18,7 @@
 }
 .heroBannerInner {
   display: flex;
+  align-items: stretch;
   margin: 0 auto;
   max-width: 1400px;
   padding: 0 40px;
@@ -25,8 +26,13 @@
 
 .heroLeft {
   flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
-.heroRight {}
+.heroRight {
+  min-height: 450px;
+}
 
 .heroDemo {
   background-color: white;
