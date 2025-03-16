@@ -47,6 +47,11 @@
   --text-muted: #a6a6a6;
 }
 
+/* color mode btn */
+.clean-btn {
+  color: #ffffff;
+}
+
 .navbar {
   background-color: black;
 }

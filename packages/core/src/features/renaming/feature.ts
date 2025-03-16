@@ -59,6 +59,7 @@ export const renamingFeature: FeatureImplementation = {
     },
 
     getRenameInputProps: ({ tree }) => ({
+      ref: (r: HTMLInputElement) => r?.focus(),
       onBlur: () => tree.abortRenaming(),
       value: tree.getRenamingValue(),
       onChange: (e: InputEvent) => {

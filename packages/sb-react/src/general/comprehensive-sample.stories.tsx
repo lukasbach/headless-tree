@@ -1,6 +1,8 @@
 import type { Meta } from "@storybook/react";
 import React, { Fragment } from "react";
 import {
+  DropTarget,
+  ItemInstance,
   createOnDropHandler,
   dragAndDropFeature,
   hotkeysCoreFeature,
@@ -32,6 +34,31 @@ const insertNewItem = (dataTransfer: DataTransfer) => {
   return newId;
 };
 
+const onDropForeignDragObject = (
+  dataTransfer: DataTransfer,
+  target: DropTarget<DemoItem>,
+) => {
+  const newId = insertNewItem(dataTransfer);
+  insertItemsAtTarget([newId], target, (item, newChildrenIds) => {
+    data[item.getId()].children = newChildrenIds;
+  });
+};
+const onCompleteForeignDrop = (items: ItemInstance<DemoItem>[]) =>
+  removeItemsFromParents(items, (item, newChildren) => {
+    item.getItemData().children = newChildren;
+  });
+const onRename = (item: ItemInstance<DemoItem>, value: string) => {
+  data[item.getId()].name = value;
+};
+const getCssClass = (item: ItemInstance<DemoItem>) =>
+  cx("treeitem", {
+    focused: item.isFocused(),
+    expanded: item.isExpanded(),
+    selected: item.isSelected(),
+    folder: item.isFolder(),
+    searchmatch: item.isMatchingSearch(),
+  });
+
 // story-start
 export const ComprehensiveSample = () => {
   const tree = useTree<DemoItem>({
@@ -46,19 +73,13 @@ export const ComprehensiveSample = () => {
     onDrop: createOnDropHandler((item, newChildren) => {
       data[item.getId()].children = newChildren;
     }),
-    onRename: (item, value) => {
-      data[item.getId()].name = value;
-    },
-    onDropForeignDragObject: (dataTransfer, target) => {
-      const newId = insertNewItem(dataTransfer);
-      insertItemsAtTarget([newId], target, (item, newChildrenIds) => {
-        data[item.getId()].children = newChildrenIds;
-      });
-    },
-    onCompleteForeignDrop: (items) =>
-      removeItemsFromParents(items, (item, newChildren) => {
-        item.getItemData().children = newChildren;
-      }),
+    onRename,
+    onDropForeignDragObject,
+    onCompleteForeignDrop,
+    createForeignDragObject: (items) => ({
+      format: "text/plain",
+      data: items.map((item) => item.getId()).join(","),
+    }),
     canDropForeignDragObject: (_, target) => target.item.isFolder(),
     indent: 20,
     dataLoader: syncDataLoader,
@@ -88,27 +109,14 @@ export const ComprehensiveSample = () => {
                 className="renaming-item"
                 style={{ marginLeft: `${item.getItemMeta().level * 20}px` }}
               >
-                <input
-                  {...item.getRenameInputProps()}
-                  ref={(i) => i?.focus()}
-                />
+                <input {...item.getRenameInputProps()} />
               </div>
             ) : (
               <button
                 {...item.getProps()}
                 style={{ paddingLeft: `${item.getItemMeta().level * 20}px` }}
               >
-                <div
-                  className={cx("treeitem", {
-                    focused: item.isFocused(),
-                    expanded: item.isExpanded(),
-                    selected: item.isSelected(),
-                    folder: item.isFolder(),
-                    searchmatch: item.isMatchingSearch(),
-                  })}
-                >
-                  {item.getItemName()}
-                </div>
+                <div className={getCssClass(item)}>{item.getItemName()}</div>
               </button>
             )}
           </Fragment>
@@ -128,9 +136,10 @@ export const ComprehensiveSample = () => {
         </div>
         <div
           className="foreign-dropzone"
-          onDrop={(e) =>
-            alert(JSON.stringify(e.dataTransfer.getData("text/plain")))
-          }
+          onDrop={(e) => {
+            alert(JSON.stringify(e.dataTransfer.getData("text/plain")));
+            console.log(e.dataTransfer.getData("text/plain"));
+          }}
           onDragOver={(e) => e.preventDefault()}
         >
           Drop items here!

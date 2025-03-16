@@ -11,7 +11,9 @@
 }
 
 :global([data-theme='light']) {
-    --demobtn-fg: white;
+    --demobtn-fg: #ffffff;
+    --demobtn-bg: #131313;
+    --demobtn-text: #c5c5c5;
 }
 :global([data-theme='dark']) {
     --demobtn-fg: black;
@@ -51,6 +53,9 @@
     transform: translateY(0) scale(1.05);
 }
 .demoButtonSelected {
+}
+[data-theme='light'] .demoButtonX {
+    border: 1px solid black;
 }
 .demoButtonSelected, .demoButtonSelected:hover, .demoButton:focus-visible {
     pointer-events: none;

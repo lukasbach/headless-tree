@@ -64,10 +64,7 @@ export const CanRenameConfigurability = () => {
                 className="renaming-item"
                 style={{ marginLeft: `${item.getItemMeta().level * 20}px` }}
               >
-                <input
-                  {...item.getRenameInputProps()}
-                  ref={(i) => i?.focus()}
-                />
+                <input {...item.getRenameInputProps()} />
               </div>
             ) : (
               <button
