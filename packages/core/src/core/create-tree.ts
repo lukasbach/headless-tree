@@ -137,6 +137,7 @@ export const createTree = <T>(
         // Not necessary, since I think the subupdate below keeps the state fresh anyways?
         // state = typeof updater === "function" ? updater(state) : updater;
         config.setState?.(state); // TODO this cant be right... This doesnt allow external state updates
+        // TODO this is never used, remove
       },
       applySubStateUpdate: <K extends keyof TreeState<any>>(
         {},
@@ -157,10 +158,20 @@ export const createTree = <T>(
       },
       getConfig: () => config,
       setConfig: (_, updater) => {
-        config = typeof updater === "function" ? updater(config) : updater;
+        // TODO test corner cases for this
+        const newConfig =
+          typeof updater === "function" ? updater(config) : updater;
+        const hasChangedExpandedItems =
+          newConfig.state?.expandedItems &&
+          newConfig.state?.expandedItems !== state.expandedItems;
+        config = newConfig;
 
-        if (config.state) {
-          state = { ...state, ...config.state };
+        if (newConfig.state) {
+          state = { ...state, ...newConfig.state };
+        }
+        if (hasChangedExpandedItems) {
+          rebuildItemMeta();
+          config.setState?.(state);
         }
       },
       getItemInstance: ({}, itemId) => itemInstancesMap[itemId],

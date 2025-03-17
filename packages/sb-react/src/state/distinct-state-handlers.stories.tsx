@@ -64,6 +64,19 @@ export const DistinctStateHandlers = () => {
       <pre>{JSON.stringify(expandedItems)}</pre>
       <h3>Focused Item</h3>
       <pre>{JSON.stringify(focusedItem)}</pre>
+
+      <div className="actionbar">
+        <button
+          className="actionbtn"
+          onClick={() => {
+            setExpandedItems(["root-1", "root-2"]);
+            setFocusedItem("root-1-1");
+            setSelectedItems(["root-1-1", "root-2-2"]);
+          }}
+        >
+          Overwrite State
+        </button>
+      </div>
     </>
   );
 };

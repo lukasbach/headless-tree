@@ -1,2 +1,3 @@
 - Auto-open folders when dragging onto them for 1 second
 - Drag item to bottom most location shows dragline at 0
+- Dragging items out of the tree (or otherwise removing them), they remain selected. Now ctrl+selecting a new item and dragging that out as well will throw an error (in comprehensive demo)

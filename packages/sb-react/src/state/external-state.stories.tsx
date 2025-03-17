@@ -56,6 +56,20 @@ export const ExternalState = () => {
         ))}
       </div>
       <pre>{JSON.stringify(state, null, 2)}</pre>
+      <div className="actionbar">
+        <button
+          className="actionbtn"
+          onClick={() => {
+            setState({
+              expandedItems: ["root-1", "root-2"],
+              focusedItem: "root-1-1",
+              selectedItems: ["root-1-1", "root-2-2"],
+            });
+          }}
+        >
+          Overwrite State
+        </button>
+      </div>
     </>
   );
 };
