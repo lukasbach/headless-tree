@@ -170,6 +170,7 @@ export const createTree = <T>(
           state = { ...state, ...newConfig.state };
         }
         if (hasChangedExpandedItems) {
+          // if expanded items where changed from the outside
           rebuildItemMeta();
           config.setState?.(state);
         }
