@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import { TestTree } from "../test-utils/test-tree";
+import { buildStaticInstance } from "./build-static-instance";
 
 declare module "../types/core" {
   export interface TreeInstance<T> {
@@ -17,6 +18,36 @@ const factory = TestTree.default({});
 
 describe("core-feature/prop-memoization", () => {
   factory.forSuits((tree) => {
+    describe("rebuilds item instance", () => {
+      it("rebuilds when explicitly invoked", async () => {
+        const instanceBuilder = vi.fn().mockImplementation(buildStaticInstance);
+        const testTree = await tree
+          .with({ instanceBuilder })
+          .createTestCaseTree();
+        expect(instanceBuilder).toBeCalled();
+        instanceBuilder.mockClear();
+        testTree.instance.rebuildTree();
+        // if tree structure doesnt mutate, only root tree item is rebuilt actually
+        expect(instanceBuilder).toBeCalled();
+      });
+
+      it("rebuilds when config changes with new expanded items", async () => {
+        const instanceBuilder = vi.fn().mockImplementation(buildStaticInstance);
+        const testTree = await tree
+          .with({ instanceBuilder })
+          .createTestCaseTree();
+        expect(instanceBuilder).toBeCalled();
+        instanceBuilder.mockClear();
+        testTree.instance.setConfig((oldCfg) => ({
+          ...oldCfg,
+          state: {
+            expandedItems: ["x4"],
+          },
+        }));
+        expect(instanceBuilder).toBeCalled();
+      });
+    });
+
     describe("calls prev in correct order", () => {
       it("tree instance with overwrite marks, order 1", async () => {
         const testTree = await tree

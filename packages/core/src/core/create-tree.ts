@@ -158,7 +158,6 @@ export const createTree = <T>(
       },
       getConfig: () => config,
       setConfig: (_, updater) => {
-        // TODO test corner cases for this
         const newConfig =
           typeof updater === "function" ? updater(config) : updater;
         const hasChangedExpandedItems =
