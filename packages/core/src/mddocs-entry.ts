@@ -49,6 +49,21 @@ export type DragAndDropFeatureItemInstance<T> =
   DragAndDropFeatureDef<T>["itemInstance"];
 export type DragAndDropFeatureHotkeys<T> = DragAndDropFeatureDef<T>["hotkeys"];
 
+// /** @interface */
+// export type KeyboardDragAndDropFeatureConfig<T> =
+//   KeyboardDragAndDropFeatureDef<T>["config"];
+// /** @interface */
+// export type KeyboardDragAndDropFeatureState<T> =
+//   KeyboardDragAndDropFeatureDef<T>["state"];
+// /** @interface */
+// export type KeyboardDragAndDropFeatureTreeInstance<T> =
+//   KeyboardDragAndDropFeatureDef<T>["treeInstance"];
+// /** @interface */
+// export type KeyboardDragAndDropFeatureItemInstance<T> =
+//   KeyboardDragAndDropFeatureDef<T>["itemInstance"];
+// export type KeyboardDragAndDropFeatureHotkeys<T> =
+//   KeyboardDragAndDropFeatureDef<T>["hotkeys"];
+
 /** @interface */
 export type ExpandAllFeatureConfig = ExpandAllFeatureDef["config"];
 /** @interface */
