@@ -5,6 +5,7 @@ import {
   createOnDropHandler,
   dragAndDropFeature,
   hotkeysCoreFeature,
+  keyboardDragAndDropFeature,
   selectionFeature,
 } from "@headless-tree/core";
 import { useTree } from "@headless-tree/react";
@@ -42,6 +43,7 @@ export const UnitTestAsync = () => {
       selectionFeature,
       hotkeysCoreFeature,
       dragAndDropFeature,
+      keyboardDragAndDropFeature,
     ],
   });
 

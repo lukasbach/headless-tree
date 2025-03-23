@@ -4,6 +4,7 @@ import {
   createOnDropHandler,
   dragAndDropFeature,
   hotkeysCoreFeature,
+  keyboardDragAndDropFeature,
   removeItemsFromParents,
   selectionFeature,
   syncDataLoaderFeature,
@@ -52,6 +53,7 @@ export const DragOutside = () => {
       selectionFeature,
       hotkeysCoreFeature,
       dragAndDropFeature,
+      keyboardDragAndDropFeature,
     ],
   });
 

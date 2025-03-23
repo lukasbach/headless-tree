@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import {
   dragAndDropFeature,
   hotkeysCoreFeature,
+  keyboardDragAndDropFeature,
   selectionFeature,
   syncDataLoaderFeature,
 } from "@headless-tree/core";
@@ -54,6 +55,7 @@ export const CanDrag = () => {
       selectionFeature,
       hotkeysCoreFeature,
       dragAndDropFeature,
+      keyboardDragAndDropFeature,
     ],
   });
 

@@ -5,6 +5,7 @@ import {
   dragAndDropFeature,
   hotkeysCoreFeature,
   insertItemsAtTarget,
+  keyboardDragAndDropFeature,
   selectionFeature,
   syncDataLoaderFeature,
 } from "@headless-tree/core";
@@ -57,6 +58,7 @@ export const DragInside = () => {
       selectionFeature,
       hotkeysCoreFeature,
       dragAndDropFeature,
+      keyboardDragAndDropFeature,
     ],
   });
 

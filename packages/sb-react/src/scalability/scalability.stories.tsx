@@ -6,6 +6,7 @@ import {
   buildStaticInstance,
   dragAndDropFeature,
   hotkeysCoreFeature,
+  keyboardDragAndDropFeature,
   selectionFeature,
   syncDataLoaderFeature,
 } from "@headless-tree/core";
@@ -100,6 +101,7 @@ export const BigTree = ({
       selectionFeature,
       hotkeysCoreFeature,
       dragAndDropFeature,
+      keyboardDragAndDropFeature,
     ],
   });
 

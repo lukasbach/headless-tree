@@ -4,6 +4,7 @@ import {
   dragAndDropFeature,
   hotkeysCoreFeature,
   insertItemsAtTarget,
+  keyboardDragAndDropFeature,
   removeItemsFromParents,
   selectionFeature,
   syncDataLoaderFeature,
@@ -97,6 +98,7 @@ const Tree = (props: { data: Record<string, Item>; prefix: string }) => {
       selectionFeature,
       hotkeysCoreFeature,
       dragAndDropFeature,
+      keyboardDragAndDropFeature,
     ],
   });
 

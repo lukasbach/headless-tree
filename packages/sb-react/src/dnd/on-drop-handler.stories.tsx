@@ -4,6 +4,7 @@ import {
   createOnDropHandler,
   dragAndDropFeature,
   hotkeysCoreFeature,
+  keyboardDragAndDropFeature,
   selectionFeature,
   syncDataLoaderFeature,
 } from "@headless-tree/core";
@@ -58,6 +59,7 @@ export const OnDropHandler = () => {
       selectionFeature,
       hotkeysCoreFeature,
       dragAndDropFeature,
+      keyboardDragAndDropFeature,
     ],
   });
 
