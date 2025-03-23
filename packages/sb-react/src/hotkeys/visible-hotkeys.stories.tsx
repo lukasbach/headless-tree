@@ -3,6 +3,7 @@ import React, { Fragment, useEffect, useRef, useState } from "react";
 import {
   dragAndDropFeature,
   hotkeysCoreFeature,
+  keyboardDragAndDropFeature,
   renamingFeature,
   searchFeature,
   selectionFeature,
@@ -68,6 +69,7 @@ export const VisibleHotkeys = () => {
       selectionFeature,
       hotkeysCoreFeature,
       dragAndDropFeature,
+      keyboardDragAndDropFeature,
       renamingFeature,
       searchFeature,
     ],

@@ -4,6 +4,7 @@ import {
   FeatureImplementation,
   dragAndDropFeature,
   hotkeysCoreFeature,
+  keyboardDragAndDropFeature,
   selectionFeature,
   syncDataLoaderFeature,
 } from "@headless-tree/core";
@@ -61,6 +62,7 @@ export const ExpandOnArrowClick = () => {
       syncDataLoaderFeature,
       selectionFeature,
       dragAndDropFeature,
+      keyboardDragAndDropFeature,
       hotkeysCoreFeature,
       customClickBehavior,
     ],
