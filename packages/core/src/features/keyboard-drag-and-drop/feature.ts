@@ -14,76 +14,43 @@ const getNextDropTarget = <T>(
   const state = tree.getState().dnd;
   const direction = isUp ? 0 : 1;
   if (!state?.dragTarget) return undefined;
-  console.log("!!!!!!!!!!!!!!!!!!!!!");
-  console.log("!!!dragTarget.item", state.dragTarget.item.getId());
 
+  // currently hovering between items
   if ("childIndex" in state.dragTarget) {
     const parent = state.dragTarget.item.getParent();
     const targetedItem = tree.getItems()[state.dragTarget.dragLineIndex - 1]; // item above dragline
-    console.log(
-      "!!!targetedItem",
-      state.dragTarget.dragLineIndex,
-      targetedItem?.getId(),
-    );
 
     const targetCategory = targetedItem
       ? getItemDropCategory(targetedItem)
       : ItemDropCategory.Item;
-    console.log("!!!targetCategory", targetCategory);
     const maxLevel = targetedItem?.getItemMeta().level ?? 0;
     const minLevel = targetedItem?.getItemBelow()?.getItemMeta().level ?? 0;
-    console.log("!!!parent", parent?.getId());
 
+    // reparenting
     if (targetCategory === ItemDropCategory.LastInGroup) {
-      console.log({
-        dragLineLevel: state.dragTarget.dragLineLevel,
-        minLevel,
-        maxLevel,
-      });
       if (isUp && state.dragTarget.dragLineLevel < maxLevel) {
-        console.log("REPARENT UP");
         return getReparentTarget(
-          targetedItem, // .getItemAbove()!,
+          targetedItem,
           state.dragTarget.dragLineLevel + 1,
         );
-        // return {
-        //   ...state.dragTarget,
-        //   // TODO insert all correct values, maybe consolidate with dnd utils
-        //   // item: state.dragTarget.item.getChildren().at(-1)!,
-        //   // childIndex: parent.getChildren().length - 1,
-        //   // insertionIndex: parent.getChildren().length - 1,
-        //   // dragLineIndex: state.dragTarget.dragLineIndex,
-        //   dragLineLevel: state.dragTarget.dragLineLevel + 1,
-        // };
       }
       if (!isUp && state.dragTarget.dragLineLevel > minLevel && parent) {
-        console.log("REPARENT DOWN");
         return getReparentTarget(
-          targetedItem, // .getItemAbove()!,
+          targetedItem,
           state.dragTarget.dragLineLevel - 1,
         );
-        // console.log("REPARENT DOWN", state.dragTarget.dragLineLevel, {
-        //   minLevel,
-        // });
-        // return {
-        //   item: parent,
-        //   childIndex: parent.getChildren().length - 1,
-        //   insertionIndex: parent.getChildren().length - 1,
-        //   dragLineIndex: state.dragTarget.dragLineIndex,
-        //   dragLineLevel: state.dragTarget.dragLineLevel - 1,
-        // };
       }
     }
 
-    // const newIndex = targetedItem.getItemMeta().index + direction;
     const newIndex = state.dragTarget.dragLineIndex - 1 + direction;
     return { item: tree.getItems()[newIndex] };
   }
 
-  if (
-    getItemDropCategory(state.dragTarget.item) === "ExpandedFolder" &&
-    !isUp
-  ) {
+  // moving upwards outside of an open folder
+  const targetingExpandedFolder =
+    getItemDropCategory(state.dragTarget.item) ===
+    ItemDropCategory.ExpandedFolder;
+  if (targetingExpandedFolder && !isUp) {
     return {
       item: state.dragTarget.item,
       childIndex: 0,
