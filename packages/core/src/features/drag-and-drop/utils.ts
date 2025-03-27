@@ -2,6 +2,7 @@ import { ItemInstance, TreeInstance } from "../../types/core";
 import { DropTarget } from "./types";
 
 export enum ItemDropCategory {
+  // TODO remove values
   Item = "Item",
   ExpandedFolder = "ExpandedFolder",
   LastInGroup = "LastInGroup",
