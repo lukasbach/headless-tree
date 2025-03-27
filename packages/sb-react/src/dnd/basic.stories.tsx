@@ -22,6 +22,7 @@ export default meta;
 export const Basic = () => {
   const [state, setState] = useState<Partial<TreeState<any>>>({
     expandedItems: ["root-1", "root-1-2"],
+    selectedItems: ["root-1-2-1", "root-1-2-2"],
   });
   const tree = useTree<string>({
     state,

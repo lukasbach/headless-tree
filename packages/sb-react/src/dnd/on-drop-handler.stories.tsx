@@ -40,11 +40,12 @@ const data: Record<string, Item> = {
 export const OnDropHandler = () => {
   const tree = useTree<Item>({
     initialState: {
-      expandedItems: ["lunch", "dessert"],
+      expandedItems: ["lunch", "dessert", "soup"],
+      selectedItems: ["tomato", "chicken"],
     },
     rootItemId: "root",
     getItemName: (item) => item.getItemData().name,
-    isItemFolder: () => true,
+    isItemFolder: (item) => !!item.getItemData().children,
     canReorder: true,
     onDrop: createOnDropHandler((item, newChildren) => {
       item.getItemData().children = newChildren;
