@@ -8,7 +8,7 @@ export interface DndDataRef {
 export interface DndState<T> {
   draggedItems?: ItemInstance<T>[];
   draggingOverItem?: ItemInstance<T>;
-  dragTarget?: DropTarget<T>;
+  dragTarget?: DropTarget<T>; // TODO rename to dropTarget
 }
 
 export interface DragLineData {

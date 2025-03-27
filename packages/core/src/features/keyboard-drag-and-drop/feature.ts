@@ -10,15 +10,15 @@ import {
 const getNextDropTarget = <T>(
   tree: TreeInstance<T>,
   isUp: boolean,
+  dragTarget: DropTarget<T>,
 ): DropTarget<T> | undefined => {
   const state = tree.getState().dnd;
   const direction = isUp ? 0 : 1;
-  if (!state?.dragTarget) return undefined;
 
   // currently hovering between items
-  if ("childIndex" in state.dragTarget) {
-    const parent = state.dragTarget.item.getParent();
-    const targetedItem = tree.getItems()[state.dragTarget.dragLineIndex - 1]; // item above dragline
+  if ("childIndex" in dragTarget) {
+    const parent = dragTarget.item.getParent();
+    const targetedItem = tree.getItems()[dragTarget.dragLineIndex - 1]; // item above dragline
 
     const targetCategory = targetedItem
       ? getItemDropCategory(targetedItem)
@@ -28,46 +28,59 @@ const getNextDropTarget = <T>(
 
     // reparenting
     if (targetCategory === ItemDropCategory.LastInGroup) {
-      if (isUp && state.dragTarget.dragLineLevel < maxLevel) {
-        return getReparentTarget(
-          targetedItem,
-          state.dragTarget.dragLineLevel + 1,
-        );
+      if (isUp && dragTarget.dragLineLevel < maxLevel) {
+        return getReparentTarget(targetedItem, dragTarget.dragLineLevel + 1);
       }
-      if (!isUp && state.dragTarget.dragLineLevel > minLevel && parent) {
-        return getReparentTarget(
-          targetedItem,
-          state.dragTarget.dragLineLevel - 1,
-        );
+      if (!isUp && dragTarget.dragLineLevel > minLevel && parent) {
+        return getReparentTarget(targetedItem, dragTarget.dragLineLevel - 1);
       }
     }
 
-    const newIndex = state.dragTarget.dragLineIndex - 1 + direction;
+    const newIndex = dragTarget.dragLineIndex - 1 + direction;
     return { item: tree.getItems()[newIndex] };
   }
 
   // moving upwards outside of an open folder
   const targetingExpandedFolder =
-    getItemDropCategory(state.dragTarget.item) ===
-    ItemDropCategory.ExpandedFolder;
+    getItemDropCategory(dragTarget.item) === ItemDropCategory.ExpandedFolder;
   if (targetingExpandedFolder && !isUp) {
     return {
-      item: state.dragTarget.item,
+      item: dragTarget.item,
       childIndex: 0,
       insertionIndex: 0, // TODO everywhere!
-      dragLineIndex: state.dragTarget.item.getItemMeta().index + direction,
-      dragLineLevel: state.dragTarget.item.getItemMeta().level + 1,
+      dragLineIndex: dragTarget.item.getItemMeta().index + direction,
+      dragLineLevel: dragTarget.item.getItemMeta().level + 1,
     };
   }
 
   // currently hovering over item
   return {
-    item: state.dragTarget.item.getParent()!,
-    childIndex: state.dragTarget.item.getIndexInParent() + direction,
-    insertionIndex: state.dragTarget.item.getIndexInParent() + direction, // TODO everywhere!
-    dragLineIndex: state.dragTarget.item.getItemMeta().index + direction,
-    dragLineLevel: state.dragTarget.item.getItemMeta().level,
+    item: dragTarget.item.getParent()!,
+    childIndex: dragTarget.item.getIndexInParent() + direction,
+    insertionIndex: dragTarget.item.getIndexInParent() + direction, // TODO everywhere!
+    dragLineIndex: dragTarget.item.getItemMeta().index + direction,
+    dragLineLevel: dragTarget.item.getItemMeta().level,
   };
+};
+
+const getNextValidDropTarget = <T>(
+  tree: TreeInstance<T>,
+  isUp: boolean,
+  previousTarget = tree.getState().dnd?.dragTarget,
+): DropTarget<T> | undefined => {
+  if (!previousTarget) return undefined;
+  const nextTarget = getNextDropTarget(tree, isUp, previousTarget);
+  if (!nextTarget) return undefined;
+  if (canDrop(null, nextTarget, tree)) {
+    return nextTarget;
+  }
+  return getNextValidDropTarget(tree, isUp, nextTarget);
+};
+
+const updateScroll = <T>(tree: TreeInstance<T>) => {
+  const state = tree.getState().dnd;
+  if (!state?.dragTarget || "childIndex" in state.dragTarget) return;
+  state.dragTarget.item.scrollTo({ block: "nearest", inline: "nearest" });
 };
 
 export const keyboardDragAndDropFeature: FeatureImplementation = {
@@ -96,24 +109,28 @@ export const keyboardDragAndDropFeature: FeatureImplementation = {
     },
     dragUp: {
       hotkey: "ArrowUp",
+      preventDefault: true,
       isEnabled: (tree) => !!tree.getState().dnd,
       handler: (_, tree) => {
         // console.log(tree.getState().dnd);
         tree.applySubStateUpdate("dnd", {
           draggedItems: tree.getState().dnd?.draggedItems,
-          dragTarget: getNextDropTarget(tree, true),
+          dragTarget: getNextValidDropTarget(tree, true),
         });
+        updateScroll(tree);
       },
     },
     dragDown: {
       hotkey: "ArrowDown",
+      preventDefault: true,
       isEnabled: (tree) => !!tree.getState().dnd,
       handler: (_, tree) => {
         // console.log(tree.getState().dnd);
         tree.applySubStateUpdate("dnd", {
           draggedItems: tree.getState().dnd?.draggedItems,
-          dragTarget: getNextDropTarget(tree, false),
+          dragTarget: getNextValidDropTarget(tree, false),
         });
+        updateScroll(tree);
       },
     },
     cancelDrag: {
@@ -126,9 +143,9 @@ export const keyboardDragAndDropFeature: FeatureImplementation = {
     },
     completeDrag: {
       hotkey: "Enter",
+      preventDefault: true,
       isEnabled: (tree) => !!tree.getState().dnd,
       handler: async (e, tree) => {
-        e.preventDefault();
         e.stopPropagation();
         // TODO copied from keyboard onDrop, unify them
         const dataRef = tree.getDataRef<DndDataRef>();
