@@ -44,7 +44,7 @@ export const dragAndDropFeature: FeatureImplementation = {
         if (bb) {
           return {
             indent,
-            top: bb.bottom - treeBb.bottom,
+            top: bb.bottom - treeBb.top,
             left: bb.left + leftOffset - treeBb.left,
             width: bb.width - leftOffset,
           };
