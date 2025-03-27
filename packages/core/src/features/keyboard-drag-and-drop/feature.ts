@@ -19,23 +19,33 @@ const getNextDropTarget = <T>(
 
   if ("childIndex" in state.dragTarget) {
     const parent = state.dragTarget.item.getParent();
-    // const targetedItem = // item above dragline
-    //   state.dragTarget.item.getChildren()[state.dragTarget.childIndex - 1];
-    const targetedItem = tree.getItems()[state.dragTarget.dragLineLevel + 1];
-    const targetCategory = getItemDropCategory(targetedItem);
-    const maxLevel = state.dragTarget.item.getItemMeta().level ?? 0;
-    const minLevel =
-      state.dragTarget.item.getItemBelow()?.getItemMeta().level ?? 0;
-    console.log("!!!targetedItem", targetedItem.getId(), targetCategory);
+    const targetedItem = tree.getItems()[state.dragTarget.dragLineIndex - 1]; // item above dragline
+    console.log(
+      "!!!targetedItem",
+      state.dragTarget.dragLineIndex,
+      targetedItem?.getId(),
+    );
+
+    const targetCategory = targetedItem
+      ? getItemDropCategory(targetedItem)
+      : ItemDropCategory.Item;
+    console.log("!!!targetCategory", targetCategory);
+    const maxLevel = targetedItem?.getItemMeta().level ?? 0;
+    const minLevel = targetedItem?.getItemBelow()?.getItemMeta().level ?? 0;
     console.log("!!!parent", parent?.getId());
 
     if (targetCategory === ItemDropCategory.LastInGroup) {
+      console.log({
+        dragLineLevel: state.dragTarget.dragLineLevel,
+        minLevel,
+        maxLevel,
+      });
       if (isUp && state.dragTarget.dragLineLevel < maxLevel) {
+        console.log("REPARENT UP");
         return getReparentTarget(
           targetedItem, // .getItemAbove()!,
           state.dragTarget.dragLineLevel + 1,
         );
-        // console.log("REPARENT UP");
         // return {
         //   ...state.dragTarget,
         //   // TODO insert all correct values, maybe consolidate with dnd utils
@@ -46,7 +56,8 @@ const getNextDropTarget = <T>(
         //   dragLineLevel: state.dragTarget.dragLineLevel + 1,
         // };
       }
-      if (!isUp && state.dragTarget.dragLineLevel >= minLevel && parent) {
+      if (!isUp && state.dragTarget.dragLineLevel > minLevel && parent) {
+        console.log("REPARENT DOWN");
         return getReparentTarget(
           targetedItem, // .getItemAbove()!,
           state.dragTarget.dragLineLevel - 1,
