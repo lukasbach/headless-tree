@@ -1,10 +1,10 @@
 import { ItemInstance, TreeInstance } from "../../types/core";
 import { DropTarget } from "./types";
 
-enum ItemDropCategory {
-  Item,
-  ExpandedFolder,
-  LastInGroup,
+export enum ItemDropCategory {
+  Item = "Item",
+  ExpandedFolder = "ExpandedFolder",
+  LastInGroup = "LastInGroup",
 }
 
 enum PlacementType {
@@ -60,7 +60,7 @@ export const canDrop = (
   return true;
 };
 
-const getItemDropCategory = (item: ItemInstance<any>) => {
+export const getItemDropCategory = (item: ItemInstance<any>) => {
   if (item.isExpanded()) {
     return ItemDropCategory.ExpandedFolder;
   }
@@ -153,6 +153,27 @@ const getNthParent = (
   return getNthParent(item.getParent()!, n);
 };
 
+/** @param item refers to the bottom-most item of the container, at which bottom is being reparented on (e.g. root-1-2-6)  */
+export const getReparentTarget = (
+  item: ItemInstance<any>,
+  reparentLevel: number,
+) => {
+  const itemMeta = item.getItemMeta();
+  const reparentedTarget = getNthParent(item, reparentLevel - 1);
+  const targetItemAbove = getNthParent(item, reparentLevel); // .getItemBelow()!;
+  const targetIndex = targetItemAbove.getIndexInParent() + 1;
+
+  // TODO possibly count items dragged out above the new target
+
+  return {
+    item: reparentedTarget,
+    childIndex: targetIndex,
+    insertionIndex: targetIndex,
+    dragLineIndex: itemMeta.index + 1,
+    dragLineLevel: reparentLevel,
+  };
+};
+
 export const getDropTarget = (
   e: any,
   item: ItemInstance<any>,
@@ -198,19 +219,7 @@ export const getDropTarget = (
   }
 
   if (placement.type === PlacementType.Reparent) {
-    const reparentedTarget = getNthParent(item, placement.reparentLevel - 1);
-    const targetItemAbove = getNthParent(item, placement.reparentLevel); // .getItemBelow()!;
-    const targetIndex = targetItemAbove.getIndexInParent() + 1;
-
-    // TODO possibly count items dragged out above the new target
-
-    return {
-      item: reparentedTarget,
-      childIndex: targetIndex,
-      insertionIndex: targetIndex,
-      dragLineIndex: itemMeta.index + 1,
-      dragLineLevel: placement.reparentLevel,
-    };
+    return getReparentTarget(item, placement.reparentLevel);
   }
 
   const maybeAddOneForBelow =
