@@ -12,11 +12,11 @@ const getNextDropTarget = <T>(
   isUp: boolean,
   dragTarget: DropTarget<T>,
 ): DropTarget<T> | undefined => {
-  const state = tree.getState().dnd;
   const direction = isUp ? 0 : 1;
 
   // currently hovering between items
   if ("childIndex" in dragTarget) {
+    // TODO move check in reusable function
     const parent = dragTarget.item.getParent();
     const targetedItem = tree.getItems()[dragTarget.dragLineIndex - 1]; // item above dragline
 
@@ -37,7 +37,8 @@ const getNextDropTarget = <T>(
     }
 
     const newIndex = dragTarget.dragLineIndex - 1 + direction;
-    return { item: tree.getItems()[newIndex] };
+    const item = tree.getItems()[newIndex];
+    return item ? { item } : undefined;
   }
 
   // moving upwards outside of an open folder
@@ -94,17 +95,22 @@ export const keyboardDragAndDropFeature: FeatureImplementation = {
       isEnabled: (tree) => !tree.getState().dnd,
       handler: (_, tree) => {
         const focusedItem = tree.getFocusedItem();
-        console.log("!!!!!", focusedItem.getIndexInParent());
+
+        // getNextValidDropTarget->canDrop needs the draggedItems in state
         tree.applySubStateUpdate("dnd", {
           draggedItems: tree.getSelectedItems(),
-          dragTarget: {
-            item: focusedItem.getParent()!, // TODO
-            childIndex: focusedItem.getIndexInParent(),
-            insertionIndex: focusedItem.getIndexInParent(), // TODO
-            dragLineIndex: focusedItem.getItemMeta().index,
-            dragLineLevel: focusedItem.getItemMeta().level,
-          },
         });
+
+        const dragTarget = getNextValidDropTarget(tree, false, {
+          item: focusedItem,
+        });
+        if (!dragTarget) return;
+
+        tree.applySubStateUpdate("dnd", {
+          draggedItems: tree.getSelectedItems(),
+          dragTarget,
+        });
+        updateScroll(tree);
       },
     },
     dragUp: {
@@ -112,10 +118,11 @@ export const keyboardDragAndDropFeature: FeatureImplementation = {
       preventDefault: true,
       isEnabled: (tree) => !!tree.getState().dnd,
       handler: (_, tree) => {
-        // console.log(tree.getState().dnd);
+        const dragTarget = getNextValidDropTarget(tree, true);
+        if (!dragTarget) return;
         tree.applySubStateUpdate("dnd", {
           draggedItems: tree.getState().dnd?.draggedItems,
-          dragTarget: getNextValidDropTarget(tree, true),
+          dragTarget,
         });
         updateScroll(tree);
       },
@@ -125,10 +132,11 @@ export const keyboardDragAndDropFeature: FeatureImplementation = {
       preventDefault: true,
       isEnabled: (tree) => !!tree.getState().dnd,
       handler: (_, tree) => {
-        // console.log(tree.getState().dnd);
+        const dragTarget = getNextValidDropTarget(tree, false);
+        if (!dragTarget) return;
         tree.applySubStateUpdate("dnd", {
           draggedItems: tree.getState().dnd?.draggedItems,
-          dragTarget: getNextValidDropTarget(tree, false),
+          dragTarget,
         });
         updateScroll(tree);
       },
@@ -137,7 +145,6 @@ export const keyboardDragAndDropFeature: FeatureImplementation = {
       hotkey: "Escape",
       isEnabled: (tree) => !!tree.getState().dnd,
       handler: (_, tree) => {
-        console.log("!!");
         tree.applySubStateUpdate("dnd", null);
       },
     },
