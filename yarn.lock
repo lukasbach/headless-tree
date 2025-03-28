@@ -5122,7 +5122,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/blocks@npm:8.6.0-alpha.0, @storybook/blocks@npm:^8.6.0-alpha.0":
+"@storybook/blocks@npm:8.6.0-alpha.0":
   version: 8.6.0-alpha.0
   resolution: "@storybook/blocks@npm:8.6.0-alpha.0"
   dependencies:
@@ -5139,6 +5139,25 @@ __metadata:
     react-dom:
       optional: true
   checksum: 10/e2da99ffefb1cc1ca0af106c3020281caa64e0592686135150d3fc619d6655631aaeff2099ca475bfdfb309fa3bf5c43088958f155e2e456fde8d53cf6a4c3e0
+  languageName: node
+  linkType: hard
+
+"@storybook/blocks@npm:^8.6.0-alpha.0":
+  version: 8.6.11
+  resolution: "@storybook/blocks@npm:8.6.11"
+  dependencies:
+    "@storybook/icons": "npm:^1.2.12"
+    ts-dedent: "npm:^2.0.0"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+    storybook: ^8.6.11
+  peerDependenciesMeta:
+    react:
+      optional: true
+    react-dom:
+      optional: true
+  checksum: 10/3ae862a7706ae2abc0049d8f1fabf38a714acd20a36bf3414b1c7528e489bacdb773ca3a18c874f40ba10a4e3a60bc27cbe92c43335e8a2cf8d5f36f62bf4aef
   languageName: node
   linkType: hard
 
@@ -21767,11 +21786,11 @@ __metadata:
 
 "typescript@patch:typescript@npm%3A^5.7.2#optional!builtin<compat/typescript>":
   version: 5.7.3
-  resolution: "typescript@patch:typescript@npm%3A5.7.3#optional!builtin<compat/typescript>::version=5.7.3&hash=5adc0c"
+  resolution: "typescript@patch:typescript@npm%3A5.7.3#optional!builtin<compat/typescript>::version=5.7.3&hash=5786d5"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 10/3ac7b7e3e899273d2fbdce6e24b93d4d53a705ad7a7e4cc83b4c57bcb6d25948abcd2a21994f6b9c73ab03960f395aae95f0458de292a66ce0134233261714c3
+  checksum: 10/dc58d777eb4c01973f7fbf1fd808aad49a0efdf545528dab9b07d94fdcb65b8751742804c3057e9619a4627f2d9cc85547fdd49d9f4326992ad0181b49e61d81
   languageName: node
   linkType: hard
 
