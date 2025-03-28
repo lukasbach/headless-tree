@@ -17,7 +17,7 @@ const styles = {
   clip: "rect(0 0 0 0)",
 } as const;
 
-const getLabel = <T,>(
+const getDefaultLabel = <T,>(
   dnd: DndState<T> | null | undefined,
   assistiveState: AssistiveDndState,
   hotkeys: HotkeysConfig<T>,
@@ -50,9 +50,11 @@ const getLabel = <T,>(
 
 export const AssistiveTreeDescription = <T,>({
   tree,
+  getLabel = getDefaultLabel,
   ...props
 }: {
   tree: TreeInstance<T>;
+  getLabel?: typeof getDefaultLabel;
 } & HTMLProps<HTMLSpanElement>) => {
   const state = tree.getState();
   return (
