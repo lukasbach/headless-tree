@@ -204,3 +204,15 @@ button:focus-visible .treeitem.focused, .treeitem.searchmatch.focused {
     background-color: #f6f6f6;
 }
 
+.visible-assistive-text {
+    position: unset !important;
+    width: unset !important;
+    height: 60px !important;
+    margin: unset !important;
+    overflow: auto !important;
+    clip: unset !important;
+
+    display: block;
+    margin-bottom: 1rem !important;
+    background-color: #e1f1f8;
+}

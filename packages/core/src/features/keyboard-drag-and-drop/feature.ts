@@ -6,6 +6,8 @@ import {
   getItemDropCategory,
   getReparentTarget,
 } from "../drag-and-drop/utils";
+import { makeStateUpdater } from "../../utils";
+import { AssistiveDndState } from "./types";
 
 const getNextDropTarget = <T>(
   tree: TreeInstance<T>,
@@ -88,6 +90,15 @@ export const keyboardDragAndDropFeature: FeatureImplementation = {
   key: "keyboard-drag-and-drop",
   deps: ["drag-and-drop"],
 
+  getDefaultConfig: (defaultConfig, tree) => ({
+    setAssistiveDndState: makeStateUpdater("assistiveDndState", tree),
+    ...defaultConfig,
+  }),
+
+  stateHandlerNames: {
+    assistiveDndState: "setAssistiveDndState",
+  },
+
   hotkeys: {
     startDrag: {
       hotkey: "Control+Shift+D",
@@ -110,6 +121,10 @@ export const keyboardDragAndDropFeature: FeatureImplementation = {
           draggedItems: tree.getSelectedItems(),
           dragTarget,
         });
+        tree.applySubStateUpdate(
+          "assistiveDndState",
+          AssistiveDndState.Started,
+        );
         updateScroll(tree);
       },
     },
@@ -124,6 +139,10 @@ export const keyboardDragAndDropFeature: FeatureImplementation = {
           draggedItems: tree.getState().dnd?.draggedItems,
           dragTarget,
         });
+        tree.applySubStateUpdate(
+          "assistiveDndState",
+          AssistiveDndState.Dragging,
+        );
         updateScroll(tree);
       },
     },
@@ -138,6 +157,10 @@ export const keyboardDragAndDropFeature: FeatureImplementation = {
           draggedItems: tree.getState().dnd?.draggedItems,
           dragTarget,
         });
+        tree.applySubStateUpdate(
+          "assistiveDndState",
+          AssistiveDndState.Dragging,
+        );
         updateScroll(tree);
       },
     },
@@ -146,6 +169,10 @@ export const keyboardDragAndDropFeature: FeatureImplementation = {
       isEnabled: (tree) => !!tree.getState().dnd,
       handler: (_, tree) => {
         tree.applySubStateUpdate("dnd", null);
+        tree.applySubStateUpdate(
+          "assistiveDndState",
+          AssistiveDndState.Aborted,
+        );
       },
     },
     completeDrag: {
@@ -171,6 +198,11 @@ export const keyboardDragAndDropFeature: FeatureImplementation = {
         if (draggedItems) {
           await config.onDrop?.(draggedItems, target);
         } // TODO else if foreign drag
+
+        tree.applySubStateUpdate(
+          "assistiveDndState",
+          AssistiveDndState.Completed,
+        );
       },
     },
   },

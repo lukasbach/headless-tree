@@ -1,8 +1,19 @@
-import { ItemInstance } from "../../types/core";
+import { ItemInstance, SetStateFn } from "../../types/core";
+
+export enum AssistiveDndState {
+  None,
+  Started,
+  Dragging,
+  Completed,
+  Aborted,
+}
 
 export type KeyboardDragAndDropFeatureDef<T> = {
-  state: {};
+  state: {
+    assistiveDndState?: AssistiveDndState | null;
+  };
   config: {
+    setAssistiveDndState?: SetStateFn<AssistiveDndState | undefined | null>;
     onStartKeyboardDrag?: (items: ItemInstance<T>[]) => void;
   };
   treeInstance: {
