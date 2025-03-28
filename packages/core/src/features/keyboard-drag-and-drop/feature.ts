@@ -216,6 +216,7 @@ export const keyboardDragAndDropFeature: FeatureImplementation = {
 
         if (draggedItems) {
           await config.onDrop?.(draggedItems, target);
+          tree.getItemInstance(draggedItems[0].getId()).setFocused();
         } // TODO else if foreign drag
 
         tree.applySubStateUpdate(
