@@ -1,7 +1,6 @@
 import type { Meta } from "@storybook/react";
 import React, { useState } from "react";
 import {
-  AssistiveTreeDescription,
   createOnDropHandler,
   dragAndDropFeature,
   hotkeysCoreFeature,
@@ -10,7 +9,7 @@ import {
   selectionFeature,
   syncDataLoaderFeature,
 } from "@headless-tree/core";
-import { useTree } from "@headless-tree/react";
+import { AssistiveTreeDescription, useTree } from "@headless-tree/react";
 import cx from "classnames";
 import { DemoItem, createDemoData } from "../utils/data";
 

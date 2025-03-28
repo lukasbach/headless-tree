@@ -32,7 +32,7 @@ const config: Config = {
         projectRoot: path.join(__dirname, "../.."),
         packages: [
           { path: "packages/core", entry: { index: "src/mddocs-entry.ts" } },
-          { path: "packages/react", entry: { index: "src/index.tsx" } },
+          { path: "packages/react", entry: { index: "src/index.ts" } },
         ],
       },
     ],
