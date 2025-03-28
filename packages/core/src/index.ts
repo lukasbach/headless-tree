@@ -20,7 +20,6 @@ export * from "./features/async-data-loader/feature";
 export * from "./features/sync-data-loader/feature";
 export * from "./features/drag-and-drop/feature";
 export * from "./features/keyboard-drag-and-drop/feature";
-export * from "./features/keyboard-drag-and-drop/assistive-tree-description";
 export * from "./features/search/feature";
 export * from "./features/renaming/feature";
 export * from "./features/expand-all/feature";

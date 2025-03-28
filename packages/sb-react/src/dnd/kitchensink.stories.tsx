@@ -1,14 +1,13 @@
 import type { Meta } from "@storybook/react";
 import React, { useState } from "react";
 import {
-  AssistiveTreeDescription,
   dragAndDropFeature,
   hotkeysCoreFeature,
   keyboardDragAndDropFeature,
   selectionFeature,
   syncDataLoaderFeature,
 } from "@headless-tree/core";
-import { useTree } from "@headless-tree/react";
+import { AssistiveTreeDescription, useTree } from "@headless-tree/react";
 import { action } from "@storybook/addon-actions";
 import cx from "classnames";
 import { PropsOfArgtype } from "../argtypes";

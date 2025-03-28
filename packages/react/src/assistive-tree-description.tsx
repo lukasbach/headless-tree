@@ -1,7 +1,10 @@
 import React, { HTMLProps } from "react";
-import { HotkeysConfig, TreeInstance } from "../../types/core";
-import { DndState } from "../drag-and-drop/types";
-import { AssistiveDndState } from "./types";
+import {
+  AssistiveDndState,
+  DndState,
+  HotkeysConfig,
+  TreeInstance,
+} from "@headless-tree/core";
 
 // https://medium.com/salesforce-ux/4-major-patterns-for-accessible-drag-and-drop-1d43f64ebf09
 
