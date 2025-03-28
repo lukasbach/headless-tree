@@ -1,6 +1,7 @@
 import type { Meta } from "@storybook/react";
 import React, { useState } from "react";
 import {
+  AssistiveTreeDescription,
   createOnDropHandler,
   dragAndDropFeature,
   hotkeysCoreFeature,
@@ -65,6 +66,7 @@ export const DragInside = () => {
   return (
     <>
       <div {...tree.getContainerProps()} className="tree">
+        <AssistiveTreeDescription tree={tree} />
         {tree.getItems().map((item) => (
           <button
             {...item.getProps()}

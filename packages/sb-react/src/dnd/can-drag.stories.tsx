@@ -1,6 +1,7 @@
 import type { Meta } from "@storybook/react";
 import React, { useState } from "react";
 import {
+  AssistiveTreeDescription,
   dragAndDropFeature,
   hotkeysCoreFeature,
   keyboardDragAndDropFeature,
@@ -65,6 +66,7 @@ export const CanDrag = () => {
         Only items that end with 1 or 2 can be dragged.
       </p>
       <div {...tree.getContainerProps()} className="tree">
+        <AssistiveTreeDescription tree={tree} />
         {tree.getItems().map((item) => (
           <button
             {...item.getProps()}

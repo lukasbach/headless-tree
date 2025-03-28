@@ -1,6 +1,7 @@
 import type { Meta } from "@storybook/react";
 import React from "react";
 import {
+  AssistiveTreeDescription,
   createOnDropHandler,
   dragAndDropFeature,
   hotkeysCoreFeature,
@@ -66,6 +67,7 @@ export const OnDropHandler = () => {
 
   return (
     <div {...tree.getContainerProps()} className="tree">
+      <AssistiveTreeDescription tree={tree} />
       {tree.getItems().map((item) => (
         <button
           {...item.getProps()}
