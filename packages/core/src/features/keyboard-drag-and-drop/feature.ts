@@ -3,6 +3,7 @@ import { DndDataRef, DropTarget } from "../drag-and-drop/types";
 import {
   ItemDropCategory,
   canDrop,
+  getInsertionIndex,
   getItemDropCategory,
   getReparentTarget,
 } from "../drag-and-drop/utils";
@@ -15,6 +16,7 @@ const getNextDropTarget = <T>(
   dragTarget: DropTarget<T>,
 ): DropTarget<T> | undefined => {
   const direction = isUp ? 0 : 1;
+  const draggedItems = tree.getState().dnd?.draggedItems ?? [];
 
   // currently hovering between items
   if ("childIndex" in dragTarget) {
@@ -31,10 +33,18 @@ const getNextDropTarget = <T>(
     // reparenting
     if (targetCategory === ItemDropCategory.LastInGroup) {
       if (isUp && dragTarget.dragLineLevel < maxLevel) {
-        return getReparentTarget(targetedItem, dragTarget.dragLineLevel + 1);
+        return getReparentTarget(
+          targetedItem,
+          dragTarget.dragLineLevel + 1,
+          draggedItems,
+        );
       }
       if (!isUp && dragTarget.dragLineLevel > minLevel && parent) {
-        return getReparentTarget(targetedItem, dragTarget.dragLineLevel - 1);
+        return getReparentTarget(
+          targetedItem,
+          dragTarget.dragLineLevel - 1,
+          draggedItems,
+        );
       }
     }
 
@@ -50,17 +60,26 @@ const getNextDropTarget = <T>(
     return {
       item: dragTarget.item,
       childIndex: 0,
-      insertionIndex: 0, // TODO everywhere!
+      insertionIndex: getInsertionIndex(
+        dragTarget.item.getChildren(),
+        0,
+        draggedItems,
+      ),
       dragLineIndex: dragTarget.item.getItemMeta().index + direction,
       dragLineLevel: dragTarget.item.getItemMeta().level + 1,
     };
   }
 
   // currently hovering over item
+  const childIndex = dragTarget.item.getIndexInParent() + direction;
   return {
     item: dragTarget.item.getParent()!,
-    childIndex: dragTarget.item.getIndexInParent() + direction,
-    insertionIndex: dragTarget.item.getIndexInParent() + direction, // TODO everywhere!
+    childIndex,
+    insertionIndex: getInsertionIndex(
+      dragTarget.item.getParent()!.getChildren(),
+      childIndex,
+      draggedItems,
+    ),
     dragLineIndex: dragTarget.item.getItemMeta().index + direction,
     dragLineLevel: dragTarget.item.getItemMeta().level,
   };

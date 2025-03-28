@@ -74,6 +74,24 @@ export const getItemDropCategory = (item: ItemInstance<any>) => {
   return ItemDropCategory.Item;
 };
 
+export const getInsertionIndex = <T>(
+  children: ItemInstance<T>[],
+  childIndex: number,
+  draggedItems: ItemInstance<T>[],
+) => {
+  const numberOfDragItemsBeforeTarget =
+    children
+      .slice(0, childIndex)
+      .reduce(
+        (counter, child) =>
+          child && draggedItems?.some((i) => i.getId() === child.getId())
+            ? ++counter
+            : counter,
+        0,
+      ) ?? 0;
+  return childIndex - numberOfDragItemsBeforeTarget;
+};
+
 const getTargetPlacement = (
   e: any,
   item: ItemInstance<any>,
@@ -155,9 +173,10 @@ const getNthParent = (
 };
 
 /** @param item refers to the bottom-most item of the container, at which bottom is being reparented on (e.g. root-1-2-6)  */
-export const getReparentTarget = (
-  item: ItemInstance<any>,
+export const getReparentTarget = <T>(
+  item: ItemInstance<T>,
   reparentLevel: number,
+  draggedItems: ItemInstance<T>[],
 ) => {
   const itemMeta = item.getItemMeta();
   const reparentedTarget = getNthParent(item, reparentLevel - 1);
@@ -169,7 +188,11 @@ export const getReparentTarget = (
   return {
     item: reparentedTarget,
     childIndex: targetIndex,
-    insertionIndex: targetIndex,
+    insertionIndex: getInsertionIndex(
+      reparentedTarget.getChildren(),
+      targetIndex,
+      draggedItems,
+    ),
     dragLineIndex: itemMeta.index + 1,
     dragLineLevel: reparentLevel,
   };
@@ -220,24 +243,12 @@ export const getDropTarget = (
   }
 
   if (placement.type === PlacementType.Reparent) {
-    return getReparentTarget(item, placement.reparentLevel);
+    return getReparentTarget(item, placement.reparentLevel, draggedItems);
   }
 
   const maybeAddOneForBelow =
     placement.type === PlacementType.ReorderAbove ? 0 : 1;
   const childIndex = item.getIndexInParent() + maybeAddOneForBelow;
-
-  const numberOfDragItemsBeforeTarget =
-    parent
-      .getChildren()
-      .slice(0, childIndex)
-      .reduce(
-        (counter, child) =>
-          child && draggedItems?.some((i) => i.getId() === child.getId())
-            ? ++counter
-            : counter,
-        0,
-      ) ?? 0;
 
   return {
     item: parent,
@@ -245,6 +256,10 @@ export const getDropTarget = (
     dragLineLevel: itemMeta.level,
     childIndex,
     // TODO performance could be improved by computing this only when dragcode changed
-    insertionIndex: childIndex - numberOfDragItemsBeforeTarget,
+    insertionIndex: getInsertionIndex(
+      parent.getChildren(),
+      childIndex,
+      draggedItems,
+    ),
   };
 };
