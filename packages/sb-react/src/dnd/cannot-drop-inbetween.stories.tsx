@@ -1,6 +1,7 @@
 import type { Meta } from "@storybook/react";
 import React, { useState } from "react";
 import {
+  AssistiveTreeDescription,
   TreeState,
   dragAndDropFeature,
   hotkeysCoreFeature,
@@ -60,6 +61,7 @@ export const CannotDropInbetween = () => {
 
   return (
     <div {...tree.getContainerProps()} className="tree">
+      <AssistiveTreeDescription tree={tree} />
       {tree.getItems().map((item) => (
         <button
           {...item.getProps()}

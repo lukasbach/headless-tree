@@ -1,6 +1,7 @@
 import type { Meta } from "@storybook/react";
 import React, { Fragment } from "react";
 import {
+  AssistiveTreeDescription,
   DropTarget,
   ItemInstance,
   createOnDropHandler,
@@ -57,6 +58,7 @@ const getCssClass = (item: ItemInstance<DemoItem>) =>
     expanded: item.isExpanded(),
     selected: item.isSelected(),
     folder: item.isFolder(),
+    drop: item.isDropTarget(),
     searchmatch: item.isMatchingSearch(),
   });
 
@@ -104,6 +106,7 @@ export const ComprehensiveSample = () => {
         </div>
       )}
       <div {...tree.getContainerProps()} className="tree">
+        <AssistiveTreeDescription tree={tree} />
         {tree.getItems().map((item) => (
           <Fragment key={item.getId()}>
             {item.isRenaming() ? (

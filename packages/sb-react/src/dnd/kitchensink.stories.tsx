@@ -1,6 +1,7 @@
 import type { Meta } from "@storybook/react";
 import React, { useState } from "react";
 import {
+  AssistiveTreeDescription,
   dragAndDropFeature,
   hotkeysCoreFeature,
   keyboardDragAndDropFeature,
@@ -84,6 +85,7 @@ export const KitchenSink = ({
   return (
     <>
       <div {...tree.getContainerProps()} className="tree">
+        <AssistiveTreeDescription tree={tree} />
         {tree.getItems().map((item) => (
           <button
             {...item.getProps()}
