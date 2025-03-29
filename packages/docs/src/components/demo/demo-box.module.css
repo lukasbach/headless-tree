@@ -35,10 +35,11 @@
 .sidebyside {
     display: flex;
     gap: 1rem;
+    height: 400px;
 }
 
 .left, .right {
-    height: 400px;
+    height: 100%;
 }
 
 .left {
