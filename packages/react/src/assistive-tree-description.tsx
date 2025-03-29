@@ -29,14 +29,16 @@ const getDefaultLabel = <T,>(
     : "childIndex" in dnd.dragTarget
       ? `${dnd.dragTarget.childIndex} of ${dnd.dragTarget.item.getChildren().length} in ${dnd.dragTarget.item.getItemName()}`
       : `in ${dnd.dragTarget.item.getItemName()}`;
+  const navGuide =
+    `Press ${hotkeys.dragUp.hotkey} and ${hotkeys.dragDown.hotkey} to move up or down, ` +
+    `${hotkeys.completeDrag.hotkey} to drop, ${hotkeys.cancelDrag.hotkey} to abort.`;
   switch (assistiveState) {
     case AssistiveDndState.Started:
-      return (
-        `Dragging ${itemNames}. Current position: ${position}. Press ${hotkeys.dragUp.hotkey} and ${hotkeys.dragDown.hotkey} to move up or down, ` +
-        ` ${hotkeys.completeDrag.hotkey} to drop, ${hotkeys.cancelDrag.hotkey} to abort.`
-      );
+      return itemNames
+        ? `Dragging ${itemNames}. Current position: ${position}. ${navGuide}`
+        : `Current position: ${position}. ${navGuide}`;
     case AssistiveDndState.Dragging:
-      return `${itemNames}, ${position}`;
+      return itemNames ? `${itemNames}, ${position}` : position;
     case AssistiveDndState.Completed:
       return `Drag completed. Press ${hotkeys.startDrag.hotkey} to move selected items`;
     case AssistiveDndState.Aborted:
