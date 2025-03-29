@@ -188,6 +188,9 @@ export const keyboardDragAndDropFeature: FeatureImplementation = {
           "assistiveDndState",
           AssistiveDndState.Dragging,
         );
+        if (!("childIndex" in dragTarget)) {
+          dragTarget.item.setFocused();
+        }
         updateScroll(tree);
       },
     },
@@ -196,6 +199,7 @@ export const keyboardDragAndDropFeature: FeatureImplementation = {
       preventDefault: true,
       isEnabled: (tree) => !!tree.getState().dnd,
       handler: (_, tree) => {
+        // TODO combine with dragUp
         const dragTarget = getNextValidDropTarget(tree, false);
         if (!dragTarget) return;
         tree.applySubStateUpdate("dnd", {
@@ -206,6 +210,9 @@ export const keyboardDragAndDropFeature: FeatureImplementation = {
           "assistiveDndState",
           AssistiveDndState.Dragging,
         );
+        if (!("childIndex" in dragTarget)) {
+          dragTarget.item.setFocused();
+        }
         updateScroll(tree);
       },
     },
