@@ -96,8 +96,10 @@ const getNextValidDropTarget = <T>(
 ): DropTarget<T> | undefined => {
   if (!previousTarget) return undefined;
   const nextTarget = getNextDropTarget(tree, isUp, previousTarget);
+  const dataTransfer =
+    tree.getDataRef<KDndDataRef>().current.kDndDataTransfer ?? null;
   if (!nextTarget) return undefined;
-  if (canDrop(null, nextTarget, tree)) {
+  if (canDrop(dataTransfer, nextTarget, tree)) {
     return nextTarget;
   }
   return getNextValidDropTarget(tree, isUp, nextTarget);
@@ -219,8 +221,9 @@ export const keyboardDragAndDropFeature: FeatureImplementation = {
         // TODO copied from keyboard onDrop, unify them
         const dataRef = tree.getDataRef<DndDataRef & KDndDataRef>();
         const target = tree.getDropTarget();
+        const dataTransfer = dataRef.current.kDndDataTransfer ?? null;
 
-        if (!target || !canDrop(null, target, tree)) {
+        if (!target || !canDrop(dataTransfer, target, tree)) {
           return;
         }
 
@@ -233,11 +236,8 @@ export const keyboardDragAndDropFeature: FeatureImplementation = {
         if (draggedItems) {
           await config.onDrop?.(draggedItems, target);
           tree.getItemInstance(draggedItems[0].getId()).setFocused();
-        } else if (dataRef.current.kDndDataTransfer) {
-          await config.onDropForeignDragObject?.(
-            dataRef.current.kDndDataTransfer,
-            target,
-          );
+        } else if (dataTransfer) {
+          await config.onDropForeignDragObject?.(dataTransfer, target);
         }
 
         tree.applySubStateUpdate(
