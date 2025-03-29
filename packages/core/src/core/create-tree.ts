@@ -146,12 +146,6 @@ export const createTree = <T>(
       ) => {
         state[stateName] =
           typeof updater === "function" ? updater(state[stateName]) : updater;
-        // TODO remove
-        console.log(
-          "NEWSTATE",
-          (state[stateName] as any)?.dragTarget,
-          (state[stateName] as any)?.dragTarget?.item?.getId?.(),
-        );
         const externalStateSetter = config[
           stateHandlerNames[stateName]
         ] as Function;
