@@ -1,5 +1,5 @@
 import { ItemInstance, TreeInstance } from "../../types/core";
-import { DropTarget } from "./types";
+import { DragTarget } from "./types";
 
 export enum ItemDropCategory {
   Item,
@@ -28,7 +28,7 @@ type TargetPlacement =
 
 export const canDrop = (
   dataTransfer: DataTransfer | null,
-  target: DropTarget<any>,
+  target: DragTarget<any>,
   tree: TreeInstance<any>,
 ) => {
   const draggedItems = tree.getState().dnd?.draggedItems;
@@ -197,17 +197,17 @@ export const getReparentTarget = <T>(
   };
 };
 
-export const getDropTarget = (
+export const getDragTarget = (
   e: any,
   item: ItemInstance<any>,
   tree: TreeInstance<any>,
   canReorder = tree.getConfig().canReorder,
-): DropTarget<any> => {
+): DragTarget<any> => {
   const draggedItems = tree.getState().dnd?.draggedItems;
   const itemMeta = item.getItemMeta();
   const parent = item.getParent();
-  const itemTarget: DropTarget<any> = { item };
-  const parentTarget: DropTarget<any> | null = parent ? { item: parent } : null;
+  const itemTarget: DragTarget<any> = { item };
+  const parentTarget: DragTarget<any> | null = parent ? { item: parent } : null;
   const canBecomeSibling =
     parentTarget && canDrop(e.dataTransfer, parentTarget, tree);
 
@@ -224,8 +224,8 @@ export const getDropTarget = (
   }
 
   if (!canReorder && parent && !canBecomeSibling) {
-    // TODO! this breaks in story DND/Can Drop. Maybe move this logic into a composable DropTargetStrategy[] ?
-    return getDropTarget(e, parent, tree, false);
+    // TODO! this breaks in story DND/Can Drop. Maybe move this logic into a composable DragTargetStrategy[] ?
+    return getDragTarget(e, parent, tree, false);
   }
 
   if (!parent) {
@@ -238,7 +238,7 @@ export const getDropTarget = (
   }
 
   if (!canBecomeSibling) {
-    return getDropTarget(e, parent, tree, false);
+    return getDragTarget(e, parent, tree, false);
   }
 
   if (placement.type === PlacementType.Reparent) {

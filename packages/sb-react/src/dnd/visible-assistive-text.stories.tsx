@@ -1,7 +1,7 @@
 import type { Meta } from "@storybook/react";
 import React, { Fragment } from "react";
 import {
-  DropTarget,
+  DragTarget,
   ItemInstance,
   createOnDropHandler,
   dragAndDropFeature,
@@ -35,7 +35,7 @@ const insertNewItem = (dataTransfer: DataTransfer) => {
 
 const onDropForeignDragObject = (
   dataTransfer: DataTransfer,
-  target: DropTarget<DemoItem>,
+  target: DragTarget<DemoItem>,
 ) => {
   const newId = insertNewItem(dataTransfer);
   insertItemsAtTarget([newId], target, (item, newChildrenIds) => {
@@ -52,7 +52,7 @@ const getCssClass = (item: ItemInstance<DemoItem>) =>
     expanded: item.isExpanded(),
     selected: item.isSelected(),
     folder: item.isFolder(),
-    drop: item.isDropTarget(),
+    drop: item.isDragTarget(),
   });
 
 // story-start

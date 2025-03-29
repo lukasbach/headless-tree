@@ -73,7 +73,7 @@ export const DragOutside = () => {
                 expanded: item.isExpanded(),
                 selected: item.isSelected(),
                 folder: item.isFolder(),
-                drop: item.isDropTarget(),
+                drop: item.isDragTarget(),
               })}
             >
               {item.getItemName()}

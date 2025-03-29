@@ -3,8 +3,8 @@ import { TestTree } from "../../test-utils/test-tree";
 import { selectionFeature } from "../selection/feature";
 import { ItemInstance } from "../../types/core";
 import { propMemoizationFeature } from "../prop-memoization/feature";
-import { dragAndDropFeature } from "../drag-and-drop/feature";
 import { keyboardDragAndDropFeature } from "./feature";
+import { dragAndDropFeature } from "../drag-and-drop/feature";
 
 const isItem = (item: unknown): item is ItemInstance<any> =>
   !!item && typeof item === "object" && "getId" in item;

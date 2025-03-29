@@ -76,7 +76,7 @@ export const CanDrop = () => {
                 expanded: item.isExpanded(),
                 selected: item.isSelected(),
                 folder: item.isFolder(),
-                drop: item.isDropTarget(),
+                drop: item.isDragTarget(),
               })}
             >
               {item.getItemName()}

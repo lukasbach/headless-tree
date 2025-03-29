@@ -3,7 +3,7 @@ import {
   ItemInstance,
   TreeInstance,
 } from "../../types/core";
-import { DndDataRef, DropTarget } from "../drag-and-drop/types";
+import { DndDataRef, DragTarget } from "../drag-and-drop/types";
 import {
   ItemDropCategory,
   canDrop,
@@ -14,11 +14,11 @@ import {
 import { makeStateUpdater } from "../../utils";
 import { AssistiveDndState, KDndDataRef } from "./types";
 
-const getNextDropTarget = <T>(
+const getNextDragTarget = <T>(
   tree: TreeInstance<T>,
   isUp: boolean,
-  dragTarget: DropTarget<T>,
-): DropTarget<T> | undefined => {
+  dragTarget: DragTarget<T>,
+): DragTarget<T> | undefined => {
   const direction = isUp ? 0 : 1;
   const draggedItems = tree.getState().dnd?.draggedItems;
 
@@ -89,20 +89,20 @@ const getNextDropTarget = <T>(
   };
 };
 
-const getNextValidDropTarget = <T>(
+const getNextValidDragTarget = <T>(
   tree: TreeInstance<T>,
   isUp: boolean,
   previousTarget = tree.getState().dnd?.dragTarget,
-): DropTarget<T> | undefined => {
+): DragTarget<T> | undefined => {
   if (!previousTarget) return undefined;
-  const nextTarget = getNextDropTarget(tree, isUp, previousTarget);
+  const nextTarget = getNextDragTarget(tree, isUp, previousTarget);
   const dataTransfer =
     tree.getDataRef<KDndDataRef>().current.kDndDataTransfer ?? null;
   if (!nextTarget) return undefined;
   if (canDrop(dataTransfer, nextTarget, tree)) {
     return nextTarget;
   }
-  return getNextValidDropTarget(tree, isUp, nextTarget);
+  return getNextValidDragTarget(tree, isUp, nextTarget);
 };
 
 const updateScroll = <T>(tree: TreeInstance<T>) => {
@@ -120,13 +120,13 @@ const initiateDrag = <T>(
 
   if (draggedItems) {
     tree.applySubStateUpdate("dnd", { draggedItems });
-    // getNextValidDropTarget->canDrop needs the draggedItems in state
+    // getNextValidDragTarget->canDrop needs the draggedItems in state
     tree.getConfig().onStartKeyboardDrag?.(draggedItems);
   } else if (dataTransfer) {
     tree.getDataRef<KDndDataRef>().current.kDndDataTransfer = dataTransfer;
   }
 
-  const dragTarget = getNextValidDropTarget(tree, false, {
+  const dragTarget = getNextValidDragTarget(tree, false, {
     item: focusedItem,
   });
   if (!dragTarget) return;
@@ -140,7 +140,7 @@ const initiateDrag = <T>(
 };
 
 const moveDragPosition = <T>(tree: TreeInstance<T>, isUp: boolean) => {
-  const dragTarget = getNextValidDropTarget(tree, isUp);
+  const dragTarget = getNextValidDragTarget(tree, isUp);
   if (!dragTarget) return;
   tree.applySubStateUpdate("dnd", {
     draggedItems: tree.getState().dnd?.draggedItems,
@@ -220,7 +220,7 @@ export const keyboardDragAndDropFeature: FeatureImplementation = {
         e.stopPropagation();
         // TODO copied from keyboard onDrop, unify them
         const dataRef = tree.getDataRef<DndDataRef & KDndDataRef>();
-        const target = tree.getDropTarget();
+        const target = tree.getDragTarget();
         const dataTransfer = dataRef.current.kDndDataTransfer ?? null;
 
         if (!target || !canDrop(dataTransfer, target, tree)) {

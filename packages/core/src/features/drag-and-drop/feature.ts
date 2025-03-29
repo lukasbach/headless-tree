@@ -1,6 +1,6 @@
 import { FeatureImplementation } from "../../types/core";
 import { DndDataRef, DragLineData } from "./types";
-import { canDrop, getDragCode, getDropTarget } from "./utils";
+import { canDrop, getDragCode, getDragTarget } from "./utils";
 import { makeStateUpdater } from "../../utils";
 
 export const dragAndDropFeature: FeatureImplementation = {
@@ -20,12 +20,12 @@ export const dragAndDropFeature: FeatureImplementation = {
   },
 
   treeInstance: {
-    getDropTarget: ({ tree }) => {
+    getDragTarget: ({ tree }) => {
       return tree.getState().dnd?.dragTarget ?? null;
     },
 
     getDragLineData: ({ tree }): DragLineData | null => {
-      const target = tree.getDropTarget();
+      const target = tree.getDragTarget();
       const indent = (target?.item.getItemMeta().level ?? 0) + 1;
 
       const treeBb = tree.getElement()?.getBoundingClientRect();
@@ -131,7 +131,7 @@ export const dragAndDropFeature: FeatureImplementation = {
         }
         dataRef.current.lastDragCode = nextDragCode;
 
-        const target = getDropTarget(e, item, tree);
+        const target = getDragTarget(e, item, tree);
 
         if (
           !tree.getState().dnd?.draggedItems &&
@@ -181,7 +181,7 @@ export const dragAndDropFeature: FeatureImplementation = {
 
       onDrop: async (e: DragEvent) => {
         const dataRef = tree.getDataRef<DndDataRef>();
-        const target = getDropTarget(e, item, tree);
+        const target = getDragTarget(e, item, tree);
 
         if (!canDrop(e.dataTransfer, target, tree)) {
           return;
@@ -202,13 +202,13 @@ export const dragAndDropFeature: FeatureImplementation = {
       },
     }),
 
-    isDropTarget: ({ tree, item }) => {
-      const target = tree.getDropTarget();
+    isDragTarget: ({ tree, item }) => {
+      const target = tree.getDragTarget();
       return target ? target.item.getId() === item.getId() : false;
     },
 
-    isDropTargetAbove: ({ tree, item }) => {
-      const target = tree.getDropTarget();
+    isDragTargetAbove: ({ tree, item }) => {
+      const target = tree.getDragTarget();
 
       if (
         !target ||
@@ -219,8 +219,8 @@ export const dragAndDropFeature: FeatureImplementation = {
       return target.childIndex === item.getItemMeta().posInSet;
     },
 
-    isDropTargetBelow: ({ tree, item }) => {
-      const target = tree.getDropTarget();
+    isDragTargetBelow: ({ tree, item }) => {
+      const target = tree.getDragTarget();
 
       if (
         !target ||
