@@ -116,7 +116,7 @@ const Tree = (props: { data: Record<string, Item>; prefix: string }) => {
               expanded: item.isExpanded(),
               selected: item.isSelected(),
               folder: item.isFolder(),
-              drop: item.isDropTarget(),
+              drop: item.isDragTarget(),
             })}
           >
             {item.getItemName()}

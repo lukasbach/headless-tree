@@ -1,9 +1,9 @@
 import { ItemInstance } from "../types/core";
-import { DropTarget } from "../features/drag-and-drop/types";
+import { DragTarget } from "../features/drag-and-drop/types";
 
 export const insertItemsAtTarget = async <T>(
   itemIds: string[],
-  target: DropTarget<T>,
+  target: DragTarget<T>,
   onChangeChildren: (
     item: ItemInstance<T>,
     newChildrenIds: string[],

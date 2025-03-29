@@ -8,7 +8,7 @@ export interface DndDataRef {
 export interface DndState<T> {
   draggedItems?: ItemInstance<T>[];
   draggingOverItem?: ItemInstance<T>;
-  dragTarget?: DropTarget<T>; // TODO rename to dropTarget
+  dragTarget?: DragTarget<T>;
 }
 
 export interface DragLineData {
@@ -18,7 +18,7 @@ export interface DragLineData {
   width: number;
 }
 
-export type DropTarget<T> =
+export type DragTarget<T> =
   | {
       item: ItemInstance<T>;
       childIndex: number;
@@ -30,7 +30,7 @@ export type DropTarget<T> =
       item: ItemInstance<T>;
     };
 
-export enum DropTargetPosition {
+export enum DragTargetPosition {
   Top = "top",
   Bottom = "bottom",
   Item = "item",
@@ -50,7 +50,7 @@ export type DragAndDropFeatureDef<T> = {
     canReorder?: boolean;
 
     canDrag?: (items: ItemInstance<T>[]) => boolean;
-    canDrop?: (items: ItemInstance<T>[], target: DropTarget<T>) => boolean;
+    canDrop?: (items: ItemInstance<T>[], target: DragTarget<T>) => boolean;
 
     indent?: number;
 
@@ -60,20 +60,20 @@ export type DragAndDropFeatureDef<T> = {
     };
     canDropForeignDragObject?: (
       dataTransfer: DataTransfer,
-      target: DropTarget<T>,
+      target: DragTarget<T>,
     ) => boolean;
     onDrop?: (
       items: ItemInstance<T>[],
-      target: DropTarget<T>,
+      target: DragTarget<T>,
     ) => void | Promise<void>;
     onDropForeignDragObject?: (
       dataTransfer: DataTransfer,
-      target: DropTarget<T>,
+      target: DragTarget<T>,
     ) => void | Promise<void>;
     onCompleteForeignDrop?: (items: ItemInstance<T>[]) => void;
   };
   treeInstance: {
-    getDropTarget: () => DropTarget<T> | null;
+    getDragTarget: () => DragTarget<T> | null;
     getDragLineData: () => DragLineData | null;
 
     getDragLineStyle: (
@@ -82,9 +82,9 @@ export type DragAndDropFeatureDef<T> = {
     ) => Record<string, any>;
   };
   itemInstance: {
-    isDropTarget: () => boolean;
-    isDropTargetAbove: () => boolean;
-    isDropTargetBelow: () => boolean;
+    isDragTarget: () => boolean;
+    isDragTargetAbove: () => boolean;
+    isDragTargetBelow: () => boolean;
     isDraggingOver: () => boolean;
   };
   hotkeys: never;

@@ -648,20 +648,20 @@ describe("core-feature/drag-and-drop", () => {
     });
 
     describe("item instance methods", () => {
-      it("returns isDropTarget() correct for folders", () => {
+      it("returns isDragTarget() correct for folders", () => {
         tree.do.startDrag("x111");
         tree.do.dragOver("x21");
-        expect(tree.instance.getItemInstance("x21").isDropTarget()).toBe(true);
-        expect(tree.instance.getItemInstance("x211").isDropTarget()).toBe(
+        expect(tree.instance.getItemInstance("x21").isDragTarget()).toBe(true);
+        expect(tree.instance.getItemInstance("x211").isDragTarget()).toBe(
           false,
         );
       });
 
-      it("returns isDropTarget() correct for items", () => {
+      it("returns isDragTarget() correct for items", () => {
         tree.do.startDrag("x111");
         tree.do.dragOver("x211");
-        expect(tree.instance.getItemInstance("x21").isDropTarget()).toBe(true);
-        expect(tree.instance.getItemInstance("x211").isDropTarget()).toBe(
+        expect(tree.instance.getItemInstance("x21").isDragTarget()).toBe(true);
+        expect(tree.instance.getItemInstance("x211").isDragTarget()).toBe(
           false,
         );
       });
