@@ -77,7 +77,7 @@ export const getItemDropCategory = (item: ItemInstance<any>) => {
 export const getInsertionIndex = <T>(
   children: ItemInstance<T>[],
   childIndex: number,
-  draggedItems: ItemInstance<T>[],
+  draggedItems: ItemInstance<T>[] | undefined,
 ) => {
   const numberOfDragItemsBeforeTarget =
     children
@@ -176,7 +176,7 @@ const getNthParent = (
 export const getReparentTarget = <T>(
   item: ItemInstance<T>,
   reparentLevel: number,
-  draggedItems: ItemInstance<T>[],
+  draggedItems: ItemInstance<T>[] | undefined,
 ) => {
   const itemMeta = item.getItemMeta();
   const reparentedTarget = getNthParent(item, reparentLevel - 1);
@@ -204,7 +204,7 @@ export const getDropTarget = (
   tree: TreeInstance<any>,
   canReorder = tree.getConfig().canReorder,
 ): DropTarget<any> => {
-  const draggedItems = tree.getState().dnd?.draggedItems ?? [];
+  const draggedItems = tree.getState().dnd?.draggedItems;
   const itemMeta = item.getItemMeta();
   const parent = item.getParent();
   const itemTarget: DropTarget<any> = { item };

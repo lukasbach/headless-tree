@@ -22,9 +22,8 @@ const getDefaultLabel = <T,>(
   assistiveState: AssistiveDndState,
   hotkeys: HotkeysConfig<T>,
 ) => {
-  const itemNames = dnd?.draggedItems
-    ?.map((item) => item.getItemName())
-    .join(", ");
+  const itemNames =
+    dnd?.draggedItems?.map((item) => item.getItemName()).join(", ") ?? ""; // TODO fix for foreign objects
   const position = !dnd?.dragTarget
     ? "None"
     : "childIndex" in dnd.dragTarget
