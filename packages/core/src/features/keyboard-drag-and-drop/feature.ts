@@ -137,6 +137,20 @@ const initiateDrag = <T>(
   updateScroll(tree);
 };
 
+const moveDragPosition = <T>(tree: TreeInstance<T>, isUp: boolean) => {
+  const dragTarget = getNextValidDropTarget(tree, isUp);
+  if (!dragTarget) return;
+  tree.applySubStateUpdate("dnd", {
+    draggedItems: tree.getState().dnd?.draggedItems,
+    dragTarget,
+  });
+  tree.applySubStateUpdate("assistiveDndState", AssistiveDndState.Dragging);
+  if (!("childIndex" in dragTarget)) {
+    dragTarget.item.setFocused();
+  }
+  updateScroll(tree);
+};
+
 export const keyboardDragAndDropFeature: FeatureImplementation = {
   key: "keyboard-drag-and-drop",
   deps: ["drag-and-drop"],
@@ -178,20 +192,7 @@ export const keyboardDragAndDropFeature: FeatureImplementation = {
       preventDefault: true,
       isEnabled: (tree) => !!tree.getState().dnd,
       handler: (_, tree) => {
-        const dragTarget = getNextValidDropTarget(tree, true);
-        if (!dragTarget) return;
-        tree.applySubStateUpdate("dnd", {
-          draggedItems: tree.getState().dnd?.draggedItems,
-          dragTarget,
-        });
-        tree.applySubStateUpdate(
-          "assistiveDndState",
-          AssistiveDndState.Dragging,
-        );
-        if (!("childIndex" in dragTarget)) {
-          dragTarget.item.setFocused();
-        }
-        updateScroll(tree);
+        moveDragPosition(tree, true);
       },
     },
     dragDown: {
@@ -199,21 +200,7 @@ export const keyboardDragAndDropFeature: FeatureImplementation = {
       preventDefault: true,
       isEnabled: (tree) => !!tree.getState().dnd,
       handler: (_, tree) => {
-        // TODO combine with dragUp
-        const dragTarget = getNextValidDropTarget(tree, false);
-        if (!dragTarget) return;
-        tree.applySubStateUpdate("dnd", {
-          draggedItems: tree.getState().dnd?.draggedItems,
-          dragTarget,
-        });
-        tree.applySubStateUpdate(
-          "assistiveDndState",
-          AssistiveDndState.Dragging,
-        );
-        if (!("childIndex" in dragTarget)) {
-          dragTarget.item.setFocused();
-        }
-        updateScroll(tree);
+        moveDragPosition(tree, false);
       },
     },
     cancelDrag: {
