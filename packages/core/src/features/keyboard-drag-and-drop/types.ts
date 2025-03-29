@@ -1,5 +1,9 @@
 import { ItemInstance, SetStateFn } from "../../types/core";
 
+export interface KDndDataRef {
+  kDndDataTransfer: DataTransfer | undefined;
+}
+
 export enum AssistiveDndState {
   None,
   Started,
@@ -17,8 +21,9 @@ export type KeyboardDragAndDropFeatureDef<T> = {
     onStartKeyboardDrag?: (items: ItemInstance<T>[]) => void;
   };
   treeInstance: {
-    setKeyboardDraggingForeignObject: (dataTransfer: DataTransfer) => void;
-    unsetKeyboardDraggingForeignObject: () => void;
+    startKeyboardDrag: (items: ItemInstance<T>[]) => void;
+    startKeyboardDragOnForeignObject: (dataTransfer: DataTransfer) => void;
+    stopKeyboardDrag: () => void;
   };
   itemInstance: {};
   hotkeys: "startDrag" | "cancelDrag" | "completeDrag" | "dragUp" | "dragDown";

@@ -87,6 +87,8 @@ export const VisibleAssistiveText = () => {
     ],
   });
 
+  const dndState = tree.getState().dnd;
+
   return (
     <>
       <div {...tree.getContainerProps()} className="tree">
@@ -133,6 +135,35 @@ export const VisibleAssistiveText = () => {
         >
           Drop items here!
         </div>
+      </div>
+
+      <div className="actionbar">
+        <button
+          className="actionbtn"
+          onClick={() => {
+            const dataTransfer = new DataTransfer();
+            dataTransfer.setData("text/plain", "hello world");
+            tree.startKeyboardDragOnForeignObject(dataTransfer);
+            tree.updateDomFocus();
+          }}
+        >
+          Initiate keyboard drag on a foreign object
+        </button>
+
+        {dndState && (
+          <button
+            className="actionbtn"
+            onClick={async () => {
+              if (dndState?.draggedItems) {
+                await onCompleteForeignDrop(dndState.draggedItems);
+                alert(dndState.draggedItems.map((item) => item.getItemName()));
+              }
+              tree.stopKeyboardDrag();
+            }}
+          >
+            Accept dragged items from tree
+          </button>
+        )}
       </div>
     </>
   );

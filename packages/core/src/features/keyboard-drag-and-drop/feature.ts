@@ -1,4 +1,8 @@
-import { FeatureImplementation, TreeInstance } from "../../types/core";
+import {
+  FeatureImplementation,
+  ItemInstance,
+  TreeInstance,
+} from "../../types/core";
 import { DndDataRef, DropTarget } from "../drag-and-drop/types";
 import {
   ItemDropCategory,
@@ -8,7 +12,7 @@ import {
   getReparentTarget,
 } from "../drag-and-drop/utils";
 import { makeStateUpdater } from "../../utils";
-import { AssistiveDndState } from "./types";
+import { AssistiveDndState, KDndDataRef } from "./types";
 
 const getNextDropTarget = <T>(
   tree: TreeInstance<T>,
@@ -16,7 +20,7 @@ const getNextDropTarget = <T>(
   dragTarget: DropTarget<T>,
 ): DropTarget<T> | undefined => {
   const direction = isUp ? 0 : 1;
-  const draggedItems = tree.getState().dnd?.draggedItems ?? [];
+  const draggedItems = tree.getState().dnd?.draggedItems;
 
   // currently hovering between items
   if ("childIndex" in dragTarget) {
@@ -105,6 +109,34 @@ const updateScroll = <T>(tree: TreeInstance<T>) => {
   state.dragTarget.item.scrollTo({ block: "nearest", inline: "nearest" });
 };
 
+const initiateDrag = <T>(
+  tree: TreeInstance<T>,
+  draggedItems?: ItemInstance<T>[],
+  dataTransfer?: DataTransfer,
+) => {
+  const focusedItem = tree.getFocusedItem();
+
+  if (draggedItems) {
+    tree.applySubStateUpdate("dnd", { draggedItems });
+    // getNextValidDropTarget->canDrop needs the draggedItems in state
+    tree.getConfig().onStartKeyboardDrag?.(draggedItems);
+  } else if (dataTransfer) {
+    tree.getDataRef<KDndDataRef>().current.kDndDataTransfer = dataTransfer;
+  }
+
+  const dragTarget = getNextValidDropTarget(tree, false, {
+    item: focusedItem,
+  });
+  if (!dragTarget) return;
+
+  tree.applySubStateUpdate("dnd", {
+    draggedItems,
+    dragTarget,
+  });
+  tree.applySubStateUpdate("assistiveDndState", AssistiveDndState.Started);
+  updateScroll(tree);
+};
+
 export const keyboardDragAndDropFeature: FeatureImplementation = {
   key: "keyboard-drag-and-drop",
   deps: ["drag-and-drop"],
@@ -118,33 +150,27 @@ export const keyboardDragAndDropFeature: FeatureImplementation = {
     assistiveDndState: "setAssistiveDndState",
   },
 
+  treeInstance: {
+    startKeyboardDrag: ({ tree }, draggedItems) => {
+      initiateDrag(tree, draggedItems, undefined);
+    },
+    startKeyboardDragOnForeignObject: ({ tree }, dataTransfer) => {
+      initiateDrag(tree, undefined, dataTransfer);
+    },
+    stopKeyboardDrag: ({ tree }) => {
+      tree.getDataRef<KDndDataRef>().current.kDndDataTransfer = undefined;
+      tree.applySubStateUpdate("dnd", null);
+      tree.applySubStateUpdate("assistiveDndState", AssistiveDndState.None);
+    },
+  },
+
   hotkeys: {
     startDrag: {
       hotkey: "Control+Shift+D",
       preventDefault: true,
       isEnabled: (tree) => !tree.getState().dnd,
       handler: (_, tree) => {
-        const focusedItem = tree.getFocusedItem();
-
-        // getNextValidDropTarget->canDrop needs the draggedItems in state
-        tree.applySubStateUpdate("dnd", {
-          draggedItems: tree.getSelectedItems(),
-        });
-
-        const dragTarget = getNextValidDropTarget(tree, false, {
-          item: focusedItem,
-        });
-        if (!dragTarget) return;
-
-        tree.applySubStateUpdate("dnd", {
-          draggedItems: tree.getSelectedItems(),
-          dragTarget,
-        });
-        tree.applySubStateUpdate(
-          "assistiveDndState",
-          AssistiveDndState.Started,
-        );
-        updateScroll(tree);
+        tree.startKeyboardDrag(tree.getSelectedItems());
       },
     },
     dragUp: {
@@ -187,11 +213,7 @@ export const keyboardDragAndDropFeature: FeatureImplementation = {
       hotkey: "Escape",
       isEnabled: (tree) => !!tree.getState().dnd,
       handler: (_, tree) => {
-        tree.applySubStateUpdate("dnd", null);
-        tree.applySubStateUpdate(
-          "assistiveDndState",
-          AssistiveDndState.Aborted,
-        );
+        tree.stopKeyboardDrag();
       },
     },
     completeDrag: {
@@ -201,7 +223,7 @@ export const keyboardDragAndDropFeature: FeatureImplementation = {
       handler: async (e, tree) => {
         e.stopPropagation();
         // TODO copied from keyboard onDrop, unify them
-        const dataRef = tree.getDataRef<DndDataRef>();
+        const dataRef = tree.getDataRef<DndDataRef & KDndDataRef>();
         const target = tree.getDropTarget();
 
         if (!target || !canDrop(null, target, tree)) {
@@ -217,7 +239,12 @@ export const keyboardDragAndDropFeature: FeatureImplementation = {
         if (draggedItems) {
           await config.onDrop?.(draggedItems, target);
           tree.getItemInstance(draggedItems[0].getId()).setFocused();
-        } // TODO else if foreign drag
+        } else if (dataRef.current.kDndDataTransfer) {
+          await config.onDropForeignDragObject?.(
+            dataRef.current.kDndDataTransfer,
+            target,
+          );
+        }
 
         tree.applySubStateUpdate(
           "assistiveDndState",
