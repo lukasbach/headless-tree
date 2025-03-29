@@ -26,6 +26,7 @@ export const DemoBox: FC<DemoBoxProps> = ({
   tags,
   all,
   initialStory,
+  height,
 }) => {
   const tagStories = useStoriesByTags(tags);
   const idStories = useStories(stories);
@@ -94,7 +95,7 @@ export const DemoBox: FC<DemoBoxProps> = ({
           </a>
         </div>
       </div>
-      <div className={styles.sidebyside}>
+      <div className={styles.sidebyside} style={{ height }}>
         <div className={styles.left}>
           <iframe
             title="Demo"
