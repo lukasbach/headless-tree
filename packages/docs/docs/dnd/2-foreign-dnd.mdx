@@ -42,6 +42,9 @@ using the [`removeItemsFromParents(movedItems, onChangeChildren)`](/api/core/fun
 
 <DemoBox tags={["feature/dnd"]} initialStory="react-drag-and-drop-drag-outside--drag-outside" />
 
+To support this use case with keyboard navigation, you can use the [Keyboard Drag and Drop feature](/features/kdnd)
+and follow the [guide on dragging items out of trees with keyboard controls](/features/kdnd#dragging-items-out-of-the-tree-with-keyboard).
+
 ## Dragging foreign objects inside of tree
 
 Allowing users to drag data into the tree from outside consists of two steps:
@@ -62,6 +65,9 @@ In the sample below, the `onDropForeignDragObject` method is implemented to crea
 insert it at the target location with the `insertItemsAtTarget` method.
 
 <DemoBox tags={["feature/dnd"]} initialStory="react-drag-and-drop-drag-inside--drag-inside" />
+
+To support this use case with keyboard navigation, you can use the [Keyboard Drag and Drop feature](/features/kdnd)
+and follow the [guide on starting keyboard-controlled drags from outside with custom drag data](/features/kdnd#dragging-foreign-objects-inside-the-tree-with-keyboard).
 
 ## Interactions between multiple instances of Headless Tree
 
