@@ -1,5 +1,14 @@
 # @headless-tree/react
 
+## 0.0.15
+
+### Patch Changes
+
+- 617faea: Support for keyboard-controlled drag-and-drop events
+- Updated dependencies [2af5668]
+- Updated dependencies [617faea]
+  - @headless-tree/core@0.0.15
+
 ## 0.0.14
 
 ### Patch Changes
