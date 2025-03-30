@@ -183,8 +183,6 @@ export const getReparentTarget = <T>(
   const targetItemAbove = getNthParent(item, reparentLevel); // .getItemBelow()!;
   const targetIndex = targetItemAbove.getIndexInParent() + 1;
 
-  // TODO possibly count items dragged out above the new target
-
   return {
     item: reparentedTarget,
     childIndex: targetIndex,
