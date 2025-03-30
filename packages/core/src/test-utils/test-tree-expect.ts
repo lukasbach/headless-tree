@@ -3,6 +3,7 @@ import { Mock, expect } from "vitest";
 import { DragEvent } from "react";
 import { TestTree } from "./test-tree";
 import { DragTarget } from "../features/drag-and-drop/types";
+import { TreeState } from "../types/core";
 
 export class TestTreeExpect<T> {
   protected itemInstance(itemId: string) {
@@ -37,6 +38,10 @@ export class TestTreeExpect<T> {
     const item = this.tree.instance.getItemInstance(itemId);
     const itemChildren = item.getChildren().map((child) => child.getId());
     expect(itemChildren).toEqual(children);
+  }
+
+  substate<K extends keyof TreeState<T>>(key: K, value: TreeState<T>[K]) {
+    expect(this.tree.instance.getState()[key]).toEqual(value);
   }
 
   dropped(draggedItems: string[], target: DragTarget<any>) {
