@@ -9,6 +9,7 @@ import { SelectionFeatureDef } from "./features/selection/types";
 import { SyncDataLoaderFeatureDef } from "./features/sync-data-loader/types";
 import { TreeFeatureDef } from "./features/tree/types";
 import { PropMemoizationFeatureDef } from "./features/prop-memoization/types";
+import { KeyboardDragAndDropFeatureDef } from "./features/keyboard-drag-and-drop/types";
 
 export * from ".";
 
@@ -49,20 +50,20 @@ export type DragAndDropFeatureItemInstance<T> =
   DragAndDropFeatureDef<T>["itemInstance"];
 export type DragAndDropFeatureHotkeys<T> = DragAndDropFeatureDef<T>["hotkeys"];
 
-// /** @interface */
-// export type KeyboardDragAndDropFeatureConfig<T> =
-//   KeyboardDragAndDropFeatureDef<T>["config"];
-// /** @interface */
-// export type KeyboardDragAndDropFeatureState<T> =
-//   KeyboardDragAndDropFeatureDef<T>["state"];
-// /** @interface */
-// export type KeyboardDragAndDropFeatureTreeInstance<T> =
-//   KeyboardDragAndDropFeatureDef<T>["treeInstance"];
-// /** @interface */
-// export type KeyboardDragAndDropFeatureItemInstance<T> =
-//   KeyboardDragAndDropFeatureDef<T>["itemInstance"];
-// export type KeyboardDragAndDropFeatureHotkeys<T> =
-//   KeyboardDragAndDropFeatureDef<T>["hotkeys"];
+/** @interface */
+export type KeyboardDragAndDropFeatureConfig<T> =
+  KeyboardDragAndDropFeatureDef<T>["config"];
+/** @interface */
+export type KeyboardDragAndDropFeatureState<T> =
+  KeyboardDragAndDropFeatureDef<T>["state"];
+/** @interface */
+export type KeyboardDragAndDropFeatureTreeInstance<T> =
+  KeyboardDragAndDropFeatureDef<T>["treeInstance"];
+/** @interface */
+export type KeyboardDragAndDropFeatureItemInstance<T> =
+  KeyboardDragAndDropFeatureDef<T>["itemInstance"];
+export type KeyboardDragAndDropFeatureHotkeys<T> =
+  KeyboardDragAndDropFeatureDef<T>["hotkeys"];
 
 /** @interface */
 export type ExpandAllFeatureConfig = ExpandAllFeatureDef["config"];
