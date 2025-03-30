@@ -52,7 +52,8 @@ export const canDrop = (
   if (
     !draggedItems &&
     dataTransfer &&
-    !config.canDropForeignDragObject?.(dataTransfer, target)
+    config.canDropForeignDragObject &&
+    !config.canDropForeignDragObject(dataTransfer, target)
   ) {
     return false;
   }
