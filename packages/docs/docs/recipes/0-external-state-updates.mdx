@@ -1,0 +1,65 @@
+---
+slug: "/recipe/external-state-updates"
+title: "Handling external state updates"
+category: recipe
+---
+
+Generally, Headless Tree loads the tree structure once when it is loaded, and loads subsequent substructures
+whenever parts of the visual tree change, e.g. because a folder is expanded that was collapsed before.
+Headless Tree provides ways to mutate the tree via drag events or renaming, and makes sure that it reloads
+those parts that have changed automatically if one of
+[`removeItemsFromParents()`](/api/core/function/removeItemsFromParents), [`insertItemsAtTarget()`](/api/core/function/insertItemsAtTarget) or [`createOnDropHandler()`](/api/core/function/createOnDropHandler)
+was used (see [the Guide on mutating your data after the Drop](/dnd/overview#mutating-your-data-after-the-drop) for details).
+
+However, in many cases you will want to update the tree structure of your data based on external events. In this
+case you need to inform Headless Tree, that the tree structure has changed, so that it can update the rendering
+of the affected parts.
+
+## Synchronous Trees
+
+For Trees using the [`syncDataLoader`](/features/sync-dataloader) feature, the gist of data loading is as follows:
+Headless Tree maintains an internal representation of a flattened view of the tree, that is generated based on
+the `dataLoader` information that is available when the tree renders. This information is regenerated whenever
+[`tree.rebuildTree()`](/api/core/interface/TreeInstance#rebuildTree) is called, which is done automatically when items are expanded/collapsed
+or drag events are fulfilled with one of the aforementioned drag-related update-methods. The react component then
+needs to re-render for the visual changes to come into affect, which is also done automatically in those cases since
+`tree.rebuildTree()` triggers an update to the tree state which will also re-render the component.
+
+If you mutate the data, you will need to call `tree.rebuildTree()` manually, so that Headless Tree can update the internal
+representation of the tree. Make sure that this call happens *after* the data loader has access to the mutated data.
+
+```ts
+const items = {
+  item1: { name: "Item 1", children: ["item2"] },
+  item2: { name: "Item 2", children: [] },
+}
+
+const dataLoader = {
+  getItem: (id: string) => items[id],
+  getChildren: (id: string) => items[id].children,
+};
+
+const addNode = () => {
+  items["item1"].children.push("item3");
+  items["item3"] = { name: "Item 3", children: [] };
+  tree.rebuildTree();
+};
+```
+
+## Asynchronous Trees
+
+For asynchronous trees, the general gist of how trees are updated is the same, however the `asyncDataLoaderFeature`
+provides the additional functionality of caching item information of tree data, which means that just triggering
+`tree.rebuildTree()` will do nothing as it will just keep using the stale information before the update.
+
+When using the `asyncDataLoaderFeature`, additional methods are available on item instances to trigger them
+to invalidate their data:
+
+```ts
+const item = tree.getItemInstance("item1");
+item.invalidateItemData();
+item.invalidateChildrenIds();
+```
+
+You will not have to additionally call `tree.rebuildTree()`, as this is done automatically by the async
+data loader feature once it has refetched the data.
