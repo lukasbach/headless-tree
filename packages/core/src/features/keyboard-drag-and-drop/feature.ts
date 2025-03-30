@@ -117,6 +117,11 @@ const initiateDrag = <T>(
   dataTransfer?: DataTransfer,
 ) => {
   const focusedItem = tree.getFocusedItem();
+  const { canDrag } = tree.getConfig();
+
+  if (draggedItems && canDrag && !canDrag(draggedItems)) {
+    return;
+  }
 
   if (draggedItems) {
     tree.applySubStateUpdate("dnd", { draggedItems });
