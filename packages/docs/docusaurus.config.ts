@@ -100,12 +100,25 @@ const config: Config = {
         },
         {
           href: "https://github.com/sponsors/lukasbach",
-          label: "Support",
+          label: "Support Headless Tree",
           position: "right",
         },
         {
           href: "https://github.com/lukasbach/headless-tree",
-          label: "GitHub",
+          "aria-label": "GitHub",
+          className: "header-icon github",
+          position: "right",
+        },
+        {
+          href: "https://bsky.app/profile/lukasbach.bsky.social",
+          "aria-label": "Bluesky",
+          className: "header-icon bluesky",
+          position: "right",
+        },
+        {
+          href: "https://discord.gg/WN85eMY3",
+          "aria-label": "Discord",
+          className: "header-icon discord",
           position: "right",
         },
       ],
