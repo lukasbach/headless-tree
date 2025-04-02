@@ -1,5 +1,10 @@
 export interface PropMemoizationDataRef {
-  memoizedProps?: Record<string, any>;
+  memo?: {
+    tree?: Record<string, any>;
+    item?: Record<string, any>;
+    search?: Record<string, any>;
+    rename?: Record<string, any>;
+  };
 }
 
 export type PropMemoizationFeatureDef = {

@@ -3,15 +3,14 @@ import { PropMemoizationDataRef } from "./types";
 
 const memoize = (
   props: Record<string, any>,
-  dataRef: PropMemoizationDataRef,
+  memoizedProps: Record<string, any>,
 ) => {
-  dataRef.memoizedProps ??= {};
   for (const key in props) {
     if (typeof props[key] === "function") {
-      if (key in dataRef.memoizedProps) {
-        props[key] = dataRef.memoizedProps[key];
+      if (memoizedProps && key in memoizedProps) {
+        props[key] = memoizedProps[key];
       } else {
-        dataRef.memoizedProps[key] = props[key];
+        memoizedProps[key] = props[key];
       }
     }
   }
@@ -37,7 +36,17 @@ export const propMemoizationFeature: FeatureImplementation = {
     getContainerProps: ({ tree, prev }, treeLabel) => {
       const dataRef = tree.getDataRef<PropMemoizationDataRef>();
       const props = prev?.(treeLabel) ?? {};
-      return memoize(props, dataRef.current);
+      dataRef.current.memo ??= {};
+      dataRef.current.memo.tree ??= {};
+      return memoize(props, dataRef.current.memo.tree);
+    },
+
+    getSearchInputElementProps: ({ tree, prev }) => {
+      const dataRef = tree.getDataRef<PropMemoizationDataRef>();
+      const props = prev?.() ?? {};
+      dataRef.current.memo ??= {};
+      dataRef.current.memo.search ??= {};
+      return memoize(props, dataRef.current.memo.search);
     },
   },
 
@@ -45,7 +54,17 @@ export const propMemoizationFeature: FeatureImplementation = {
     getProps: ({ item, prev }) => {
       const dataRef = item.getDataRef<PropMemoizationDataRef>();
       const props = prev?.() ?? {};
-      return memoize(props, dataRef.current);
+      dataRef.current.memo ??= {};
+      dataRef.current.memo.item ??= {};
+      return memoize(props, dataRef.current.memo.item);
+    },
+
+    getRenameInputProps: ({ item, prev }) => {
+      const dataRef = item.getDataRef<PropMemoizationDataRef>();
+      const props = prev?.() ?? {};
+      dataRef.current.memo ??= {};
+      dataRef.current.memo.rename ??= {};
+      return memoize(props, dataRef.current.memo.rename);
     },
   },
 };

@@ -63,7 +63,6 @@ export const treeFeature: FeatureImplementation<any> = {
       return flatItems;
     },
 
-    // TODO memo
     getFocusedItem: ({ tree }) => {
       return (
         tree.getItemInstance(tree.getState().focusedItem ?? "") ??
