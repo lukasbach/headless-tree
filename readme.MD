@@ -1,9 +1,12 @@
 # Headless Tree
 
-> An unopinionated and accessible Tree component for the web.
+> The definitive tree component for the Web
 
-Headless Tree is the spiritual successor to 
+Super-easy integration of complex tree components into React. Supports ordered 
+and unordered drag-and-drop, extensive keybindings, search, renaming and more. 
+Fully customizable, accessible. Headless Tree is the official successor for
 [react-complex-tree](https://github.com/lukasbach/react-complex-tree).
+
 It aims to bring the many features of complex tree views, like multi-select,
 drag-and-drop, keyboard navigation, tree search, renaming and more, while
 being unopinionated about the styling and rendering of the tree itself.

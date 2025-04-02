@@ -12,7 +12,7 @@ const demos = [
   {
     title: "Drag and Drop",
     text: "Powerful ordered drag-and-drop, that can interact with external drag events", // TODO also unordered sample
-    story: "react-drag-and-drop-kitchen-sink--kitchen-sink",
+    story: "react-drag-and-drop-comprehensive-sample--comprehensive-sample",
   },
   {
     title: "Scalable",
@@ -68,9 +68,7 @@ const demos = [
 ];
 
 export const DemoGrid: FC = () => {
-  const [selectedDemo, setSelectedDemo] = useState(
-    Object.keys(demos).length - 1,
-  );
+  const [selectedDemo, setSelectedDemo] = useState(0);
   return (
     <div className={styles.container}>
       <DemoBox
