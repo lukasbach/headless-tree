@@ -26,6 +26,9 @@ type TargetPlacement =
       reparentLevel: number;
     };
 
+export const isOrderedDragTarget = <T>(dragTarget: DragTarget<T>) =>
+  "childIndex" in dragTarget;
+
 export const canDrop = (
   dataTransfer: DataTransfer | null,
   target: DragTarget<any>,

@@ -6,6 +6,7 @@ import { propMemoizationFeature } from "../prop-memoization/feature";
 import { keyboardDragAndDropFeature } from "./feature";
 import { dragAndDropFeature } from "../drag-and-drop/feature";
 import { AssistiveDndState } from "./types";
+import { isOrderedDragTarget } from "../drag-and-drop/utils";
 
 const isItem = (item: unknown): item is ItemInstance<any> =>
   !!item && typeof item === "object" && "getId" in item;
@@ -318,7 +319,7 @@ describe("core-feature/keyboard-drag-and-drop", () => {
     describe("drag restrictions", () => {
       const expectChildIndex = (index: number) => {
         const state = tree.instance.getState().dnd?.dragTarget;
-        if (!state || !("childIndex" in state))
+        if (!state || !isOrderedDragTarget(state))
           throw new Error("No childIndex");
         expect(state.childIndex).toEqual(index);
       };

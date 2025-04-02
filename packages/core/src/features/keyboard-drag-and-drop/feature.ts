@@ -10,6 +10,7 @@ import {
   getInsertionIndex,
   getItemDropCategory,
   getReparentTarget,
+  isOrderedDragTarget,
 } from "../drag-and-drop/utils";
 import { makeStateUpdater } from "../../utils";
 import { AssistiveDndState, KDndDataRef } from "./types";
@@ -23,8 +24,7 @@ const getNextDragTarget = <T>(
   const draggedItems = tree.getState().dnd?.draggedItems;
 
   // currently hovering between items
-  if ("childIndex" in dragTarget) {
-    // TODO move check in reusable function
+  if (isOrderedDragTarget(dragTarget)) {
     const parent = dragTarget.item.getParent();
     const targetedItem = tree.getItems()[dragTarget.dragLineIndex - 1]; // item above dragline
 
@@ -107,7 +107,7 @@ const getNextValidDragTarget = <T>(
 
 const updateScroll = <T>(tree: TreeInstance<T>) => {
   const state = tree.getState().dnd;
-  if (!state?.dragTarget || "childIndex" in state.dragTarget) return;
+  if (!state?.dragTarget || isOrderedDragTarget(state.dragTarget)) return;
   state.dragTarget.item.scrollTo({ block: "nearest", inline: "nearest" });
 };
 
@@ -152,7 +152,7 @@ const moveDragPosition = <T>(tree: TreeInstance<T>, isUp: boolean) => {
     dragTarget,
   });
   tree.applySubStateUpdate("assistiveDndState", AssistiveDndState.Dragging);
-  if (!("childIndex" in dragTarget)) {
+  if (!isOrderedDragTarget(dragTarget)) {
     dragTarget.item.setFocused();
   }
   updateScroll(tree);
