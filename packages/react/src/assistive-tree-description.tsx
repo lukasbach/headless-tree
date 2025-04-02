@@ -23,7 +23,7 @@ const getDefaultLabel = <T,>(
   hotkeys: HotkeysConfig<T>,
 ) => {
   const itemNames =
-    dnd?.draggedItems?.map((item) => item.getItemName()).join(", ") ?? ""; // TODO fix for foreign objects
+    dnd?.draggedItems?.map((item) => item.getItemName()).join(", ") ?? "";
   const position = !dnd?.dragTarget
     ? "None"
     : "childIndex" in dnd.dragTarget

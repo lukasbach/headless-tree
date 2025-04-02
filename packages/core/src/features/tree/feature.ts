@@ -94,7 +94,6 @@ export const treeFeature: FeatureImplementation<any> = {
       });
     },
 
-    // TODO add label parameter
     getContainerProps: ({ prev, tree }, treeLabel) => ({
       ...prev?.(),
       role: "tree",

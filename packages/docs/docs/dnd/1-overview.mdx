@@ -17,7 +17,7 @@ import {FeaturePageHeader} from "../../src/components/docs-page/feature-page-hea
 # Overview
 
 <!-- TODO show DND kitchensink as default sample -->
-<DemoBox tags={["feature/dnd"]} />
+<DemoBox tags={["feature/dnd"]} initialStory="react-drag-and-drop-comprehensive-sample--comprehensive-sample" />
 
 The Drag-And-Drop Feature provides drag-and-drop capabilities. It allows to drag a single tree item (or many of the
 [selection feature](/features/selection) is included in the tree config) and drop it somewhere else in the tree.
@@ -215,3 +215,13 @@ parent.updateCachedChildrenIds(newChildren);
 // Trigger the recomputation of the internal tree structure
 tree.rebuildTree();
 ```
+
+## Allowing users to drag items via keyboard
+
+If you have implemented features that can only be triggered via drag-interactions on your tree, this can
+be a limitation for users unable to use mouse interactions. Headless Tree supports full keyboard interactions
+by using the [Keyboard Drag-and-Drop Feature](/features/kdnd), which adds all abilities that are usually
+achieved with mouse-based drag events to keyboard hotkeys and descriptive texts visible only to screen readers.
+
+The effort to enable this feature is very low, find out more about this on the
+[Guide to Keyboard Drag-and-Drop](/features/kdnd).

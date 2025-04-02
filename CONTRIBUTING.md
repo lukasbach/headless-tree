@@ -24,8 +24,10 @@ which make sense in the scope of your change have been completed:
 - Linter and Unit Tests run successfully
 
 Feel free to reach out at any time during your contribution process if you 
-have any questions or need help.
-<!-- TODO add discord link once available -->
+have any questions or need help. You can also collaborate in our Discord
+community to get help or discuss your ideas with other contributors:
+- https://discord.gg/WN85eMY3
 
-<!-- TODO: The following steps need to be improved for a good contributing community:
-- Documentation on library architecture -->
+There are some more detailed documentations available on contributing implementation
+changes to Headless Tree at the HT website: 
+- https://headless-tree.lukasbach.com/contributing/overview
