@@ -116,7 +116,7 @@ const config: Config = {
           position: "right",
         },
         {
-          href: "https://discord.gg/WN85eMY3",
+          href: "https://discord.gg/KuZ6EezzVw",
           "aria-label": "Discord",
           className: "header-icon discord",
           position: "right",
