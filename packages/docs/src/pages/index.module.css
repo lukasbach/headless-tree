@@ -60,6 +60,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 8px;
+}
+
+.socialBtn {
+  height: 47px;
+  width: 80px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .demoBox {
