@@ -71,6 +71,9 @@
   align-items: center;
   justify-content: center;
 }
+[data-theme='light'] .socialBtn {
+  background-color: white;
+}
 
 .demoBox {
   width: 100%;
