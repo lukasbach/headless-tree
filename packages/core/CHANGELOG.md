@@ -1,5 +1,11 @@
 # @headless-tree/core
 
+## 1.0.0
+
+### Minor Changes
+
+- 9e5027b: The propMemoization feature now memoizes all prop-generation related functions, including searchinput and renameinput related props
+
 ## 0.0.15
 
 ### Patch Changes
