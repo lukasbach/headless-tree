@@ -26,8 +26,8 @@ function HomepageHeader() {
           <p className={styles.heroText}>
             Super-easy integration of complex tree components into React.
             Supports ordered and unordered drag-and-drop, extensive keybindings,
-            search, renaming and more. Fully customizable, accessible. Headless
-            Tree is the official successor for{" "}
+            search, renaming and more. Fully customizable and accessible.
+            Headless Tree is the official successor for{" "}
             <Link to="https://rct.lukasbach.com/">React Complex Tree</Link>.
           </p>
           <div className={styles.buttons}>
