@@ -45,6 +45,7 @@ to get an idea of what you can do with it.
 - [Customize Behavior](https://headless-tree.lukasbach.com/?demo=8#demogrid): Easily overwrite internal behavior like requiring double clicks on items to expand
 - [Customize Logic](https://headless-tree.lukasbach.com/?demo=9#demogrid): Overwrite or expand any internal behavior of Headless Tree
 - [Async Data Support](https://headless-tree.lukasbach.com/?demo=10#demogrid): Use synchronous or asynchronous data sources for your tree. Headless Tree comes with optional caching for async data
+- Free of dependencies
 - Or check out [this comprehensive playground](https://headless-tree.lukasbach.com/?demo=11#demogrid) that has most of the capabilities enabled.
 
 ## Bundle Size
