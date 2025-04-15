@@ -78,7 +78,7 @@ export const DemoGrid: FC = () => {
         setSelectedDemo(demo);
       }
     }
-  }, [selectedDemo]);
+  }, []);
 
   return (
     <div className={styles.container} id="demogrid">

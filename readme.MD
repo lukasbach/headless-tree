@@ -32,6 +32,21 @@ to get an idea of what you can do with it.
 > [follow on Bluesky](https://bsky.app/profile/lukasbach.bsky.social) to
 > stay up to date.
 
+## Features
+
+- [Simple Interface](https://headless-tree.lukasbach.com/?demo=0#demogrid): Easy integration in React with full customizability of DOM
+- [Drag and Drop](https://headless-tree.lukasbach.com/?demo=1#demogrid): Powerful ordered drag-and-drop, that can interact with external drag events
+- [Scalable](https://headless-tree.lukasbach.com/?demo=2#demogrid): Headless Tree remains performant even with large trees
+- [Virtualization Support](https://headless-tree.lukasbach.com/?demo=3#demogrid): Compatible with common virtualization library to support 100k+ items
+- [Hotkeys!](https://headless-tree.lukasbach.com/?demo=4#demogrid): Lots of hotkeys, fully customizable
+- [Search Support](https://headless-tree.lukasbach.com/?demo=5#demogrid): Typeahead anywhere in the tree to quickly search the entire tree
+- [Rename items](https://headless-tree.lukasbach.com/?demo=6#demogrid): Optionally allow users to rename items inside the tree
+- [Manage State](https://headless-tree.lukasbach.com/?demo=7#demogrid): Let Headless Tree manage tree state internally, or manage any part of it yourself
+- [Customize Behavior](https://headless-tree.lukasbach.com/?demo=8#demogrid): Easily overwrite internal behavior like requiring double clicks on items to expand
+- [Customize Logic](https://headless-tree.lukasbach.com/?demo=9#demogrid): Overwrite or expand any internal behavior of Headless Tree
+- [Async Data Support](https://headless-tree.lukasbach.com/?demo=10#demogrid): Use synchronous or asynchronous data sources for your tree. Headless Tree comes with optional caching for async data
+- Or check out [this comprehensive playground](https://headless-tree.lukasbach.com/?demo=11#demogrid) that has most of the capabilities enabled.
+
 ## Bundle Size
 
 Headless Tree exports individual features in a tree-shaking-friendly
