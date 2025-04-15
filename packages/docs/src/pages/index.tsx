@@ -30,6 +30,13 @@ function HomepageHeader() {
             Headless Tree is the official successor for{" "}
             <Link to="https://rct.lukasbach.com/">React Complex Tree</Link>.
           </p>
+          <p className={styles.heroText}>
+            Read the{" "}
+            <Link to="https://medium.com/@lukasbach/headless-tree-and-the-future-of-react-complex-tree-fc920700e82a">
+              blog post about the change on Medium
+            </Link>
+            .
+          </p>
           <div className={styles.buttons}>
             <Link
               className="button button--primary button--lg"

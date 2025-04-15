@@ -27,7 +27,11 @@ to get an idea of what you can do with it.
 > [!TIP]  
 > Headless Tree is now available as Beta! The library is mostly stable and
 > production ready, and will be generally released within two months, once
-> I have collected feedback and fixed any bugs that might arise. Join
+> I have collected feedback and fixed any bugs that might arise. I've written
+> [a blog post](https://medium.com/@lukasbach/headless-tree-and-the-future-of-react-complex-tree-fc920700e82a)
+> about the details of the change, and the future of the library.
+> 
+> Join
 > [the Discord](https://discord.gg/KuZ6EezzVw) to get involved, and
 > [follow on Bluesky](https://bsky.app/profile/lukasbach.bsky.social) to
 > stay up to date.
