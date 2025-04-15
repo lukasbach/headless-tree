@@ -19,6 +19,11 @@ library you want. The library automatically provides the necessary
 aria tags to emulate a nested tree structure, so that accessibility
 requirements are met despite the flat structure.
 
+Dive into [the Get Started page](https://headless-tree.lukasbach.com/getstarted)
+to find out how to use Headless Tree, or have a look at
+[the samples on the Headless Tree Homepage](https://headless-tree.lukasbach.com/#demogrid)
+to get an idea of what you can do with it.
+
 > [!TIP]  
 > Headless Tree is now available as Beta! The library is mostly stable and
 > production ready, and will be generally released within two months, once

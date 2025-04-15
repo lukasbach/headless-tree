@@ -68,9 +68,12 @@ const demos = [
 ];
 
 export const DemoGrid: FC = () => {
-  const [selectedDemo, setSelectedDemo] = useState(0);
+  const [selectedDemo, setSelectedDemo] = useState(() => {
+    const search = new URLSearchParams(document.location.search);
+    return search.has("demo") ? parseInt(search.get("demo"), 10) : 0;
+  });
   return (
-    <div className={styles.container}>
+    <div className={styles.container} id="demogrid">
       <DemoBox
         initialStory={demos[selectedDemo]?.story}
         tags={["homepage"]}
