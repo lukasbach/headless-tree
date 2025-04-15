@@ -1,6 +1,4 @@
-# Headless Tree
-
-> The definitive tree component for the Web
+![Headless Tree](./packages/docs/static/img/banner-github.png)
 
 Super-easy integration of complex tree components into React. Supports ordered 
 and unordered drag-and-drop, extensive keybindings, search, renaming and more.
