@@ -5,6 +5,12 @@
     margin-bottom: 4rem;
 }
 
+@media screen and (max-width: 1100px) {
+    .container {
+        width: 100%;
+    }
+}
+
 .container h2 {
     font-family: 'Noto Sans', sans-serif;
     font-size: 1.8rem;

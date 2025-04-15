@@ -42,19 +42,6 @@
   width: 280px;
 }
 
-@media screen and (max-width: 996px) {
-  .heroBanner {
-    padding: 2rem;
-  }
-  .heroBannerInner {
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-  }
-  .heroDemo {
-    height: 400px;
-  }
-}
 
 .buttons {
   display: flex;
@@ -107,4 +94,24 @@
   margin: 0 auto;
   margin-bottom: 1rem;
   color: var(--text-muted);
+}
+
+@media screen and (max-width: 996px) {
+  .heroTitle {
+    font-size: 4.5rem;
+  }
+  .heroSubtitle {
+    font-size: 2rem;
+  }
+  .heroBanner {
+    padding: 2rem;
+  }
+  .heroBannerInner {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+  .heroDemo {
+    height: 400px;
+  }
 }

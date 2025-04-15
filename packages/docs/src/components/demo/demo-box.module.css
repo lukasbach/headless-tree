@@ -9,10 +9,12 @@
     padding: .2rem .5rem;
     border-radius: 8px;
     display: flex;
+    flex-wrap: wrap;
 }
 
 .topLeft {
     flex-grow: 1;
+    overflow: auto;
 }
 
 .topRight a {
@@ -63,4 +65,17 @@
     border: none;
     background-color: white;
     border-radius: 16px;
+}
+
+@media screen and (max-width: 996px) {
+    .sidebyside {
+        flex-direction: column;
+        height: auto;
+    }
+    .left {
+        height: 400px;
+    }
+    .right pre {
+        max-height: 400px;
+    }
 }
