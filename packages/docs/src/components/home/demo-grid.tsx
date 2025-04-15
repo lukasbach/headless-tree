@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { DemoBox } from "@site/src/components/demo/demo-box";
 import clsx from "clsx";
 import styles from "./demo-grid.module.css";
@@ -68,10 +68,18 @@ const demos = [
 ];
 
 export const DemoGrid: FC = () => {
-  const [selectedDemo, setSelectedDemo] = useState(() => {
+  const [selectedDemo, setSelectedDemo] = useState(0);
+
+  useEffect(() => {
     const search = new URLSearchParams(document.location.search);
-    return search.has("demo") ? parseInt(search.get("demo"), 10) : 0;
-  });
+    if (search.has("demo")) {
+      const demo = parseInt(search.get("demo"), 10);
+      if (demo >= 0 && demo < demos.length) {
+        setSelectedDemo(demo);
+      }
+    }
+  }, [selectedDemo]);
+
   return (
     <div className={styles.container} id="demogrid">
       <DemoBox
