@@ -1,0 +1,9 @@
+{
+  "repo": "headless-tree",
+  "title": "Headless Tree",
+  "category": "library",
+  "created_at": "2025-04-15T00:00:00.000Z",
+  "highlight": true,
+  "docs": "https://headless-tree.lukasbach.com",
+  "npm": "@headless-tree/core @headless-tree/react"
+}
