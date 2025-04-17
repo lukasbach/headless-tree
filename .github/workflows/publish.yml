@@ -34,6 +34,11 @@ jobs:
       - run: yarn test
       - run: yarn build:core
       - run: yarn build:web
+      - name: Copy README.md to packages
+        run: |
+          for dir in $(find packages -type d -maxdepth 1); do
+            cp README.md $dir/README.md
+          done
 
       - name: Create Release Pull Request or Publish to npm
         id: changesets
