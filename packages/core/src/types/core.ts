@@ -13,6 +13,7 @@ import { RenamingFeatureDef } from "../features/renaming/types";
 import { ExpandAllFeatureDef } from "../features/expand-all/types";
 import { PropMemoizationFeatureDef } from "../features/prop-memoization/types";
 import { KeyboardDragAndDropFeatureDef } from "../features/keyboard-drag-and-drop/types";
+import { CheckboxesFeatureDef } from "../features/checkboxes/types";
 
 export type Updater<T> = T | ((old: T) => T);
 export type SetStateFn<T> = (updaterOrValue: Updater<T>) => void;
@@ -53,6 +54,7 @@ export type RegisteredFeatures<T> =
   | MainFeatureDef<T>
   | TreeFeatureDef<T>
   | SelectionFeatureDef<T>
+  | CheckboxesFeatureDef<T>
   | DragAndDropFeatureDef<T>
   | KeyboardDragAndDropFeatureDef<T>
   | HotkeysCoreFeatureDef<T>
