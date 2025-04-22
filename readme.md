@@ -1,5 +1,14 @@
 ![Headless Tree](./packages/docs/static/img/banner-github.png)
 
+[![Documentation](https://img.shields.io/badge/docs-1e1f22?style=flat)](https://headless-tree.lukasbach.com/)
+[![Chat on Discord](https://img.shields.io/badge/discord-4c57d9?style=flat&logo=discord&logoColor=ffffff)](https://discord.gg/KuZ6EezzVw)
+[![Follow on BLuesky](https://img.shields.io/badge/bluesky-0285FF?style=flat&logo=bluesky&logoColor=ffffff)](https://bsky.app/profile/lukasbach.bsky.social)
+[![Support on Github Sponsors](https://img.shields.io/badge/sponsor-EA4AAA?style=flat&logo=githubsponsors&logoColor=ffffff)](https://github.com/sponsors/lukasbach)
+[![Follow on Github](https://img.shields.io/badge/follow-181717?style=flat&logo=github&logoColor=ffffff)](https://github.com/lukasbach)
+[![NPM Core package](https://img.shields.io/badge/core-CB3837?style=flat&logo=npm&logoColor=ffffff)](https://www.npmjs.com/package/@headless-tree/core)
+[![NPM React package](https://img.shields.io/badge/react-CB3837?style=flat&logo=npm&logoColor=ffffff)](https://www.npmjs.com/package/@headless-tree/react)
+
+
 Super-easy integration of complex tree components into React. Supports ordered 
 and unordered drag-and-drop, extensive keybindings, search, renaming and more.
 Fully customizable and accessible. Headless Tree is the official successor for
