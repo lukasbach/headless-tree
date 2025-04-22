@@ -86,3 +86,72 @@ Total bundle size is 9.5kB plus 0.4kB for the React bindings. Note that
 the sum of features is bigger than the total bundle size, because several
 features share code. Tree-shaking will ensure that the minimum amount of
 code is included in your bundle.
+
+## Get Started
+
+> [!TIP]  
+> You can find a comprehensive [get-started guide](https://headless-tree.lukasbach.com/getstarted)
+> on the documentation homepage. The following gives a brief overview.
+
+Install Headless Tree via npm:
+
+```bash
+npm install @headless-tree/core @headless-tree/react
+```
+
+In your react component, call the `useTree` hook from `@headless-tree/react` with the configuration of
+your tree:
+
+```tsx
+import {
+  hotkeysCoreFeature,
+  selectionFeature,
+  syncDataLoaderFeature,
+} from "@headless-tree/core";
+import { useTree } from "@headless-tree/react";
+
+const tree = useTree<string>({
+  initialState: { expandedItems: ["folder-1"] },
+  rootItemId: "folder",
+  getItemName: (item) => item.getItemData(),
+  isItemFolder: (item) => !item.getItemData().endsWith("item"),
+  dataLoader: {
+    getItem: (itemId) => itemId,
+    getChildren: (itemId) => [
+      `${itemId}-folder`,
+      `${itemId}-1-item`,
+      `${itemId}-2-item`,
+    ],
+  },
+  indent: 20,
+  features: [syncDataLoaderFeature, selectionFeature, hotkeysCoreFeature],
+});
+```
+
+Then, render your tree based on the tree instance returned from the hook:
+
+```tsx
+<div {...tree.getContainerProps()} className="tree">
+  {tree.getItems().map((item) => (
+    <button
+      {...item.getProps()}
+      key={item.getId()}
+      style={{ paddingLeft: `${item.getItemMeta().level * 20}px` }}
+    >
+      <div
+        className={cx("treeitem", {
+          focused: item.isFocused(),
+          expanded: item.isExpanded(),
+          selected: item.isSelected(),
+          folder: item.isFolder(),
+        })}
+      >
+        {item.getItemName()}
+      </div>
+    </button>
+  ))}
+</div>
+```
+
+Read on in the [get started guide](https://headless-tree.lukasbach.com/getstarted) to learn more about
+how to use Headless Tree, and how to customize it to your needs.
