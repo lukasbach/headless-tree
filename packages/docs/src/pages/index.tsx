@@ -6,7 +6,7 @@ import Heading from "@theme/Heading";
 import { storybookRoot } from "@site/src/components/demo/demo-box";
 import { DemoGrid } from "@site/src/components/home/demo-grid";
 import { HomeNotes } from "@site/src/components/home/home-notes";
-import { RiBlueskyFill } from "react-icons/ri";
+import { RiBlueskyFill, RiGithubFill } from "react-icons/ri";
 import { BsDiscord } from "react-icons/bs";
 import styles from "./index.module.css";
 
@@ -55,6 +55,12 @@ function HomepageHeader() {
               to="https://bsky.app/profile/lukasbach.bsky.social"
             >
               <RiBlueskyFill size="2rem" />
+            </Link>
+            <Link
+              className={`button button--outline button--secondary button--lg ${styles.socialBtn}`}
+              to="https://github.com/lukasbach/headless-tree"
+            >
+              <RiGithubFill size="2rem" />
             </Link>
           </div>
         </div>
