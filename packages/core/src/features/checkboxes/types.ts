@@ -1,6 +1,8 @@
 import { SetStateFn } from "../../types/core";
 
 export type CheckboxesState = {
+  // TODO uncheckedFolders!??
+  // add uncheckedFolders, then just do the trivial state update and have a seperate "simplifier" method
   checkedItems?: string[];
   uncheckedItems?: string[];
   checkedFolders?: string[];
