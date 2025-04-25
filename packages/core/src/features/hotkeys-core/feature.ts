@@ -48,7 +48,6 @@ export const hotkeysCoreFeature: FeatureImplementation = {
       data.current.pressedKeys ??= new Set();
       const newMatch = !data.current.pressedKeys.has(e.key);
       data.current.pressedKeys.add(e.key);
-      console.log("HOTKEYS", data.current.pressedKeys);
 
       const hotkeyName = findHotkeyMatch(
         data.current.pressedKeys,

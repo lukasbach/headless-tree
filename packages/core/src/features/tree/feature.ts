@@ -1,6 +1,7 @@
 import { FeatureImplementation, ItemInstance } from "../../types/core";
 import { ItemMeta } from "./types";
 import { makeStateUpdater, poll } from "../../utils";
+import { logWarning } from "../../utilities/errors";
 
 export const treeFeature: FeatureImplementation<any> = {
   key: "tree",
@@ -31,16 +32,21 @@ export const treeFeature: FeatureImplementation<any> = {
 
       const recursiveAdd = (
         itemId: string,
-        parentId: string,
+        path: string[],
         level: number,
         setSize: number,
         posInSet: number,
       ) => {
+        if (path.includes(itemId)) {
+          logWarning(`Circular reference for ${path.join(".")}`);
+          return;
+        }
+
         flatItems.push({
           itemId,
           level,
           index: flatItems.length,
-          parentId,
+          parentId: path.at(-1) as string,
           setSize,
           posInSet,
         });
@@ -49,7 +55,13 @@ export const treeFeature: FeatureImplementation<any> = {
           const children = tree.retrieveChildrenIds(itemId) ?? [];
           let i = 0;
           for (const childId of children) {
-            recursiveAdd(childId, itemId, level + 1, children.length, i++);
+            recursiveAdd(
+              childId,
+              path.concat(itemId),
+              level + 1,
+              children.length,
+              i++,
+            );
           }
         }
       };
@@ -57,7 +69,7 @@ export const treeFeature: FeatureImplementation<any> = {
       const children = tree.retrieveChildrenIds(rootItemId);
       let i = 0;
       for (const itemId of children) {
-        recursiveAdd(itemId, rootItemId, 0, children.length, i++);
+        recursiveAdd(itemId, [rootItemId], 0, children.length, i++);
       }
 
       return flatItems;
