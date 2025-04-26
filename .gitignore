@@ -13,8 +13,11 @@ node_modules
 /docs
 lib
 
+tsconfig.tsbuildinfo
+
 storybook-static
 /packages/docs/apidocs
 /packages/docs/.cache
 /packages/docs/public
 /packages/docs/docs/md-test
+/examples/*/dist
