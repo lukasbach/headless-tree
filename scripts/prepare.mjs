@@ -33,7 +33,7 @@ for (const sample of samples) {
         path.join(__dirname, "../examples", sampleName, "src/style.css")
     );
     await fs.copy(
-        path.join(__dirname, "examples-data-template.ts"),
+        path.join(__dirname, "examples-data-template.ts.tpl"),
         path.join(__dirname, "../examples", sampleName, "src/data.ts")
     );
 
