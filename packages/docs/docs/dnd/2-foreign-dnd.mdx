@@ -76,3 +76,10 @@ The following sample demonstrates how to set up two trees that can interact with
 items from one tree to the other.
 
 <DemoBox tags={["feature/dnd"]} initialStory="react-guides-multiple-trees--multiple-trees" />
+
+The sample above incorporates a simple use case where both trees have the same data source, meaning that
+it is sufficient to update child IDs of the parents of the moved items to reflect the data after the
+mutation. In some use cases, several trees make use of distinct data sources, so you will need to make
+sure to also add the target data source to create the newly moved items in there:
+
+<DemoBox tags={["feature/dnd"]} initialStory="react-guides-advanced-multiple-trees--advanced-multiple-trees" />

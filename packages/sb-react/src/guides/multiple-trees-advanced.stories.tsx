@@ -1,6 +1,7 @@
 import type { Meta } from "@storybook/react";
-import React from "react";
+import React, { useState } from "react";
 import {
+  TreeInstance,
   dragAndDropFeature,
   hotkeysCoreFeature,
   insertItemsAtTarget,
@@ -13,7 +14,7 @@ import { useTree } from "@headless-tree/react";
 import cx from "classnames";
 
 const meta = {
-  title: "React/Guides/Multiple Trees",
+  title: "React/Guides/Advanced Multiple Trees",
   tags: ["feature/dnd", "homepage"],
 } satisfies Meta;
 
@@ -25,9 +26,8 @@ type Item = {
   children?: string[];
 };
 
-const data: Record<string, Item> = {
-  root1: { name: "Root", children: ["lunch", "dessert"] },
-  root2: { name: "Root", children: ["solar", "centauri"] },
+const data1: Record<string, Item> = {
+  root: { name: "Root", children: ["lunch", "dessert"] },
   lunch: { name: "Lunch", children: ["sandwich", "salad", "soup"] },
   sandwich: { name: "Sandwich" },
   salad: { name: "Salad" },
@@ -37,6 +37,10 @@ const data: Record<string, Item> = {
   dessert: { name: "Dessert", children: ["icecream", "cake"] },
   icecream: { name: "Icecream" },
   cake: { name: "Cake" },
+};
+
+const data2: Record<string, Item> = {
+  root: { name: "Root", children: ["solar", "centauri"] },
   solar: {
     name: "Solar System",
     children: ["jupiter", "earth", "mars", "venus"],
@@ -58,9 +62,23 @@ const data: Record<string, Item> = {
   proxima: { name: "Proxima Centauri" },
 };
 
-const Tree = (props: { root: string; prefix: string }) => {
-  const tree = useTree<Item>({
-    rootItemId: props.root,
+/* Return all IDs of items within the given items, even deeply nested ones */
+const resolveNestedItems = (
+  tree: TreeInstance<Item>,
+  items: string[],
+): string[] => {
+  if (items.length === 0) return [];
+  const immediateChildren = items
+    .map(tree.getConfig().dataLoader.getChildren)
+    .flat() as string[];
+  const nestedChildren = resolveNestedItems(tree, immediateChildren);
+  return [...items, ...nestedChildren];
+};
+
+const Tree = (props: { data: Record<string, Item>; prefix: string }) => {
+  const [data, setData] = useState(props.data);
+  const tree: TreeInstance<Item> = useTree<Item>({
+    rootItemId: "root",
     dataLoader: {
       getItem: (id) => data[id],
       getChildren: (id) => data[id]?.children ?? [],
@@ -85,21 +103,38 @@ const Tree = (props: { root: string; prefix: string }) => {
     },
 
     // When moving items out of the tree, this is used to serialize the
-    // dragged items as foreign drag object
-    createForeignDragObject: (items) => ({
-      format: "text/plain",
-      data: JSON.stringify(items.map((item) => item.getId())),
-    }),
+    // dragged items as foreign drag object.
+    // Since the trees have distinct data sources, we provide the necessary
+    // information to move the items to the new data source as well.
+    createForeignDragObject: (items) => {
+      const nestedItems = resolveNestedItems(
+        tree,
+        items.map((item) => item.getId()),
+      );
+      return {
+        format: "text/plain",
+        data: JSON.stringify({
+          items: items.map((item) => item.getId()),
+          nestedItems: Object.fromEntries(
+            nestedItems.map((id) => [id, props.data[id]]),
+          ),
+        }),
+      };
+    },
 
     // This is called in the target tree to verify if foreign drag objects
     // are permitted to be dropped there.
     canDropForeignDragObject: () => true,
 
     // This is called in the target tree when the foreign drag object is
-    // dropped. This handler inserts the moved items
+    // dropped. This handler inserts the moved items, and also injects
+    // the item data into the new data source.
     onDropForeignDragObject: (dataTransfer, target) => {
-      const newChildrenIds = JSON.parse(dataTransfer.getData("text/plain"));
-      insertItemsAtTarget(newChildrenIds, target, (item, newChildren) => {
+      const { items, nestedItems } = JSON.parse(
+        dataTransfer.getData("text/plain"),
+      );
+      setData({ ...data, ...nestedItems });
+      insertItemsAtTarget(items, target, (item, newChildren) => {
         item.getItemData().children = newChildren;
       });
     },
@@ -146,21 +181,22 @@ const Tree = (props: { root: string; prefix: string }) => {
   );
 };
 
-export const MultipleTrees = () => {
+export const AdvancedMultipleTrees = () => {
   return (
     <>
       <p className="description">
-        In this sample, both trees share a datasource and have different items
-        defined as roots, which makes dragging easy to implement since moving
-        items just means updating children IDs. The Story "Advanced Multiple
-        Trees" shows how to implement multiple trees with different datasources.
+        This is a more complicated use case than the normal "Multiple Trees"
+        story. In this case, several trees each have their own dedicated data
+        source. When items are dragged from one tree to the other, all data of
+        every nested item that is part of the selection is sent in the drag
+        event, and attached to the new data source in the target tree.
       </p>
       <div style={{ display: "flex" }}>
         <div style={{ width: "200px", marginRight: "20px" }}>
-          <Tree root="root1" prefix="a" />
+          <Tree data={data1} prefix="a" />
         </div>
         <div style={{ width: "200px", marginRight: "20px" }}>
-          <Tree root="root2" prefix="b" />
+          <Tree data={data2} prefix="b" />
         </div>
       </div>
     </>
