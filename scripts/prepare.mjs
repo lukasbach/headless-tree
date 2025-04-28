@@ -25,8 +25,10 @@ await fs.copy(
 
 // ------ EXAMPLES REDUNDANT FILES COPYING ------
 const samples = await glob('./examples/*/package.json');
+let samplesList = "";
 
 for (const sample of samples) {
+    const pkg = await fs.readJSON(sample);
     const sampleName = /\.\/examples\/(.*)\/package.json/.exec(sample)[1];
     await fs.copy(
         path.join(__dirname, "../packages/sb-react/.storybook/style.css"),
@@ -41,10 +43,19 @@ for (const sample of samples) {
     const stackblitz = `https://stackblitz.com/github/lukasbach/headless-tree/tree/main/examples/${sampleName}?preset=node&file=src/main.tsx`;
     const codesandbox = `https://codesandbox.io/p/devbox/github/lukasbach/headless-tree/tree/main/examples/${sampleName}?file=src/main.tsx`;
     const github = `https://github.com/lukasbach/headless-tree/tree/main/examples/${sampleName}`;
+    samplesList += `- ${pkg.description}: [Stackblitz](${stackblitz}), [CodeSandbox](${codesandbox}), [GitHub](${github})\n`;
     await fs.writeFile(
         path.join(__dirname, `../examples/${sampleName}/readme.MD`),
-        `# Headless Tree Sample: ${sampleName}\n\nTo run this example:\n\n- \`npm install\` to install dependencies\n- \`npm start\` to start the dev server\n\n`
+        `# ${pkg.description}\n\nTo run this example:\n\n- \`npm install\` to install dependencies\n- \`npm start\` to start the dev server\n\n`
         + `You can run this sample from [Stackblitz](${stackblitz}) or [CodeSandbox](${codesandbox}). The source code is available on [GitHub](${github}).\n\n`,
         { encoding: "utf8" }
-    )
+    );
 }
+
+await fs.writeFile(
+    path.join(__dirname, "../packages/docs/docs/examples.mdx"),
+    `---\nslug: "/examples"\ntitle: "Sandboxes"\ncategory: intro\ntemplate: page\nsidebar_position: 1\n---\n` +
+    `# Example Sandboxes\n\nThis is a collection of example integrations for the Headless Tree library. You can ` +
+    `use them as basis to quickly scaffold an app with Headless Tree, get started with experimenting with the ` +
+    `capabilities of HT or to create minimalistic bug-reproductions for issue reports.\n\n${samplesList}\n\n`
+);

@@ -20,4 +20,5 @@ storybook-static
 /packages/docs/.cache
 /packages/docs/public
 /packages/docs/docs/md-test
+/packages/docs/docs/examples.mdx
 /examples/*/dist

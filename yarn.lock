@@ -4150,6 +4150,24 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@headless-tree/example-comprehensive@workspace:examples/comprehensive":
+  version: 0.0.0-use.local
+  resolution: "@headless-tree/example-comprehensive@workspace:examples/comprehensive"
+  dependencies:
+    "@headless-tree/core": "npm:^1.0.0"
+    "@headless-tree/react": "npm:^1.0.0"
+    "@types/react": "npm:^19.0.10"
+    "@types/react-dom": "npm:^19.0.4"
+    "@vitejs/plugin-react": "npm:^4.3.4"
+    classnames: "npm:^2.3.2"
+    globals: "npm:^16.0.0"
+    react: "npm:^19.0.0"
+    react-dom: "npm:^19.0.0"
+    typescript: "npm:~5.7.2"
+    vite: "npm:^6.3.1"
+  languageName: unknown
+  linkType: soft
+
 "@headless-tree/example-react-compiler@workspace:examples/react-compiler":
   version: 0.0.0-use.local
   resolution: "@headless-tree/example-react-compiler@workspace:examples/react-compiler"
