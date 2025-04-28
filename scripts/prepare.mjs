@@ -37,8 +37,9 @@ for (const sample of samples) {
         path.join(__dirname, "../examples", sampleName, "src/data.ts")
     );
 
-    const stackblitz = `https://stackblitz.com/github/lukasbach/headless-tree/tree/main/examples/${sampleName}?embed=1&theme=dark&preset=node&file=src/main.tsx`;
-    const codesandbox = `https://codesandbox.io/p/devbox/github/lukasbach/headless-tree/tree/main/examples/${sampleName}?embed=1&theme=dark&file=src/main.tsx`;
+    // embed=1&theme=dark&
+    const stackblitz = `https://stackblitz.com/github/lukasbach/headless-tree/tree/main/examples/${sampleName}?preset=node&file=src/main.tsx`;
+    const codesandbox = `https://codesandbox.io/p/devbox/github/lukasbach/headless-tree/tree/main/examples/${sampleName}?file=src/main.tsx`;
     const github = `https://github.com/lukasbach/headless-tree/tree/main/examples/${sampleName}`;
     await fs.writeFile(
         path.join(__dirname, `../examples/${sampleName}/readme.MD`),

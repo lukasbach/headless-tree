@@ -21,7 +21,6 @@
     "@vitejs/plugin-react": "^4.3.4",
     "babel-plugin-react-compiler": "^19.1.0-rc.1",
     "globals": "^16.0.0",
-    "react-compiler-runtime": "^19.1.0-rc.1",
     "typescript": "~5.7.2",
     "vite": "^6.3.1"
   }
