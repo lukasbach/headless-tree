@@ -6379,20 +6379,21 @@ __metadata:
   linkType: hard
 
 "@tanstack/react-virtual@npm:^3.0.0-alpha.0":
-  version: 3.0.0-beta.54
-  resolution: "@tanstack/react-virtual@npm:3.0.0-beta.54"
+  version: 3.13.8
+  resolution: "@tanstack/react-virtual@npm:3.13.8"
   dependencies:
-    "@tanstack/virtual-core": "npm:3.0.0-beta.54"
+    "@tanstack/virtual-core": "npm:3.13.8"
   peerDependencies:
-    react: ^16.8.0 || ^17.0.0 || ^18.0.0
-  checksum: 10/a154d30d92506b181ba8a95c7e0123491a66bf8b368f83358e83d5cf3875b6cf7f04e93fa0b1faa07adddb993f8230e8a5c08219dba47f317246a3d57d1e7da0
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+  checksum: 10/a68db4cccc0de54ba0da2ae4292671bd4fa339d1cdfab160d8a067d5bb78f77e2f75d234089d4cf45bc688e51f702604c7f2d4031f8e9b8ce82cb71a0fa7b4f0
   languageName: node
   linkType: hard
 
-"@tanstack/virtual-core@npm:3.0.0-beta.54":
-  version: 3.0.0-beta.54
-  resolution: "@tanstack/virtual-core@npm:3.0.0-beta.54"
-  checksum: 10/e0149a9af07baf36c9a62b243f35dfa62e85b206f130fa5e3dcceb57b344646ee16fc0be58e0b834fec1860a5acf27be14867e222ae0a008e85b99a479c07ccd
+"@tanstack/virtual-core@npm:3.13.8":
+  version: 3.13.8
+  resolution: "@tanstack/virtual-core@npm:3.13.8"
+  checksum: 10/21982fa3b55bb4a7936a013b5ec151ce636eb108b38b56519391b9ebffc1cbcd81de0472229d237f84fc8c44e61a6a3890dba6371d04d921a61023d506902a0b
   languageName: node
   linkType: hard
 
@@ -22578,11 +22579,11 @@ __metadata:
 
 "typescript@patch:typescript@npm%3A^5.7.2#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A~5.7.2#optional!builtin<compat/typescript>":
   version: 5.7.3
-  resolution: "typescript@patch:typescript@npm%3A5.7.3#optional!builtin<compat/typescript>::version=5.7.3&hash=5adc0c"
+  resolution: "typescript@patch:typescript@npm%3A5.7.3#optional!builtin<compat/typescript>::version=5.7.3&hash=5786d5"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 10/3ac7b7e3e899273d2fbdce6e24b93d4d53a705ad7a7e4cc83b4c57bcb6d25948abcd2a21994f6b9c73ab03960f395aae95f0458de292a66ce0134233261714c3
+  checksum: 10/dc58d777eb4c01973f7fbf1fd808aad49a0efdf545528dab9b07d94fdcb65b8751742804c3057e9619a4627f2d9cc85547fdd49d9f4326992ad0181b49e61d81
   languageName: node
   linkType: hard
 
