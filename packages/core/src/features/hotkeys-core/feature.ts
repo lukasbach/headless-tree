@@ -17,7 +17,7 @@ const testHotkeyMatch = (
   tree: TreeInstance<any>,
   hotkey: HotkeyConfig<any>,
 ) => {
-  const supposedKeys = hotkey.hotkey.split("+");
+  const supposedKeys = hotkey.hotkey.toLowerCase().split("+");
   const doKeysMatch = supposedKeys.every((key) =>
     key in specialKeys
       ? [...pressedKeys].some((pressedKey) => specialKeys[key].test(pressedKey))
@@ -45,9 +45,10 @@ export const hotkeysCoreFeature: FeatureImplementation = {
   onTreeMount: (tree, element) => {
     const data = tree.getDataRef<HotkeysCoreDataRef>();
     const keydown = (e: KeyboardEvent) => {
+      const key = e.key.toLowerCase();
       data.current.pressedKeys ??= new Set();
-      const newMatch = !data.current.pressedKeys.has(e.key);
-      data.current.pressedKeys.add(e.key);
+      const newMatch = !data.current.pressedKeys.has(key);
+      data.current.pressedKeys.add(key);
 
       const hotkeyName = findHotkeyMatch(
         data.current.pressedKeys,
@@ -78,7 +79,7 @@ export const hotkeysCoreFeature: FeatureImplementation = {
 
     const keyup = (e: KeyboardEvent) => {
       data.current.pressedKeys ??= new Set();
-      data.current.pressedKeys.delete(e.key);
+      data.current.pressedKeys.delete(e.key.toLowerCase());
     };
 
     // keyup is registered on document, because some hotkeys shift
