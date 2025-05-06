@@ -12,14 +12,14 @@ const copyChangelog = async (pkg) => {
         'category: changelog',
         '---\n\n',
     ].join("\n");
-    await fs.writeFile(path.join(__dirname, `../packages/docs/docs/changelog/${pkg}.md`), prefix + contents);
+    await fs.writeFile(path.join(__dirname, `../packages/docs/docs/6-changelog/${pkg}.md`), prefix + contents);
 }
 
 await copyChangelog('core');
 await copyChangelog('react');
 await fs.copy(
     path.join(__dirname, `../CONTRIBUTING.md`),
-    path.join(__dirname, `../packages/docs/docs/contributing/1-overview.mdx`)
+    path.join(__dirname, `../packages/docs/docs/5-contributing/1-overview.mdx`)
 );
 
 
@@ -53,7 +53,7 @@ for (const sample of samples) {
 }
 
 await fs.writeFile(
-    path.join(__dirname, "../packages/docs/docs/examples.mdx"),
+    path.join(__dirname, "../packages/docs/docs/0-root/examples.mdx"),
     `---\nslug: "/examples"\ntitle: "Sandboxes"\ncategory: intro\ntemplate: page\nsidebar_position: 1\n---\n` +
     `# Example Sandboxes\n\nThis is a collection of example integrations for the Headless Tree library. You can ` +
     `use them as basis to quickly scaffold an app with Headless Tree, get started with experimenting with the ` +

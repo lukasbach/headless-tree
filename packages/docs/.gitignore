@@ -19,8 +19,8 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-docs/changelog/*.md
-docs/contributing/1-overview.mdx
+docs/6-changelog/*.md
+docs/5-contributing/1-overview.mdx
 
 static/llm-full.txt
 static/llms-full.txt
