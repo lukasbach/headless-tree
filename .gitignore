@@ -22,3 +22,4 @@ storybook-static
 /packages/docs/docs/md-test
 /packages/docs/docs/0-root/examples.mdx
 /examples/*/dist
+/packages/*/readme.md
