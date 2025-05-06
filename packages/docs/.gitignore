@@ -21,3 +21,9 @@ yarn-error.log*
 
 docs/changelog/*.md
 docs/contributing/1-overview.mdx
+
+static/llm-full.txt
+static/llms-full.txt
+static/llm.txt
+static/llms.txt
+static/llm
