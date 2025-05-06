@@ -83,14 +83,16 @@ export const treeFeature: FeatureImplementation<any> = {
     },
 
     focusNextItem: ({ tree }) => {
-      const { index } = tree.getFocusedItem().getItemMeta();
-      const nextIndex = Math.min(index + 1, tree.getItems().length - 1);
+      const focused = tree.getFocusedItem().getItemMeta();
+      if (!focused) return;
+      const nextIndex = Math.min(focused.index + 1, tree.getItems().length - 1);
       tree.getItems()[nextIndex]?.setFocused();
     },
 
     focusPreviousItem: ({ tree }) => {
-      const { index } = tree.getFocusedItem().getItemMeta();
-      const nextIndex = Math.max(index - 1, 0);
+      const focused = tree.getFocusedItem().getItemMeta();
+      if (!focused) return;
+      const nextIndex = Math.max(focused.index - 1, 0);
       tree.getItems()[nextIndex]?.setFocused();
     },
 
