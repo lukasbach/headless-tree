@@ -1,5 +1,13 @@
 # @headless-tree/core
 
+## 1.0.1
+
+### Patch Changes
+
+- c9f9932: fixed tree.focusNextItem() and tree.focusPreviousItem() throwing if no item is currently focused
+- 6ed84b4: recursive item references are filtered out when rendering (#89)
+- 4bef2f2: fixed a bug where hotkeys involving shift may not work properly depending on the order of shift and other key inputs (#98)
+
 ## 1.0.0
 
 ### Minor Changes

@@ -1,5 +1,15 @@
 # @headless-tree/sb-react
 
+## 0.0.17
+
+### Patch Changes
+
+- Updated dependencies [c9f9932]
+- Updated dependencies [6ed84b4]
+- Updated dependencies [4bef2f2]
+  - @headless-tree/core@1.0.1
+  - @headless-tree/react@1.0.1
+
 ## 0.0.16
 
 ### Patch Changes
