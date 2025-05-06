@@ -43,9 +43,9 @@ export const selectionFeature: FeatureImplementation = {
       tree.setSelectedItems(selectedItems.filter((id) => id !== itemId));
     },
 
-    isSelected: ({ tree, item }) => {
+    isSelected: ({ tree, itemId }) => {
       const { selectedItems } = tree.getState();
-      return selectedItems.includes(item.getItemMeta().itemId);
+      return selectedItems.includes(itemId);
     },
 
     selectUpTo: ({ tree, item }, ctrl: boolean) => {

@@ -29,3 +29,24 @@ You can use them by setting the `instanceBuilder` tree config option to [`buildP
 a symbol that you can import from `@headless-tree/core`.
 
 :::
+
+If you need to need a ref to the virtualized DOM items, keep in mind that `treeItem.getProps()` also
+returns a ref that needs to be assigned to the DOM element. Also keep in mind that the ref function
+of a DOM element is called both on mount and unmount, and calling `treeItem.getProps()` will fail
+if the item is already unloaded in the tree. Calling `treeItem.getProps()` outside the ref, like the following,
+will work:
+
+```ts jsx
+const props = item.getProps();
+return (
+  <button
+    {...props}
+    key={virtualItem.key}
+    data-index={virtualItem.index}
+    ref={(r) => {
+      virtualizer.measureElement(r);
+      props.ref(r);
+    }}
+  />
+);
+```
