@@ -27,6 +27,7 @@ jobs:
       - run: yarn lint:test
       - run: yarn build:core
       - run: yarn build:web
+      - run: yarn llmtxt
       - run: |
           mkdir -p ./packages/docs/build/storybook
           cp -r ./packages/sb-react/storybook-static ./packages/docs/build/storybook/react
