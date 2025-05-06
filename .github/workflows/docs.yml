@@ -26,8 +26,8 @@ jobs:
       - run: yarn
       - run: yarn lint:test
       - run: yarn build:core
-      - run: yarn build:web
-      - run: yarn llmtxt # todo find better way than running build:web twice
+      - run: yarn build:sb
+      - run: yarn llmtxt
       - run: yarn build:web
       - run: |
           mkdir -p ./packages/docs/build/storybook
