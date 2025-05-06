@@ -53,7 +53,6 @@ export const Tree = () => {
               selected: item.isSelected(),
               folder: item.isFolder(),
               drop: item.isDragTarget(),
-              searchmatch: item.isMatchingSearch(),
             })}
           >
             {item.getItemName()}
