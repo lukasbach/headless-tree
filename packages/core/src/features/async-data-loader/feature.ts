@@ -86,6 +86,7 @@ export const asyncDataLoaderFeature: FeatureImplementation = {
     retrieveChildrenIds: ({ tree }, itemId) => {
       const config = tree.getConfig();
       const dataRef = tree.getDataRef<AsyncDataLoaderDataRef>();
+      dataRef.current.itemData ??= {};
       dataRef.current.childrenIds ??= {};
       if (dataRef.current.childrenIds[itemId]) {
         return dataRef.current.childrenIds[itemId];
@@ -101,15 +102,34 @@ export const asyncDataLoaderFeature: FeatureImplementation = {
       );
 
       (async () => {
-        const childrenIds = await config.dataLoader.getChildren(itemId);
-        dataRef.current.childrenIds[itemId] = childrenIds;
-        config.onLoadedChildren?.(itemId, childrenIds);
+        if ("getChildrenWithData" in config.dataLoader) {
+          const children = await config.dataLoader.getChildrenWithData(itemId);
+          const childrenIds = children.map((c) => c.id);
+          dataRef.current.childrenIds[itemId] = childrenIds;
+          children.forEach(({ id, data }) => {
+            dataRef.current.itemData[id] = data;
+            config.onLoadedItem?.(id, data);
+            dataRef.current.awaitingItemDataLoading?.[id].forEach((cb) => cb());
+            delete dataRef.current.awaitingItemDataLoading?.[id];
+          });
+
+          config.onLoadedChildren?.(itemId, childrenIds);
+          tree.rebuildTree();
+          tree.applySubStateUpdate("loadingItemData", (loadingItemData) =>
+            loadingItemData.filter((id) => !childrenIds.includes(id)),
+          );
+        } else {
+          const childrenIds = await config.dataLoader.getChildren(itemId);
+          dataRef.current.childrenIds[itemId] = childrenIds;
+          config.onLoadedChildren?.(itemId, childrenIds);
+          tree.rebuildTree();
+        }
+
         tree.applySubStateUpdate(
           "loadingItemChildrens",
           (loadingItemChildrens) =>
             loadingItemChildrens.filter((id) => id !== itemId),
         );
-        tree.rebuildTree();
 
         dataRef.current.awaitingItemChildrensLoading?.[itemId]?.forEach((cb) =>
           cb(),

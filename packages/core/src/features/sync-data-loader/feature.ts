@@ -3,6 +3,12 @@ import { makeStateUpdater } from "../../utils";
 import { throwError } from "../../utilities/errors";
 
 const promiseErrorMessage = "sync dataLoader returned promise";
+const unpromise = <T>(data: T | Promise<T>): T => {
+  if (!data || (typeof data === "object" && "then" in data)) {
+    throw throwError(promiseErrorMessage);
+  }
+  return data;
+};
 
 export const syncDataLoaderFeature: FeatureImplementation = {
   key: "sync-data-loader",
@@ -29,19 +35,17 @@ export const syncDataLoaderFeature: FeatureImplementation = {
     waitForItemChildrenLoaded: async () => {},
 
     retrieveItemData: ({ tree }, itemId) => {
-      const data = tree.getConfig().dataLoader.getItem(itemId);
-      if (typeof data === "object" && "then" in data) {
-        throw throwError(promiseErrorMessage);
-      }
-      return data;
+      return unpromise(tree.getConfig().dataLoader.getItem(itemId));
     },
 
     retrieveChildrenIds: ({ tree }, itemId) => {
-      const data = tree.getConfig().dataLoader.getChildren(itemId);
-      if (typeof data === "object" && "then" in data) {
-        throw throwError(promiseErrorMessage);
+      const { dataLoader } = tree.getConfig();
+      if ("getChildren" in dataLoader) {
+        return unpromise(dataLoader.getChildren(itemId));
       }
-      return data;
+      return unpromise(dataLoader.getChildrenWithData(itemId)).map(
+        (c) => c.data,
+      );
     },
   },
 

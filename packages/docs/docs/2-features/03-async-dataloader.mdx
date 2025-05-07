@@ -14,7 +14,7 @@ import {FeaturePageHeader} from "../../src/components/docs-page/feature-page-hea
     feature="async-data-loader"
 />
 
-<DemoBox tags={["feature/async-data-loader"]} />
+<DemoBox tags={["feature/async-data-loader"]} initialStory="react-async-async-loading-state--async-loading-state" />
 
 The Async Data Loader is an alternative to the [Sync Data Loader](/features/sync-dataloader) that allows you to
 define your data interface in an asynchronous manner. If you want to use it, you need to use the `asyncDataLoaderFeature`
@@ -64,3 +64,26 @@ item.invalidateChildrenIds();
 ```
 
 The data loader will then refetch the respective data the next render.
+
+## Fetching all children data at once
+
+The dataloader also specifies an alternative interface for fetching the payload for all children of an item
+at once, in case it is more convenient to you that way. This can help to reduce the number of requests of your
+app when a folder is opened by a user.
+
+```ts
+const dataLoader = {
+  getItem: (itemId) => {
+    return wait(800).then(() => itemPayload);
+  },
+  getChildrenWithData: (itemId) => {
+    return wait(800).then(() => [
+      { id: `child-1`, data: child1Payload },
+      { id: `child-2`, data: child2Payload },
+      { id: `child-3`, data: child3Payload },
+    ]);
+  },
+};
+```
+
+<DemoBox tags={["feature/async-data-loader"]} initialStory="react-async-async-get-children-with-data--async-get-children-with-data" />
