@@ -1,4 +1,4 @@
-![Headless Tree](./packages/docs/static/img/banner-github.png)
+![Headless Tree](https://github.com/lukasbach/headless-tree/raw/main/packages/docs/static/img/banner-github.png)
 
 [![Documentation](https://img.shields.io/badge/docs-1e1f22?style=flat)](https://headless-tree.lukasbach.com/)
 [![Chat on Discord](https://img.shields.io/badge/discord-4c57d9?style=flat&logo=discord&logoColor=ffffff)](https://discord.gg/KuZ6EezzVw)
