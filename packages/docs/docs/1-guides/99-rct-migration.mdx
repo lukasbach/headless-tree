@@ -35,7 +35,7 @@ Headless Tree has full feature parity to React Complex Tree except for the follo
   doesn't exist anymore. Instead, you can control [none](/guides/state#letting-headless-tree-manage-the-state),
   [all](/guides/state#manage-the-entire-state-yourself) or [some individual state atoms](/guides/state#managing-individual-feature-states).
 - Instead of using `StaticTreeDataProvider` or implementing a custom `TreeDataProvider`, you need to implement a
-  [`TreeDataLoader`](/api/core/interface/TreeDataLoader).
+  [`TreeDataLoader`](/api/core#TreeDataLoader).
 - Propagating data mutation as consequence of drop events is no longer achieved as part of the `TreeDataProvider`,
   but can be done in the drop handler with the [`createOnDropHandler`](/dnd/overview#mutating-your-data-after-the-drop).
 - When using asynchronous data loading, you need to use the [async data loader feature](/features/async-dataloader)
