@@ -14,7 +14,7 @@ import { DemoItem, createDemoData, unitTestTree } from "./data";
 
 const meta = {
   title: "React/Misc/Async Tree used in Unit Tests",
-  tags: ["misc/unittest"],
+  tags: ["misc/unittest", "dev"],
 } satisfies Meta;
 
 const { data, asyncDataLoader } = createDemoData(unitTestTree);

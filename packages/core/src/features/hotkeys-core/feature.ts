@@ -45,6 +45,11 @@ export const hotkeysCoreFeature: FeatureImplementation = {
   onTreeMount: (tree, element) => {
     const data = tree.getDataRef<HotkeysCoreDataRef>();
     const keydown = (e: KeyboardEvent) => {
+      const { ignoreHotkeysOnInputs, onTreeHotkey, hotkeys } = tree.getConfig();
+      if (e.target instanceof HTMLInputElement && ignoreHotkeysOnInputs) {
+        return;
+      }
+
       const key = e.key.toLowerCase();
       data.current.pressedKeys ??= new Set();
       const newMatch = !data.current.pressedKeys.has(key);
@@ -54,14 +59,20 @@ export const hotkeysCoreFeature: FeatureImplementation = {
         data.current.pressedKeys,
         tree as any,
         tree.getHotkeyPresets(),
-        tree.getConfig().hotkeys as HotkeysConfig<any>,
+        hotkeys as HotkeysConfig<any>,
       );
+
+      if (e.target instanceof HTMLInputElement) {
+        // JS respects composite keydowns while input elements are focused, and
+        // doesnt send the associated keyup events with the same key name
+        data.current.pressedKeys.delete(key);
+      }
 
       if (!hotkeyName) return;
 
       const hotkeyConfig: HotkeyConfig<any> = {
         ...tree.getHotkeyPresets()[hotkeyName],
-        ...tree.getConfig().hotkeys?.[hotkeyName],
+        ...hotkeys?.[hotkeyName],
       };
 
       if (!hotkeyConfig) return;
@@ -74,7 +85,7 @@ export const hotkeysCoreFeature: FeatureImplementation = {
       if (hotkeyConfig.preventDefault) e.preventDefault();
 
       hotkeyConfig.handler(e, tree as any);
-      tree.getConfig().onTreeHotkey?.(hotkeyName, e);
+      onTreeHotkey?.(hotkeyName, e);
     };
 
     const keyup = (e: KeyboardEvent) => {
@@ -82,13 +93,19 @@ export const hotkeysCoreFeature: FeatureImplementation = {
       data.current.pressedKeys.delete(e.key.toLowerCase());
     };
 
+    const reset = () => {
+      data.current.pressedKeys = new Set();
+    };
+
     // keyup is registered on document, because some hotkeys shift
     // the focus away from the tree (i.e. search)
     // and then we wouldn't get the keyup event anymore
     element.addEventListener("keydown", keydown);
     document.addEventListener("keyup", keyup);
+    document.addEventListener("focus", reset);
     data.current.keydownHandler = keydown;
     data.current.keyupHandler = keyup;
+    data.current.resetHandler = reset;
   },
 
   onTreeUnmount: (tree, element) => {
@@ -100,6 +117,10 @@ export const hotkeysCoreFeature: FeatureImplementation = {
     if (data.current.keydownHandler) {
       element.removeEventListener("keydown", data.current.keydownHandler);
       delete data.current.keydownHandler;
+    }
+    if (data.current.resetHandler) {
+      element.removeEventListener("focus", data.current.resetHandler);
+      delete data.current.resetHandler;
     }
   },
 };
