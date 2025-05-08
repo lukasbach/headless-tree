@@ -21,6 +21,34 @@ const meta = {
 export default meta;
 
 // story-start
+const HotkeyDisplay = (props: {
+  value: { current: { pressedKeys?: Set<string> } };
+}) => {
+  const [, update] = useState(0);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      update((i) => i + 1);
+    }, 100);
+    return () => clearInterval(interval);
+  }, []);
+  return <span>{[...(props.value.current.pressedKeys ?? [])].join(";")}</span>;
+};
+
+const KeyDownDisplay = () => {
+  const [key, setKey] = useState("");
+  useEffect(() => {
+    const keydown = (e: KeyboardEvent) => {
+      setKey(e.key);
+      setTimeout(() => setKey((k) => (k === e.key ? "" : k)), 500);
+    };
+    document.addEventListener("keydown", keydown);
+    return () => {
+      document.removeEventListener("keydown", keydown);
+    };
+  }, []);
+  return <span>{key || "None"}</span>;
+};
+
 export const HotkeyDebugger = () => {
   const [text, setText] = useState("");
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -82,8 +110,9 @@ export const HotkeyDebugger = () => {
         {text || "No Hotkey pressed"}
       </p>
       <p className="description" style={{ minHeight: "30px" }}>
-        Pressed keys:{" "}
-        {[...(tree.getDataRef<any>().current.pressedKeys ?? [])].join(", ")}
+        Recorded keys: <HotkeyDisplay value={tree.getDataRef<any>()} />
+        <br />
+        Current key: <KeyDownDisplay />
       </p>
       {tree.isSearchOpen() && (
         <>
