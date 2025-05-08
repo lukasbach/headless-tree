@@ -34,18 +34,18 @@ const HotkeyDisplay = (props: {
   return <span>{[...(props.value.current.pressedKeys ?? [])].join(";")}</span>;
 };
 
-const KeyDownDisplay = () => {
+const KeyDownDisplay = (props: { event: "keydown" | "keyup" }) => {
   const [key, setKey] = useState("");
   useEffect(() => {
     const keydown = (e: KeyboardEvent) => {
       setKey(e.key);
       setTimeout(() => setKey((k) => (k === e.key ? "" : k)), 500);
     };
-    document.addEventListener("keydown", keydown);
+    document.addEventListener(props.event, keydown);
     return () => {
-      document.removeEventListener("keydown", keydown);
+      document.removeEventListener(props.event, keydown);
     };
-  }, []);
+  }, [props.event]);
   return <span>{key || "None"}</span>;
 };
 
@@ -112,7 +112,11 @@ export const HotkeyDebugger = () => {
       <p className="description" style={{ minHeight: "30px" }}>
         Recorded keys: <HotkeyDisplay value={tree.getDataRef<any>()} />
         <br />
-        Current key: <KeyDownDisplay />
+        keydown=
+        <KeyDownDisplay event="keydown" />
+        <br />
+        keyup=
+        <KeyDownDisplay event="keyup" />
       </p>
       {tree.isSearchOpen() && (
         <>
