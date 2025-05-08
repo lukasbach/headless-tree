@@ -126,5 +126,49 @@ describe("core-feature/selections", () => {
     });
   });
 
-  // TODO - add tests for getChildrenWithData
+  describe("getChildrenWithData", () => {
+    const getChildrenWithData = vi.fn(async (id) => [
+      { id: `${id}1`, data: `${id}1-data` },
+      { id: `${id}2`, data: `${id}2-data` },
+    ]);
+    const getItem = vi.fn();
+    const suiteTree = tree.with({
+      dataLoader: { getItem, getChildrenWithData },
+    });
+    suiteTree.resetBeforeEach();
+
+    it("loads children with data", async () => {
+      getChildrenWithData.mockClear();
+      suiteTree.do.selectItem("x12");
+      await suiteTree.resolveAsyncVisibleItems();
+      expect(getChildrenWithData).toHaveBeenCalledWith("x12");
+      suiteTree.expect.hasChildren("x12", ["x121", "x122"]);
+      expect(suiteTree.item("x121").getItemData()).toBe("x121-data");
+      expect(suiteTree.item("x122").getItemData()).toBe("x122-data");
+    });
+
+    it.skip("invalidates children and reloads with data", async () => {
+      await suiteTree.resolveAsyncVisibleItems();
+      suiteTree.item("x").invalidateChildrenIds();
+      getChildrenWithData.mockResolvedValueOnce([
+        { id: "new1", data: "new1-data" },
+        { id: "new2", data: "new2-data" },
+      ]);
+      getChildrenWithData.mockClear();
+      await suiteTree.resolveAsyncVisibleItems();
+      expect(getChildrenWithData).toHaveBeenCalledTimes(1);
+      suiteTree.expect.hasChildren("x", ["new1", "new2"]);
+      expect(suiteTree.item("new1").getItemData()).toBe("new1-data");
+      expect(suiteTree.item("new2").getItemData()).toBe("new2-data");
+    });
+
+    it("does not call getChildrenWithData twice unnecessarily", async () => {
+      await suiteTree.resolveAsyncVisibleItems();
+      getChildrenWithData.mockClear();
+      suiteTree.item("x").invalidateChildrenIds();
+      await suiteTree.resolveAsyncVisibleItems();
+      suiteTree.expect.hasChildren("x", ["x1", "x2"]);
+      expect(getChildrenWithData).toHaveBeenCalledTimes(1);
+    });
+  });
 });
