@@ -102,7 +102,7 @@ export const hotkeysCoreFeature: FeatureImplementation = {
     // and then we wouldn't get the keyup event anymore
     element.addEventListener("keydown", keydown);
     document.addEventListener("keyup", keyup);
-    document.addEventListener("focus", reset);
+    document.addEventListener("focusin", reset);
     data.current.keydownHandler = keydown;
     data.current.keyupHandler = keyup;
     data.current.resetHandler = reset;
