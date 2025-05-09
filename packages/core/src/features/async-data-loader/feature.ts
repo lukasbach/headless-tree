@@ -1,6 +1,63 @@
-import { FeatureImplementation } from "../../types/core";
+import { FeatureImplementation, TreeInstance } from "../../types/core";
 import { AsyncDataLoaderDataRef } from "./types";
 import { makeStateUpdater } from "../../utils";
+
+const getDataRef = <T>(tree: TreeInstance<T>) => {
+  const dataRef = tree.getDataRef<AsyncDataLoaderDataRef>();
+  dataRef.current.itemData ??= {};
+  dataRef.current.childrenIds ??= {};
+  return dataRef;
+};
+
+const loadItemData = async <T>(tree: TreeInstance<T>, itemId: string) => {
+  const config = tree.getConfig();
+  const dataRef = getDataRef(tree);
+
+  const item = await config.dataLoader.getItem(itemId);
+  dataRef.current.itemData[itemId] = item;
+  config.onLoadedItem?.(itemId, item);
+  tree.applySubStateUpdate("loadingItemData", (loadingItemData) =>
+    loadingItemData.filter((id) => id !== itemId),
+  );
+
+  dataRef.current.awaitingItemDataLoading?.[itemId].forEach((cb) => cb());
+  delete dataRef.current.awaitingItemDataLoading?.[itemId];
+};
+
+const loadChildrenIds = async <T>(tree: TreeInstance<T>, itemId: string) => {
+  const config = tree.getConfig();
+  const dataRef = getDataRef(tree);
+
+  if ("getChildrenWithData" in config.dataLoader) {
+    const children = await config.dataLoader.getChildrenWithData(itemId);
+    const childrenIds = children.map((c) => c.id);
+    dataRef.current.childrenIds[itemId] = childrenIds;
+    children.forEach(({ id, data }) => {
+      dataRef.current.itemData[id] = data;
+      config.onLoadedItem?.(id, data);
+      dataRef.current.awaitingItemDataLoading?.[id].forEach((cb) => cb());
+      delete dataRef.current.awaitingItemDataLoading?.[id];
+    });
+
+    config.onLoadedChildren?.(itemId, childrenIds);
+    tree.rebuildTree();
+    tree.applySubStateUpdate("loadingItemData", (loadingItemData) =>
+      loadingItemData.filter((id) => !childrenIds.includes(id)),
+    );
+  } else {
+    const childrenIds = await config.dataLoader.getChildren(itemId);
+    dataRef.current.childrenIds[itemId] = childrenIds;
+    config.onLoadedChildren?.(itemId, childrenIds);
+    tree.rebuildTree();
+  }
+
+  tree.applySubStateUpdate("loadingItemChildrens", (loadingItemChildrens) =>
+    loadingItemChildrens.filter((id) => id !== itemId),
+  );
+
+  dataRef.current.awaitingItemChildrensLoading?.[itemId]?.forEach((cb) => cb());
+  delete dataRef.current.awaitingItemChildrensLoading?.[itemId];
+};
 
 export const asyncDataLoaderFeature: FeatureImplementation = {
   key: "async-data-loader",
@@ -51,9 +108,7 @@ export const asyncDataLoaderFeature: FeatureImplementation = {
 
     retrieveItemData: ({ tree }, itemId) => {
       const config = tree.getConfig();
-      const dataRef = tree.getDataRef<AsyncDataLoaderDataRef>();
-      dataRef.current.itemData ??= {};
-      dataRef.current.childrenIds ??= {};
+      const dataRef = getDataRef(tree);
 
       if (dataRef.current.itemData[itemId]) {
         return dataRef.current.itemData[itemId];
@@ -65,29 +120,14 @@ export const asyncDataLoaderFeature: FeatureImplementation = {
           itemId,
         ]);
 
-        (async () => {
-          const item = await config.dataLoader.getItem(itemId);
-          dataRef.current.itemData[itemId] = item;
-          config.onLoadedItem?.(itemId, item);
-          tree.applySubStateUpdate("loadingItemData", (loadingItemData) =>
-            loadingItemData.filter((id) => id !== itemId),
-          );
-
-          dataRef.current.awaitingItemDataLoading?.[itemId].forEach((cb) =>
-            cb(),
-          );
-          delete dataRef.current.awaitingItemDataLoading?.[itemId];
-        })();
+        loadItemData(tree, itemId);
       }
 
       return config.createLoadingItemData?.() ?? null;
     },
 
     retrieveChildrenIds: ({ tree }, itemId) => {
-      const config = tree.getConfig();
-      const dataRef = tree.getDataRef<AsyncDataLoaderDataRef>();
-      dataRef.current.itemData ??= {};
-      dataRef.current.childrenIds ??= {};
+      const dataRef = getDataRef(tree);
       if (dataRef.current.childrenIds[itemId]) {
         return dataRef.current.childrenIds[itemId];
       }
@@ -101,41 +141,7 @@ export const asyncDataLoaderFeature: FeatureImplementation = {
         (loadingItemChildrens) => [...loadingItemChildrens, itemId],
       );
 
-      (async () => {
-        if ("getChildrenWithData" in config.dataLoader) {
-          const children = await config.dataLoader.getChildrenWithData(itemId);
-          const childrenIds = children.map((c) => c.id);
-          dataRef.current.childrenIds[itemId] = childrenIds;
-          children.forEach(({ id, data }) => {
-            dataRef.current.itemData[id] = data;
-            config.onLoadedItem?.(id, data);
-            dataRef.current.awaitingItemDataLoading?.[id].forEach((cb) => cb());
-            delete dataRef.current.awaitingItemDataLoading?.[id];
-          });
-
-          config.onLoadedChildren?.(itemId, childrenIds);
-          tree.rebuildTree();
-          tree.applySubStateUpdate("loadingItemData", (loadingItemData) =>
-            loadingItemData.filter((id) => !childrenIds.includes(id)),
-          );
-        } else {
-          const childrenIds = await config.dataLoader.getChildren(itemId);
-          dataRef.current.childrenIds[itemId] = childrenIds;
-          config.onLoadedChildren?.(itemId, childrenIds);
-          tree.rebuildTree();
-        }
-
-        tree.applySubStateUpdate(
-          "loadingItemChildrens",
-          (loadingItemChildrens) =>
-            loadingItemChildrens.filter((id) => id !== itemId),
-        );
-
-        dataRef.current.awaitingItemChildrensLoading?.[itemId]?.forEach((cb) =>
-          cb(),
-        );
-        delete dataRef.current.awaitingItemChildrensLoading?.[itemId];
-      })();
+      loadChildrenIds(tree, itemId);
 
       return [];
     },
@@ -145,15 +151,25 @@ export const asyncDataLoaderFeature: FeatureImplementation = {
     isLoading: ({ tree, item }) =>
       tree.getState().loadingItemData.includes(item.getItemMeta().itemId) ||
       tree.getState().loadingItemChildrens.includes(item.getItemMeta().itemId),
-    invalidateItemData: ({ tree, itemId }) => {
-      const dataRef = tree.getDataRef<AsyncDataLoaderDataRef>();
-      delete dataRef.current.itemData?.[itemId];
-      tree.retrieveItemData(itemId);
+    invalidateItemData: async ({ tree, itemId }, optimistic) => {
+      if (!optimistic) {
+        delete getDataRef(tree).current.itemData?.[itemId];
+        tree.applySubStateUpdate("loadingItemData", (loadingItemData) => [
+          ...loadingItemData,
+          itemId,
+        ]);
+      }
+      await loadItemData(tree, itemId);
     },
-    invalidateChildrenIds: ({ tree, itemId }) => {
-      const dataRef = tree.getDataRef<AsyncDataLoaderDataRef>();
-      delete dataRef.current.childrenIds?.[itemId];
-      tree.retrieveChildrenIds(itemId);
+    invalidateChildrenIds: async ({ tree, itemId }, optimistic) => {
+      if (!optimistic) {
+        delete getDataRef(tree).current.childrenIds?.[itemId];
+        tree.applySubStateUpdate(
+          "loadingItemChildrens",
+          (loadingItemChildrens) => [...loadingItemChildrens, itemId],
+        );
+      }
+      await loadChildrenIds(tree, itemId);
     },
     updateCachedChildrenIds: ({ tree, itemId }, childrenIds) => {
       const dataRef = tree.getDataRef<AsyncDataLoaderDataRef>();

@@ -86,6 +86,7 @@ describe("core-feature/selections", () => {
     suiteTree.resetBeforeEach();
 
     it("invalidates item data on item instance", async () => {
+      const setLoadingItemData = suiteTree.mockedHandler("setLoadingItemData");
       getItem.mockClear();
       await suiteTree.resolveAsyncVisibleItems();
       getItem.mockResolvedValueOnce("new");
@@ -93,9 +94,14 @@ describe("core-feature/selections", () => {
       await suiteTree.resolveAsyncVisibleItems();
       expect(getItem).toHaveBeenCalledWith("x1");
       expect(suiteTree.item("x1").getItemData()).toBe("new");
+      expect(setLoadingItemData).toBeCalledWith(["x1"]);
+      expect(setLoadingItemData).toBeCalledWith([]);
     });
 
     it("invalidates children ids on item instance", async () => {
+      const setLoadingItemChildrens = suiteTree.mockedHandler(
+        "setLoadingItemChildrens",
+      );
       getChildren.mockClear();
       await suiteTree.resolveAsyncVisibleItems();
       getChildren.mockResolvedValueOnce(["new1", "new2"]);
@@ -103,6 +109,8 @@ describe("core-feature/selections", () => {
       await suiteTree.resolveAsyncVisibleItems();
       expect(getChildren).toHaveBeenCalledWith("x1");
       suiteTree.expect.hasChildren("x1", ["new1", "new2"]);
+      expect(setLoadingItemChildrens).toBeCalledWith(["x1"]);
+      expect(setLoadingItemChildrens).toBeCalledWith([]);
     });
 
     it("doesnt call item data getter twice", async () => {
@@ -123,6 +131,34 @@ describe("core-feature/selections", () => {
       suiteTree.expect.hasChildren("x1", ["x11", "x12", "x13", "x14"]);
       suiteTree.expect.hasChildren("x1", ["x11", "x12", "x13", "x14"]);
       expect(getChildren).toHaveBeenCalledTimes(1);
+    });
+
+    it("optimistic invalidates item data on item instance", async () => {
+      const setLoadingItemData = suiteTree.mockedHandler("setLoadingItemData");
+      getItem.mockClear();
+      await suiteTree.resolveAsyncVisibleItems();
+      getItem.mockResolvedValueOnce("new");
+      suiteTree.item("x1").invalidateItemData(true);
+      await suiteTree.resolveAsyncVisibleItems();
+      expect(getItem).toHaveBeenCalledWith("x1");
+      expect(suiteTree.item("x1").getItemData()).toBe("new");
+      expect(setLoadingItemData).toBeCalledTimes(1);
+      expect(setLoadingItemData).toBeCalledWith([]);
+    });
+
+    it("optimistic invalidates children ids on item instance", async () => {
+      const setLoadingItemChildrens = suiteTree.mockedHandler(
+        "setLoadingItemChildrens",
+      );
+      getChildren.mockClear();
+      await suiteTree.resolveAsyncVisibleItems();
+      getChildren.mockResolvedValueOnce(["new1", "new2"]);
+      suiteTree.item("x1").invalidateChildrenIds(true);
+      await suiteTree.resolveAsyncVisibleItems();
+      expect(getChildren).toHaveBeenCalledWith("x1");
+      suiteTree.expect.hasChildren("x1", ["new1", "new2"]);
+      expect(setLoadingItemChildrens).toBeCalledTimes(1);
+      expect(setLoadingItemChildrens).toBeCalledWith([]);
     });
   });
 
