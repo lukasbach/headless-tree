@@ -17,8 +17,8 @@ export type SyncDataLoaderFeatureDef<T> = {
     dataLoader: TreeDataLoader<T>;
   };
   treeInstance: {
-    retrieveItemData: (itemId: string) => T;
-    retrieveChildrenIds: (itemId: string) => string[];
+    retrieveItemData: (itemId: string, skipFetch?: boolean) => T;
+    retrieveChildrenIds: (itemId: string, skipFetch?: boolean) => string[];
   };
   itemInstance: {
     isLoading: () => boolean;

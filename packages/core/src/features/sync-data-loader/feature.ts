@@ -47,6 +47,9 @@ export const syncDataLoaderFeature: FeatureImplementation = {
         (c) => c.data,
       );
     },
+
+    loadItemData: ({ tree }, itemId) => tree.retrieveItemData(itemId),
+    loadChildrenIds: ({ tree }, itemId) => tree.retrieveChildrenIds(itemId),
   },
 
   itemInstance: {
