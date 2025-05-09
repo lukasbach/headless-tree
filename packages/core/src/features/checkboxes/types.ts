@@ -18,9 +18,9 @@ export type CheckboxesFeatureDef<T> = {
     setCheckedItems: (checkedItems: string[]) => void;
   };
   itemInstance: {
-    setChecked: () => void;
-    setUnchecked: () => void;
-    toggleCheckedState: () => void;
+    setChecked: () => Promise<void>;
+    setUnchecked: () => Promise<void>;
+    toggleCheckedState: () => Promise<void>;
     getCheckedState: () => CheckedState;
     getCheckboxProps: () => Record<string, any>;
   };

@@ -36,6 +36,8 @@ export type MainFeatureDef<T = any> = {
       stateName: K,
       updater: Updater<TreeState<T>[K]>,
     ) => void;
+    /** @internal */
+    buildItemInstance: (itemId: string) => ItemInstance<T>;
     setState: SetStateFn<TreeState<T>>;
     getState: () => TreeState<T>;
     setConfig: SetStateFn<TreeConfig<T>>;
