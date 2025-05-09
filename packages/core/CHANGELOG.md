@@ -1,5 +1,18 @@
 # @headless-tree/core
 
+## 2.0.0
+
+### Minor Changes
+
+- 64d8e2a: add getChildrenWithData method to data loader to support fetching all children of an item at once
+
+### Patch Changes
+
+- 29b2c64: improved key-handling behavior for hotkeys while input elements are focused (#98)
+- da1e757: fixed a bug where alt-tabbing out of browser will break hotkeys feature
+- c283f52: add feature to allow async data invalidation without triggering rerenders with `invalidateItemData(optimistic: true)` (#95)
+- 29b2c64: added option to completely ignore hotkey events while input elements are focused (`ignoreHotkeysOnInput`) (#98)
+
 ## 1.0.1
 
 ### Patch Changes
