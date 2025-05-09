@@ -1,14 +1,5 @@
 import { SetStateFn } from "../../types/core";
 
-export type CheckboxesState = {
-  // TODO uncheckedFolders!??
-  // add uncheckedFolders, then just do the trivial state update and have a seperate "simplifier" method
-  checkedItems?: string[];
-  uncheckedItems?: string[];
-  checkedFolders?: string[];
-  indeterminates?: string[];
-};
-
 export enum CheckedState {
   Checked = "checked",
   Unchecked = "unchecked",
@@ -17,19 +8,18 @@ export enum CheckedState {
 
 export type CheckboxesFeatureDef<T> = {
   state: {
-    checkedState: CheckboxesState;
+    checkedItems: string[];
   };
   config: {
-    setCheckedState?: SetStateFn<CheckboxesState>;
-    inheritCheckedState?: boolean;
+    setCheckedItems?: SetStateFn<string[]>;
+    canCheckFolders?: boolean;
   };
   treeInstance: {
-    setCheckedState: (checkedState: CheckboxesState) => void;
-    getCheckedItemIds: () => string[];
+    setCheckedItems: (checkedItems: string[]) => void;
   };
   itemInstance: {
-    setChecked: (inherit?: boolean) => void;
-    setUnchecked: (inherit?: boolean) => void;
+    setChecked: () => void;
+    setUnchecked: () => void;
     toggleCheckedState: () => void;
     getCheckedState: () => CheckedState;
     getCheckboxProps: () => Record<string, any>;

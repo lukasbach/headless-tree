@@ -1,6 +1,6 @@
-import { FeatureImplementation, ItemInstance } from "../../types/core";
+import { FeatureImplementation, TreeInstance } from "../../types/core";
 import { makeStateUpdater } from "../../utils";
-import { CheckboxesState, CheckedState } from "./types";
+import { CheckedState } from "./types";
 
 /*
  * Cases for checking:
@@ -13,86 +13,17 @@ import { CheckboxesState, CheckedState } from "./types";
  * - Uncheck an explicitly unchecked item in an checked folder
  */
 
-const without = (array: string[], value: string) => {
-  const index = array.indexOf(value);
-  if (index === -1) return array;
-  const newArray = [...array];
-  newArray.splice(index, 1);
-  return newArray;
-};
-
-const findParent = <T>(
-  item: ItemInstance<T>,
-  fn: (item: ItemInstance<T>) => boolean | undefined | null,
-) => {
-  let iter: ItemInstance<T> | undefined = item;
-  do {
-    iter = iter.getParent();
-    if (iter && fn(iter)) return iter;
-  } while (iter);
-  return false;
-};
-
-const forEachParent = <T>(
-  parent: ItemInstance<T>,
-  fn: (item: ItemInstance<T>) => void,
-) => {
-  fn(parent);
-  const next = parent.getParent();
-  if (next) {
-    forEachParent(next, fn);
-  }
-};
-const getFullState = (state: CheckboxesState) => ({
-  checkedItems: [],
-  uncheckedItems: [],
-  checkedFolders: [],
-  indeterminates: [],
-  ...state,
-});
-
-const isChecked = (checkboxesState: CheckboxesState, itemId: string) => {
-  return (
-    checkboxesState.checkedItems?.includes(itemId) &&
-    checkboxesState.uncheckedItems?.includes(itemId)
-  );
-};
-
-const fixParentStates = <T>(
-  checkboxesState: CheckboxesState,
-  item?: ItemInstance<T>,
-) => {
-  if (!item) return;
-  const state = getFullState(checkboxesState);
-  console.log("FIX PARENTS", item.getId());
-
-  const children = item.getChildren() ?? [];
-  const childrenIds = children.map((child) => child.getId());
-  if (isChecked(state, item.getId())) {
-    state.checkedItems = [...state.checkedItems, item.getId()];
-  }
-  if (
-    children.every((child) =>
-      child.isFolder()
-        ? isChecked(state, child.getId()) &&
-          state.checkedFolders.includes(child.getId())
-        : isChecked(state, child.getId()),
-    )
-  ) {
-    console.log("!! checked all", item.getId());
-    state.checkedFolders = [...state.checkedFolders, item.getId()];
-    state.indeterminates = without(state.indeterminates, item.getId());
-  } else if (
-    children.some(
-      (child) =>
-        isChecked(state, child.getId()) ||
-        state.indeterminates.includes(child.getId()),
-    )
-  ) {
-    state.indeterminates = [...state.indeterminates, item.getId()];
-  }
-
-  fixParentStates(state, item.getParent());
+const getAllDescendants = async <T>(
+  tree: TreeInstance<T>,
+  itemId: string,
+): Promise<string[]> => {
+  const children = await tree.loadChildrenIds(itemId);
+  return [
+    itemId,
+    ...(
+      await Promise.all(children.map((child) => getAllDescendants(tree, child)))
+    ).flat(),
+  ];
 };
 
 export const checkboxesFeature: FeatureImplementation = {
@@ -101,33 +32,35 @@ export const checkboxesFeature: FeatureImplementation = {
   overwrites: ["selection"],
 
   getInitialState: (initialState) => ({
-    checkedState: {},
+    checkedItems: [],
     ...initialState,
   }),
 
   getDefaultConfig: (defaultConfig, tree) => ({
-    setCheckedState: makeStateUpdater("checkedState", tree),
+    setCheckedItems: makeStateUpdater("checkedItems", tree),
     ...defaultConfig,
   }),
 
   stateHandlerNames: {
-    checkedState: "setCheckedState",
+    checkedItems: "setCheckedItems",
   },
 
   treeInstance: {
-    setCheckedState: ({ tree }, checkedState) => {
-      tree.applySubStateUpdate("checkedState", checkedState);
+    setCheckedItems: ({ tree }, checkedItems) => {
+      tree.applySubStateUpdate("checkedItems", checkedItems);
     },
   },
 
   itemInstance: {
-    getCheckboxProps: ({ item }) => {
+    getCheckboxProps: ({ item, itemId }) => {
       const checkedState = item.getCheckedState();
+      // console.log("prop", itemId, checkedState);
       return {
         onChange: item.toggleCheckedState,
         checked: checkedState === CheckedState.Checked,
         ref: (r: any) => {
           if (r) {
+            // console.log("ref", itemId, checkedState);
             r.indeterminate = checkedState === CheckedState.Indeterminate;
           }
         },
@@ -143,77 +76,46 @@ export const checkboxesFeature: FeatureImplementation = {
     },
 
     getCheckedState: ({ item, tree, itemId }) => {
-      const state = tree.getState().checkedState;
+      // TODO checkedcache
+      const { checkedItems } = tree.getState();
 
-      if (state.indeterminates?.includes(itemId)) {
-        return CheckedState.Indeterminate;
-      }
-
-      if (state.checkedItems?.includes(itemId)) {
+      if (checkedItems.includes(itemId)) {
         return CheckedState.Checked;
       }
 
       if (
-        !state.uncheckedItems?.includes(itemId) &&
-        state.checkedFolders?.some((folder) => item.isDescendentOf(folder))
+        item.isFolder() &&
+        checkedItems.some((checkedItem) =>
+          tree.getItemInstance(checkedItem)?.isDescendentOf(itemId),
+        )
       ) {
-        return CheckedState.Checked;
+        // TODO for every descendent, not every checked item
+        return checkedItems.every((checkedItem) =>
+          tree.getItemInstance(checkedItem)?.isDescendentOf(itemId),
+        )
+          ? CheckedState.Checked
+          : CheckedState.Indeterminate;
       }
 
       return CheckedState.Unchecked;
     },
 
-    setChecked: ({ item, tree, itemId }, inherit = true) => {
-      const state = getFullState(tree.getState().checkedState);
-
-      if (item.isFolder() && inherit) {
-        state.checkedFolders = [...state.checkedFolders, itemId];
+    setChecked: ({ item, tree, itemId }) => {
+      if (!item.isFolder() || tree.getConfig().canCheckFolders) {
+        tree.applySubStateUpdate("checkedItems", (items) => [...items, itemId]);
+      } else {
+        item.getChildren().forEach((item) => item.setChecked());
       }
-
-      if (state.uncheckedItems.includes(itemId)) {
-        state.uncheckedItems = without(state.uncheckedItems, itemId);
-        fixParentStates(state, item.getParent());
-        tree.setCheckedState(state);
-        return;
-      }
-
-      state.uncheckedItems = without(state.uncheckedItems, itemId);
-      state.indeterminates = without(state.uncheckedItems, itemId);
-
-      state.checkedItems = [...state.checkedItems, itemId];
-      fixParentStates(state, item.getParent());
-      tree.setCheckedState(state);
     },
 
-    setUnchecked: ({ item, tree, itemId }, inherit = true) => {
-      const state = getFullState(tree.getState().checkedState);
-
-      const checkedParent = findParent(item, (i) =>
-        state.checkedFolders?.includes(i.getId()),
-      );
-      if (checkedParent) {
-        state.indeterminates = [...state.indeterminates, checkedParent.getId()];
-        state.uncheckedItems = [...state.uncheckedItems, itemId];
-        tree.setCheckedState(state);
-        return;
-      }
-
-      state.checkedFolders = without(state.checkedFolders, itemId);
-      state.checkedItems = without(state.checkedItems, itemId);
-
-      if (item.isFolder() && inherit) {
-        state.checkedItems = state.checkedItems.filter((item) =>
-          tree.getItemInstance(item)?.isDescendentOf(itemId),
-        );
-        state.checkedFolders = state.checkedFolders.filter((item) =>
-          tree.getItemInstance(item)?.isDescendentOf(itemId),
+    setUnchecked: ({ item, tree, itemId }) => {
+      if (!item.isFolder() || tree.getConfig().canCheckFolders) {
+        tree.applySubStateUpdate("checkedItems", (items) =>
+          items.filter((id) => id !== itemId),
         );
       } else {
-        state.uncheckedItems = [...state.checkedItems, itemId];
+        item.getChildren().forEach((item) => item.setUnchecked());
       }
-
-      fixParentStates(state, item.getParent());
-      tree.setCheckedState(state);
     },
   },
 };

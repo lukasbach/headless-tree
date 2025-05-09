@@ -8,6 +8,7 @@ import {
 } from "@headless-tree/core";
 import { useTree } from "@headless-tree/react";
 import cx from "classnames";
+import { DemoItem, createDemoData } from "../utils/data";
 
 const meta = {
   title: "React/Checkboxes/General",
@@ -15,29 +16,21 @@ const meta = {
 
 export default meta;
 
+const { syncDataLoader, data } = createDemoData();
+
 // story-start
 export const General = () => {
-  const tree = useTree<string>({
-    rootItemId: "folder",
-    getItemName: (item) => item.getItemData(),
-    isItemFolder: (item) => !item.getItemData().endsWith("item"),
+  const tree = useTree<DemoItem>({
+    rootItemId: "root",
+    getItemName: (item) => item.getItemData().name,
+    isItemFolder: (item) => !!item.getItemData().children,
     hotkeys: {
       customEvent: {
         hotkey: "Escape",
         handler: () => alert("Hello!"),
       },
     },
-    dataLoader: {
-      getItem: (itemId) => itemId,
-      getChildren: (itemId) => [
-        `${itemId}-1`,
-        `${itemId}-2`,
-        `${itemId}-3`,
-        `${itemId}-1item`,
-        `${itemId}-2item`,
-        `${itemId}-3item`,
-      ],
-    },
+    dataLoader: syncDataLoader,
     indent: 20,
     features: [
       syncDataLoaderFeature,
@@ -71,7 +64,7 @@ export const General = () => {
           </div>
         ))}
       </div>
-      <pre>{JSON.stringify(tree.getState().checkedState)}</pre>
+      <pre>{JSON.stringify(tree.getState().checkedItems)}</pre>
     </>
   );
 };
