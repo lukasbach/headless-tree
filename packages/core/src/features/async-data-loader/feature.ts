@@ -22,15 +22,19 @@ const loadItemData = async <T>(tree: TreeInstance<T>, itemId: string) => {
 
   dataRef.current.awaitingItemDataLoading?.[itemId].forEach((cb) => cb());
   delete dataRef.current.awaitingItemDataLoading?.[itemId];
+  return item;
 };
 
 const loadChildrenIds = async <T>(tree: TreeInstance<T>, itemId: string) => {
   const config = tree.getConfig();
   const dataRef = getDataRef(tree);
+  let childrenIds: string[];
+
+  // TODO is folder check?
 
   if ("getChildrenWithData" in config.dataLoader) {
     const children = await config.dataLoader.getChildrenWithData(itemId);
-    const childrenIds = children.map((c) => c.id);
+    childrenIds = children.map((c) => c.id);
     dataRef.current.childrenIds[itemId] = childrenIds;
     children.forEach(({ id, data }) => {
       dataRef.current.itemData[id] = data;
@@ -45,7 +49,7 @@ const loadChildrenIds = async <T>(tree: TreeInstance<T>, itemId: string) => {
       loadingItemData.filter((id) => !childrenIds.includes(id)),
     );
   } else {
-    const childrenIds = await config.dataLoader.getChildren(itemId);
+    childrenIds = await config.dataLoader.getChildren(itemId);
     dataRef.current.childrenIds[itemId] = childrenIds;
     config.onLoadedChildren?.(itemId, childrenIds);
     tree.rebuildTree();
@@ -57,6 +61,7 @@ const loadChildrenIds = async <T>(tree: TreeInstance<T>, itemId: string) => {
 
   dataRef.current.awaitingItemChildrensLoading?.[itemId]?.forEach((cb) => cb());
   delete dataRef.current.awaitingItemChildrensLoading?.[itemId];
+  return childrenIds;
 };
 
 export const asyncDataLoaderFeature: FeatureImplementation = {
@@ -94,6 +99,7 @@ export const asyncDataLoaderFeature: FeatureImplementation = {
     },
 
     waitForItemChildrenLoaded: async ({ tree }, itemId) => {
+      // TODO replace inner implementation with load() fns
       tree.retrieveChildrenIds(itemId);
       if (!tree.getState().loadingItemChildrens.includes(itemId)) {
         return;
@@ -104,6 +110,19 @@ export const asyncDataLoaderFeature: FeatureImplementation = {
         dataRef.current.awaitingItemChildrensLoading[itemId] ??= [];
         dataRef.current.awaitingItemChildrensLoading[itemId].push(resolve);
       });
+    },
+
+    loadItemData: async ({ tree }, itemId) => {
+      return (
+        getDataRef(tree).current.itemData[itemId] ??
+        (await loadItemData(tree, itemId))
+      );
+    },
+    loadChildrenIds: async ({ tree }, itemId) => {
+      return (
+        getDataRef(tree).current.childrenIds[itemId] ??
+        (await loadChildrenIds(tree, itemId))
+      );
     },
 
     retrieveItemData: ({ tree }, itemId) => {

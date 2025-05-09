@@ -32,8 +32,12 @@ export type AsyncDataLoaderFeatureDef<T> = {
     onLoadedChildren?: (itemId: string, childrenIds: string[]) => void;
   };
   treeInstance: SyncDataLoaderFeatureDef<T>["treeInstance"] & {
+    /** @deprecated use loadItemData instead */
     waitForItemDataLoaded: (itemId: string) => Promise<void>;
+    /** @deprecated use loadChildrenIds instead */
     waitForItemChildrenLoaded: (itemId: string) => Promise<void>;
+    loadItemData: (itemId: string) => Promise<T>;
+    loadChildrenIds: (itemId: string) => Promise<string[]>;
   };
   itemInstance: SyncDataLoaderFeatureDef<T>["itemInstance"] & {
     /** Invalidate fetched data for item, and triggers a refetch and subsequent rerender if the item is visible
