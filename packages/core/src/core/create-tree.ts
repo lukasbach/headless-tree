@@ -151,6 +151,19 @@ export const createTree = <T>(
         ] as Function;
         externalStateSetter?.(state[stateName]);
       },
+      buildItemInstance: ({}, itemId) => {
+        const [instance, finalizeInstance] = buildInstance(
+          features,
+          "itemInstance",
+          (instance) => ({
+            item: instance,
+            tree: treeInstance,
+            itemId,
+          }),
+        );
+        finalizeInstance();
+        return instance;
+      },
       // TODO rebuildSubTree: (itemId: string) => void;
       rebuildTree: () => {
         rebuildItemMeta();

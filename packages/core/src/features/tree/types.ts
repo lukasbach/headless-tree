@@ -20,7 +20,7 @@ export type TreeFeatureDef<T> = {
     focusedItem: string | null;
   };
   config: {
-    isItemFolder: (item: ItemInstance<T>) => boolean;
+    isItemFolder: (item: ItemInstance<T>) => boolean; // TODO:breaking use item data as payload
     getItemName: (item: ItemInstance<T>) => string;
 
     onPrimaryAction?: (item: ItemInstance<T>) => void;
