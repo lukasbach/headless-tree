@@ -50,7 +50,7 @@ export const expandAllFeature: FeatureImplementation = {
       handler: async (_, tree) => {
         const cancelToken = { current: false };
         const cancelHandler = (e: KeyboardEvent) => {
-          if (e.key === "Escape") {
+          if (e.code === "Escape") {
             cancelToken.current = true;
           }
         };
@@ -63,7 +63,7 @@ export const expandAllFeature: FeatureImplementation = {
     },
 
     collapseSelected: {
-      hotkey: "Control+Shift+-",
+      hotkey: "Control+Shift+Minus",
       handler: (_, tree) => {
         tree.getSelectedItems().forEach((item) => item.collapseAll());
       },

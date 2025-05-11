@@ -41,13 +41,13 @@ export const CustomHotkeys = () => {
     hotkeys: {
       // Begin the hotkey name with "custom" to satisfy the type checker
       customExpandAll: {
-        hotkey: "q",
+        hotkey: "KeyQ",
         handler: (e, tree) => {
           tree.expandAll();
         },
       },
       customCollapseAll: {
-        hotkey: "w",
+        hotkey: "KeyW",
         handler: (e, tree) => {
           tree.collapseAll();
         },

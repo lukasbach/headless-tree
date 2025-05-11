@@ -38,8 +38,8 @@ const KeyDownDisplay = (props: { event: "keydown" | "keyup" }) => {
   const [key, setKey] = useState("");
   useEffect(() => {
     const keydown = (e: KeyboardEvent) => {
-      setKey(e.key);
-      setTimeout(() => setKey((k) => (k === e.key ? "" : k)), 500);
+      setKey(e.code);
+      setTimeout(() => setKey((k) => (k === e.code ? "" : k)), 500);
     };
     document.addEventListener(props.event, keydown);
     return () => {

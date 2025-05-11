@@ -6,10 +6,13 @@ import {
 import { HotkeyConfig, HotkeysCoreDataRef } from "./types";
 
 const specialKeys: Record<string, RegExp> = {
-  Letter: /^[a-z]$/,
-  LetterOrNumber: /^[a-z0-9]$/,
-  Plus: /^\+$/,
-  Space: /^ $/,
+  // TODO:breaking deprecate auto-lowercase
+  letter: /^Key[A-Z]$/,
+  letterornumber: /^(Key[A-Z]|Digit[0-9])$/,
+  plus: /^(NumpadAdd|Plus)$/,
+  minus: /^(NumpadSubtract|Minus)$/,
+  control: /^(ControlLeft|ControlRight)$/,
+  shift: /^(ShiftLeft|ShiftRight)$/,
 };
 
 const testHotkeyMatch = (
@@ -17,12 +20,28 @@ const testHotkeyMatch = (
   tree: TreeInstance<any>,
   hotkey: HotkeyConfig<any>,
 ) => {
-  const supposedKeys = hotkey.hotkey.toLowerCase().split("+");
-  const doKeysMatch = supposedKeys.every((key) =>
-    key in specialKeys
-      ? [...pressedKeys].some((pressedKey) => specialKeys[key].test(pressedKey))
-      : pressedKeys.has(key),
-  );
+  const supposedKeys = hotkey.hotkey.toLowerCase().split("+"); // TODO:breaking deprecate auto-lowercase
+  const doKeysMatch = supposedKeys.every((key) => {
+    if (key in specialKeys) {
+      return [...pressedKeys].some((pressedKey) =>
+        specialKeys[key].test(pressedKey),
+      );
+    }
+
+    const pressedKeysLowerCase = [...pressedKeys] // TODO:breaking deprecate auto-lowercase
+      .map((k) => k.toLowerCase());
+
+    if (pressedKeysLowerCase.includes(key.toLowerCase())) {
+      return true;
+    }
+
+    if (pressedKeysLowerCase.includes(`key${key.toLowerCase()}`)) {
+      // TODO:breaking deprecate e.key character matching
+      return true;
+    }
+
+    return false;
+  });
   const isEnabled = !hotkey.isEnabled || hotkey.isEnabled(tree);
   const equalCounts = pressedKeys.size === supposedKeys.length;
   return doKeysMatch && isEnabled && equalCounts;
@@ -50,10 +69,9 @@ export const hotkeysCoreFeature: FeatureImplementation = {
         return;
       }
 
-      const key = e.key.toLowerCase();
       data.current.pressedKeys ??= new Set();
-      const newMatch = !data.current.pressedKeys.has(key);
-      data.current.pressedKeys.add(key);
+      const newMatch = !data.current.pressedKeys.has(e.code);
+      data.current.pressedKeys.add(e.code);
 
       const hotkeyName = findHotkeyMatch(
         data.current.pressedKeys,
@@ -65,7 +83,7 @@ export const hotkeysCoreFeature: FeatureImplementation = {
       if (e.target instanceof HTMLInputElement) {
         // JS respects composite keydowns while input elements are focused, and
         // doesnt send the associated keyup events with the same key name
-        data.current.pressedKeys.delete(key);
+        data.current.pressedKeys.delete(e.code);
       }
 
       if (!hotkeyName) return;
@@ -90,7 +108,7 @@ export const hotkeysCoreFeature: FeatureImplementation = {
 
     const keyup = (e: KeyboardEvent) => {
       data.current.pressedKeys ??= new Set();
-      data.current.pressedKeys.delete(e.key.toLowerCase());
+      data.current.pressedKeys.delete(e.code);
     };
 
     const reset = () => {

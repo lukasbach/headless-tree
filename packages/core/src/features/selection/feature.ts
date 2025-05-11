@@ -144,7 +144,7 @@ export const selectionFeature: FeatureImplementation = {
       },
     },
     selectAll: {
-      hotkey: "Control+a",
+      hotkey: "Control+KeyA",
       preventDefault: true,
       handler: (e, tree) => {
         tree.setSelectedItems(tree.getItems().map((item) => item.getId()));

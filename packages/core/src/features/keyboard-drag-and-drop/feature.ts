@@ -187,7 +187,7 @@ export const keyboardDragAndDropFeature: FeatureImplementation = {
 
   hotkeys: {
     startDrag: {
-      hotkey: "Control+Shift+D",
+      hotkey: "Control+Shift+KeyD",
       preventDefault: true,
       isEnabled: (tree) => !tree.getState().dnd,
       handler: (_, tree) => {
