@@ -44,7 +44,7 @@ jobs:
         id: changesets
         uses: changesets/action@v1
         with:
-          version: yarn changeset version
+          version: npx zx ./scripts/version.mjs
           publish: yarn changeset publish
           commit: "chore: release"
         env:
