@@ -20,8 +20,6 @@ const loadItemData = async <T>(tree: TreeInstance<T>, itemId: string) => {
     loadingItemData.filter((id) => id !== itemId),
   );
 
-  dataRef.current.awaitingItemDataLoading?.[itemId].forEach((cb) => cb());
-  delete dataRef.current.awaitingItemDataLoading?.[itemId];
   return item;
 };
 
@@ -30,8 +28,6 @@ const loadChildrenIds = async <T>(tree: TreeInstance<T>, itemId: string) => {
   const dataRef = getDataRef(tree);
   let childrenIds: string[];
 
-  // TODO is folder check?
-
   if ("getChildrenWithData" in config.dataLoader) {
     const children = await config.dataLoader.getChildrenWithData(itemId);
     childrenIds = children.map((c) => c.id);
@@ -39,8 +35,6 @@ const loadChildrenIds = async <T>(tree: TreeInstance<T>, itemId: string) => {
     children.forEach(({ id, data }) => {
       dataRef.current.itemData[id] = data;
       config.onLoadedItem?.(id, data);
-      dataRef.current.awaitingItemDataLoading?.[id].forEach((cb) => cb());
-      delete dataRef.current.awaitingItemDataLoading?.[id];
     });
 
     config.onLoadedChildren?.(itemId, childrenIds);
@@ -59,8 +53,6 @@ const loadChildrenIds = async <T>(tree: TreeInstance<T>, itemId: string) => {
     loadingItemChildrens.filter((id) => id !== itemId),
   );
 
-  dataRef.current.awaitingItemChildrensLoading?.[itemId]?.forEach((cb) => cb());
-  delete dataRef.current.awaitingItemChildrensLoading?.[itemId];
   return childrenIds;
 };
 
@@ -85,32 +77,10 @@ export const asyncDataLoaderFeature: FeatureImplementation = {
   },
 
   treeInstance: {
-    waitForItemDataLoaded: async ({ tree }, itemId) => {
-      tree.retrieveItemData(itemId);
-      if (!tree.getState().loadingItemData.includes(itemId)) {
-        return;
-      }
-      await new Promise<void>((resolve) => {
-        const dataRef = tree.getDataRef<AsyncDataLoaderDataRef>();
-        dataRef.current.awaitingItemDataLoading ??= {};
-        dataRef.current.awaitingItemDataLoading[itemId] ??= [];
-        dataRef.current.awaitingItemDataLoading[itemId].push(resolve);
-      });
-    },
+    waitForItemDataLoaded: ({ tree }, itemId) => tree.loadItemData(itemId),
 
-    waitForItemChildrenLoaded: async ({ tree }, itemId) => {
-      // TODO replace inner implementation with load() fns
-      tree.retrieveChildrenIds(itemId);
-      if (!tree.getState().loadingItemChildrens.includes(itemId)) {
-        return;
-      }
-      await new Promise<void>((resolve) => {
-        const dataRef = tree.getDataRef<AsyncDataLoaderDataRef>();
-        dataRef.current.awaitingItemChildrensLoading ??= {};
-        dataRef.current.awaitingItemChildrensLoading[itemId] ??= [];
-        dataRef.current.awaitingItemChildrensLoading[itemId].push(resolve);
-      });
-    },
+    waitForItemChildrenLoaded: ({ tree }, itemId) =>
+      tree.loadChildrenIds(itemId),
 
     loadItemData: async ({ tree }, itemId) => {
       return (

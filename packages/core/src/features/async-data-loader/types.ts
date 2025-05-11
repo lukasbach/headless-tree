@@ -1,13 +1,9 @@
 import { SetStateFn } from "../../types/core";
 import { SyncDataLoaderFeatureDef } from "../sync-data-loader/types";
 
-type AwaitingLoaderCallbacks = Record<string, (() => void)[]>;
-
 export interface AsyncDataLoaderDataRef<T = any> {
   itemData: Record<string, T>;
   childrenIds: Record<string, string[]>;
-  awaitingItemDataLoading: AwaitingLoaderCallbacks;
-  awaitingItemChildrensLoading: AwaitingLoaderCallbacks;
 }
 
 /**
