@@ -8,24 +8,24 @@ import {
 } from "@headless-tree/core";
 import { useTree } from "@headless-tree/react";
 import cx from "classnames";
-import { DemoItem, createDemoData } from "../utils/data";
 
 const meta = {
-  title: "React/Checkboxes/General",
+  title: "React/Checkboxes/Scalability",
   tags: ["feature/checkbox", "checkbox"],
 } satisfies Meta;
 
 export default meta;
 
-const { syncDataLoader } = createDemoData();
-
 // story-start
-export const General = () => {
-  const tree = useTree<DemoItem>({
+export const Scalability = () => {
+  const tree = useTree<string>({
     rootItemId: "root",
-    getItemName: (item) => item.getItemData().name,
-    isItemFolder: (item) => !!item.getItemData().children,
-    dataLoader: syncDataLoader,
+    getItemName: (item) => item.getItemData(),
+    isItemFolder: (item) => item.getItemData().split("-").length < 4,
+    dataLoader: {
+      getItem: (id) => id,
+      getChildren: (id) => Array.from({ length: 30 }, (_, i) => `${id}-${i}`),
+    },
     indent: 20,
     features: [
       syncDataLoaderFeature,

@@ -1,34 +1,35 @@
 import type { Meta } from "@storybook/react";
 import React from "react";
 import {
+  asyncDataLoaderFeature,
   checkboxesFeature,
   hotkeysCoreFeature,
   selectionFeature,
-  syncDataLoaderFeature,
 } from "@headless-tree/core";
 import { useTree } from "@headless-tree/react";
 import cx from "classnames";
 import { DemoItem, createDemoData } from "../utils/data";
 
 const meta = {
-  title: "React/Checkboxes/General",
-  tags: ["feature/checkbox", "checkbox"],
+  title: "React/Checkboxes/Async",
+  tags: ["feature/checkbox", "feature/async-data-loader", "checkbox"],
 } satisfies Meta;
 
 export default meta;
 
-const { syncDataLoader } = createDemoData();
+const { asyncDataLoader } = createDemoData();
 
 // story-start
-export const General = () => {
+export const Async = () => {
   const tree = useTree<DemoItem>({
     rootItemId: "root",
     getItemName: (item) => item.getItemData().name,
     isItemFolder: (item) => !!item.getItemData().children,
-    dataLoader: syncDataLoader,
+    dataLoader: asyncDataLoader,
+    createLoadingItemData: () => ({ name: "Loading..." }),
     indent: 20,
     features: [
-      syncDataLoaderFeature,
+      asyncDataLoaderFeature,
       selectionFeature,
       checkboxesFeature,
       hotkeysCoreFeature,
