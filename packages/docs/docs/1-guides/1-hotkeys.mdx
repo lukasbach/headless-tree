@@ -62,59 +62,66 @@ The [Accessibility Guide](/guides/accessibility#hotkeys) shows some demos of whi
 
 The following hotkeys need the `hotkeysCoreFeature` feature added.
 
-| Key | Default Keybinding | Description |
-| --- | --- | --- |
-| `focusNextItem` | `ArrowDown` | Focuses the next item in the list. |
-| `focusPreviousItem` | `ArrowUp` | Focuses the previous item in the list. |
-| `expandOrDown` | `ArrowRight` | Expands the focused item if it is collapsed. If the focused item is already expanded, focuses the next item in the list. |
-| `collapseOrUp` | `ArrowLeft` | Collapses the focused item if it is expanded. If the focused item is already collapsed, focuses the previous item in the list. |
-| `focusFirstItem` | `Home` | Focuses the first item in the list. |
-| `focusLastItem` | `End` | Focuses the last item in the list. |
+| Key                 | Default Keybinding | Description                                                                                                                    |
+|---------------------|--------------------|--------------------------------------------------------------------------------------------------------------------------------|
+| `focusNextItem`     | `ArrowDown`        | Focuses the next item in the list.                                                                                             |
+| `focusPreviousItem` | `ArrowUp`          | Focuses the previous item in the list.                                                                                         |
+| `expandOrDown`      | `ArrowRight`       | Expands the focused item if it is collapsed. If the focused item is already expanded, focuses the next item in the list.       |
+| `collapseOrUp`      | `ArrowLeft`        | Collapses the focused item if it is expanded. If the focused item is already collapsed, focuses the previous item in the list. |
+| `focusFirstItem`    | `Home`             | Focuses the first item in the list.                                                                                            |
+| `focusLastItem`     | `End`              | Focuses the last item in the list.                                                                                             |
 
 ### Selections
 
 The following hotkeys need the `hotkeysCoreFeature` and `selectionFeature` features added.
 
-| Key | Default Keybinding | Description |
-| --- | --- | --- |
-| `toggleSelectedItem` | `Ctrl+Space` | Toggles the selection of the focused item. |
-| `selectUpwards` | `Shift+ArrowUp` | Expands the current selection by the item prior to the focused item, and moves focus upwards. Discards non-connected selection blocks. |
-| `selectDownwards` | `Shift+ArrowDown` | Expands the current selection by the item after the focused item, and moves focus downwards. Discards non-connected selection blocks. |
-| `selectAll` | `Ctrl+A` | Selects all items in the list. |
+| Key                  | Default Keybinding | Description                                                                                                                            |
+|----------------------|--------------------|----------------------------------------------------------------------------------------------------------------------------------------|
+| `toggleSelectedItem` | `Ctrl+Space`       | Toggles the selection of the focused item.                                                                                             |
+| `selectUpwards`      | `Shift+ArrowUp`    | Expands the current selection by the item prior to the focused item, and moves focus upwards. Discards non-connected selection blocks. |
+| `selectDownwards`    | `Shift+ArrowDown`  | Expands the current selection by the item after the focused item, and moves focus downwards. Discards non-connected selection blocks.  |
+| `selectAll`          | `Ctrl+KeyA`        | Selects all items in the list.                                                                                                         |
 
 ### Drag And Drop
 
-The following hotkeys need the `hotkeysCoreFeature` and `dragAndDropFeature` features added.
+The following hotkeys need the `hotkeysCoreFeature`, `dragAndDropFeature` and `keyboardDragAndDrop` features added.
 
-DnD Keybindings aren't implemented yet (TODO).
+| Key            | Default Keybinding   | Description                              |
+|----------------|----------------------|------------------------------------------|
+| `startDrag`    | `Control+Shift+KeyD` | Starts dragging the selected items.      |
+| `dragUp`       | `ArrowUp`            | Moves the drag target one item upwards   |
+| `dragDown`     | `ArrowDown`          | Moves the drag target one item downwards |
+| `cancelDrag`   | `Escape`             | Cancels the drag operation.              |
+| `completeDrag` | `Enter`              | Completes the drag operation.            |
+
 
 ### Search
 
 The following hotkeys need the `hotkeysCoreFeature` and `searchFeature` features added.
 
-| Key | Default Keybinding | Description |
-| --- | --- | --- |
-| `openSearch` | `LetterOrNumber` | Opens the search input and focuses it. |
-| `closeSearch` | `Escape` | Closes the search input. |
-| `submitSearch` | `Enter` | Submits the search input, and focuses and selects the last selected search result item. |
-| `nextSearchItem` | `ArrowDown` | Focuses the next search result item. |
-| `previousSearchItem` | `ArrowUp` | Focuses the previous search result item. |
+| Key                  | Default Keybinding | Description                                                                             |
+|----------------------|--------------------|-----------------------------------------------------------------------------------------|
+| `openSearch`         | `LetterOrNumber`   | Opens the search input and focuses it.                                                  |
+| `closeSearch`        | `Escape`           | Closes the search input.                                                                |
+| `submitSearch`       | `Enter`            | Submits the search input, and focuses and selects the last selected search result item. |
+| `nextSearchItem`     | `ArrowDown`        | Focuses the next search result item.                                                    |
+| `previousSearchItem` | `ArrowUp`          | Focuses the previous search result item.                                                |
 
 ### Renaming
 
 The following hotkeys need the `hotkeysCoreFeature` and `renamingFeature` features added.
 
-| Key | Default Keybinding | Description |
-| --- | --- | --- |
-| `renameItem` | `F2` | Starts renaming the focused item. |
-| `abortRename` | `Escape` | Close the rename input. |
-| `completeRenaming` | `Enter` | Close the rename input, and call the `config.onRename(item, newNameValue)` config property. |
+| Key                | Default Keybinding | Description                                                                                 |
+|--------------------|--------------------|---------------------------------------------------------------------------------------------|
+| `renameItem`       | `F2`               | Starts renaming the focused item.                                                           |
+| `abortRename`      | `Escape`           | Close the rename input.                                                                     |
+| `completeRenaming` | `Enter`            | Close the rename input, and call the `config.onRename(item, newNameValue)` config property. |
 
 ### Expand All
 
 The following hotkeys need the `hotkeysCoreFeature` and `expandAllFeature` features added.
 
-| Key | Default Keybinding | Description |
-| --- | --- | --- |
-| `expandSelected` | `Control+Shift+Plus` | Expand all selected items and their descendants. When running async, pressing Escape afterwards will cancel the expand process. |
-| `collapseSelected` | `Control+Shift+-` | Collapse all selected items and their descendants. |
+| Key                | Default Keybinding    | Description                                                                                                                     |
+|--------------------|-----------------------|---------------------------------------------------------------------------------------------------------------------------------|
+| `expandSelected`   | `Control+Shift+Plus`  | Expand all selected items and their descendants. When running async, pressing Escape afterwards will cancel the expand process. |
+| `collapseSelected` | `Control+Shift+Minus` | Collapse all selected items and their descendants.                                                                              |
