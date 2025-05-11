@@ -95,7 +95,7 @@ export const asyncDataLoaderFeature: FeatureImplementation = {
       );
     },
 
-    retrieveItemData: ({ tree }, itemId) => {
+    retrieveItemData: ({ tree }, itemId, skipFetch = false) => {
       const config = tree.getConfig();
       const dataRef = getDataRef(tree);
 
@@ -103,7 +103,7 @@ export const asyncDataLoaderFeature: FeatureImplementation = {
         return dataRef.current.itemData[itemId];
       }
 
-      if (!tree.getState().loadingItemData.includes(itemId)) {
+      if (!tree.getState().loadingItemData.includes(itemId) && !skipFetch) {
         tree.applySubStateUpdate("loadingItemData", (loadingItemData) => [
           ...loadingItemData,
           itemId,
@@ -115,13 +115,13 @@ export const asyncDataLoaderFeature: FeatureImplementation = {
       return config.createLoadingItemData?.() ?? null;
     },
 
-    retrieveChildrenIds: ({ tree }, itemId) => {
+    retrieveChildrenIds: ({ tree }, itemId, skipFetch = false) => {
       const dataRef = getDataRef(tree);
       if (dataRef.current.childrenIds[itemId]) {
         return dataRef.current.childrenIds[itemId];
       }
 
-      if (tree.getState().loadingItemChildrens.includes(itemId)) {
+      if (tree.getState().loadingItemChildrens.includes(itemId) || skipFetch) {
         return [];
       }
 

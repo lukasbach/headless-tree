@@ -11,7 +11,7 @@ import cx from "classnames";
 import { DemoItem, createDemoData } from "../utils/data";
 
 const meta = {
-  title: "React/Checkboxes/General",
+  title: "React/Checkboxes/Can Check Folders",
   tags: ["feature/checkbox", "checkbox"],
 } satisfies Meta;
 
@@ -20,12 +20,13 @@ export default meta;
 const { syncDataLoader } = createDemoData();
 
 // story-start
-export const General = () => {
+export const CanCheckFolders = () => {
   const tree = useTree<DemoItem>({
     rootItemId: "root",
     getItemName: (item) => item.getItemData().name,
     isItemFolder: (item) => !!item.getItemData().children,
     dataLoader: syncDataLoader,
+    canCheckFolders: true,
     indent: 20,
     features: [
       syncDataLoaderFeature,
