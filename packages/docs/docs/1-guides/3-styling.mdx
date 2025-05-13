@@ -1,0 +1,37 @@
+---
+slug: "/guides/styling"
+title: "Styling"
+subtitle: "Customize the appearance of your tree"
+category: guide
+---
+
+import { DemoBox } from "../../src/components/demo/demo-box";
+
+# Styling
+
+Headless Tree is designed to be as unopinionated as possible when it comes to styling. This means that both
+rendering and styling is generally up to you. The tree does not come with any default styles, and you can
+use whatever styling framework you have already set up in your project.
+
+Headless Tree provides several methods on the [item instance variable](/api/core/interface/ItemInstance) that you can use to derive information
+about each item and how it should be styled, such as
+
+- [`isFolder()`](/api/core/interface/ItemInstance#isFolder)
+- [`isExpanded()`](/api/core/interface/ItemInstance#isExpanded)
+- [`isSelected()`](/api/core/interface/ItemInstance#isSelected)
+- [`isFocused()`](/api/core/interface/ItemInstance#isFocused)
+- [`isDragTarget()`](/api/core/interface/ItemInstance#isDragTarget)
+- [`isDraggingOver()`](/api/core/interface/ItemInstance#isDraggingOver)
+- [`isRenaming()`](/api/core/interface/ItemInstance#isRenaming)
+- [`isLoading()`](/api/core/interface/ItemInstance#isLoading)
+- [`isMatchingSearch()`](/api/core/interface/ItemInstance#isMatchingSearch)
+
+In the following example, and default styles that are typically used in other samples are omitted,
+and just some basic inline styles are used to demonstrate how HT looks without styling:
+
+<DemoBox tags={["guides/styling"]} initialStory="react-general-basic-styling--basic-styling" />
+
+If you want to use the default styles that are used in other samples, you can copy their CSS code
+from here:
+
+- https://github.com/lukasbach/headless-tree/blob/main/packages/sb-react/.storybook/style.css

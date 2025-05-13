@@ -12,14 +12,14 @@ import { AssistiveTreeDescription, useTree } from "@headless-tree/react";
 import cx from "classnames";
 
 const meta = {
-  title: "React/Drag and Drop/Basic",
-  tags: ["feature/dnd", "basic"],
+  title: "React/Drag and Drop/Minimal Dragline Styling",
+  tags: ["feature/dnd"],
 } satisfies Meta;
 
 export default meta;
 
 // story-start
-export const Basic = () => {
+export const MinimalDraglineStyling = () => {
   const [state, setState] = useState<Partial<TreeState<any>>>({
     expandedItems: ["root-1", "root-1-2"],
     selectedItems: ["root-1-2-1", "root-1-2-2"],
@@ -79,7 +79,13 @@ export const Basic = () => {
           </div>
         </button>
       ))}
-      <div style={tree.getDragLineStyle()} className="dragline" />
+      <div
+        style={{
+          ...tree.getDragLineStyle(),
+          background: "black",
+          height: "2px",
+        }}
+      />
     </div>
   );
 };
