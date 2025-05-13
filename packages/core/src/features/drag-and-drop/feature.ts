@@ -74,6 +74,7 @@ export const dragAndDropFeature: FeatureImplementation = {
       const dragLine = tree.getDragLineData();
       return dragLine
         ? {
+            position: "absolute",
             top: `${dragLine.top + topOffset}px`,
             left: `${dragLine.left + leftOffset}px`,
             width: `${dragLine.width - leftOffset}px`,
