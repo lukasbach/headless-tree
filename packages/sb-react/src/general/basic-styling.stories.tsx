@@ -15,7 +15,7 @@ import {
   syncDataLoaderFeature,
 } from "@headless-tree/core";
 import { AssistiveTreeDescription, useTree } from "@headless-tree/react";
-import cx from "classnames";
+import cn from "classnames";
 import { DemoItem, createDemoData } from "../utils/data";
 
 const meta = {
@@ -52,7 +52,7 @@ const onRename = (item: ItemInstance<DemoItem>, value: string) => {
   data[item.getId()].name = value;
 };
 const getCssClass = (item: ItemInstance<DemoItem>) =>
-  cx("treeitem", {
+  cn("treeitem", {
     focused: item.isFocused(),
     expanded: item.isExpanded(),
     selected: item.isSelected(),

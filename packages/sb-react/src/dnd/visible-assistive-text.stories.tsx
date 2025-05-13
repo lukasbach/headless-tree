@@ -13,7 +13,7 @@ import {
   syncDataLoaderFeature,
 } from "@headless-tree/core";
 import { AssistiveTreeDescription, useTree } from "@headless-tree/react";
-import cx from "classnames";
+import cn from "classnames";
 import { DemoItem, createDemoData } from "../utils/data";
 
 const meta = {
@@ -47,7 +47,7 @@ const onCompleteForeignDrop = (items: ItemInstance<DemoItem>[]) =>
     item.getItemData().children = newChildren;
   });
 const getCssClass = (item: ItemInstance<DemoItem>) =>
-  cx("treeitem", {
+  cn("treeitem", {
     focused: item.isFocused(),
     expanded: item.isExpanded(),
     selected: item.isSelected(),

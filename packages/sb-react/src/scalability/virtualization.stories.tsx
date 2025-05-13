@@ -17,7 +17,7 @@ import {
 } from "@headless-tree/core";
 import { useTree } from "@headless-tree/react";
 import { Virtualizer, useVirtualizer } from "@tanstack/react-virtual";
-import cx from "classnames";
+import cn from "classnames";
 import { PropsOfArgtype } from "../argtypes";
 
 const meta = {
@@ -112,7 +112,7 @@ const Inner = forwardRef<Virtualizer<HTMLDivElement, Element>, any>(
                 }}
               >
                 <div
-                  className={cx("treeitem", {
+                  className={cn("treeitem", {
                     focused: item.isFocused(),
                     expanded: item.isExpanded(),
                     selected: item.isSelected(),

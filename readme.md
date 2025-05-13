@@ -139,7 +139,7 @@ Then, render your tree based on the tree instance returned from the hook:
       style={{ paddingLeft: `${item.getItemMeta().level * 20}px` }}
     >
       <div
-        className={cx("treeitem", {
+        className={cn("treeitem", {
           focused: item.isFocused(),
           expanded: item.isExpanded(),
           selected: item.isSelected(),

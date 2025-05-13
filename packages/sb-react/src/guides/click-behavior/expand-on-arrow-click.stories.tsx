@@ -9,7 +9,7 @@ import {
   syncDataLoaderFeature,
 } from "@headless-tree/core";
 import { useTree } from "@headless-tree/react";
-import cx from "classnames";
+import cn from "classnames";
 
 import "./expand-on-arrow-click.css";
 
@@ -83,7 +83,7 @@ export const ExpandOnArrowClick = () => {
           )}
           <button {...item.getProps()} key={item.getId()}>
             <div
-              className={cx("treeitem", {
+              className={cn("treeitem", {
                 focused: item.isFocused(),
                 expanded: item.isExpanded(),
                 selected: item.isSelected(),

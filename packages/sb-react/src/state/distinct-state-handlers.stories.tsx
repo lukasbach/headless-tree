@@ -6,7 +6,7 @@ import {
   syncDataLoaderFeature,
 } from "@headless-tree/core";
 import { useTree } from "@headless-tree/react";
-import cx from "classnames";
+import cn from "classnames";
 
 const meta = {
   title: "React/State/Distinct State Handlers",
@@ -46,7 +46,7 @@ export const DistinctStateHandlers = () => {
             style={{ paddingLeft: `${item.getItemMeta().level * 20}px` }}
           >
             <div
-              className={cx("treeitem", {
+              className={cn("treeitem", {
                 focused: item.isFocused(),
                 expanded: item.isExpanded(),
                 selected: item.isSelected(),

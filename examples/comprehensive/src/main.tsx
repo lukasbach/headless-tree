@@ -16,7 +16,7 @@ import {
   selectionFeature,
 } from "@headless-tree/core";
 import { AssistiveTreeDescription, useTree } from "@headless-tree/react";
-import cx from "classnames";
+import cn from "classnames";
 import { DemoItem, asyncDataLoader, data } from "./data";
 
 let newItemId = 0;
@@ -45,7 +45,7 @@ const onRename = (item: ItemInstance<DemoItem>, value: string) => {
   data[item.getId()].name = value;
 };
 const getCssClass = (item: ItemInstance<DemoItem>) =>
-  cx("treeitem", {
+  cn("treeitem", {
     focused: item.isFocused(),
     expanded: item.isExpanded(),
     selected: item.isSelected(),

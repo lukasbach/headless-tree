@@ -7,7 +7,7 @@ import {
   syncDataLoaderFeature,
 } from "@headless-tree/core";
 import { useTree } from "@headless-tree/react";
-import cx from "classnames";
+import cn from "classnames";
 import { PropsOfArgtype } from "../argtypes";
 
 const meta = {
@@ -93,7 +93,7 @@ export const ManyFeatures = ({ featureCount }: PropsOfArgtype<typeof meta>) => {
           style={{ paddingLeft: `${item.getItemMeta().level * 20}px` }}
         >
           <div
-            className={cx("treeitem", {
+            className={cn("treeitem", {
               focused: item.isFocused(),
               expanded: item.isExpanded(),
               selected: item.isSelected(),

@@ -7,7 +7,7 @@ import {
   syncDataLoaderFeature,
 } from "@headless-tree/core";
 import { useTree } from "@headless-tree/react";
-import cx from "classnames";
+import cn from "classnames";
 
 const meta = {
   title: "React/Plugins/Transform Props",
@@ -59,7 +59,7 @@ export const TransformProps = () => {
           style={{ paddingLeft: `${item.getItemMeta().level * 20}px` }}
         >
           <div
-            className={cx("treeitem", {
+            className={cn("treeitem", {
               focused: item.isFocused(),
               expanded: item.isExpanded(),
               selected: item.isSelected(),

@@ -9,7 +9,7 @@ import {
   selectionFeature,
 } from "@headless-tree/core";
 import { useTree } from "@headless-tree/react";
-import cx from "classnames";
+import cn from "classnames";
 import { DemoItem, createDemoData, unitTestTree } from "./data";
 
 const meta = {
@@ -56,7 +56,7 @@ export const UnitTestAsync = () => {
           style={{ paddingLeft: `${item.getItemMeta().level * 20}px` }}
         >
           <div
-            className={cx("treeitem", {
+            className={cn("treeitem", {
               focused: item.isFocused(),
               expanded: item.isExpanded(),
               selected: item.isSelected(),

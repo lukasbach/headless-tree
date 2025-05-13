@@ -10,7 +10,7 @@ import {
   syncDataLoaderFeature,
 } from "@headless-tree/core";
 import { AssistiveTreeDescription, useTree } from "@headless-tree/react";
-import cx from "classnames";
+import cn from "classnames";
 import { DemoItem, createDemoData } from "../utils/data";
 
 const meta = {
@@ -68,7 +68,7 @@ export const DragOutside = () => {
             style={{ paddingLeft: `${item.getItemMeta().level * 20}px` }}
           >
             <div
-              className={cx("treeitem", {
+              className={cn("treeitem", {
                 focused: item.isFocused(),
                 expanded: item.isExpanded(),
                 selected: item.isSelected(),

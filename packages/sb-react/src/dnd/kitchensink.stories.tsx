@@ -9,7 +9,7 @@ import {
 } from "@headless-tree/core";
 import { AssistiveTreeDescription, useTree } from "@headless-tree/react";
 import { action } from "@storybook/addon-actions";
-import cx from "classnames";
+import cn from "classnames";
 import { PropsOfArgtype } from "../argtypes";
 
 const meta = {
@@ -92,7 +92,7 @@ export const KitchenSink = ({
             style={{ paddingLeft: `${item.getItemMeta().level * 20}px` }}
           >
             <div
-              className={cx("treeitem", {
+              className={cn("treeitem", {
                 focused: item.isFocused(),
                 expanded: item.isExpanded(),
                 selected: item.isSelected(),

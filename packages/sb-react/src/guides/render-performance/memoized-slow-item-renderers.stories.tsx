@@ -8,7 +8,7 @@ import {
 } from "@headless-tree/core";
 import { useTree } from "@headless-tree/react";
 import { action } from "@storybook/addon-actions";
-import cx from "classnames";
+import cn from "classnames";
 
 const meta = {
   title: "React/Guides/Render Performance/Memoized Slow Item Renderers",
@@ -76,7 +76,7 @@ export const MemoizedSlowItemRenderers = () => {
           {...item.getProps()}
           key={item.getId()}
           level={item.getItemMeta().level}
-          innerClass={cx("treeitem", {
+          innerClass={cn("treeitem", {
             focused: item.isFocused(),
             expanded: item.isExpanded(),
             selected: item.isSelected(),
