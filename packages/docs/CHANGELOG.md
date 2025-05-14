@@ -1,5 +1,11 @@
 # @headless-tree/docs
 
+## 0.0.4
+
+### Patch Changes
+
+- 8ba6e91: The Headless Tree documentation site now contains Angolia-powered search
+
 ## 0.0.3
 
 ### Patch Changes
