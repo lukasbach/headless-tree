@@ -179,6 +179,12 @@ const config: Config = {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
     },
+    algolia: {
+      appId: "FFLV3J7KTK",
+      apiKey: "2b97360259a47c5b8dd45c0f02332285",
+      indexName: "headless-tree-lukasbach",
+      searchPagePath: "search",
+    },
   } satisfies Preset.ThemeConfig,
 };
 
