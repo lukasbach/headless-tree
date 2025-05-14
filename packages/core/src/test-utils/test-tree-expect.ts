@@ -82,6 +82,7 @@ export class TestTreeExpect<T> {
       top: 0,
     });
     expect(this.tree.instance.getDragLineStyle(0, 0)).toEqual({
+      position: "absolute",
       left: `${indent * 20}px`,
       pointerEvents: "none",
       top: "0px",
