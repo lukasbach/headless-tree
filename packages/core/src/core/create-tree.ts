@@ -6,11 +6,11 @@ import {
   TreeInstance,
   TreeState,
   Updater,
-} from "../types/core";
-import { treeFeature } from "../features/tree/feature";
-import { ItemMeta } from "../features/tree/types";
-import { buildStaticInstance } from "./build-static-instance";
-import { throwError } from "../utilities/errors";
+} from "../types/core.js";
+import { treeFeature } from "../features/tree/feature.js";
+import { ItemMeta } from "../features/tree/types.js";
+import { buildStaticInstance } from "./build-static-instance.js";
+import { throwError } from "../utilities/errors.js";
 
 const verifyFeatures = (features: FeatureImplementation[] | undefined) => {
   const loadedFeatures = features?.map((feature) => feature.key);

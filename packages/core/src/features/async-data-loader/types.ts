@@ -1,5 +1,5 @@
-import { SetStateFn } from "../../types/core";
-import { SyncDataLoaderFeatureDef } from "../sync-data-loader/types";
+import { SetStateFn } from "../../types/core.js";
+import { SyncDataLoaderFeatureDef } from "../sync-data-loader/types.js";
 
 export interface AsyncDataLoaderDataRef<T = any> {
   itemData: Record<string, T>;

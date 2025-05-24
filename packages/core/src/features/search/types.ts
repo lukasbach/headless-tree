@@ -1,5 +1,5 @@
-import { ItemInstance, SetStateFn } from "../../types/core";
-import { HotkeysCoreDataRef } from "../hotkeys-core/types";
+import { ItemInstance, SetStateFn } from "../../types/core.js";
+import { HotkeysCoreDataRef } from "../hotkeys-core/types.js";
 
 export interface SearchFeatureDataRef<T = any> extends HotkeysCoreDataRef {
   matchingItems: ItemInstance<T>[];

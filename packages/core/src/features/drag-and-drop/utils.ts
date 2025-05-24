@@ -1,5 +1,5 @@
-import { ItemInstance, TreeInstance } from "../../types/core";
-import { DragTarget } from "./types";
+import { ItemInstance, TreeInstance } from "../../types/core.js";
+import { DragTarget } from "./types.js";
 
 export enum ItemDropCategory {
   Item,

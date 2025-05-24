@@ -4,9 +4,9 @@
     "declaration": true,
     "strictNullChecks": true,
     "esModuleInterop": true,
-    "module": "ES2022",
     "target": "ES6",
-    "moduleResolution": "Node",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
     "jsx": "react",
     "skipLibCheck": true,
     "strict": true

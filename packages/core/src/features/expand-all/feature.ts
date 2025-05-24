@@ -1,4 +1,4 @@
-import { FeatureImplementation } from "../../types/core";
+import { FeatureImplementation } from "../../types/core.js";
 
 export const expandAllFeature: FeatureImplementation = {
   key: "expand-all",

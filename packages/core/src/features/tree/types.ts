@@ -1,4 +1,4 @@
-import { ItemInstance, SetStateFn, TreeInstance } from "../../types/core";
+import { ItemInstance, SetStateFn, TreeInstance } from "../../types/core.js";
 
 export interface ItemMeta {
   itemId: string;

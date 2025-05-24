@@ -1,6 +1,6 @@
-import { FeatureImplementation } from "../../types/core";
-import { makeStateUpdater } from "../../utils";
-import { throwError } from "../../utilities/errors";
+import { FeatureImplementation } from "../../types/core.js";
+import { makeStateUpdater } from "../../utils.js";
+import { throwError } from "../../utilities/errors.js";
 
 const promiseErrorMessage = "sync dataLoader returned promise";
 const unpromise = <T>(data: T | Promise<T>): T => {

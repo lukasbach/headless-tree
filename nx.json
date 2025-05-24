@@ -1,7 +1,6 @@
 {
   "tasksRunnerOptions": {
     "default": {
-      "runner": "nx-cloud",
       "options": {
         "cacheableOperations": [
           "build:cjs",
@@ -10,8 +9,7 @@
           "typecheck",
           "build:sb",
           "lint:test"
-        ],
-        "accessToken": "YmU4OTg0NzYtZTIzYy00ZTdmLWJhM2ItMGRmYTUyZGE0YzJkfHJlYWQtb25seQ=="
+        ]
       }
     }
   },

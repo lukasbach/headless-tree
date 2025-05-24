@@ -1,12 +1,12 @@
 import { describe, expect, it, vi } from "vitest";
-import { TestTree } from "../../test-utils/test-tree";
-import { selectionFeature } from "../selection/feature";
-import { ItemInstance } from "../../types/core";
-import { propMemoizationFeature } from "../prop-memoization/feature";
-import { keyboardDragAndDropFeature } from "./feature";
-import { dragAndDropFeature } from "../drag-and-drop/feature";
-import { AssistiveDndState } from "./types";
-import { isOrderedDragTarget } from "../drag-and-drop/utils";
+import { TestTree } from "../../test-utils/test-tree.js";
+import { selectionFeature } from "../selection/feature.js";
+import { ItemInstance } from "../../types/core.js";
+import { propMemoizationFeature } from "../prop-memoization/feature.js";
+import { keyboardDragAndDropFeature } from "./feature.js";
+import { dragAndDropFeature } from "../drag-and-drop/feature.js";
+import { AssistiveDndState } from "./types.js";
+import { isOrderedDragTarget } from "../drag-and-drop/utils.js";
 
 const isItem = (item: unknown): item is ItemInstance<any> =>
   !!item && typeof item === "object" && "getId" in item;

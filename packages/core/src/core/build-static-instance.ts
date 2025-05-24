@@ -1,6 +1,6 @@
 /* eslint-disable no-continue,no-labels,no-extra-label */
 
-import { InstanceBuilder } from "../features/main/types";
+import { InstanceBuilder } from "../features/main/types.js";
 
 export const buildStaticInstance: InstanceBuilder = (
   features,

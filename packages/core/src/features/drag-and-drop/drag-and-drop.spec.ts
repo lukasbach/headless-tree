@@ -1,10 +1,10 @@
 import { describe, expect, it, vi } from "vitest";
-import { TestTree } from "../../test-utils/test-tree";
-import { dragAndDropFeature } from "./feature";
-import { selectionFeature } from "../selection/feature";
-import { ItemInstance } from "../../types/core";
-import { createOnDropHandler } from "../../utilities/create-on-drop-handler";
-import { propMemoizationFeature } from "../prop-memoization/feature";
+import { TestTree } from "../../test-utils/test-tree.js";
+import { dragAndDropFeature } from "./feature.js";
+import { selectionFeature } from "../selection/feature.js";
+import { ItemInstance } from "../../types/core.js";
+import { createOnDropHandler } from "../../utilities/create-on-drop-handler.js";
+import { propMemoizationFeature } from "../prop-memoization/feature.js";
 
 const isItem = (item: unknown): item is ItemInstance<any> =>
   !!item && typeof item === "object" && "getId" in item;

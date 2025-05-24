@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
-import { TestTree } from "../../test-utils/test-tree";
-import { propMemoizationFeature } from "../prop-memoization/feature";
+import { TestTree } from "../../test-utils/test-tree.js";
+import { propMemoizationFeature } from "../prop-memoization/feature.js";
 
 const factory = TestTree.default({}).withFeatures(propMemoizationFeature);
 

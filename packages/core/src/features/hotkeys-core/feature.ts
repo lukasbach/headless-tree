@@ -2,8 +2,8 @@ import {
   FeatureImplementation,
   HotkeysConfig,
   TreeInstance,
-} from "../../types/core";
-import { HotkeyConfig, HotkeysCoreDataRef } from "./types";
+} from "../../types/core.js";
+import { HotkeyConfig, HotkeysCoreDataRef } from "./types.js";
 
 const specialKeys: Record<string, RegExp> = {
   // TODO:breaking deprecate auto-lowercase

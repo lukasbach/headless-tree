@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { makeStateUpdater, memo, poll } from "./utils";
+import { makeStateUpdater, memo, poll } from "./utils.js";
 
 vi.useFakeTimers({ shouldAdvanceTime: true });
 

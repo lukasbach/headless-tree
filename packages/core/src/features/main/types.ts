@@ -7,8 +7,8 @@ import {
   TreeInstance,
   TreeState,
   Updater,
-} from "../../types/core";
-import { ItemMeta } from "../tree/types";
+} from "../../types/core.js";
+import { ItemMeta } from "../tree/types.js";
 
 export type InstanceTypeMap = {
   itemInstance: ItemInstance<any>;

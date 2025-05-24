@@ -1,14 +1,14 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { beforeEach, describe, vi } from "vitest";
 import { DragEvent } from "react";
-import { TreeConfig, TreeInstance } from "../types/core";
-import { createTree } from "../core/create-tree";
-import { TestTreeDo } from "./test-tree-do";
-import { TestTreeExpect } from "./test-tree-expect";
-import { syncDataLoaderFeature } from "../features/sync-data-loader/feature";
-import { asyncDataLoaderFeature } from "../features/async-data-loader/feature";
-import { buildProxiedInstance } from "../core/build-proxified-instance";
-import { TreeDataLoader } from "../features/sync-data-loader/types";
+import { TreeConfig, TreeInstance } from "../types/core.js";
+import { createTree } from "../core/create-tree.js";
+import { TestTreeDo } from "./test-tree-do.js";
+import { TestTreeExpect } from "./test-tree-expect.js";
+import { syncDataLoaderFeature } from "../features/sync-data-loader/feature.js";
+import { asyncDataLoaderFeature } from "../features/async-data-loader/feature.js";
+import { buildProxiedInstance } from "../core/build-proxified-instance.js";
+import { TreeDataLoader } from "../features/sync-data-loader/types.js";
 
 vi.useFakeTimers({ shouldAdvanceTime: true });
 

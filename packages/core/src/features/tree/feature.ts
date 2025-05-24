@@ -1,7 +1,7 @@
-import { FeatureImplementation, ItemInstance } from "../../types/core";
-import { ItemMeta } from "./types";
-import { makeStateUpdater, poll } from "../../utils";
-import { logWarning } from "../../utilities/errors";
+import { FeatureImplementation, ItemInstance } from "../../types/core.js";
+import { ItemMeta } from "./types.js";
+import { makeStateUpdater, poll } from "../../utils.js";
+import { logWarning } from "../../utilities/errors.js";
 
 export const treeFeature: FeatureImplementation<any> = {
   key: "tree",

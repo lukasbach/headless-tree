@@ -1,6 +1,6 @@
-import { FeatureImplementation } from "../../types/core";
-import { SearchFeatureDataRef } from "./types";
-import { makeStateUpdater, memo } from "../../utils";
+import { FeatureImplementation } from "../../types/core.js";
+import { SearchFeatureDataRef } from "./types.js";
+import { makeStateUpdater, memo } from "../../utils.js";
 
 export const searchFeature: FeatureImplementation = {
   key: "search",

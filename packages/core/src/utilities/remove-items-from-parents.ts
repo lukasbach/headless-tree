@@ -1,4 +1,4 @@
-import { ItemInstance } from "../types/core";
+import { ItemInstance } from "../types/core.js";
 
 export const removeItemsFromParents = async <T>(
   movedItems: ItemInstance<T>[],

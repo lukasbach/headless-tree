@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
-import { TestTree } from "../../test-utils/test-tree";
-import { asyncDataLoaderFeature } from "./feature";
-import { propMemoizationFeature } from "../prop-memoization/feature";
+import { TestTree } from "../../test-utils/test-tree.js";
+import { asyncDataLoaderFeature } from "./feature.js";
+import { propMemoizationFeature } from "../prop-memoization/feature.js";
 
 const tree = TestTree.default({}).withFeatures(
   asyncDataLoaderFeature,

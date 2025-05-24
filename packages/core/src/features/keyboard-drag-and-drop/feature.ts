@@ -2,8 +2,8 @@ import {
   FeatureImplementation,
   ItemInstance,
   TreeInstance,
-} from "../../types/core";
-import { DndDataRef, DragTarget } from "../drag-and-drop/types";
+} from "../../types/core.js";
+import { DndDataRef, DragTarget } from "../drag-and-drop/types.js";
 import {
   ItemDropCategory,
   canDrop,
@@ -11,9 +11,9 @@ import {
   getItemDropCategory,
   getReparentTarget,
   isOrderedDragTarget,
-} from "../drag-and-drop/utils";
-import { makeStateUpdater } from "../../utils";
-import { AssistiveDndState, KDndDataRef } from "./types";
+} from "../drag-and-drop/utils.js";
+import { makeStateUpdater } from "../../utils.js";
+import { AssistiveDndState, KDndDataRef } from "./types.js";
 
 const getNextDragTarget = <T>(
   tree: TreeInstance<T>,

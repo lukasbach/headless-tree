@@ -1,6 +1,6 @@
-import { FeatureImplementation, TreeInstance } from "../../types/core";
-import { AsyncDataLoaderDataRef } from "./types";
-import { makeStateUpdater } from "../../utils";
+import { FeatureImplementation, TreeInstance } from "../../types/core.js";
+import { AsyncDataLoaderDataRef } from "./types.js";
+import { makeStateUpdater } from "../../utils.js";
 
 const getDataRef = <T>(tree: TreeInstance<T>) => {
   const dataRef = tree.getDataRef<AsyncDataLoaderDataRef>();

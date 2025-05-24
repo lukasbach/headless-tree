@@ -1,5 +1,5 @@
-import { FeatureImplementation, ItemInstance } from "../../types/core";
-import { makeStateUpdater } from "../../utils";
+import { FeatureImplementation, ItemInstance } from "../../types/core.js";
+import { makeStateUpdater } from "../../utils.js";
 
 type InputEvent = {
   target?: {

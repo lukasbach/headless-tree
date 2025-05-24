@@ -1,8 +1,8 @@
 import { describe, expect, it, vi } from "vitest";
-import { TestTree } from "../test-utils/test-tree";
-import { buildStaticInstance } from "./build-static-instance";
+import { TestTree } from "../test-utils/test-tree.js";
+import { buildStaticInstance } from "./build-static-instance.js";
 
-declare module "../types/core" {
+declare module "../types/core.js" {
   export interface TreeInstance<T> {
     customHandler: (param1: number, param2: number) => void;
   }

@@ -1,7 +1,7 @@
 import { describe, it } from "vitest";
-import { TestTree } from "../../test-utils/test-tree";
-import { expandAllFeature } from "./feature";
-import { propMemoizationFeature } from "../prop-memoization/feature";
+import { TestTree } from "../../test-utils/test-tree.js";
+import { expandAllFeature } from "./feature.js";
+import { propMemoizationFeature } from "../prop-memoization/feature.js";
 
 const factory = TestTree.default({}).withFeatures(
   expandAllFeature,

@@ -1,4 +1,4 @@
-import { CustomHotkeysConfig, TreeInstance } from "../../types/core";
+import { CustomHotkeysConfig, TreeInstance } from "../../types/core.js";
 
 export interface HotkeyConfig<T> {
   hotkey: string;

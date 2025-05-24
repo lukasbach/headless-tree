@@ -1,9 +1,9 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { DragEvent } from "react";
 import { Mock, expect, vi } from "vitest";
-import { TestTree } from "./test-tree";
-import { HotkeyName } from "../types/core";
-import { HotkeyConfig } from "../features/hotkeys-core/types";
+import { TestTree } from "./test-tree.js";
+import { HotkeyName } from "../types/core.js";
+import { HotkeyConfig } from "../features/hotkeys-core/types.js";
 
 export class TestTreeDo<T> {
   protected itemInstance(itemId: string) {

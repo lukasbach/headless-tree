@@ -7,7 +7,7 @@
   "types": "lib/esm/index.d.ts",
   "sideEffects": false,
   "scripts": {
-    "build:cjs": "tsc -m commonjs --outDir lib/cjs",
+    "build:cjs": "tsc -m commonjs --moduleResolution node10 --outDir lib/cjs",
     "build:esm": "tsc",
     "start": "tsc -w",
     "test": "vitest run"

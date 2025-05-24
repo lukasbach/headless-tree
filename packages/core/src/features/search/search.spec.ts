@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { TestTree } from "../../test-utils/test-tree";
-import { searchFeature } from "./feature";
-import { selectionFeature } from "../selection/feature";
-import { propMemoizationFeature } from "../prop-memoization/feature";
+import { TestTree } from "../../test-utils/test-tree.js";
+import { searchFeature } from "./feature.js";
+import { selectionFeature } from "../selection/feature.js";
+import { propMemoizationFeature } from "../prop-memoization/feature.js";
 
 const factory = TestTree.default({}).withFeatures(
   searchFeature,

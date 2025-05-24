@@ -1,5 +1,5 @@
-import { FeatureImplementation } from "../../types/core";
-import { makeStateUpdater } from "../../utils";
+import { FeatureImplementation } from "../../types/core.js";
+import { makeStateUpdater } from "../../utils.js";
 
 export const selectionFeature: FeatureImplementation = {
   key: "selection",

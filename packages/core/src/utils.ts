@@ -1,4 +1,4 @@
-import { SetStateFn, TreeState, Updater } from "./types/core";
+import { SetStateFn, TreeState, Updater } from "./types/core.js";
 
 export type NoInfer<T> = [T][T extends any ? 0 : never];
 

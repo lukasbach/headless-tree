@@ -1,5 +1,5 @@
-import { FeatureImplementation } from "../../types/core";
-import { PropMemoizationDataRef } from "./types";
+import { FeatureImplementation } from "../../types/core.js";
+import { PropMemoizationDataRef } from "./types.js";
 
 const memoize = (
   props: Record<string, any>,

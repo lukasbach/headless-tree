@@ -1,12 +1,12 @@
-import { FeatureImplementation } from "../../types/core";
-import { DndDataRef, DragLineData } from "./types";
+import { FeatureImplementation } from "../../types/core.js";
+import { DndDataRef, DragLineData } from "./types.js";
 import {
   canDrop,
   getDragCode,
   getDragTarget,
   isOrderedDragTarget,
-} from "./utils";
-import { makeStateUpdater } from "../../utils";
+} from "./utils.js";
+import { makeStateUpdater } from "../../utils.js";
 
 export const dragAndDropFeature: FeatureImplementation = {
   key: "drag-and-drop",

@@ -1,9 +1,9 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { Mock, expect } from "vitest";
 import { DragEvent } from "react";
-import { TestTree } from "./test-tree";
-import { DragTarget } from "../features/drag-and-drop/types";
-import { TreeState } from "../types/core";
+import { TestTree } from "./test-tree.js";
+import { DragTarget } from "../features/drag-and-drop/types.js";
+import { TreeState } from "../types/core.js";
 
 export class TestTreeExpect<T> {
   protected itemInstance(itemId: string) {

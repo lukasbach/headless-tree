@@ -1,5 +1,5 @@
-import { ItemInstance } from "../types/core";
-import { DragTarget } from "../features/drag-and-drop/types";
+import { ItemInstance } from "../types/core.js";
+import { DragTarget } from "../features/drag-and-drop/types.js";
 
 export const insertItemsAtTarget = async <T>(
   itemIds: string[],

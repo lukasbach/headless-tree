@@ -1,4 +1,4 @@
-import { ItemInstance, SetStateFn } from "../../types/core";
+import { ItemInstance, SetStateFn } from "../../types/core.js";
 
 export interface KDndDataRef {
   kDndDataTransfer: DataTransfer | undefined;

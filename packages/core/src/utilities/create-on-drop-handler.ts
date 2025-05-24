@@ -1,7 +1,7 @@
-import { ItemInstance } from "../types/core";
-import { DragTarget } from "../features/drag-and-drop/types";
-import { removeItemsFromParents } from "./remove-items-from-parents";
-import { insertItemsAtTarget } from "./insert-items-at-target";
+import { ItemInstance } from "../types/core.js";
+import { DragTarget } from "../features/drag-and-drop/types.js";
+import { removeItemsFromParents } from "./remove-items-from-parents.js";
+import { insertItemsAtTarget } from "./insert-items-at-target.js";
 
 export const createOnDropHandler =
   <T>(

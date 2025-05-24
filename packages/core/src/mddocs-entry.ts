@@ -1,17 +1,17 @@
-import { MainFeatureDef } from "./features/main/types";
-import { DragAndDropFeatureDef } from "./features/drag-and-drop/types";
-import { AsyncDataLoaderFeatureDef } from "./features/async-data-loader/types";
-import { ExpandAllFeatureDef } from "./features/expand-all/types";
-import { HotkeysCoreFeatureDef } from "./features/hotkeys-core/types";
-import { RenamingFeatureDef } from "./features/renaming/types";
-import { SearchFeatureDef } from "./features/search/types";
-import { SelectionFeatureDef } from "./features/selection/types";
-import { SyncDataLoaderFeatureDef } from "./features/sync-data-loader/types";
-import { TreeFeatureDef } from "./features/tree/types";
-import { PropMemoizationFeatureDef } from "./features/prop-memoization/types";
-import { KeyboardDragAndDropFeatureDef } from "./features/keyboard-drag-and-drop/types";
+import { MainFeatureDef } from "./features/main/types.js";
+import { DragAndDropFeatureDef } from "./features/drag-and-drop/types.js";
+import { AsyncDataLoaderFeatureDef } from "./features/async-data-loader/types.js";
+import { ExpandAllFeatureDef } from "./features/expand-all/types.js";
+import { HotkeysCoreFeatureDef } from "./features/hotkeys-core/types.js";
+import { RenamingFeatureDef } from "./features/renaming/types.js";
+import { SearchFeatureDef } from "./features/search/types.js";
+import { SelectionFeatureDef } from "./features/selection/types.js";
+import { SyncDataLoaderFeatureDef } from "./features/sync-data-loader/types.js";
+import { TreeFeatureDef } from "./features/tree/types.js";
+import { PropMemoizationFeatureDef } from "./features/prop-memoization/types.js";
+import { KeyboardDragAndDropFeatureDef } from "./features/keyboard-drag-and-drop/types.js";
 
-export * from ".";
+export * from "./index.js";
 
 //     /** @interface */
 //     export type XXXFeatureConfig<T> = XFeatureDef<T>["config"];

@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
-import { TestTree } from "../../test-utils/test-tree";
-import { propMemoizationFeature } from "./feature";
-import { FeatureImplementation } from "../../types/core";
+import { TestTree } from "../../test-utils/test-tree.js";
+import { propMemoizationFeature } from "./feature.js";
+import { FeatureImplementation } from "../../types/core.js";
 
 const itemHandler = vi.fn();
 const treeHandler = vi.fn();

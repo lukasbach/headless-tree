@@ -1,6 +1,6 @@
-import { FeatureImplementation } from "../types/core";
-import { InstanceBuilder, InstanceTypeMap } from "../features/main/types";
-import { throwError } from "../utilities/errors";
+import { FeatureImplementation } from "../types/core.js";
+import { InstanceBuilder, InstanceTypeMap } from "../features/main/types.js";
+import { throwError } from "../utilities/errors.js";
 
 const noop = () => {};
 

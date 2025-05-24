@@ -1,18 +1,18 @@
-import { DragAndDropFeatureDef } from "../features/drag-and-drop/types";
-import { MainFeatureDef } from "../features/main/types";
-import { SelectionFeatureDef } from "../features/selection/types";
-import { TreeFeatureDef } from "../features/tree/types";
+import { DragAndDropFeatureDef } from "../features/drag-and-drop/types.js";
+import { MainFeatureDef } from "../features/main/types.js";
+import { SelectionFeatureDef } from "../features/selection/types.js";
+import { TreeFeatureDef } from "../features/tree/types.js";
 import {
   HotkeyConfig,
   HotkeysCoreFeatureDef,
-} from "../features/hotkeys-core/types";
-import { SyncDataLoaderFeatureDef } from "../features/sync-data-loader/types";
-import { AsyncDataLoaderFeatureDef } from "../features/async-data-loader/types";
-import { SearchFeatureDef } from "../features/search/types";
-import { RenamingFeatureDef } from "../features/renaming/types";
-import { ExpandAllFeatureDef } from "../features/expand-all/types";
-import { PropMemoizationFeatureDef } from "../features/prop-memoization/types";
-import { KeyboardDragAndDropFeatureDef } from "../features/keyboard-drag-and-drop/types";
+} from "../features/hotkeys-core/types.js";
+import { SyncDataLoaderFeatureDef } from "../features/sync-data-loader/types.js";
+import { AsyncDataLoaderFeatureDef } from "../features/async-data-loader/types.js";
+import { SearchFeatureDef } from "../features/search/types.js";
+import { RenamingFeatureDef } from "../features/renaming/types.js";
+import { ExpandAllFeatureDef } from "../features/expand-all/types.js";
+import { PropMemoizationFeatureDef } from "../features/prop-memoization/types.js";
+import { KeyboardDragAndDropFeatureDef } from "../features/keyboard-drag-and-drop/types.js";
 
 export type Updater<T> = T | ((old: T) => T);
 export type SetStateFn<T> = (updaterOrValue: Updater<T>) => void;
