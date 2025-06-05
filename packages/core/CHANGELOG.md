@@ -1,5 +1,11 @@
 # @headless-tree/core
 
+## 1.1.1
+
+### Patch Changes
+
+- 727c982: export makeStateUpdater from core package
+
 ## 1.1.0
 
 ### Minor Changes
