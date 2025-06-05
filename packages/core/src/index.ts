@@ -31,3 +31,5 @@ export * from "./utilities/remove-items-from-parents";
 
 export * from "./core/build-proxified-instance";
 export * from "./core/build-static-instance";
+
+export { makeStateUpdater } from "./utils";
