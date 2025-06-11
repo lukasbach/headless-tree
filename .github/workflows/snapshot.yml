@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   snapshot:
-    if: ${{ !contains(github.event.commits[0].message, 'nosnapshot') && !contains(github.event.commits[0].message, 'chore: release') }}
+    if: ${{ !contains(github.event.commits[0].message, 'nosnapshot') }}
     runs-on: ubuntu-latest
     name: Publish
     steps:
