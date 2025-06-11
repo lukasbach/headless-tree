@@ -93,6 +93,37 @@ describe("core-feature/renaming", () => {
       expect(setRenamingItem).toHaveBeenCalledWith(null);
     });
 
+    describe("dragging", async () => {
+      const suiteTree = await tree
+        .withFeatures({
+          key: "drag-and-drop",
+          itemInstance: {
+            getProps: ({ prev }: any) => ({
+              ...prev?.(),
+              draggable: true,
+              onDragStart: "initialOnDragStart",
+            }),
+          },
+        })
+        .createTestCaseTree();
+      suiteTree.resetBeforeEach();
+
+      it("sets draggable to undefined for items being renamed", () => {
+        const item = suiteTree.item("x1");
+        item.startRenaming();
+        const props = item.getProps();
+        expect(props.draggable).toBe(false);
+        expect(props.onDragStart).toStrictEqual(expect.any(Function));
+      });
+
+      it("retains draggable for items not being renamed", () => {
+        const item = suiteTree.item("x1");
+        const props = item.getProps();
+        expect(props.draggable).toBe(true);
+        expect(props.onDragStart).toBe("initialOnDragStart");
+      });
+    });
+
     describe("hotkeys", () => {
       it("starts renaming", () => {
         const setRenamingItem = tree.mockedHandler("setRenamingItem");

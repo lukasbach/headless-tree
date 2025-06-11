@@ -9,6 +9,7 @@ type InputEvent = {
 
 export const renamingFeature: FeatureImplementation = {
   key: "renaming",
+  overwrites: ["drag-and-drop"],
 
   getDefaultConfig: (defaultConfig, tree) => ({
     setRenamingItem: makeStateUpdater("renamingItem", tree),
@@ -72,6 +73,18 @@ export const renamingFeature: FeatureImplementation = {
 
     isRenaming: ({ tree, item }) =>
       item.getId() === tree.getState().renamingItem,
+
+    getProps: ({ prev, item }) => {
+      const isRenaming = item.isRenaming();
+      const prevProps = prev?.() ?? {};
+      return isRenaming
+        ? {
+            ...prevProps,
+            draggable: false,
+            onDragStart: () => {},
+          }
+        : prevProps;
+    },
   },
 
   hotkeys: {
