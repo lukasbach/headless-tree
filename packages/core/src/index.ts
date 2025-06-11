@@ -33,3 +33,4 @@ export * from "./core/build-proxified-instance";
 export * from "./core/build-static-instance";
 
 export { makeStateUpdater } from "./utils";
+export { isOrderedDragTarget } from "./features/drag-and-drop/utils";
