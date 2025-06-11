@@ -17,6 +17,7 @@
     "directory": "packages/react"
   },
   "author": "Lukas Bach <npm@lukasbach.com>",
+  "funding": "https://github.com/sponsors/lukasbach",
   "license": "MIT",
   "devDependencies": {
     "@babel/preset-env": "^7.24.0",

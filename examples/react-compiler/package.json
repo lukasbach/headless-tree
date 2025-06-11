@@ -1,6 +1,8 @@
 {
   "name": "@headless-tree/example-react-compiler",
   "description": "Headless Tree with React Compiler enabled",
+  "author": "Lukas Bach <npm@lukasbach.com>",
+  "funding": "https://github.com/sponsors/lukasbach",
   "private": true,
   "version": "0.0.0",
   "type": "module",

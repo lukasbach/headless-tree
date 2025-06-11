@@ -18,6 +18,7 @@
     "directory": "packages/core"
   },
   "author": "Lukas Bach <npm@lukasbach.com>",
+  "funding": "https://github.com/sponsors/lukasbach",
   "license": "MIT",
   "devDependencies": {
     "jsdom": "^26.0.0",

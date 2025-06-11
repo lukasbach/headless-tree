@@ -1,6 +1,8 @@
 {
   "name": "@headless-tree/example-nextjs",
   "description": "Nextjs Integration example of Headless Tree with React",
+  "author": "Lukas Bach <npm@lukasbach.com>",
+  "funding": "https://github.com/sponsors/lukasbach",
   "private": true,
   "version": "0.0.0",
   "scripts": {
