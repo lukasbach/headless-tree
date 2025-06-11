@@ -126,6 +126,7 @@ export const treeFeature: FeatureImplementation<any> = {
       item.getElement()?.scrollIntoView(scrollIntoViewArg);
     },
     getId: ({ itemId }) => itemId,
+    getKey: ({ itemId }) => itemId, // TODO apply to all stories to use
     getProps: ({ item, prev }) => {
       const itemMeta = item.getItemMeta();
       return {

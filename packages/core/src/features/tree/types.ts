@@ -44,6 +44,7 @@ export type TreeFeatureDef<T> = {
   };
   itemInstance: {
     getId: () => string;
+    getKey: () => string;
     getProps: () => Record<string, any>;
     getItemName: () => string;
     getItemData: () => T;
