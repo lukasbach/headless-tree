@@ -46,8 +46,7 @@ export const Tree = () => {
       {items.map((item) => (
         <button
           {...item.getProps()}
-          key={item.getKey()}
-          id={item.getKey()}
+          key={item.getId()}
           style={{ paddingLeft: `${item.getItemMeta().level * 20}px` }}
         >
           <div
