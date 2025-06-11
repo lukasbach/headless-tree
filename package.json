@@ -8,7 +8,7 @@
   "scripts": {
     "lint": "eslint . --fix",
     "lint:test": "eslint .",
-    "start": "lerna run start,start:sb --parallel --scope @headless-tree/core --scope @headless-tree/sb-react",
+    "start": "lerna run start,start:sb --parallel --scope @headless-tree/core --scope @headless-tree/react --scope @headless-tree/sb-react",
     "start:docs": "lerna run start --parallel --scope @headless-tree/docs",
     "build": "lerna run build,build:cjs,build:esm,build:docs,build:sb --concurrency 1",
     "build:core": "lerna run build,build:cjs,build:esm --concurrency 1",

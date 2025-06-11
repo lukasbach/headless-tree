@@ -107,9 +107,7 @@ button:focus-visible .treeitem.focused, .treeitem.searchmatch.focused {
 }
 
 .dragline {
-    position: absolute;
     height: 2px;
-    width: unset;
     margin-top: -1px;
     background-color: #0366d6;
 }
