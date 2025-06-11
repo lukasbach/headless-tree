@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useInsertionEffect, useState } from "react";
 import { TreeConfig, TreeState, createTree } from "@headless-tree/core";
 
 export const useTree = <T,>(config: TreeConfig<T>) => {
@@ -7,19 +7,25 @@ export const useTree = <T,>(config: TreeConfig<T>) => {
     tree.current.getState(),
   );
 
-  tree.current.setConfig((prev) => ({
-    ...prev,
-    ...config,
-    state: {
-      // ...prev.state,
-      ...state,
-      ...config.state,
-    },
-    setState: (state) => {
-      setState(state);
-      config.setState?.(state);
-    },
-  }));
+  useEffect(() => {
+    tree.current.rebuildTree();
+  }, [tree]); // runs only once after mount
+
+  useInsertionEffect(() => {
+    tree.current.setConfig((prev) => ({
+      ...prev,
+      ...config,
+      state: {
+        // ...prev.state,
+        ...state,
+        ...config.state,
+      },
+      setState: (state) => {
+        setState(state);
+        config.setState?.(state);
+      },
+    }));
+  });
 
   return tree.current;
 };

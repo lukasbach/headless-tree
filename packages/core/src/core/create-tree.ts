@@ -228,7 +228,6 @@ export const createTree = <T>(
   }
 
   finalizeTree();
-  rebuildItemMeta();
 
   return treeInstance;
 };
