@@ -11,6 +11,7 @@ permissions:
 
 jobs:
   snapshot:
+    if: ${{ !contains(github.event.commits[0].message, 'nosnapshot') && !contains(github.event.commits[0].message, 'chore: release') }}
     runs-on: ubuntu-latest
     name: Publish
     steps:
@@ -18,6 +19,13 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 0
+
+      - name: check skip tag
+        run: |
+          if git log -1 --pretty=%B | grep -qE 'chore: release|nosnapshot'; then
+            echo "Skipping snapshot release due to commit message."
+            exit 0
+          fi
 
       - uses: actions/cache@v3
         with:
