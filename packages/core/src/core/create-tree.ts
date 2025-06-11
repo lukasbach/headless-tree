@@ -24,6 +24,24 @@ const verifyFeatures = (features: FeatureImplementation[] | undefined) => {
   }
 };
 
+// Check all possible pairs and sort the array
+const exhaustiveSort = <T>(
+  arr: T[],
+  compareFn: (param1: T, param2: T) => number,
+) => {
+  const n = arr.length;
+
+  for (let i = 0; i < n; i++) {
+    for (let j = i + 1; j < n; j++) {
+      if (compareFn(arr[j], arr[i]) < 0) {
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+    }
+  }
+
+  return arr;
+};
+
 const compareFeatures =
   (originalOrder: FeatureImplementation[]) =>
   (feature1: FeatureImplementation, feature2: FeatureImplementation) => {
@@ -33,11 +51,12 @@ const compareFeatures =
     if (feature1.key && feature2.overwrites?.includes(feature1.key)) {
       return -1;
     }
+
     return originalOrder.indexOf(feature1) - originalOrder.indexOf(feature2);
   };
 
 const sortFeatures = (features: FeatureImplementation[] = []) =>
-  features.sort(compareFeatures(features));
+  exhaustiveSort(features, compareFeatures(features));
 
 export const createTree = <T>(
   initialConfig: TreeConfig<T>,
