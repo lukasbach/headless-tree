@@ -4108,7 +4108,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@headless-tree/core@npm:^1.0.0, @headless-tree/core@workspace:*, @headless-tree/core@workspace:packages/core":
+"@headless-tree/core@npm:latest":
+  version: 1.0.1
+  resolution: "@headless-tree/core@npm:1.0.1"
+  checksum: 10/c092ee2d27ba8f269e13488443fb4d24b442a88c0d15c31ed9874aae2fe56baf2f888cdfb05b4fe37cadce32ee671dbb1fa7e22a6b16a90fc3b19a8203ef2c44
+  languageName: node
+  linkType: hard
+
+"@headless-tree/core@workspace:*, @headless-tree/core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@headless-tree/core@workspace:packages/core"
   dependencies:
@@ -4145,8 +4152,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@headless-tree/example-basic@workspace:examples/basic"
   dependencies:
-    "@headless-tree/core": "npm:^1.0.0"
-    "@headless-tree/react": "npm:^1.0.0"
+    "@headless-tree/core": "npm:latest"
+    "@headless-tree/react": "npm:latest"
     "@types/react": "npm:^19.0.10"
     "@types/react-dom": "npm:^19.0.4"
     "@vitejs/plugin-react": "npm:^4.3.4"
@@ -4163,8 +4170,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@headless-tree/example-comprehensive@workspace:examples/comprehensive"
   dependencies:
-    "@headless-tree/core": "npm:^1.0.0"
-    "@headless-tree/react": "npm:^1.0.0"
+    "@headless-tree/core": "npm:latest"
+    "@headless-tree/react": "npm:latest"
     "@types/react": "npm:^19.0.10"
     "@types/react-dom": "npm:^19.0.4"
     "@vitejs/plugin-react": "npm:^4.3.4"
@@ -4181,8 +4188,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@headless-tree/example-nextjs@workspace:examples/nextjs"
   dependencies:
-    "@headless-tree/core": "workspace:*"
-    "@headless-tree/react": "workspace:*"
+    "@headless-tree/core": "npm:latest"
+    "@headless-tree/react": "npm:latest"
     "@types/node": "npm:^20"
     "@types/react": "npm:^19"
     "@types/react-dom": "npm:^19"
@@ -4198,8 +4205,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@headless-tree/example-react-compiler@workspace:examples/react-compiler"
   dependencies:
-    "@headless-tree/core": "npm:^1.0.0"
-    "@headless-tree/react": "npm:^1.0.0"
+    "@headless-tree/core": "npm:latest"
+    "@headless-tree/react": "npm:latest"
     "@types/react": "npm:^19.0.10"
     "@types/react-dom": "npm:^19.0.4"
     "@vitejs/plugin-react": "npm:^4.3.4"
@@ -4213,7 +4220,18 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@headless-tree/react@npm:^1.0.0, @headless-tree/react@workspace:*, @headless-tree/react@workspace:packages/react":
+"@headless-tree/react@npm:latest":
+  version: 1.0.1
+  resolution: "@headless-tree/react@npm:1.0.1"
+  peerDependencies:
+    "@headless-tree/core": "*"
+    react: "*"
+    react-dom: "*"
+  checksum: 10/23e834dffb2b0013c98a20c7349803e92c47e8d681824d4c440dbf3f61b82660a7e4b53eb8b40cca46a078ce90e1b9999a9409e1c041af24280fa26fffefae1f
+  languageName: node
+  linkType: hard
+
+"@headless-tree/react@workspace:*, @headless-tree/react@workspace:packages/react":
   version: 0.0.0-use.local
   resolution: "@headless-tree/react@workspace:packages/react"
   dependencies:
