@@ -1,5 +1,25 @@
 # @headless-tree/core
 
+## 1.2.0
+
+### Minor Changes
+
+- 647a072: Fixed incorrect package.json exports configurations to proper ESM and CJS exports (#104)
+- 349d36e: change package.json["module"] to commonjs to fix inconsistent package definitiuons (#104)
+- e2faf37: Fixed an issue async data loaders that resolve data before the tree is mounted can cause the tree to not render at all
+
+  Note: When using the `createTree()` API directly instead of going through the React `useTree` API, an additional call
+  to `tree.rebuildItems()` afterwards will be necessary. This change is marked as minor release regardless, since `createTree` is
+  currently not a publically documented feature.
+
+### Patch Changes
+
+- 727c982: export makeStateUpdater from core package
+- c041a3f: expose `isOrderedDragTarget` as utility method to differentiate between ordered and unordered drag targets (#108)
+- 2887b0c: Added a `item.getKey()` utility method to use for generating React keys. For now, this just returns the item id, so no migration is needed from using `item.getId()` as React keys.
+- 4e79bc7: Fixed a bug where `feature.overwrites` is not always respected when features are sorted during tree initialization
+- 0669580: Fixed a bug where items that call `item.getProps` while being renamed, can be dragged while being renamed (#110)
+
 ## 1.1.0
 
 ### Minor Changes

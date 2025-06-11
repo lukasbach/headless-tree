@@ -1,5 +1,17 @@
 # @headless-tree/react
 
+## 1.2.0
+
+### Minor Changes
+
+- 647a072: Fixed incorrect package.json exports configurations to proper ESM and CJS exports (#104)
+- 349d36e: change package.json["module"] to commonjs to fix inconsistent package definitiuons (#104)
+- e2faf37: Fixed an issue async data loaders that resolve data before the tree is mounted can cause the tree to not render at all
+
+  Note: When using the `createTree()` API directly instead of going through the React `useTree` API, an additional call
+  to `tree.rebuildItems()` afterwards will be necessary. This change is marked as minor release regardless, since `createTree` is
+  currently not a publically documented feature.
+
 ## 1.1.0
 
 ## 1.0.1
