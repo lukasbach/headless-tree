@@ -47,6 +47,7 @@ const data = {
   ],
 };
 
+// TODO
 let newItemId = 0;
 const insertNewItem = (dataTransfer: DataTransfer) => {
   const newId = `new-${newItemId++}`;
