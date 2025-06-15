@@ -1,0 +1,50 @@
+---
+slug: "/features/checkboxes"
+title: "Checkboxes"
+subtitle: "API for multi-selecting items with checkboxes"
+hide_title: true
+---
+
+import { DemoBox } from "../../src/components/demo/demo-box";
+import { FeaturePageHeader } from "../../src/components/docs-page/feature-page-header";
+
+<FeaturePageHeader
+    title="Checkboxes"
+    subtitle="API for multi-selecting items with checkboxes"
+    feature="checkboxes"
+/>
+
+<DemoBox tags={["feature/checkbox"]} />
+
+:::warning
+
+The checkboxes feature was not released on the `latest` channel yet. You can try it out in a snapshot
+version with `npm i @headless-tree/core@snapshot` or `npm i @headless-tree/react@snapshot`.
+
+:::
+
+The checkboxes feature allows users to multi-select items in a more permanent way than the normal
+selection feature, and visualize that state with checkboxes.
+
+To use the feature, add the `checkboxesFeature` to your feature array and render a checkbox component
+in each of your tree item renderers with `<input type="checkbox" {...item.getCheckboxProps()} />`.
+
+As with other tree states, you can manage the checkbox state yourself with the config variable `checkedItems`
+and the state change handler `setCheckedItems`, or let Headless Tree manage this state for your.
+
+## `canCheckFolders`
+
+You can configure the behavior of clicking the checkbox on folders with the `canCheckFolders` option. If it is enabled,
+checking an folder will only check the folder itself, not its children, and add the id of the folder to the
+`checkedItems`. If it is disabled, checking a folder will check all of its children, and while the checkbox will
+receive the `checked` state (or `indeterminate` if afterwards individual children are unchecked), the folder itself
+will not be added to the `checkedItems`, only its leafs.
+
+:::warning
+
+Trees with `canCheckFolders=false` is currently only supported for synchronous trees, not trees using the Async
+Data Loader feature.
+
+:::
+
+The default for `canCheckFolders` is `true` for asynchronous trees, and `false` for synchronous trees.
