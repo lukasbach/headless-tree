@@ -1,5 +1,16 @@
 # @headless-tree/core
 
+## 1.3.0
+
+### Minor Changes
+
+- 8dd6231: Introduced new Checkboxes feature (#88)
+
+### Patch Changes
+
+- 9f418f8: support setting the drag preview with the `setDragImage` option (#115)
+- 309feba: fixed an issue where the drag-forbidden cursor is shown briefly between changing drag targets (#114)
+
 ## 1.2.0
 
 ### Minor Changes
