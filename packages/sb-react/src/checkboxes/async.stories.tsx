@@ -22,6 +22,7 @@ const { asyncDataLoader } = createDemoData();
 // story-start
 export const Async = () => {
   const tree = useTree<DemoItem>({
+    initialState: { expandedItems: ["fruit"], checkedItems: ["banana"] },
     rootItemId: "root",
     getItemName: (item) => item.getItemData().name,
     isItemFolder: (item) => !!item.getItemData().children,

@@ -23,6 +23,7 @@ const { syncDataLoader } = createDemoData();
 export const General = () => {
   const tree = useTree<DemoItem>({
     rootItemId: "root",
+    initialState: { expandedItems: ["fruit"], checkedItems: ["banana"] },
     getItemName: (item) => item.getItemData().name,
     isItemFolder: (item) => !!item.getItemData().children,
     dataLoader: syncDataLoader,
