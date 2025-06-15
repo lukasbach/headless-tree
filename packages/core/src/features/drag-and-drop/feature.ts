@@ -101,6 +101,8 @@ export const dragAndDropFeature: FeatureImplementation = {
 
       draggable: true,
 
+      onDragEnter: (e: DragEvent) => e.preventDefault(),
+
       onDragStart: (e: DragEvent) => {
         const selectedItems = tree.getSelectedItems();
         const items = selectedItems.includes(item) ? selectedItems : [item];
