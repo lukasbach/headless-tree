@@ -1,6 +1,7 @@
 import { FC, PropsWithChildren } from "react";
 import { LinkRow } from "@site/src/components/docs-page/link-row";
 import { DocsPageHeader } from "@site/src/components/docs-page/docs-page-header";
+import * as cases from "case";
 import styles from "./styles.module.css";
 
 const camelCase = (str: string) => {
@@ -31,7 +32,8 @@ export const FeaturePageHeader: FC<
         <tr>
           <td>Import</td>
           <td className={styles.code}>
-            import {`{ ${feature}Feature } from "@headless-tree/core`}
+            import{" "}
+            {`{ ${cases.camel(feature)}Feature } from "@headless-tree/core`}
           </td>
         </tr>
       )}
@@ -39,25 +41,25 @@ export const FeaturePageHeader: FC<
         <td>Type Documentation</td>
         <td>
           <a
-            href={`/api/core/interface/${camelCase(feature)}FeatureConfig`}
+            href={`/api/core/interface/${cases.camel(feature)}FeatureConfig`}
             className={styles.typedocLink}
           >
             Configuration
           </a>
           <a
-            href={`/api/core/interface/${camelCase(feature)}FeatureState`}
+            href={`/api/core/interface/${cases.camel(feature)}FeatureState`}
             className={styles.typedocLink}
           >
             State
           </a>
           <a
-            href={`/api/core/interface/${camelCase(feature)}FeatureTreeInstance`}
+            href={`/api/core/interface/${cases.camel(feature)}FeatureTreeInstance`}
             className={styles.typedocLink}
           >
             Tree Instance
           </a>
           <a
-            href={`/api/core/interface/${camelCase(feature)}FeatureItemInstance`}
+            href={`/api/core/interface/${cases.camel(feature)}FeatureItemInstance`}
             className={styles.typedocLink}
           >
             Item Instance
