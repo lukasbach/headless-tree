@@ -1,5 +1,11 @@
 # @headless-tree/react
 
+## 1.3.0
+
+### Minor Changes
+
+- 8dd6231: Introduced new Checkboxes feature (#88)
+
 ## 1.2.0
 
 ### Minor Changes
