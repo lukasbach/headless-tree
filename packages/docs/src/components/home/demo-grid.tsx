@@ -14,11 +14,11 @@ const demos = [
     text: "Powerful ordered drag-and-drop, that can interact with external drag events", // TODO also unordered sample
     story: "react-drag-and-drop-comprehensive-sample--comprehensive-sample",
   },
-  {
-    title: "Scalable",
-    text: "Headless Tree remains performant even with large trees",
-    story: "react-scalability-big-tree--big-tree",
-  },
+  // {
+  //   title: "Scalable",
+  //   text: "Headless Tree remains performant even with large trees",
+  //   story: "react-scalability-big-tree--big-tree",
+  // },
   {
     title: "Virtualization Support",
     text: "Compatible with common virtualization library to support 100k+ items",
@@ -38,6 +38,11 @@ const demos = [
     title: "Rename items",
     text: "Optionally allow users to rename items inside the tree",
     story: "react-renaming-basic--basic",
+  },
+  {
+    title: "Checkboxes",
+    text: "Support for checkboxes to select items",
+    story: "react-checkboxes-general--general",
   },
   {
     title: "Manage State",
