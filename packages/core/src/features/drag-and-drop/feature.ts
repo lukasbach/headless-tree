@@ -117,6 +117,11 @@ export const dragAndDropFeature: FeatureImplementation = {
           return;
         }
 
+        if (config.setDragImage) {
+          const { imgElement, xOffset, yOffset } = config.setDragImage(items);
+          e.dataTransfer?.setDragImage(imgElement, xOffset ?? 0, yOffset ?? 0);
+        }
+
         if (config.createForeignDragObject) {
           const { format, data } = config.createForeignDragObject(items);
           e.dataTransfer?.setData(format, data);

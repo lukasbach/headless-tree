@@ -58,6 +58,11 @@ export type DragAndDropFeatureDef<T> = {
       format: string;
       data: any;
     };
+    setDragImage?: (items: ItemInstance<T>[]) => {
+      imgElement: Element;
+      xOffset?: number;
+      yOffset?: number;
+    };
     canDropForeignDragObject?: (
       dataTransfer: DataTransfer,
       target: DragTarget<T>,

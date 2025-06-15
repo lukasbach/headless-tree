@@ -47,3 +47,20 @@ instead.
 
 <DemoBox tags={["feature/dnd"]} initialStory="react-drag-and-drop-can-drop--can-drop" />
 
+## Custom Drag Preview
+
+You can customize the drag preview by providing a `setDragImage` to your tree options. It will be called
+when the user starts dragging, with the dragged items as parameter. The functions return parameters will
+be used to invoke [`dataTransfer.setDragImage`](https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer/setDragImage)
+to set the drag preview.
+
+```ts
+setDragImage: (draggedItems) => ({
+  imgElement: document.getElementById("dragpreview"),
+})
+```
+
+The provided element does not have to be an image element, but if it is not, it will need to be visible in the viewport.
+In this case, you will want to move it with CSS off-screen to hide it whenever the user is not dragging anything.
+
+<DemoBox tags={["feature/dnd"]} initialStory="react-drag-and-drop-drag-preview--drag-preview" />
