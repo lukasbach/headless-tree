@@ -22,6 +22,7 @@ const getDefaultLabel = <T,>(
   assistiveState: AssistiveDndState,
   hotkeys: HotkeysConfig<T>,
 ) => {
+  if (!hotkeys.startDrag) return ""; // No hotkey feature configured
   const itemNames =
     dnd?.draggedItems?.map((item) => item.getItemName()).join(", ") ?? "";
   const position = !dnd?.dragTarget
@@ -30,8 +31,8 @@ const getDefaultLabel = <T,>(
       ? `${dnd.dragTarget.childIndex} of ${dnd.dragTarget.item.getChildren().length} in ${dnd.dragTarget.item.getItemName()}`
       : `in ${dnd.dragTarget.item.getItemName()}`;
   const navGuide =
-    `Press ${hotkeys.dragUp.hotkey} and ${hotkeys.dragDown.hotkey} to move up or down, ` +
-    `${hotkeys.completeDrag.hotkey} to drop, ${hotkeys.cancelDrag.hotkey} to abort.`;
+    `Press ${hotkeys.dragUp?.hotkey} and ${hotkeys.dragDown?.hotkey} to move up or down, ` +
+    `${hotkeys.completeDrag?.hotkey} to drop, ${hotkeys.cancelDrag?.hotkey} to abort.`;
   switch (assistiveState) {
     case AssistiveDndState.Started:
       return itemNames
@@ -40,12 +41,12 @@ const getDefaultLabel = <T,>(
     case AssistiveDndState.Dragging:
       return itemNames ? `${itemNames}, ${position}` : position;
     case AssistiveDndState.Completed:
-      return `Drag completed. Press ${hotkeys.startDrag.hotkey} to move selected items`;
+      return `Drag completed. Press ${hotkeys.startDrag?.hotkey} to move selected items`;
     case AssistiveDndState.Aborted:
-      return `Drag cancelled. Press ${hotkeys.startDrag.hotkey} to move selected items`;
+      return `Drag cancelled. Press ${hotkeys.startDrag?.hotkey} to move selected items`;
     case AssistiveDndState.None:
     default:
-      return `Press ${hotkeys.startDrag.hotkey} to move selected items`;
+      return `Press ${hotkeys.startDrag?.hotkey} to move selected items`;
   }
 };
 
