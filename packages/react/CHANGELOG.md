@@ -1,5 +1,11 @@
 # @headless-tree/react
 
+## 1.2.1
+
+### Patch Changes
+
+- d925607: fixed `<AssistiveTreeDescription />` component throwing an error if the dnd feature is not included (#126)
+
 ## 1.2.0
 
 ### Minor Changes
