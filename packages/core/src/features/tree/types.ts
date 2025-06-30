@@ -33,7 +33,8 @@ export type TreeFeatureDef<T> = {
     /** @internal */
     getItemsMeta: () => ItemMeta[];
 
-    getFocusedItem: () => ItemInstance<any>;
+    getFocusedItem: () => ItemInstance<T>;
+    getRootItem: () => ItemInstance<T>;
     focusNextItem: () => void;
     focusPreviousItem: () => void;
     updateDomFocus: () => void;

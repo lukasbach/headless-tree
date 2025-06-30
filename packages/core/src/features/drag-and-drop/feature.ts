@@ -1,5 +1,5 @@
 import { FeatureImplementation } from "../../types/core";
-import { DndDataRef, DragLineData } from "./types";
+import { DndDataRef, DragLineData, DragTarget } from "./types";
 import {
   canDrop,
   getDragCode,
@@ -83,10 +83,38 @@ export const dragAndDropFeature: FeatureImplementation = {
         : { display: "none" };
     },
 
-    getContainerProps: ({ prev }, treeLabel) => {
+    getContainerProps: ({ prev, tree }, treeLabel) => {
       const prevProps = prev?.(treeLabel);
       return {
         ...prevProps,
+
+        onDragOver: (e: DragEvent) => {
+          e.preventDefault();
+        },
+
+        onDrop: async (e: DragEvent) => {
+          // TODO merge implementation with itemInstance.onDrop
+          const dataRef = tree.getDataRef<DndDataRef>();
+          const target: DragTarget<any> = { item: tree.getRootItem() };
+
+          if (!canDrop(e.dataTransfer, target, tree)) {
+            return;
+          }
+
+          e.preventDefault();
+          const config = tree.getConfig();
+          const draggedItems = tree.getState().dnd?.draggedItems;
+
+          dataRef.current.lastDragCode = undefined;
+          tree.applySubStateUpdate("dnd", null);
+
+          if (draggedItems) {
+            await config.onDrop?.(draggedItems, target);
+          } else if (e.dataTransfer) {
+            await config.onDropForeignDragObject?.(e.dataTransfer, target);
+          }
+        },
+
         style: {
           ...prevProps?.style,
           position: "relative",
@@ -193,6 +221,7 @@ export const dragAndDropFeature: FeatureImplementation = {
       },
 
       onDrop: async (e: DragEvent) => {
+        e.stopPropagation();
         const dataRef = tree.getDataRef<DndDataRef>();
         const target = getDragTarget(e, item, tree);
 

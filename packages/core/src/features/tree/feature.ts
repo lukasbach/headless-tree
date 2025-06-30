@@ -82,6 +82,11 @@ export const treeFeature: FeatureImplementation<any> = {
       );
     },
 
+    getRootItem: ({ tree }) => {
+      const { rootItemId } = tree.getConfig();
+      return tree.getItemInstance(rootItemId);
+    },
+
     focusNextItem: ({ tree }) => {
       const focused = tree.getFocusedItem().getItemMeta();
       if (!focused) return;

@@ -70,6 +70,13 @@ const tree = useTree<Item>({
 });
 ```
 
+:::tip
+
+Add a minimum height to your tree container (the component receiving `tree.getProps()`) to make sure
+that users can drop items there even if the tree is empty.
+
+:::
+
 ## The Drop Event
 
 When the user drops tree items onto a target within the tree, the [`onDrop`](/api/core/interface/DragAndDropFeatureConfig#onDrop) event is called

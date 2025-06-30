@@ -14,14 +14,17 @@ import { FeaturePageHeader } from "../../src/components/docs-page/feature-page-h
     feature="checkboxes"
 />
 
-<DemoBox tags={["feature/checkbox"]} initialStory="react-checkboxes-general--general" />
+:::danger
 
-:::warning
-
-The checkboxes feature was not released on the `latest` channel yet. You can try it out in a snapshot
-version with `npm i @headless-tree/core@snapshot` or `npm i @headless-tree/react@snapshot`.
+The checkboxes feature is still in development and considered Alpha. Its interface may change with breaking
+changes between patch version releases without additional notices. You can get notified of the proper
+release of the checkboxes feature on [Bluesky](https://bsky.app/profile/lukasbach.bsky.social) or
+[Discord](https://discord.gg/KuZ6EezzVw).
 
 :::
+
+<DemoBox tags={["feature/checkbox"]} initialStory="react-checkboxes-general--general" />
+
 
 The checkboxes feature allows users to multi-select items in a more permanent way than the normal
 selection feature, and visualize that state with checkboxes.
