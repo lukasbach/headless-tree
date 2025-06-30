@@ -1,5 +1,13 @@
 # @headless-tree/core
 
+## 1.2.1
+
+### Patch Changes
+
+- 344011a: fixed an issue where dropping items on an empty tree didn't trigger any events
+- 9f418f8: support setting the drag preview with the `setDragImage` option (#115)
+- 309feba: fixed an issue where the drag-forbidden cursor is shown briefly between changing drag targets (#114)
+
 ## 1.2.0
 
 ### Minor Changes
