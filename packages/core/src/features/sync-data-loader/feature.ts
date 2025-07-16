@@ -2,9 +2,13 @@ import { FeatureImplementation } from "../../types/core";
 import { makeStateUpdater } from "../../utils";
 import { throwError } from "../../utilities/errors";
 
+const undefErrorMessage = "sync dataLoader returned undefined";
 const promiseErrorMessage = "sync dataLoader returned promise";
 const unpromise = <T>(data: T | Promise<T>): T => {
-  if (!data || (typeof data === "object" && "then" in data)) {
+  if (!data) {
+    throw throwError(undefErrorMessage);
+  }
+  if (typeof data === "object" && "then" in data) {
     throw throwError(promiseErrorMessage);
   }
   return data;
