@@ -58,16 +58,31 @@ export type DragAndDropFeatureDef<T> = {
     createForeignDragObject?: (items: ItemInstance<T>[]) => {
       format: string;
       data: any;
+      dropEffect?: DataTransfer["dropEffect"];
+      effectAllowed?: DataTransfer["effectAllowed"];
     };
     setDragImage?: (items: ItemInstance<T>[]) => {
       imgElement: Element;
       xOffset?: number;
       yOffset?: number;
     };
+
+    /** Checks if a foreign drag object can be dropped on a target, validating that an actual drop can commence based on
+     * the data in the DataTransfer object. */
     canDropForeignDragObject?: (
       dataTransfer: DataTransfer,
       target: DragTarget<T>,
     ) => boolean;
+
+    /** Checks if a droppable visualization should be displayed when dragging a foreign object over a target. Since this
+     * is executed on a dragover event, `dataTransfer.getData()` is not available, so `dataTransfer.effectAllowed` or
+     * `dataTransfer.types` should be used instead. Before actually completing the drag, @{link canDropForeignDragObject}
+     * will be called by HT before applying the drop. */
+    canDragForeignDragObjectOver?: (
+      dataTransfer: DataTransfer,
+      target: DragTarget<T>,
+    ) => boolean;
+
     onDrop?: (
       items: ItemInstance<T>[],
       target: DragTarget<T>,
