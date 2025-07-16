@@ -139,10 +139,10 @@ export const treeFeature: FeatureImplementation<any> = {
         ref: item.registerElement,
         role: "treeitem",
         "aria-setsize": itemMeta.setSize,
-        "aria-posinset": itemMeta.posInSet,
+        "aria-posinset": itemMeta.posInSet + 1,
         "aria-selected": "false",
         "aria-label": item.getItemName(),
-        "aria-level": itemMeta.level,
+        "aria-level": itemMeta.level + 1,
         tabIndex: item.isFocused() ? 0 : -1,
         onClick: (e: MouseEvent) => {
           item.setFocused();
