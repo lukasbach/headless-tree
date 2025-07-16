@@ -15,6 +15,9 @@ export const dragAndDropFeature: FeatureImplementation = {
   getDefaultConfig: (defaultConfig, tree) => ({
     canDrop: (_, target) => target.item.isFolder(),
     canDropForeignDragObject: () => false,
+    canDragForeignDragObjectOver: defaultConfig.canDropForeignDragObject
+      ? (dataTransfer) => dataTransfer.effectAllowed !== "none"
+      : () => false,
     setDndState: makeStateUpdater("dnd", tree),
     canReorder: true,
     ...defaultConfig,
@@ -150,9 +153,13 @@ export const dragAndDropFeature: FeatureImplementation = {
           e.dataTransfer?.setDragImage(imgElement, xOffset ?? 0, yOffset ?? 0);
         }
 
-        if (config.createForeignDragObject) {
-          const { format, data } = config.createForeignDragObject(items);
-          e.dataTransfer?.setData(format, data);
+        if (config.createForeignDragObject && e.dataTransfer) {
+          const { format, data, dropEffect, effectAllowed } =
+            config.createForeignDragObject(items);
+          e.dataTransfer.setData(format, data);
+
+          if (dropEffect) e.dataTransfer.dropEffect = dropEffect;
+          if (effectAllowed) e.dataTransfer.effectAllowed = effectAllowed;
         }
 
         tree.applySubStateUpdate("dnd", {
@@ -162,6 +169,7 @@ export const dragAndDropFeature: FeatureImplementation = {
       },
 
       onDragOver: (e: DragEvent) => {
+        e.stopPropagation(); // don't bubble up to container dragover
         const dataRef = tree.getDataRef<DndDataRef>();
         const nextDragCode = getDragCode(e, item, tree);
         if (nextDragCode === dataRef.current.lastDragCode) {
@@ -179,7 +187,7 @@ export const dragAndDropFeature: FeatureImplementation = {
           (!e.dataTransfer ||
             !tree
               .getConfig()
-              .canDropForeignDragObject?.(e.dataTransfer, target))
+              .canDragForeignDragObjectOver?.(e.dataTransfer, target))
         ) {
           dataRef.current.lastAllowDrop = false;
           return;
