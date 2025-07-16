@@ -235,8 +235,8 @@ describe("core-feature/selections", () => {
       it("generates item props for random item", () => {
         expect(tree.instance.getItemInstance("x2").getProps()).toEqual({
           "aria-label": "x2",
-          "aria-level": 0,
-          "aria-posinset": 1,
+          "aria-level": 1,
+          "aria-posinset": 2,
           "aria-selected": "false",
           "aria-setsize": 4,
           onClick: expect.any(Function),
@@ -249,8 +249,8 @@ describe("core-feature/selections", () => {
       it("generates item props for focused", () => {
         expect(tree.instance.getItemInstance("x1").getProps()).toEqual({
           "aria-label": "x1",
-          "aria-level": 0,
-          "aria-posinset": 0,
+          "aria-level": 1,
+          "aria-posinset": 1,
           "aria-selected": "false",
           "aria-setsize": 4,
           onClick: expect.any(Function),
