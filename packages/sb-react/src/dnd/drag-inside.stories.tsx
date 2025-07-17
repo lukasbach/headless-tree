@@ -50,7 +50,8 @@ export const DragInside = () => {
         )}" on ${JSON.stringify(target)}`,
       );
     },
-    canDropForeignDragObject: (_, target) => target.item.isFolder(),
+    canDropForeignDragObject: (_, target) =>
+      target.item.isFolder() && target.item.getId() !== "drinks",
     indent: 20,
     dataLoader: syncDataLoader,
     features: [
@@ -94,7 +95,7 @@ export const DragInside = () => {
           e.dataTransfer.setData("text/plain", "hello world");
         }}
       >
-        Drag me into the tree!
+        Drag me into the tree! (but not in Drinks)
       </div>
     </>
   );

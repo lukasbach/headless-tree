@@ -105,12 +105,14 @@ export class TestTreeDo<T> {
   dragEnd(itemId: string, event?: DragEvent) {
     const e = event ?? TestTree.dragEvent();
     this.itemProps(itemId).onDragEnd(e);
+    window.dispatchEvent(new CustomEvent("dragend"));
     return e;
   }
 
   async drop(itemId: string, event?: DragEvent) {
     const e = event ?? TestTree.dragEvent();
     await this.itemProps(itemId).onDrop(e);
+    window.dispatchEvent(new CustomEvent("dragend"));
     return e;
   }
 

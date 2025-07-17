@@ -182,7 +182,7 @@ describe("core-feature/drag-and-drop", () => {
         });
       });
 
-      it("updates dnd state", () => {
+      it("updates dnd state", async () => {
         const setDndState = tree.mockedHandler("setDndState");
         tree.do.startDrag("x111");
         expect(setDndState).toBeCalledWith({
@@ -198,7 +198,7 @@ describe("core-feature/drag-and-drop", () => {
           },
         });
         tree.do.drop("x22");
-        expect(setDndState).toBeCalledWith(null);
+        await vi.waitFor(() => expect(setDndState).toBeCalledWith(null));
       });
     });
 

@@ -137,6 +137,7 @@ export class TestTree<T = string> {
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     this.instance;
     await this.resolveAsyncVisibleItems();
+    this.instance.registerElement({ getBoundingClientRect: () => null } as any);
     return this;
   }
 

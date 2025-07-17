@@ -24,6 +24,19 @@ export const dragAndDropFeature: FeatureImplementation = {
     dnd: "setDndState",
   },
 
+  onTreeMount: (tree) => {
+    const listener = () => {
+      tree.applySubStateUpdate("dnd", null);
+    };
+    tree.getDataRef<DndDataRef>().current.windowDragEndListener = listener;
+    window.addEventListener("dragend", listener);
+  },
+  onTreeUnmount: (tree) => {
+    const { windowDragEndListener } = tree.getDataRef<DndDataRef>().current;
+    if (!windowDragEndListener) return;
+    window.removeEventListener("dragend", windowDragEndListener);
+  },
+
   treeInstance: {
     getDragTarget: ({ tree }) => {
       return tree.getState().dnd?.dragTarget ?? null;
@@ -106,7 +119,6 @@ export const dragAndDropFeature: FeatureImplementation = {
           const draggedItems = tree.getState().dnd?.draggedItems;
 
           dataRef.current.lastDragCode = undefined;
-          tree.applySubStateUpdate("dnd", null);
 
           if (draggedItems) {
             await config.onDrop?.(draggedItems, target);
@@ -211,7 +223,6 @@ export const dragAndDropFeature: FeatureImplementation = {
 
       onDragEnd: (e: DragEvent) => {
         const draggedItems = tree.getState().dnd?.draggedItems;
-        tree.applySubStateUpdate("dnd", null);
 
         if (e.dataTransfer?.dropEffect === "none" || !draggedItems) {
           return;
@@ -234,7 +245,6 @@ export const dragAndDropFeature: FeatureImplementation = {
         const draggedItems = tree.getState().dnd?.draggedItems;
 
         dataRef.current.lastDragCode = undefined;
-        tree.applySubStateUpdate("dnd", null);
 
         if (draggedItems) {
           await config.onDrop?.(draggedItems, target);

@@ -3,6 +3,7 @@ import { ItemInstance, SetStateFn } from "../../types/core";
 export interface DndDataRef {
   lastDragCode?: string;
   lastAllowDrop?: boolean;
+  windowDragEndListener?: () => void;
 }
 
 export interface DndState<T> {
