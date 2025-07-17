@@ -472,4 +472,14 @@ describe("core-feature/selections", () => {
       });
     });
   });
+
+  describe("empty rootItemId", () => {
+    factory.with({ rootItemId: "" }).forSuits((tree) => {
+      describe("focused item", () => {
+        it("returns correct initial focused item", () => {
+          expect(tree.instance.getFocusedItem().getId()).toBe("1");
+        });
+      });
+    });
+  });
 });
