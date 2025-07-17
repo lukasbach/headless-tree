@@ -76,8 +76,9 @@ export const treeFeature: FeatureImplementation<any> = {
     },
 
     getFocusedItem: ({ tree }) => {
+      const focusedItemId = tree.getState().focusedItem;
       return (
-        tree.getItemInstance(tree.getState().focusedItem ?? "") ??
+        (focusedItemId !== null ? tree.getItemInstance(focusedItemId) : null) ??
         tree.getItems()[0]
       );
     },
