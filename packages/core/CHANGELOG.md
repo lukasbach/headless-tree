@@ -1,5 +1,12 @@
 # @headless-tree/core
 
+## 1.2.2
+
+### Patch Changes
+
+- b41e1d2: fixed a bug where ending drag without successful drop doesn't properly reset drag line (#132)
+- b413f74: Fix `aria-posinset` and `aria-level` to be 1-based indexing
+
 ## 1.2.1
 
 ### Patch Changes
