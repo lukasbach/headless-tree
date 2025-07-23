@@ -8,16 +8,18 @@ import {
 } from "./utils";
 import { makeStateUpdater } from "../../utils";
 
+const defaultCanDropForeignDragObject = () => false;
 export const dragAndDropFeature: FeatureImplementation = {
   key: "drag-and-drop",
   deps: ["selection"],
 
   getDefaultConfig: (defaultConfig, tree) => ({
     canDrop: (_, target) => target.item.isFolder(),
-    canDropForeignDragObject: () => false,
-    canDragForeignDragObjectOver: defaultConfig.canDropForeignDragObject
-      ? (dataTransfer) => dataTransfer.effectAllowed !== "none"
-      : () => false,
+    canDropForeignDragObject: defaultCanDropForeignDragObject,
+    canDragForeignDragObjectOver:
+      defaultConfig.canDropForeignDragObject !== defaultCanDropForeignDragObject
+        ? (dataTransfer) => dataTransfer.effectAllowed !== "none"
+        : () => false,
     setDndState: makeStateUpdater("dnd", tree),
     canReorder: true,
     ...defaultConfig,
