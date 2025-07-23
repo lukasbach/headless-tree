@@ -218,6 +218,8 @@ export const dragAndDropFeature: FeatureImplementation = {
       },
 
       onDragEnd: (e: DragEvent) => {
+        const { onCompleteForeignDrop, canDragForeignDragObjectOver } =
+          tree.getConfig();
         const draggedItems = tree.getState().dnd?.draggedItems;
         tree.applySubStateUpdate("dnd", null);
 
@@ -225,7 +227,16 @@ export const dragAndDropFeature: FeatureImplementation = {
           return;
         }
 
-        tree.getConfig().onCompleteForeignDrop?.(draggedItems);
+        const target = getDragTarget(e, item, tree);
+        if (
+          canDragForeignDragObjectOver &&
+          e.dataTransfer &&
+          !canDragForeignDragObjectOver(e.dataTransfer, target)
+        ) {
+          return;
+        }
+
+        onCompleteForeignDrop?.(draggedItems);
       },
 
       onDrop: async (e: DragEvent) => {
