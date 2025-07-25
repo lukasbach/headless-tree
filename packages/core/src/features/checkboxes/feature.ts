@@ -1,6 +1,6 @@
 import { FeatureImplementation, TreeInstance } from "../../types/core";
 import { makeStateUpdater } from "../../utils";
-import { type CheckboxesFeatureDef, CheckedState } from "./types";
+import { CheckedState } from "./types";
 import { throwError } from "../../utilities/errors";
 
 const getAllLoadedDescendants = <T>(
@@ -17,38 +17,6 @@ const getAllLoadedDescendants = <T>(
     .flat();
   return includeFolders ? [itemId, ...descendants] : descendants;
 };
-
-const defaultInferCheckedState: CheckboxesFeatureDef<any>["config"]["inferCheckedState"] =
-  (item, tree) => {
-    const { checkedItems } = tree.getState();
-    const { propagateCheckedState } = tree.getConfig();
-    const itemId = item.getId();
-
-    if (checkedItems.includes(itemId)) {
-      return CheckedState.Checked;
-    }
-
-    if (item.isFolder() && propagateCheckedState) {
-      const descendants = getAllLoadedDescendants(tree, itemId);
-      if (descendants.every((d) => checkedItems.includes(d))) {
-        return CheckedState.Checked;
-      }
-      if (descendants.some((d) => checkedItems.includes(d))) {
-        return CheckedState.Indeterminate;
-      }
-    }
-
-    return CheckedState.Unchecked;
-  };
-
-const defaultOnToggleCheckedState: CheckboxesFeatureDef<any>["config"]["onToggleCheckedState"] =
-  (item) => {
-    if (item.getCheckedState() === CheckedState.Checked) {
-      item.setUnchecked();
-    } else {
-      item.setChecked();
-    }
-  };
 
 export const checkboxesFeature: FeatureImplementation = {
   key: "checkboxes",
@@ -72,8 +40,6 @@ export const checkboxesFeature: FeatureImplementation = {
       setCheckedItems: makeStateUpdater("checkedItems", tree),
       propagateCheckedState: !defaultCanCheckFolders,
       canCheckFolders: defaultCanCheckFolders,
-      inferCheckedState: defaultInferCheckedState,
-      onToggleCheckedState: defaultOnToggleCheckedState,
       ...defaultConfig,
     };
   },
@@ -102,13 +68,35 @@ export const checkboxesFeature: FeatureImplementation = {
       };
     },
 
-    toggleCheckedState: ({ tree, item }) => {
-      tree.getConfig().onToggleCheckedState?.(item, tree);
+    toggleCheckedState: ({ item }) => {
+      if (item.getCheckedState() === CheckedState.Checked) {
+        item.setUnchecked();
+      } else {
+        item.setChecked();
+      }
     },
 
-    getCheckedState: ({ item, tree }) =>
-      tree.getConfig().inferCheckedState?.(item, tree) ??
-      CheckedState.Unchecked,
+    getCheckedState: ({ item, tree }) => {
+      const { checkedItems } = tree.getState();
+      const { propagateCheckedState } = tree.getConfig();
+      const itemId = item.getId();
+
+      if (checkedItems.includes(itemId)) {
+        return CheckedState.Checked;
+      }
+
+      if (item.isFolder() && propagateCheckedState) {
+        const descendants = getAllLoadedDescendants(tree, itemId);
+        if (descendants.every((d) => checkedItems.includes(d))) {
+          return CheckedState.Checked;
+        }
+        if (descendants.some((d) => checkedItems.includes(d))) {
+          return CheckedState.Indeterminate;
+        }
+      }
+
+      return CheckedState.Unchecked;
+    },
 
     setChecked: ({ item, tree, itemId }) => {
       const { propagateCheckedState, canCheckFolders } = tree.getConfig();

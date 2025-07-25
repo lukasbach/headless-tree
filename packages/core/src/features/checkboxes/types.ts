@@ -1,8 +1,4 @@
-import {
-  type ItemInstance,
-  SetStateFn,
-  type TreeInstance,
-} from "../../types/core";
+import { SetStateFn } from "../../types/core";
 
 export enum CheckedState {
   Checked = "checked",
@@ -18,14 +14,6 @@ export type CheckboxesFeatureDef<T> = {
     setCheckedItems?: SetStateFn<string[]>;
     canCheckFolders?: boolean;
     propagateCheckedState?: boolean;
-    inferCheckedState?: (
-      item: ItemInstance<T>,
-      tree: TreeInstance<T>,
-    ) => CheckedState;
-    onToggleCheckedState?: (
-      item: ItemInstance<T>,
-      tree: TreeInstance<T>,
-    ) => void;
   };
   treeInstance: {
     setCheckedItems: (checkedItems: string[]) => void;
