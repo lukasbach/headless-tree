@@ -2,6 +2,7 @@ import type { Meta } from "@storybook/react";
 import React from "react";
 import {
   CheckedState,
+  type FeatureImplementation,
   type TreeInstance,
   checkboxesFeature,
   hotkeysCoreFeature,
@@ -14,7 +15,7 @@ import { DemoItem, createDemoData } from "../utils/data";
 
 const meta = {
   title: "React/Checkboxes/Custom Behavior",
-  tags: ["feature/checkbox", "checkbox"],
+  tags: ["feature/checkbox", "checkbox", "checkbox/customizability"],
 } satisfies Meta;
 
 export default meta;
@@ -35,26 +36,9 @@ const getAllLoadedDescendants = <T,>(
     .flat();
 };
 
-export const AllItemsInState = () => {
-  const tree = useTree<DemoItem>({
-    rootItemId: "root",
-    initialState: {
-      expandedItems: ["fruit", "berries", "red"],
-      // checkedItems: ["red", "strawberry", "raspberry"],
-      checkedItems: [],
-    },
-    getItemName: (item) => item.getItemData().name,
-    isItemFolder: (item) => !!item.getItemData().children,
-    dataLoader: syncDataLoader,
-    canCheckFolders: false,
-    indent: 20,
-    features: [
-      syncDataLoaderFeature,
-      selectionFeature,
-      checkboxesFeature,
-      hotkeysCoreFeature,
-    ],
-    inferCheckedState: (item, tree) => {
+const checkboxOverride: FeatureImplementation<DemoItem> = {
+  itemInstance: {
+    getCheckedState: ({ item, tree }) => {
       const { checkedItems } = tree.getState();
       const itemId = item.getId();
 
@@ -74,7 +58,7 @@ export const AllItemsInState = () => {
 
       return CheckedState.Unchecked;
     },
-    onToggleCheckedState: (item, tree) => {
+    toggleCheckedState: ({ item, tree }) => {
       const itemId = item.getId();
       if (item.getCheckedState() === CheckedState.Checked) {
         if (!item.isFolder()) {
@@ -93,13 +77,38 @@ export const AllItemsInState = () => {
         ]);
       }
     },
+  },
+};
+
+export const AllItemsInState = () => {
+  const tree = useTree<DemoItem>({
+    rootItemId: "root",
+    initialState: {
+      expandedItems: ["fruit", "berries", "red"],
+      // checkedItems: ["red", "strawberry", "raspberry"],
+      checkedItems: [],
+    },
+    getItemName: (item) => item.getItemData().name,
+    isItemFolder: (item) => !!item.getItemData().children,
+    dataLoader: syncDataLoader,
+    canCheckFolders: true,
+    propagateCheckedState: false, // we implement our own propagaton logic in the override feature
+    indent: 20,
+    features: [
+      syncDataLoaderFeature,
+      selectionFeature,
+      checkboxesFeature,
+      hotkeysCoreFeature,
+      checkboxOverride,
+    ],
   });
 
   return (
     <>
       <p className="description">
-        In this sample, checkbox state is propagated to children, but folder IDs
-        are also maintained as part of the checked list.
+        In this sample, custom checkbox state propagation logic is implemented,
+        so that the normal item propagation is enabled, but all item IDs
+        including folders are kept in the checkbox state.
       </p>
 
       <div {...tree.getContainerProps()} className="tree">

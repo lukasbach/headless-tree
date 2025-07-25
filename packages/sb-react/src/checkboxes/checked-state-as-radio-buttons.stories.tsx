@@ -2,6 +2,7 @@ import type { Meta } from "@storybook/react";
 import React from "react";
 import {
   CheckedState,
+  type FeatureImplementation,
   type TreeInstance,
   checkboxesFeature,
   hotkeysCoreFeature,
@@ -14,7 +15,7 @@ import { DemoItem, createDemoData } from "../utils/data";
 
 const meta = {
   title: "React/Checkboxes/Custom Behavior",
-  tags: ["feature/checkbox", "checkbox"],
+  tags: ["feature/checkbox", "checkbox", "checkbox/customizability"],
 } satisfies Meta;
 
 export default meta;
@@ -35,25 +36,9 @@ const getAllLoadedDescendants = <T,>(
     .flat();
 };
 
-export const CheckedStateAsRadioButtons = () => {
-  const tree = useTree<DemoItem>({
-    rootItemId: "root",
-    initialState: {
-      expandedItems: ["fruit", "berries", "red"],
-      checkedItems: ["fruit", "banana", "berries", "strawberry"],
-    },
-    getItemName: (item) => item.getItemData().name,
-    isItemFolder: (item) => !!item.getItemData().children,
-    dataLoader: syncDataLoader,
-    canCheckFolders: true,
-    indent: 20,
-    features: [
-      syncDataLoaderFeature,
-      selectionFeature,
-      checkboxesFeature,
-      hotkeysCoreFeature,
-    ],
-    onToggleCheckedState: (item) => {
+const checkboxOverride: FeatureImplementation<DemoItem> = {
+  itemInstance: {
+    toggleCheckedState: ({ item }) => {
       if (item.getCheckedState() === CheckedState.Checked) {
         item.setUnchecked();
       } else {
@@ -66,13 +51,36 @@ export const CheckedStateAsRadioButtons = () => {
         item.setChecked();
       }
     },
+  },
+};
+
+export const CheckedStateAsRadioButtons = () => {
+  const tree = useTree<DemoItem>({
+    rootItemId: "root",
+    initialState: {
+      expandedItems: ["fruit", "berries", "red"],
+      checkedItems: ["fruit", "banana", "berries", "strawberry"],
+    },
+    getItemName: (item) => item.getItemData().name,
+    isItemFolder: (item) => !!item.getItemData().children,
+    dataLoader: syncDataLoader,
+    canCheckFolders: true,
+    propagateCheckedState: false,
+    indent: 20,
+    features: [
+      syncDataLoaderFeature,
+      selectionFeature,
+      checkboxesFeature,
+      hotkeysCoreFeature,
+      checkboxOverride,
+    ],
   });
 
   return (
     <>
       <p className="description">
-        In this sample, a custom "onToggleCheckedState" implementation is used
-        to enforce that for each folder, only one child can be checked.
+        In this sample, a custom "toggleCheckedState" implementation is used to
+        enforce that for each folder, only one child can be checked.
       </p>
 
       <div {...tree.getContainerProps()} className="tree">

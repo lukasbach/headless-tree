@@ -2,6 +2,7 @@ import type { Meta } from "@storybook/react";
 import React from "react";
 import {
   CheckedState,
+  type FeatureImplementation,
   type TreeInstance,
   checkboxesFeature,
   hotkeysCoreFeature,
@@ -14,7 +15,7 @@ import { DemoItem, createDemoData } from "../utils/data";
 
 const meta = {
   title: "React/Checkboxes/Custom Behavior",
-  tags: ["feature/checkbox", "checkbox"],
+  tags: ["feature/checkbox", "checkbox", "checkbox/customizability"],
 } satisfies Meta;
 
 export default meta;
@@ -35,25 +36,9 @@ const getAllLoadedDescendants = <T,>(
     .flat();
 };
 
-export const FoldersAndLeavesInState = () => {
-  const tree = useTree<DemoItem>({
-    rootItemId: "root",
-    initialState: {
-      expandedItems: ["fruit", "berries", "red"],
-      checkedItems: ["fruit", "banana", "berries", "strawberry"],
-    },
-    getItemName: (item) => item.getItemData().name,
-    isItemFolder: (item) => !!item.getItemData().children,
-    dataLoader: syncDataLoader,
-    canCheckFolders: true,
-    indent: 20,
-    features: [
-      syncDataLoaderFeature,
-      selectionFeature,
-      checkboxesFeature,
-      hotkeysCoreFeature,
-    ],
-    inferCheckedState: (item) => {
+const checkboxOverride: FeatureImplementation<DemoItem> = {
+  itemInstance: {
+    getCheckedState: ({ tree, item }) => {
       const { checkedItems } = tree.getState();
       const itemId = item.getId();
 
@@ -70,12 +55,35 @@ export const FoldersAndLeavesInState = () => {
 
       return CheckedState.Unchecked;
     },
+  },
+};
+
+export const FoldersAndLeavesInState = () => {
+  const tree = useTree<DemoItem>({
+    rootItemId: "root",
+    initialState: {
+      expandedItems: ["fruit", "berries", "red"],
+      checkedItems: ["strawberry"],
+    },
+    getItemName: (item) => item.getItemData().name,
+    isItemFolder: (item) => !!item.getItemData().children,
+    dataLoader: syncDataLoader,
+    canCheckFolders: true,
+    propagateCheckedState: false,
+    indent: 20,
+    features: [
+      syncDataLoaderFeature,
+      selectionFeature,
+      checkboxesFeature,
+      hotkeysCoreFeature,
+      checkboxOverride,
+    ],
   });
 
   return (
     <>
       <p className="description">
-        In this sample, a custom "inferCheckedState" method is used to determine
+        In this sample, a custom "getCheckedState" method is used to determine
         what checkbox state an item should have. The checkbox state behaves
         identical to the case with "canCheckFolders=true", where leafes and
         folders can be checked independently of each other, but folders will
