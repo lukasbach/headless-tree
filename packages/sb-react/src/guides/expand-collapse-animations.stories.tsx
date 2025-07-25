@@ -19,42 +19,44 @@ const meta = {
 export default meta;
 
 // story-start
+// Define customs for a new state that stores if items are currently expanding or collapsing
 declare module "@headless-tree/core" {
   export interface TreeState<T> {
-    expandingItems: string[];
-    collapsingItems: string[];
+    expandingOrCollapsingItems: string[];
   }
   export interface TreeConfig<T> {
-    setExpandingItems?: (items: string[]) => void;
-    setCollapsingItems?: (items: string[]) => void;
+    setExpandingOrCollapsingItems?: (items: string[]) => void;
   }
   export interface ItemInstance<T> {
-    isExpanding: () => boolean;
-    isCollapsing: () => boolean;
+    isExpandingOrCollapsing: () => boolean;
   }
 }
 
+// Custom feature for handling expand/collapse animations
+// Storing whether an item is currently expanding or collapsing allows
+// us to keep them rendered after collapsing while the animation is happening
 const animationFeature: FeatureImplementation<string> = {
   getInitialState: (initialState) => ({
-    expandingItems: [],
-    collapsingItems: [],
+    expandingOrCollapsingItems: [],
     ...initialState,
   }),
 
   getDefaultConfig: (defaultConfig, tree) => {
     return {
-      setExpandingItems: makeStateUpdater("expandingItems", tree),
-      setCollapsingItems: makeStateUpdater("collapsingItems", tree),
+      setExpandingOrCollapsingItems: makeStateUpdater(
+        "expandingOrCollapsingItems",
+        tree,
+      ),
       ...defaultConfig,
     };
   },
 
   stateHandlerNames: {
-    expandingItems: "setExpandingItems",
-    collapsingItems: "setCollapsingItems",
+    expandingOrCollapsingItems: "setExpandingOrCollapsingItems",
   },
 
   itemInstance: {
+    // We overwrite the expand and collapse methods to add the expanding/collapsing state
     expand: ({ tree, item, itemId }) => {
       if (!item.isFolder()) {
         return;
@@ -66,11 +68,14 @@ const animationFeature: FeatureImplementation<string> = {
 
       tree.applySubStateUpdate("expandedItems", (items) => [...items, itemId]);
 
-      tree.applySubStateUpdate("expandingItems", (items) => [...items, itemId]);
+      tree.applySubStateUpdate("expandingOrCollapsingItems", (items) => [
+        ...items,
+        itemId,
+      ]);
       tree.rebuildTree();
 
       setTimeout(() => {
-        tree.applySubStateUpdate("expandingItems", (items) =>
+        tree.applySubStateUpdate("expandingOrCollapsingItems", (items) =>
           items.filter((id) => id !== itemId),
         );
       }, 0);
@@ -81,26 +86,23 @@ const animationFeature: FeatureImplementation<string> = {
         return;
       }
 
-      tree.applySubStateUpdate("collapsingItems", (items) => [
+      tree.applySubStateUpdate("expandingOrCollapsingItems", (items) => [
         ...items,
         itemId,
       ]);
       setTimeout(() => {
-        tree.applySubStateUpdate("collapsingItems", (items) =>
+        tree.applySubStateUpdate("expandingOrCollapsingItems", (items) =>
           items.filter((id) => id !== itemId),
         );
         tree.applySubStateUpdate("expandedItems", (items) =>
           items.filter((id) => id !== itemId),
         );
         tree.rebuildTree();
-      }, 500);
+      }, 300);
     },
 
-    isExpanding: ({ tree, itemId }) =>
-      tree.getState().expandingItems.includes(itemId),
-
-    isCollapsing: ({ tree, itemId }) =>
-      tree.getState().collapsingItems.includes(itemId),
+    isExpandingOrCollapsing: ({ tree, itemId }) =>
+      tree.getState().expandingOrCollapsingItems.includes(itemId),
   },
 };
 
@@ -128,8 +130,7 @@ const Item: FC<{ item: ItemInstance<string> }> = ({ item }) => {
       {item.isExpanded() && item.getChildren().length > 0 && (
         <div
           className={cn("expand-container", {
-            expanding: item.isExpanding(),
-            collapsing: item.isCollapsing(),
+            expandingOrCollapsing: item.isExpandingOrCollapsing(),
           })}
         >
           <ul role="group">
@@ -201,7 +202,7 @@ export const ExpandCollapseAnimations = () => {
           transition: margin-top 0.3s ease-in-out;
           margin-top: 0;
         }
-        .expand-container.collapsing ul, .expand-container.expanding ul {
+        .expand-container.expandingOrCollapsing ul {
           margin-top: -100%;
         }
         `}
