@@ -12,7 +12,7 @@ import { DemoItem, createDemoData } from "../utils/data";
 
 const meta = {
   title: "React/Checkboxes/General",
-  tags: ["feature/checkbox", "checkbox"],
+  tags: ["feature/checkbox", "checkbox", "homepage"],
 } satisfies Meta;
 
 export default meta;

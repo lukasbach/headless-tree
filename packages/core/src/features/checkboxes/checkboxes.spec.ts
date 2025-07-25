@@ -74,17 +74,28 @@ describe("core-feature/checkboxes", () => {
     });
   });
 
-  it("should handle folder checking when canCheckFolders is true", async () => {
+  it("should handle folder checking", async () => {
     const tree = await factory
-      .with({ canCheckFolders: true })
+      .with({ canCheckFolders: true, propagateCheckedState: false })
       .createTestCaseTree();
 
     tree.item("x11").setChecked();
     expect(tree.instance.getState().checkedItems).toContain("x11");
   });
 
-  it("should handle folder checking when canCheckFolders is false", async () => {
-    const tree = await factory.createTestCaseTree();
+  it("should not check folders if disabled", async () => {
+    const tree = await factory
+      .with({ canCheckFolders: false, propagateCheckedState: false })
+      .createTestCaseTree();
+
+    tree.item("x11").setChecked();
+    expect(tree.instance.getState().checkedItems.length).toBe(0);
+  });
+
+  it("should propagate checked state", async () => {
+    const tree = await factory
+      .with({ propagateCheckedState: true })
+      .createTestCaseTree();
 
     tree.item("x11").setChecked();
     expect(tree.instance.getState().checkedItems).toEqual(
@@ -93,7 +104,9 @@ describe("core-feature/checkboxes", () => {
   });
 
   it("should turn folder indeterminate", async () => {
-    const tree = await factory.createTestCaseTree();
+    const tree = await factory
+      .with({ propagateCheckedState: true })
+      .createTestCaseTree();
 
     tree.item("x111").setChecked();
     expect(tree.item("x11").getCheckedState()).toBe(CheckedState.Indeterminate);
@@ -103,6 +116,8 @@ describe("core-feature/checkboxes", () => {
     const tree = await factory
       .with({
         isItemFolder: (item) => item.getItemData().length < 4,
+        propagateCheckedState: true,
+        canCheckFolders: false,
       })
       .createTestCaseTree();
 
