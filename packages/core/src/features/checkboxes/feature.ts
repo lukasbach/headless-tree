@@ -32,14 +32,17 @@ export const checkboxesFeature: FeatureImplementation = {
     const hasAsyncLoader = defaultConfig.features?.some(
       (f) => f.key === "async-data-loader",
     );
-    if (hasAsyncLoader && !defaultConfig.canCheckFolders) {
-      throwError(`!canCheckFolders not supported with async trees`);
+    if (hasAsyncLoader && defaultConfig.propagateCheckedState) {
+      throwError(`propagateCheckedState not supported with async trees`);
     }
-    const defaultCanCheckFolders = hasAsyncLoader ?? false;
+    const propagateCheckedState =
+      defaultConfig.propagateCheckedState ?? !hasAsyncLoader;
+    const canCheckFolders =
+      defaultConfig.canCheckFolders ?? !propagateCheckedState;
     return {
       setCheckedItems: makeStateUpdater("checkedItems", tree),
-      propagateCheckedState: !defaultCanCheckFolders,
-      canCheckFolders: defaultCanCheckFolders,
+      propagateCheckedState,
+      canCheckFolders,
       ...defaultConfig,
     };
   },

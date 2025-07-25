@@ -14,7 +14,7 @@ import cx from "classnames";
 import { DemoItem, createDemoData } from "../utils/data";
 
 const meta = {
-  title: "React/Checkboxes/Custom Behavior",
+  title: "React/Checkboxes/Custom Behavior/All Items In State",
   tags: ["feature/checkbox", "checkbox", "checkbox/customizability"],
 } satisfies Meta;
 
