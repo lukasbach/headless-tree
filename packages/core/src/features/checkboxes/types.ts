@@ -17,6 +17,7 @@ export type CheckboxesFeatureDef<T> = {
   config: {
     setCheckedItems?: SetStateFn<string[]>;
     canCheckFolders?: boolean;
+    propagateCheckedState?: boolean;
     inferCheckedState?: (
       item: ItemInstance<T>,
       tree: TreeInstance<T>,
