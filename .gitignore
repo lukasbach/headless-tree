@@ -24,3 +24,5 @@ storybook-static
 /examples/*/dist
 /packages/*/readme.md
 /packages/readme.md
+
+.vscode
