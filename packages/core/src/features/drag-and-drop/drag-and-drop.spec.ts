@@ -300,6 +300,9 @@ describe("core-feature/drag-and-drop", () => {
 
       it("drags foreign object inside tree, on folder", () => {
         tree.mockedHandler("canDropForeignDragObject").mockReturnValue(true);
+        tree
+          .mockedHandler("canDragForeignDragObjectOver")
+          .mockReturnValue(true);
         const onDropForeignDragObject = tree.mockedHandler(
           "onDropForeignDragObject",
         );
@@ -317,6 +320,9 @@ describe("core-feature/drag-and-drop", () => {
       it("drags foreign object inside tree, between items", () => {
         tree
           .mockedHandler("canDropForeignDragObject")
+          .mockImplementation((_, target) => target.item.isFolder());
+        tree
+          .mockedHandler("canDragForeignDragObjectOver")
           .mockImplementation((_, target) => target.item.isFolder());
         const onDropForeignDragObject = tree.mockedHandler(
           "onDropForeignDragObject",
@@ -340,6 +346,9 @@ describe("core-feature/drag-and-drop", () => {
 
       it("doesnt drag foreign object inside tree if not allowed", () => {
         tree.mockedHandler("canDropForeignDragObject").mockReturnValue(false);
+        tree
+          .mockedHandler("canDragForeignDragObjectOver")
+          .mockReturnValue(false);
         const onDropForeignDragObject = tree.mockedHandler(
           "onDropForeignDragObject",
         );

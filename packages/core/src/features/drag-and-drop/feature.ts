@@ -8,13 +8,18 @@ import {
 } from "./utils";
 import { makeStateUpdater } from "../../utils";
 
+const defaultCanDropForeignDragObject = () => false;
 export const dragAndDropFeature: FeatureImplementation = {
   key: "drag-and-drop",
   deps: ["selection"],
 
   getDefaultConfig: (defaultConfig, tree) => ({
     canDrop: (_, target) => target.item.isFolder(),
-    canDropForeignDragObject: () => false,
+    canDropForeignDragObject: defaultCanDropForeignDragObject,
+    canDragForeignDragObjectOver:
+      defaultConfig.canDropForeignDragObject !== defaultCanDropForeignDragObject
+        ? (dataTransfer) => dataTransfer.effectAllowed !== "none"
+        : () => false,
     setDndState: makeStateUpdater("dnd", tree),
     canReorder: true,
     ...defaultConfig,
@@ -162,9 +167,13 @@ export const dragAndDropFeature: FeatureImplementation = {
           e.dataTransfer?.setDragImage(imgElement, xOffset ?? 0, yOffset ?? 0);
         }
 
-        if (config.createForeignDragObject) {
-          const { format, data } = config.createForeignDragObject(items);
-          e.dataTransfer?.setData(format, data);
+        if (config.createForeignDragObject && e.dataTransfer) {
+          const { format, data, dropEffect, effectAllowed } =
+            config.createForeignDragObject(items);
+          e.dataTransfer.setData(format, data);
+
+          if (dropEffect) e.dataTransfer.dropEffect = dropEffect;
+          if (effectAllowed) e.dataTransfer.effectAllowed = effectAllowed;
         }
 
         tree.applySubStateUpdate("dnd", {
@@ -174,6 +183,7 @@ export const dragAndDropFeature: FeatureImplementation = {
       },
 
       onDragOver: (e: DragEvent) => {
+        e.stopPropagation(); // don't bubble up to container dragover
         const dataRef = tree.getDataRef<DndDataRef>();
         const nextDragCode = getDragCode(e, item, tree);
         if (nextDragCode === dataRef.current.lastDragCode) {
@@ -191,7 +201,7 @@ export const dragAndDropFeature: FeatureImplementation = {
           (!e.dataTransfer ||
             !tree
               .getConfig()
-              .canDropForeignDragObject?.(e.dataTransfer, target))
+              .canDragForeignDragObjectOver?.(e.dataTransfer, target))
         ) {
           dataRef.current.lastAllowDrop = false;
           return;
@@ -222,13 +232,24 @@ export const dragAndDropFeature: FeatureImplementation = {
       },
 
       onDragEnd: (e: DragEvent) => {
+        const { onCompleteForeignDrop, canDragForeignDragObjectOver } =
+          tree.getConfig();
         const draggedItems = tree.getState().dnd?.draggedItems;
 
         if (e.dataTransfer?.dropEffect === "none" || !draggedItems) {
           return;
         }
 
-        tree.getConfig().onCompleteForeignDrop?.(draggedItems);
+        const target = getDragTarget(e, item, tree);
+        if (
+          canDragForeignDragObjectOver &&
+          e.dataTransfer &&
+          !canDragForeignDragObjectOver(e.dataTransfer, target)
+        ) {
+          return;
+        }
+
+        onCompleteForeignDrop?.(draggedItems);
       },
 
       onDrop: async (e: DragEvent) => {
