@@ -13,7 +13,8 @@ import { useTree } from "@headless-tree/react";
 import cn from "classnames";
 
 const meta = {
-  title: "React/General/Expand Collapse Animations",
+  title: "React/Guides/Expand Collapse Animations",
+  tags: ["guide/nested-rendering", "homepage"],
 } satisfies Meta;
 
 export default meta;

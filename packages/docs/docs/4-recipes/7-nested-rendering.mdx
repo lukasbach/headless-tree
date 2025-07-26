@@ -1,0 +1,24 @@
+---
+slug: "/recipe/nested-rendering"
+title: "Nested Rendering and Animations"
+category: recipe
+---
+import {DemoBox} from "../../src/components/demo/demo-box";
+
+Headless Tree internally flattens the visibly rendered items and their nested tree structure into
+a flat list of items, making it easier to handle as library consumer and enabling virtualization in 
+an easy way.
+
+However, by using `tree.getRootItem()` and `item.getChildren()` it's still very easy to render items
+in a nested way, if you want to do so.
+
+<DemoBox tags={["guide/nested-rendering"]} initialStory="react-guides-nested-rendering--nested-rendering" />
+
+You can also use this to implement expand/collapse animations. This is not as easy as just rendering the items in a nested way, 
+since CSS animations also require items to be rendered after a collapse is triggered, for the duration of the animation.
+
+The following sample shows a custom feature implementation that overwrites the `item.expand()` and `item.collapse()` methods to
+keep track of animation state, and to postpone the actual collapse until after the animation is finished.
+[See the guide on plugins](/recipe/plugins/) for more information on how to implement custom features like this.
+
+<DemoBox tags={["guide/nested-rendering"]} initialStory="react-guides-expand-collapse-animations--expand-collapse-animations" />

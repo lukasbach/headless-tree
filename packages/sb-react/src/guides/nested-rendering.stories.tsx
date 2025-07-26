@@ -11,7 +11,8 @@ import { useTree } from "@headless-tree/react";
 import cn from "classnames";
 
 const meta = {
-  title: "React/General/Nested Rendering",
+  title: "React/Guides/Nested Rendering",
+  tags: ["guide/nested-rendering", "homepage"],
 } satisfies Meta;
 
 export default meta;
