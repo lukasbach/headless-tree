@@ -1,8 +1,5 @@
 {
   "extends": "../../tsconfig.json",
   "include": ["./src/**/*"],
-  "exclude": ["./src/**/*.spec.tsx", "./src/**/*.spec.ts", "./src/**/*.stories.tsx"],
-  "compilerOptions": {
-    "outDir": "lib/esm"
-  }
+  "exclude": ["./src/**/*.spec.tsx", "./src/**/*.spec.ts", "./src/**/*.stories.tsx"]
 }

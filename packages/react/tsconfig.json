@@ -1,7 +1,4 @@
 {
   "extends": "../../tsconfig.json",
-  "include": ["./src/**/*"],
-  "compilerOptions": {
-    "outDir": "lib/esm"
-  }
+  "include": ["./src/**/*"]
 }

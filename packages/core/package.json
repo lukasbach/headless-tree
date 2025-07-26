@@ -1,27 +1,26 @@
 {
   "name": "@headless-tree/core",
   "version": "1.2.1",
-  "main": "lib/cjs/index.js",
-  "module": "lib/esm/index.js",
-  "types": "lib/esm/index.d.ts",
+  "main": "dist/index.d.ts",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.mts",
   "exports": {
     ".": {
       "import": {
-        "types": "./lib/esm/index.d.ts",
-        "default": "./lib/esm/index.js"
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
       },
       "require": {
-        "types": "./lib/cjs/index.d.ts",
-        "default": "./lib/cjs/index.js"
+        "types": "./dist/index.js",
+        "default": "./dist/index.d.ts"
       }
     },
     "./package.json": "./package.json"
   },
   "sideEffects": false,
   "scripts": {
-    "build:cjs": "tsc -m commonjs --outDir lib/cjs",
-    "build:esm": "tsc",
-    "start": "tsc -w",
+    "build": "tsup ./src/index.ts --format esm,cjs --dts",
+    "start": "tsup ./src/index.ts --format esm,cjs --dts --watch",
     "test": "vitest run"
   },
   "repository": {
@@ -34,6 +33,7 @@
   "license": "MIT",
   "devDependencies": {
     "jsdom": "^26.0.0",
+    "tsup": "^8.5.0",
     "typescript": "^5.7.2",
     "vitest": "^3.0.3"
   }

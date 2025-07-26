@@ -16,14 +16,9 @@
     }
   },
   "targetDefaults": {
-    "build:cjs": {
+    "build": {
       "outputs": [
-        "{projectRoot}/lib/cjs"
-      ]
-    },
-    "build:esm": {
-      "outputs": [
-        "{projectRoot}/lib/esm"
+        "{projectRoot}/dist"
       ]
     },
     "build:docs": {
