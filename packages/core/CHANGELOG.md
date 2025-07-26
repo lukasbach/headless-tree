@@ -1,5 +1,17 @@
 # @headless-tree/core
 
+## 1.2.2
+
+### Patch Changes
+
+- 662e2a8: Added stories and documentation on how to use nested DOM rendering for tree structures instead of flat lists,
+  which can be used for animating expand/collapse behavior
+- b41e1d2: fixed a bug where ending drag without successful drop doesn't properly reset drag line (#132)
+- b413f74: Fix `aria-posinset` and `aria-level` to be 1-based indexing
+- a250b3b: Fix a bug where expand from the initial keyboard focus fails when rootItemId is an empty string
+- 662e2a8: Improved customizability of checkboxes feature (still alpha state), allowing you to customize `propagateCheckedState` and `canCheckFolders` independently
+- 662e2a8: Changed to new buildtool in core packages (now using tsup) to hopefully fix some ESM/CJS integrations
+
 ## 1.2.1
 
 ### Patch Changes
