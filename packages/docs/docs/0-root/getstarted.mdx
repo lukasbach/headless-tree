@@ -58,6 +58,15 @@ When rendering your tree, don't forget to
 - Spread the return value of `item.getProps()` as props into your tree item elements.
 - You probably want to indent your items based on their depth, which you can get via `item.getItemMeta().level`.
 
+:::info[React 17]
+
+Headless Tree uses `useInsertionEffect` in a way that triggers error logs on React 17. The
+best solution is to upgrade to React 18 if possible, otherwise you can also import `useTree`
+from `@headless-tree/react/react17` instead as a workaround. This workaround might be removed
+in the future.
+
+:::
+
 ## Importing Features
 
 The architecture of Headless Tree separates individual features into distinct objects, that need to be manually
