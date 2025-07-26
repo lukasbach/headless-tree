@@ -80,7 +80,8 @@ For example, if you want drag-and-drop support and hotkeys support, import the r
 to your tree config:
 
 ```tsx
-import { useTree, dragAndDropFeature, hotkeysCoreFeature, syncDataLoaderFeature } from "@headless-tree/core";
+import { dragAndDropFeature, hotkeysCoreFeature, syncDataLoaderFeature } from "@headless-tree/core";
+import { useTree } from "@headless-tree/react";
 
 useTree({
     // ... other options
