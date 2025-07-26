@@ -7,7 +7,7 @@ import {
   syncDataLoaderFeature,
 } from "@headless-tree/core";
 import { useTree } from "@headless-tree/react";
-import { action } from "@storybook/addon-actions";
+import { action } from "storybook/actions";
 import cn from "classnames";
 
 const meta = {

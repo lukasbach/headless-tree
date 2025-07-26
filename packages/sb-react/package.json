@@ -16,7 +16,6 @@
     "@babel/preset-typescript": "^7.21.5",
     "@headless-tree/core": "workspace:*",
     "@headless-tree/react": "workspace:*",
-    "@storybook/addon-actions": "9.0.8",
     "@storybook/addon-essentials": "9.0.0-alpha.12",
     "@storybook/addon-interactions": "9.0.0-alpha.10",
     "@storybook/addon-links": "9.0.18",
