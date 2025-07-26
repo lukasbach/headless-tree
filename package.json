@@ -31,6 +31,10 @@
     "typedoc-plugin-markdown": "^3.17.1",
     "zx": "^8.3.2"
   },
+  "resolutions": {
+    "@headless-tree/core": "workspace:*",
+    "@headless-tree/react": "workspace:*"
+  },
   "volta": {
     "node": "23.6.1",
     "yarn": "4.1.1"
