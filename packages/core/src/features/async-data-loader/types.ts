@@ -34,6 +34,7 @@ export type AsyncDataLoaderFeatureDef<T> = {
     waitForItemChildrenLoaded: (itemId: string) => Promise<void>;
     loadItemData: (itemId: string) => Promise<T>;
     loadChildrenIds: (itemId: string) => Promise<string[]>;
+    /* idea: recursiveLoadItems: (itemId: string, cancelToken?: { current: boolean }, onLoad: (itemIds: string[]) => void) => Promise<T[]> */
   };
   itemInstance: SyncDataLoaderFeatureDef<T>["itemInstance"] & {
     /** Invalidate fetched data for item, and triggers a refetch and subsequent rerender if the item is visible

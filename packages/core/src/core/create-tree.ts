@@ -170,19 +170,6 @@ export const createTree = <T>(
         ] as Function;
         externalStateSetter?.(state[stateName]);
       },
-      buildItemInstance: ({}, itemId) => {
-        const [instance, finalizeInstance] = buildInstance(
-          features,
-          "itemInstance",
-          (instance) => ({
-            item: instance,
-            tree: treeInstance,
-            itemId,
-          }),
-        );
-        finalizeInstance();
-        return instance;
-      },
       // TODO rebuildSubTree: (itemId: string) => void;
       rebuildTree: () => {
         rebuildItemMeta();
@@ -206,7 +193,23 @@ export const createTree = <T>(
           config.setState?.(state);
         }
       },
-      getItemInstance: ({}, itemId) => itemInstancesMap[itemId],
+      getItemInstance: ({}, itemId) => {
+        const existingInstance = itemInstancesMap[itemId];
+        if (!existingInstance) {
+          const [instance, finalizeInstance] = buildInstance(
+            features,
+            "itemInstance",
+            (instance) => ({
+              item: instance,
+              tree: treeInstance,
+              itemId,
+            }),
+          );
+          finalizeInstance();
+          return instance;
+        }
+        return existingInstance;
+      },
       getItems: () => itemInstances,
       registerElement: ({}, element) => {
         if (treeElement === element) {
@@ -249,7 +252,15 @@ export const createTree = <T>(
       getElement: ({ itemId }) => itemElementsMap[itemId],
       // eslint-disable-next-line no-return-assign
       getDataRef: ({ itemId }) => (itemDataRefs[itemId] ??= { current: {} }),
-      getItemMeta: ({ itemId }) => itemMetaMap[itemId],
+      getItemMeta: ({ itemId }) =>
+        itemMetaMap[itemId] ?? {
+          itemId,
+          parentId: null,
+          level: -1,
+          index: -1,
+          posInSet: 0,
+          setSize: 1,
+        },
     },
   };
 

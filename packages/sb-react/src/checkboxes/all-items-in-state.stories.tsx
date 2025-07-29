@@ -27,7 +27,7 @@ const getAllLoadedDescendants = <T,>(
   tree: TreeInstance<T>,
   itemId: string,
 ): string[] => {
-  if (!tree.getConfig().isItemFolder(tree.buildItemInstance(itemId))) {
+  if (!tree.getConfig().isItemFolder(tree.getItemInstance(itemId))) {
     return [itemId];
   }
   return tree

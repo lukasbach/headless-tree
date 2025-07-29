@@ -8,7 +8,7 @@ const getAllLoadedDescendants = <T>(
   itemId: string,
   includeFolders = false,
 ): string[] => {
-  if (!tree.getConfig().isItemFolder(tree.buildItemInstance(itemId))) {
+  if (!tree.getConfig().isItemFolder(tree.getItemInstance(itemId))) {
     return [itemId];
   }
   const descendants = tree
