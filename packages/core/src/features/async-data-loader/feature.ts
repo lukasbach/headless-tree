@@ -165,5 +165,10 @@ export const asyncDataLoaderFeature: FeatureImplementation = {
       dataRef.current.childrenIds[itemId] = childrenIds;
       tree.rebuildTree();
     },
+    updateCachedData: ({ tree, itemId }, data) => {
+      const dataRef = tree.getDataRef<AsyncDataLoaderDataRef>();
+      dataRef.current.itemData[itemId] = data;
+      tree.rebuildTree();
+    },
   },
 };

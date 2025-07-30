@@ -47,6 +47,7 @@ export type AsyncDataLoaderFeatureDef<T> = {
      * the tree will continue to display the old data until the new data has loaded. */
     invalidateChildrenIds: (optimistic?: boolean) => Promise<void>;
 
+    updateCachedData: (data: T) => void;
     updateCachedChildrenIds: (childrenIds: string[]) => void;
     isLoading: () => boolean;
   };
