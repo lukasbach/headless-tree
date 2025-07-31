@@ -1,5 +1,13 @@
 # @headless-tree/react
 
+## 1.3.0
+
+### Patch Changes
+
+- 32e71e9: Added optional @headless-tree/react/react17 import for useTree for compatibility
+- 662e2a8: Improved customizability of checkboxes feature (still alpha state), allowing you to customize `propagateCheckedState` and `canCheckFolders` independently
+- 662e2a8: Changed to new buildtool in core packages (now using tsup) to hopefully fix some ESM/CJS integrations
+
 ## 1.2.1
 
 ### Patch Changes
