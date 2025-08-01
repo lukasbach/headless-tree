@@ -336,6 +336,13 @@ describe("core-feature/keyboard-drag-and-drop", () => {
         tree.expect.substate("assistiveDndState", undefined);
       });
 
+      it("doesnt drag when no items are selected", () => {
+        tree.do.hotkey("startDrag");
+        tree.item("x1").setFocused();
+        tree.expect.substate("dnd", undefined);
+        tree.expect.substate("assistiveDndState", undefined);
+      });
+
       it("skips positions during arrowing that have canDrop=false", () => {
         // note that, with mocked canDrop, non-folders are viable targets
         const canDrop = tree.mockedHandler("canDrop").mockReturnValue(true);
