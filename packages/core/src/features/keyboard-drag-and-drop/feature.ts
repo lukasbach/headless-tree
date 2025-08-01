@@ -119,7 +119,10 @@ const initiateDrag = <T>(
   const focusedItem = tree.getFocusedItem();
   const { canDrag } = tree.getConfig();
 
-  if (draggedItems && canDrag && !canDrag(draggedItems)) {
+  if (
+    draggedItems &&
+    (draggedItems.length === 0 || (canDrag && !canDrag(draggedItems)))
+  ) {
     return;
   }
 
