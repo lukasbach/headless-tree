@@ -193,6 +193,7 @@ export const dragAndDropFeature: FeatureImplementation = {
           return;
         }
         dataRef.current.lastDragCode = nextDragCode;
+        dataRef.current.lastDragEnter = Date.now();
 
         const target = getDragTarget(e, item, tree);
 
@@ -222,13 +223,16 @@ export const dragAndDropFeature: FeatureImplementation = {
       },
 
       onDragLeave: () => {
-        const dataRef = tree.getDataRef<DndDataRef>();
-        dataRef.current.lastDragCode = "no-drag";
-        tree.applySubStateUpdate("dnd", (state) => ({
-          ...state,
-          draggingOverItem: undefined,
-          dragTarget: undefined,
-        }));
+        setTimeout(() => {
+          const dataRef = tree.getDataRef<DndDataRef>();
+          if ((dataRef.current.lastDragEnter ?? 0) + 100 >= Date.now()) return;
+          dataRef.current.lastDragCode = "no-drag";
+          tree.applySubStateUpdate("dnd", (state) => ({
+            ...state,
+            draggingOverItem: undefined,
+            dragTarget: undefined,
+          }));
+        }, 100);
       },
 
       onDragEnd: (e: DragEvent) => {
