@@ -1,5 +1,24 @@
 # @headless-tree/core
 
+## 1.3.0
+
+### Minor Changes
+
+- 21d1679: add `canDragForeignDragObjectOver` to allow customizing whether a draggable visualization should be shown when dragging foreign data. This allows differentiating logic between drag-over and drop (via the existing `canDropForeignDataObject`), since for the latter `dataTransfer.getData` is not available by default in browsers.
+
+### Patch Changes
+
+- e8ddbb0: Added `item.updateCachedData(data)` in async tree feature, that works similar to the existing `item.updateCachedChildrenIds(childrenIds)` feature
+- 662e2a8: Added stories and documentation on how to use nested DOM rendering for tree structures instead of flat lists,
+  which can be used for animating expand/collapse behavior
+- b41e1d2: fixed a bug where ending drag without successful drop doesn't properly reset drag line (#132)
+- b413f74: Fix `aria-posinset` and `aria-level` to be 1-based indexing
+- a250b3b: Fix a bug where expand from the initial keyboard focus fails when rootItemId is an empty string
+- 62867e8: Introduced a short delay before hiding the drag line when leaving a drag target, which helps to reduce flickering of the dragline when moving between items
+- c4579eb: Update keyboard drag and drop to include the focused item in the dragged items
+- 662e2a8: Improved customizability of checkboxes feature (still alpha state), allowing you to customize `propagateCheckedState` and `canCheckFolders` independently
+- 662e2a8: Changed to new buildtool in core packages (now using tsup) to hopefully fix some ESM/CJS integrations
+
 ## 1.2.1
 
 ### Patch Changes
