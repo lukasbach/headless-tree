@@ -49,6 +49,37 @@ describe("core-feature/keyboard-drag-and-drop", () => {
         tree.expect.substate("assistiveDndState", AssistiveDndState.Started);
       });
 
+      it("starts dragging only focused item", () => {
+        tree.item("x3").setFocused();
+        tree.do.hotkey("startDrag");
+        tree.expect.substate("dnd", {
+          draggedItems: [tree.item("x3")],
+          dragTarget: {
+            childIndex: 3,
+            dragLineIndex: 19,
+            dragLineLevel: 0,
+            insertionIndex: 2,
+            item: tree.item("x"),
+          },
+        });
+      });
+
+      it("starts dragging both selected and focused item", () => {
+        tree.do.selectMultiple("x111", "x112");
+        tree.item("x3").setFocused();
+        tree.do.hotkey("startDrag");
+        tree.expect.substate("dnd", {
+          draggedItems: [tree.item("x111"), tree.item("x112"), tree.item("x3")],
+          dragTarget: {
+            childIndex: 3,
+            dragLineIndex: 19,
+            dragLineLevel: 0,
+            insertionIndex: 2,
+            item: tree.item("x"),
+          },
+        });
+      });
+
       it("moves down 1", () => {
         tree.do.selectMultiple("x111", "x112");
         tree.do.hotkey("startDrag");
@@ -355,13 +386,13 @@ describe("core-feature/keyboard-drag-and-drop", () => {
 
       it("doesnt go below end of tree", () => {
         const lastState = {
-          draggedItems: [tree.item("x111")],
+          draggedItems: [tree.item("x111"), tree.item("x3")],
           dragTarget: {
             item: tree.item("x"),
             childIndex: 4,
             dragLineIndex: 20,
             dragLineLevel: 0,
-            insertionIndex: 4,
+            insertionIndex: 3,
           },
         };
 
@@ -378,7 +409,7 @@ describe("core-feature/keyboard-drag-and-drop", () => {
 
       it("doesnt go above top of tree", () => {
         const firstState = {
-          draggedItems: [tree.item("x111")],
+          draggedItems: [tree.item("x111"), tree.item("x1")],
           dragTarget: {
             item: tree.item("x"),
             childIndex: 0,
