@@ -4,6 +4,7 @@ export interface DndDataRef {
   lastDragCode?: string;
   lastAllowDrop?: boolean;
   lastDragEnter?: number;
+  autoExpandTimeout?: any;
   windowDragEndListener?: () => void;
 }
 

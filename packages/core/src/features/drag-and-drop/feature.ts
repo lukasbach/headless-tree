@@ -32,7 +32,8 @@ const handleAutoOpenFolder = (
   ) {
     return;
   }
-  setTimeout(() => {
+  clearTimeout(dataRef.current.autoExpandTimeout);
+  dataRef.current.autoExpandTimeout = setTimeout(() => {
     if (
       dragCode !== dataRef.current.lastDragCode ||
       !dataRef.current.lastAllowDrop
@@ -222,7 +223,6 @@ export const dragAndDropFeature: FeatureImplementation = {
         const dataRef = tree.getDataRef<DndDataRef>();
         const placement = getTargetPlacement(e, item, tree, true);
         const nextDragCode = getDragCode(item, placement);
-        handleAutoOpenFolder(dataRef, tree, item, placement);
 
         if (nextDragCode === dataRef.current.lastDragCode) {
           if (dataRef.current.lastAllowDrop) {
@@ -232,6 +232,8 @@ export const dragAndDropFeature: FeatureImplementation = {
         }
         dataRef.current.lastDragCode = nextDragCode;
         dataRef.current.lastDragEnter = Date.now();
+
+        handleAutoOpenFolder(dataRef, tree, item, placement);
 
         const target = getDragTarget(e, item, tree);
 
