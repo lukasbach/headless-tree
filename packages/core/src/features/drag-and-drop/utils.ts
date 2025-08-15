@@ -220,6 +220,10 @@ export const getDragTarget = (
     canBecomeSibling &&
     placement.type !== PlacementType.MakeChild
   ) {
+    if (draggedItems?.some((item) => item.isDescendentOf(parent.getId()))) {
+      // dropping on itself should be illegal, return item, canDrop will then return false
+      return itemTarget;
+    }
     return parentTarget;
   }
 
