@@ -1,12 +1,46 @@
-import { FeatureImplementation } from "../../types/core";
+import {
+  FeatureImplementation,
+  type ItemInstance,
+  type TreeInstance,
+} from "../../types/core";
 import { DndDataRef, DragLineData, DragTarget } from "./types";
 import {
+  PlacementType,
+  type TargetPlacement,
   canDrop,
   getDragCode,
   getDragTarget,
+  getTargetPlacement,
   isOrderedDragTarget,
 } from "./utils";
 import { makeStateUpdater } from "../../utils";
+
+const handleAutoOpenFolder = (
+  dataRef: { current: DndDataRef },
+  tree: TreeInstance<any>,
+  item: ItemInstance<any>,
+  placement: TargetPlacement,
+) => {
+  const { openOnDropDelay } = tree.getConfig();
+  const dragCode = dataRef.current.lastDragCode;
+
+  if (
+    !openOnDropDelay ||
+    !item.isFolder() ||
+    item.isExpanded() ||
+    placement.type !== PlacementType.MakeChild
+  ) {
+    return;
+  }
+  setTimeout(() => {
+    if (
+      dragCode !== dataRef.current.lastDragCode ||
+      !dataRef.current.lastAllowDrop
+    )
+      return;
+    item.expand();
+  }, openOnDropDelay);
+};
 
 const defaultCanDropForeignDragObject = () => false;
 export const dragAndDropFeature: FeatureImplementation = {
@@ -22,6 +56,7 @@ export const dragAndDropFeature: FeatureImplementation = {
         : () => false,
     setDndState: makeStateUpdater("dnd", tree),
     canReorder: true,
+    openOnDropDelay: 800,
     ...defaultConfig,
   }),
 
@@ -185,7 +220,10 @@ export const dragAndDropFeature: FeatureImplementation = {
       onDragOver: (e: DragEvent) => {
         e.stopPropagation(); // don't bubble up to container dragover
         const dataRef = tree.getDataRef<DndDataRef>();
-        const nextDragCode = getDragCode(e, item, tree);
+        const placement = getTargetPlacement(e, item, tree, true);
+        const nextDragCode = getDragCode(item, placement);
+        handleAutoOpenFolder(dataRef, tree, item, placement);
+
         if (nextDragCode === dataRef.current.lastDragCode) {
           if (dataRef.current.lastAllowDrop) {
             e.preventDefault();

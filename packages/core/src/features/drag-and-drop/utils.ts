@@ -7,14 +7,14 @@ export enum ItemDropCategory {
   LastInGroup,
 }
 
-enum PlacementType {
+export enum PlacementType {
   ReorderAbove,
   ReorderBelow,
   MakeChild,
   Reparent,
 }
 
-type TargetPlacement =
+export type TargetPlacement =
   | {
       type:
         | PlacementType.ReorderAbove
@@ -95,7 +95,7 @@ export const getInsertionIndex = <T>(
   return childIndex - numberOfDragItemsBeforeTarget;
 };
 
-const getTargetPlacement = (
+export const getTargetPlacement = (
   e: any,
   item: ItemInstance<any>,
   tree: TreeInstance<any>,
@@ -153,11 +153,9 @@ const getTargetPlacement = (
 };
 
 export const getDragCode = (
-  e: any,
   item: ItemInstance<any>,
-  tree: TreeInstance<any>,
+  placement: TargetPlacement,
 ) => {
-  const placement = getTargetPlacement(e, item, tree, true);
   return [
     item.getId(),
     placement.type,

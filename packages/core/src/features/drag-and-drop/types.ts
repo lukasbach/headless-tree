@@ -93,6 +93,9 @@ export type DragAndDropFeatureDef<T> = {
       target: DragTarget<T>,
     ) => void | Promise<void>;
     onCompleteForeignDrop?: (items: ItemInstance<T>[]) => void;
+
+    /** When dragging for this many ms on a closed folder, the folder will automatically open. Set to zero to disable. */
+    openOnDropDelay?: number;
   };
   treeInstance: {
     getDragTarget: () => DragTarget<T> | null;
