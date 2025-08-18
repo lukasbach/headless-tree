@@ -46,7 +46,6 @@ const handleAutoOpenFolder = (
 const defaultCanDropForeignDragObject = () => false;
 export const dragAndDropFeature: FeatureImplementation = {
   key: "drag-and-drop",
-  deps: ["selection"],
 
   getDefaultConfig: (defaultConfig, tree) => ({
     canDrop: (_, target) => target.item.isFolder(),
@@ -185,12 +184,14 @@ export const dragAndDropFeature: FeatureImplementation = {
       onDragEnter: (e: DragEvent) => e.preventDefault(),
 
       onDragStart: (e: DragEvent) => {
-        const selectedItems = tree.getSelectedItems();
+        const selectedItems = tree.getSelectedItems
+          ? tree.getSelectedItems()
+          : [tree.getFocusedItem()];
         const items = selectedItems.includes(item) ? selectedItems : [item];
         const config = tree.getConfig();
 
         if (!selectedItems.includes(item)) {
-          tree.setSelectedItems([item.getItemMeta().itemId]);
+          tree.setSelectedItems?.([item.getItemMeta().itemId]);
         }
 
         if (!(config.canDrag?.(items) ?? true)) {

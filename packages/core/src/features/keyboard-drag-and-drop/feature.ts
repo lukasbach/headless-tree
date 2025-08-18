@@ -191,7 +191,9 @@ export const keyboardDragAndDropFeature: FeatureImplementation = {
       preventDefault: true,
       isEnabled: (tree) => !tree.getState().dnd,
       handler: (_, tree) => {
-        const selectedItems = tree.getSelectedItems();
+        const selectedItems = tree.getSelectedItems?.() ?? [
+          tree.getFocusedItem(),
+        ];
         const focusedItem = tree.getFocusedItem();
 
         tree.startKeyboardDrag(
