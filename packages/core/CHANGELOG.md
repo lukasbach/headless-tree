@@ -1,5 +1,17 @@
 # @headless-tree/core
 
+## 1.4.0
+
+### Minor Changes
+
+- 7ef4864: added feature where closed items are auto-expanded briefly after dragging onto them. set config option `openOnDropDelay` to zero to disable.
+
+### Patch Changes
+
+- 8d53b4f: fixed a bug where external changes to focused or selected items don't trigger a rerender (#150)
+- 1cee368: fixed a bug where the drag line is not cleared after drop (#149)
+- 1e833bb: drag-and-drop feature is no longer dependent on selection feature, and fill default to focused item if selection feature is missing (#143)
+
 ## 1.3.0
 
 ### Minor Changes
