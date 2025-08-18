@@ -301,6 +301,7 @@ export const dragAndDropFeature: FeatureImplementation = {
         const dataRef = tree.getDataRef<DndDataRef>();
         const target = getDragTarget(e, item, tree);
         const draggedItems = tree.getState().dnd?.draggedItems;
+        const isValidDrop = canDrop(e.dataTransfer, target, tree);
 
         tree.applySubStateUpdate("dnd", {
           draggedItems: undefined,
@@ -308,7 +309,7 @@ export const dragAndDropFeature: FeatureImplementation = {
           dragTarget: undefined,
         });
 
-        if (!canDrop(e.dataTransfer, target, tree)) {
+        if (!isValidDrop) {
           return;
         }
 
