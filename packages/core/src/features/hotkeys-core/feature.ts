@@ -13,6 +13,7 @@ const specialKeys: Record<string, RegExp> = {
   minus: /^(NumpadSubtract|Minus)$/,
   control: /^(ControlLeft|ControlRight)$/,
   shift: /^(ShiftLeft|ShiftRight)$/,
+  metaorcontrol: /^(MetaLeft|MetaRight|ControlLeft|ControlRight)$/,
 };
 
 const testHotkeyMatch = (
