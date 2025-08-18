@@ -110,7 +110,7 @@ export const dragAndDropFeature: FeatureImplementation = {
         }
       }
 
-      const bb = targetItem.getElement()?.getBoundingClientRect();
+      const bb = targetItem?.getElement()?.getBoundingClientRect();
 
       if (bb) {
         return {
@@ -300,6 +300,13 @@ export const dragAndDropFeature: FeatureImplementation = {
         e.stopPropagation();
         const dataRef = tree.getDataRef<DndDataRef>();
         const target = getDragTarget(e, item, tree);
+        const draggedItems = tree.getState().dnd?.draggedItems;
+
+        tree.applySubStateUpdate("dnd", {
+          draggedItems: undefined,
+          draggingOverItem: undefined,
+          dragTarget: undefined,
+        });
 
         if (!canDrop(e.dataTransfer, target, tree)) {
           return;
@@ -307,7 +314,6 @@ export const dragAndDropFeature: FeatureImplementation = {
 
         e.preventDefault();
         const config = tree.getConfig();
-        const draggedItems = tree.getState().dnd?.draggedItems;
 
         dataRef.current.lastDragCode = undefined;
 
