@@ -27,3 +27,5 @@ storybook-static
 /packages/readme.md
 
 .vscode
+
+examples/repro*

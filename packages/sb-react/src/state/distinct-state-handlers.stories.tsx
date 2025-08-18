@@ -76,6 +76,14 @@ export const DistinctStateHandlers = () => {
         >
           Overwrite State
         </button>
+        <button
+          className="actionbtn"
+          onClick={() => {
+            setSelectedItems(["root-3"]);
+          }}
+        >
+          Overwrite Selected items
+        </button>
       </div>
     </>
   );
