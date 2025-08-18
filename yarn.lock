@@ -4424,59 +4424,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@headless-tree/repro1@workspace:examples/repro1":
-  version: 0.0.0-use.local
-  resolution: "@headless-tree/repro1@workspace:examples/repro1"
-  dependencies:
-    "@headless-tree/core": "workspace:*"
-    "@headless-tree/react": "workspace:*"
-    "@types/react": "npm:18.2.38"
-    "@types/react-dom": "npm:18.2.15"
-    "@vitejs/plugin-react": "npm:^4.3.4"
-    classnames: "npm:^2.3.2"
-    globals: "npm:^16.0.0"
-    react: "npm:18.2.0"
-    react-dom: "npm:18.2.0"
-    typescript: "npm:~5.7.2"
-    vite: "npm:^6.3.1"
-  languageName: unknown
-  linkType: soft
-
-"@headless-tree/repro2@workspace:examples/repro2":
-  version: 0.0.0-use.local
-  resolution: "@headless-tree/repro2@workspace:examples/repro2"
-  dependencies:
-    "@headless-tree/core": "workspace:*"
-    "@headless-tree/react": "workspace:*"
-    "@types/react": "npm:18.2.38"
-    "@types/react-dom": "npm:18.2.15"
-    "@vitejs/plugin-react": "npm:^4.3.4"
-    classnames: "npm:^2.3.2"
-    globals: "npm:^16.0.0"
-    react: "npm:18.2.0"
-    react-dom: "npm:18.2.0"
-    typescript: "npm:~5.7.2"
-    vite: "npm:^6.3.1"
-  languageName: unknown
-  linkType: soft
-
-"@headless-tree/repro3@workspace:examples/repro3":
-  version: 0.0.0-use.local
-  resolution: "@headless-tree/repro3@workspace:examples/repro3"
-  dependencies:
-    "@headless-tree/core": "npm:0.0.0-20250611234714"
-    "@headless-tree/react": "npm:0.0.0-20250611234714"
-    "@types/node": "npm:^20"
-    "@types/react": "npm:^19"
-    "@types/react-dom": "npm:^19"
-    classnames: "npm:^2.5.1"
-    next: "npm:15.3.3"
-    react: "npm:^19.0.0"
-    react-dom: "npm:^19.0.0"
-    typescript: "npm:^5"
-  languageName: unknown
-  linkType: soft
-
 "@headless-tree/sb-react@workspace:*, @headless-tree/sb-react@workspace:packages/sb-react":
   version: 0.0.0-use.local
   resolution: "@headless-tree/sb-react@workspace:packages/sb-react"
@@ -7245,15 +7192,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dom@npm:18.2.15":
-  version: 18.2.15
-  resolution: "@types/react-dom@npm:18.2.15"
-  dependencies:
-    "@types/react": "npm:*"
-  checksum: 10/57ea7e9e210d95fa18fde82fc585cb6252c9118c8793a38b37b07ccbba05d09d14f88cf76af46eecda41c430b4400f789a4bbc505eec459a15cbaf13f56f887a
-  languageName: node
-  linkType: hard
-
 "@types/react-dom@npm:18.2.22":
   version: 18.2.22
   resolution: "@types/react-dom@npm:18.2.22"
@@ -7321,17 +7259,6 @@ __metadata:
     "@types/scheduler": "npm:*"
     csstype: "npm:^3.0.2"
   checksum: 10/8a82bda6c254681536fa8348dc15d52345d8203d5d322406feef865f74ebfe2475ebde0be4e2f9a18ffbb587dac946dfb5d0974b598779ff282259aff7e8209a
-  languageName: node
-  linkType: hard
-
-"@types/react@npm:18.2.38":
-  version: 18.2.38
-  resolution: "@types/react@npm:18.2.38"
-  dependencies:
-    "@types/prop-types": "npm:*"
-    "@types/scheduler": "npm:*"
-    csstype: "npm:^3.0.2"
-  checksum: 10/9f9b9925c979e848d572dce6fff34951708127ba6b1fd4306c93fbcab74f5c6cff2b2e47d4222339eeb6c19d264e93450cb2ad6b255c73c536d0a1e2093cc98a
   languageName: node
   linkType: hard
 
@@ -19988,7 +19915,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:18.2.0, react-dom@npm:^18.0.0, react-dom@npm:^18.2.0":
+"react-dom@npm:^18.0.0, react-dom@npm:^18.2.0":
   version: 18.2.0
   resolution: "react-dom@npm:18.2.0"
   dependencies:
@@ -20180,7 +20107,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:18.2.0, react@npm:^18.0.0, react@npm:^18.2.0":
+"react@npm:^18.0.0, react@npm:^18.2.0":
   version: 18.2.0
   resolution: "react@npm:18.2.0"
   dependencies:
