@@ -18,7 +18,13 @@ export type SyncDataLoaderFeatureDef<T> = {
   };
   treeInstance: {
     retrieveItemData: (itemId: string) => T;
-    retrieveChildrenIds: (itemId: string) => string[];
+
+    /** Retrieve children Ids. If an async data loader is used, skipFetch is set to true, and children have not been retrieved
+     * yet for this item, this will initiate fetching the children, and return an empty array. Once the children have loaded,
+     * a rerender will be triggered.
+     * @param skipFetch - Defaults to false.
+     */
+    retrieveChildrenIds: (itemId: string, skipFetch?: boolean) => string[];
   };
   itemInstance: {
     isLoading: () => boolean;
