@@ -1,5 +1,11 @@
 # @headless-tree/core
 
+## 1.4.1
+
+### Patch Changes
+
+- 215ab4b: add a new symbol that can be used in hotkey configurations "metaorcontrol" that will trigger if either any windows control key or mac meta key is pressed (#141)
+
 ## 1.4.0
 
 ### Minor Changes
