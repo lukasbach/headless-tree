@@ -6,7 +6,7 @@ import Heading from "@theme/Heading";
 import { storybookRoot } from "@site/src/components/demo/demo-box";
 import { DemoGrid } from "@site/src/components/home/demo-grid";
 import { HomeNotes } from "@site/src/components/home/home-notes";
-import { RiBlueskyFill, RiGithubFill } from "react-icons/ri";
+import { RiBlueskyFill, RiGithubFill, RiTwitterXFill } from "react-icons/ri";
 import { BsDiscord } from "react-icons/bs";
 import styles from "./index.module.css";
 
@@ -48,19 +48,25 @@ function HomepageHeader() {
               className={`button button--outline button--secondary button--lg ${styles.socialBtn}`}
               to="https://discord.gg/KuZ6EezzVw"
             >
-              <BsDiscord size="2rem" />
+              <BsDiscord size="2rem" aria-label="Discord" />
             </Link>
             <Link
               className={`button button--outline button--secondary button--lg ${styles.socialBtn}`}
               to="https://bsky.app/profile/lukasbach.bsky.social"
             >
-              <RiBlueskyFill size="2rem" />
+              <RiBlueskyFill size="2rem" aria-label="Bluesky" />
+            </Link>
+            <Link
+              className={`button button--outline button--secondary button--lg ${styles.socialBtn}`}
+              to="https://x.com/lukasmbach"
+            >
+              <RiTwitterXFill size="2rem" aria-label="Twitter" />
             </Link>
             <Link
               className={`button button--outline button--secondary button--lg ${styles.socialBtn}`}
               to="https://github.com/lukasbach/headless-tree"
             >
-              <RiGithubFill size="2rem" />
+              <RiGithubFill size="2rem" aria-label="GitHub" />
             </Link>
           </div>
         </div>

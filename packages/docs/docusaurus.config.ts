@@ -116,6 +116,12 @@ const config: Config = {
           position: "right",
         },
         {
+          href: "https://x.com/lukasmbach",
+          "aria-label": "Twitter",
+          className: "header-icon twitter",
+          position: "right",
+        },
+        {
           href: "https://discord.gg/KuZ6EezzVw",
           "aria-label": "Discord",
           className: "header-icon discord",

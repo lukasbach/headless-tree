@@ -139,3 +139,8 @@
 .header-icon.bluesky:before {
   background-image: url("data:image/svg+xml,%3Csvg stroke='white' fill='white' stroke-width='0' viewBox='0 0 576 512' height='200px' width='200px' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M407.8 294.7c-3.3-.4-6.7-.8-10-1.3c3.4 .4 6.7 .9 10 1.3zM288 227.1C261.9 176.4 190.9 81.9 124.9 35.3C61.6-9.4 37.5-1.7 21.6 5.5C3.3 13.8 0 41.9 0 58.4S9.1 194 15 213.9c19.5 65.7 89.1 87.9 153.2 80.7c3.3-.5 6.6-.9 10-1.4c-3.3 .5-6.6 1-10 1.4C74.3 308.6-9.1 342.8 100.3 464.5C220.6 589.1 265.1 437.8 288 361.1c22.9 76.7 49.2 222.5 185.6 103.4c102.4-103.4 28.1-156-65.8-169.9c-3.3-.4-6.7-.8-10-1.3c3.4 .4 6.7 .9 10 1.3c64.1 7.1 133.6-15.1 153.2-80.7C566.9 194 576 75 576 58.4s-3.3-44.7-21.6-52.9c-15.8-7.1-40-14.9-103.2 29.8C385.1 81.9 314.1 176.4 288 227.1z'%3E%3C/path%3E%3C/svg%3E");
 }
+
+.header-icon.twitter:before {
+  /* use x logo, not twitter */
+  background-image: url("data:image/svg+xml,%3Csvg stroke='white' fill='white' stroke-width='0' viewBox='0 0 512 512' height='200px' width='200px' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z'%3E%3C/path%3E%3C/svg%3E");
+}
