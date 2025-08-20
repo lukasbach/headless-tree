@@ -2,14 +2,14 @@
 
 [![Documentation](https://img.shields.io/badge/docs-1e1f22?style=flat)](https://headless-tree.lukasbach.com/)
 [![Chat on Discord](https://img.shields.io/badge/discord-4c57d9?style=flat&logo=discord&logoColor=ffffff)](https://discord.gg/KuZ6EezzVw)
-[![Follow on BLuesky](https://img.shields.io/badge/bluesky-0285FF?style=flat&logo=bluesky&logoColor=ffffff)](https://bsky.app/profile/lukasbach.bsky.social)
+[![Follow on Bluesky](https://img.shields.io/badge/bluesky-0285FF?style=flat&logo=bluesky&logoColor=ffffff)](https://bsky.app/profile/lukasbach.bsky.social)
+[![Follow on X](https://img.shields.io/badge/x-000000?style=flat&logo=x&logoColor=ffffff)](https://x.com/lukasmbach)
 [![Support on Github Sponsors](https://img.shields.io/badge/sponsor-EA4AAA?style=flat&logo=githubsponsors&logoColor=ffffff)](https://github.com/sponsors/lukasbach)
 [![Follow on Github](https://img.shields.io/badge/follow-181717?style=flat&logo=github&logoColor=ffffff)](https://github.com/lukasbach)
 [![NPM Core package](https://img.shields.io/badge/core-CB3837?style=flat&logo=npm&logoColor=ffffff)](https://www.npmjs.com/package/@headless-tree/core)
 [![NPM React package](https://img.shields.io/badge/react-CB3837?style=flat&logo=npm&logoColor=ffffff)](https://www.npmjs.com/package/@headless-tree/react)
 
-
-Super-easy integration of complex tree components into React. Supports ordered 
+Super-easy integration of complex tree components into React. Supports ordered
 and unordered drag-and-drop, extensive keybindings, search, renaming and more.
 Fully customizable and accessible. Headless Tree is the official successor for
 [react-complex-tree](https://github.com/lukasbach/react-complex-tree).
@@ -18,7 +18,7 @@ It aims to bring the many features of complex tree views, like multi-select,
 drag-and-drop, keyboard navigation, tree search, renaming and more, while
 being unopinionated about the styling and rendering of the tree itself.
 Accessibility is ensured by default, and the integration is extremely
-simple and flexible. 
+simple and flexible.
 
 The interface gives you a flat list of tree nodes
 that you can easily render yourself, which keeps the complexity of the
@@ -39,7 +39,7 @@ to get an idea of what you can do with it.
 > I have collected feedback and fixed any bugs that might arise. I've written
 > [a blog post](https://medium.com/@lukasbach/headless-tree-and-the-future-of-react-complex-tree-fc920700e82a)
 > about the details of the change, and the future of the library.
-> 
+>
 > Join
 > [the Discord](https://discord.gg/KuZ6EezzVw) to get involved, and
 > [follow on Bluesky](https://bsky.app/profile/lukasbach.bsky.social) to
