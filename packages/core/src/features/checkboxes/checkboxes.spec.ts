@@ -97,7 +97,7 @@ describe("core-feature/checkboxes", () => {
       .with({ propagateCheckedState: true })
       .createTestCaseTree();
 
-    tree.item("x11").setChecked();
+    await tree.item("x11").setChecked();
     expect(tree.instance.getState().checkedItems).toEqual(
       expect.arrayContaining(["x111", "x112", "x113", "x114"]),
     );
@@ -121,16 +121,16 @@ describe("core-feature/checkboxes", () => {
       })
       .createTestCaseTree();
 
-    tree.item("x11").setChecked();
-    tree.item("x12").setChecked();
-    tree.item("x13").setChecked();
+    await tree.item("x11").setChecked();
+    await tree.item("x12").setChecked();
+    await tree.item("x13").setChecked();
     expect(tree.item("x1").getCheckedState()).toBe(CheckedState.Indeterminate);
     tree.do.selectItem("x14");
-    tree.item("x141").setChecked();
-    tree.item("x142").setChecked();
-    tree.item("x143").setChecked();
+    await tree.item("x141").setChecked();
+    await tree.item("x142").setChecked();
+    await tree.item("x143").setChecked();
     expect(tree.item("x1").getCheckedState()).toBe(CheckedState.Indeterminate);
-    tree.item("x144").setChecked();
+    await tree.item("x144").setChecked();
     expect(tree.item("x1").getCheckedState()).toBe(CheckedState.Checked);
   });
 

@@ -19,9 +19,18 @@ export type CheckboxesFeatureDef<T> = {
     setCheckedItems: (checkedItems: string[]) => void;
   };
   itemInstance: {
-    setChecked: () => void;
-    setUnchecked: () => void;
-    toggleCheckedState: () => void;
+    /** Will recursively load descendants if propagateCheckedState=true and async data loader is used. If not,
+     * this will return immediately. */
+    setChecked: () => Promise<void>;
+
+    /** Will recursively load descendants if propagateCheckedState=true and async data loader is used. If not,
+     * this will return immediately. */
+    setUnchecked: () => Promise<void>;
+
+    /** Will recursively load descendants if propagateCheckedState=true and async data loader is used. If not,
+     * this will return immediately. */
+    toggleCheckedState: () => Promise<void>;
+
     getCheckedState: () => CheckedState;
     getCheckboxProps: () => Record<string, any>;
   };
