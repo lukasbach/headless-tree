@@ -1,4 +1,8 @@
-import { FeatureImplementation, TreeInstance } from "../../types/core";
+import {
+  type FeatureImplementation,
+  FeatureImplementation,
+  TreeInstance,
+} from "../../types/core";
 import { makeStateUpdater } from "../../utils";
 import { CheckedState } from "./types";
 import { throwError } from "../../utilities/errors";
@@ -15,6 +19,25 @@ const getAllLoadedDescendants = <T>(
     .retrieveChildrenIds(itemId)
     .map((child) => getAllLoadedDescendants(tree, child, includeFolders))
     .flat();
+  return includeFolders ? [itemId, ...descendants] : descendants;
+};
+
+const getAllDescendants = async <T>(
+  tree: TreeInstance<T>,
+  itemId: string,
+  includeFolders = false,
+): Promise<string[]> => {
+  if (!tree.getConfig().isItemFolder(tree.getItemInstance(itemId))) {
+    return [itemId];
+  }
+  const childrenIds = await tree.loadChildrenIds(itemId);
+  const descendants = (
+    await Promise.all(
+      childrenIds.map((child) =>
+        getAllDescendants(tree, child, includeFolders),
+      ),
+    )
+  ).flat();
   return includeFolders ? [itemId, ...descendants] : descendants;
 };
 
@@ -71,11 +94,11 @@ export const checkboxesFeature: FeatureImplementation = {
       };
     },
 
-    toggleCheckedState: ({ item }) => {
+    toggleCheckedState: async ({ item }) => {
       if (item.getCheckedState() === CheckedState.Checked) {
-        item.setUnchecked();
+        await item.setUnchecked();
       } else {
-        item.setChecked();
+        await item.setChecked();
       }
     },
 
@@ -101,22 +124,27 @@ export const checkboxesFeature: FeatureImplementation = {
       return CheckedState.Unchecked;
     },
 
-    setChecked: ({ item, tree, itemId }) => {
+    setChecked: async ({ item, tree, itemId }) => {
       const { propagateCheckedState, canCheckFolders } = tree.getConfig();
       if (item.isFolder() && propagateCheckedState) {
+        const descendants = await getAllDescendants(
+          tree,
+          itemId,
+          canCheckFolders,
+        );
         tree.applySubStateUpdate("checkedItems", (items) => [
           ...items,
-          ...getAllLoadedDescendants(tree, itemId, canCheckFolders),
+          ...descendants,
         ]);
       } else if (!item.isFolder() || canCheckFolders) {
         tree.applySubStateUpdate("checkedItems", (items) => [...items, itemId]);
       }
     },
 
-    setUnchecked: ({ item, tree, itemId }) => {
+    setUnchecked: async ({ item, tree, itemId }) => {
       const { propagateCheckedState, canCheckFolders } = tree.getConfig();
       if (item.isFolder() && propagateCheckedState) {
-        const descendants = getAllLoadedDescendants(
+        const descendants = await getAllDescendants(
           tree,
           itemId,
           canCheckFolders,
