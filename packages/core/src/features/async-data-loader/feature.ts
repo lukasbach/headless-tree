@@ -13,6 +13,13 @@ const loadItemData = async <T>(tree: TreeInstance<T>, itemId: string) => {
   const config = tree.getConfig();
   const dataRef = getDataRef(tree);
 
+  if (!dataRef.current.itemData[itemId]) {
+    tree.applySubStateUpdate("loadingItemData", (loadingItemData) => [
+      ...loadingItemData,
+      itemId,
+    ]);
+  }
+
   const item = await config.dataLoader.getItem(itemId);
   dataRef.current.itemData[itemId] = item;
   config.onLoadedItem?.(itemId, item);
@@ -27,6 +34,13 @@ const loadChildrenIds = async <T>(tree: TreeInstance<T>, itemId: string) => {
   const config = tree.getConfig();
   const dataRef = getDataRef(tree);
   let childrenIds: string[];
+
+  if (!dataRef.current.childrenIds[itemId]) {
+    tree.applySubStateUpdate("loadingItemChildrens", (loadingItemChildrens) => [
+      ...loadingItemChildrens,
+      itemId,
+    ]);
+  }
 
   if ("getChildrenWithData" in config.dataLoader) {
     const children = await config.dataLoader.getChildrenWithData(itemId);
@@ -104,11 +118,6 @@ export const asyncDataLoaderFeature: FeatureImplementation = {
       }
 
       if (!tree.getState().loadingItemData.includes(itemId) && !skipFetch) {
-        tree.applySubStateUpdate("loadingItemData", (loadingItemData) => [
-          ...loadingItemData,
-          itemId,
-        ]);
-
         loadItemData(tree, itemId);
       }
 
@@ -125,11 +134,6 @@ export const asyncDataLoaderFeature: FeatureImplementation = {
         return [];
       }
 
-      tree.applySubStateUpdate(
-        "loadingItemChildrens",
-        (loadingItemChildrens) => [...loadingItemChildrens, itemId],
-      );
-
       loadChildrenIds(tree, itemId);
 
       return [];
@@ -143,20 +147,12 @@ export const asyncDataLoaderFeature: FeatureImplementation = {
     invalidateItemData: async ({ tree, itemId }, optimistic) => {
       if (!optimistic) {
         delete getDataRef(tree).current.itemData?.[itemId];
-        tree.applySubStateUpdate("loadingItemData", (loadingItemData) => [
-          ...loadingItemData,
-          itemId,
-        ]);
       }
       await loadItemData(tree, itemId);
     },
     invalidateChildrenIds: async ({ tree, itemId }, optimistic) => {
       if (!optimistic) {
         delete getDataRef(tree).current.childrenIds?.[itemId];
-        tree.applySubStateUpdate(
-          "loadingItemChildrens",
-          (loadingItemChildrens) => [...loadingItemChildrens, itemId],
-        );
       }
       await loadChildrenIds(tree, itemId);
     },
