@@ -1,8 +1,4 @@
-import {
-  type FeatureImplementation,
-  FeatureImplementation,
-  TreeInstance,
-} from "../../types/core";
+import { type FeatureImplementation, TreeInstance } from "../../types/core";
 import { makeStateUpdater } from "../../utils";
 import { CheckedState } from "./types";
 import { throwError } from "../../utilities/errors";
@@ -16,7 +12,7 @@ const getAllLoadedDescendants = <T>(
     return [itemId];
   }
   const descendants = tree
-    .retrieveChildrenIds(itemId)
+    .retrieveChildrenIds(itemId, true)
     .map((child) => getAllLoadedDescendants(tree, child, includeFolders))
     .flat();
   return includeFolders ? [itemId, ...descendants] : descendants;
@@ -27,6 +23,7 @@ const getAllDescendants = async <T>(
   itemId: string,
   includeFolders = false,
 ): Promise<string[]> => {
+  await tree.loadItemData(itemId);
   if (!tree.getConfig().isItemFolder(tree.getItemInstance(itemId))) {
     return [itemId];
   }
@@ -113,6 +110,7 @@ export const checkboxesFeature: FeatureImplementation = {
 
       if (item.isFolder() && propagateCheckedState) {
         const descendants = getAllLoadedDescendants(tree, itemId);
+        if (descendants.length === 0) return CheckedState.Unchecked;
         if (descendants.every((d) => checkedItems.includes(d))) {
           return CheckedState.Checked;
         }
