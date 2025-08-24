@@ -47,7 +47,8 @@ export type AsyncDataLoaderFeatureDef<T> = {
      * the tree will continue to display the old data until the new data has loaded. */
     invalidateChildrenIds: (optimistic?: boolean) => Promise<void>;
 
-    updateCachedData: (data: T) => void;
+    /** Set to undefined to clear cache without triggering automatic refetch. Use @invalidateItemData to clear and triggering refetch. */
+    updateCachedData: (data: T | undefined) => void;
     updateCachedChildrenIds: (childrenIds: string[]) => void;
     isLoading: () => boolean;
   };
