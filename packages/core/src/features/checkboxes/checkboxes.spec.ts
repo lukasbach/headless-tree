@@ -1,4 +1,4 @@
-import { describe, expect, it, it, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { TestTree } from "../../test-utils/test-tree";
 import { checkboxesFeature } from "./feature";
 import { CheckedState } from "./types";
@@ -12,22 +12,22 @@ describe("core-feature/checkboxes", () => {
     });
 
     it("should check items", async () => {
-      tree.item("x111").setChecked();
-      tree.item("x112").setChecked();
+      await tree.item("x111").setChecked();
+      await tree.item("x112").setChecked();
       expect(tree.instance.getState().checkedItems).toEqual(["x111", "x112"]);
     });
 
     it("should uncheck an item", async () => {
-      tree.item("x111").setChecked();
-      tree.item("x111").setUnchecked();
+      await tree.item("x111").setChecked();
+      await tree.item("x111").setUnchecked();
       expect(tree.instance.getState().checkedItems).not.toContain("x111");
     });
 
     it("should toggle checked state", async () => {
       const item = tree.item("x111");
-      item.toggleCheckedState();
+      await item.toggleCheckedState();
       expect(tree.instance.getState().checkedItems).toContain("x111");
-      item.toggleCheckedState();
+      await item.toggleCheckedState();
       expect(tree.instance.getState().checkedItems).not.toContain("x111");
     });
 
@@ -47,7 +47,7 @@ describe("core-feature/checkboxes", () => {
       });
 
       it("should create indeterminate state", async () => {
-        tree.item("x111").setChecked();
+        await tree.item("x111").setChecked();
         const refObject = { indeterminate: undefined };
         tree.item("x11").getCheckboxProps().ref(refObject);
         await vi.waitFor(() => expect(refObject.indeterminate).toBe(true));
