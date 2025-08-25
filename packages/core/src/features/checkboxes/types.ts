@@ -9,9 +9,11 @@ export enum CheckedState {
 export type CheckboxesFeatureDef<T> = {
   state: {
     checkedItems: string[];
+    loadingCheckPropagationItems: string[];
   };
   config: {
     setCheckedItems?: SetStateFn<string[]>;
+    setLoadingCheckPropagationItems?: SetStateFn<string[]>;
     canCheckFolders?: boolean;
     propagateCheckedState?: boolean;
   };
@@ -33,6 +35,8 @@ export type CheckboxesFeatureDef<T> = {
 
     getCheckedState: () => CheckedState;
     getCheckboxProps: () => Record<string, any>;
+
+    isLoadingCheckPropagation: () => boolean;
   };
   hotkeys: never;
 };

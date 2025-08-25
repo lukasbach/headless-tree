@@ -82,9 +82,7 @@ export const AsyncConfigurability = () => {
             </button>
             {!tree
               .getState()
-              .loadingItemChildrens.some((child) =>
-                tree.getItemInstance(child).isDescendentOf(item.getId()),
-              ) ? (
+              .loadingCheckPropagationItems.includes(item.getId()) ? (
               <input type="checkbox" {...item.getCheckboxProps()} />
             ) : (
               <>Loading</>
@@ -99,6 +97,10 @@ export const AsyncConfigurability = () => {
       </pre>
       <pre>
         Loading Item Data: {JSON.stringify(tree.getState().loadingItemData)}
+      </pre>
+      <pre>
+        Loading Checkbox propagation:{" "}
+        {JSON.stringify(tree.getState().loadingCheckPropagationItems)}
       </pre>
     </>
   );

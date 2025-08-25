@@ -38,6 +38,24 @@ const getAllDescendants = async <T>(
   return includeFolders ? [itemId, ...descendants] : descendants;
 };
 
+const withLoadingState = async <T>(
+  tree: TreeInstance<T>,
+  itemId: string,
+  callback: () => Promise<void>,
+) => {
+  tree.applySubStateUpdate("loadingCheckPropagationItems", (items) => [
+    ...items,
+    itemId,
+  ]);
+  try {
+    await callback();
+  } finally {
+    tree.applySubStateUpdate("loadingCheckPropagationItems", (items) =>
+      items.filter((id) => id !== itemId),
+    );
+  }
+};
+
 export const checkboxesFeature: FeatureImplementation = {
   key: "checkboxes",
 
@@ -45,6 +63,7 @@ export const checkboxesFeature: FeatureImplementation = {
 
   getInitialState: (initialState) => ({
     checkedItems: [],
+    loadingCheckPropagationItems: [],
     ...initialState,
   }),
 
@@ -61,6 +80,10 @@ export const checkboxesFeature: FeatureImplementation = {
       defaultConfig.canCheckFolders ?? !propagateCheckedState;
     return {
       setCheckedItems: makeStateUpdater("checkedItems", tree),
+      setLoadingCheckPropagationItems: makeStateUpdater(
+        "loadingCheckPropagationItems",
+        tree,
+      ),
       propagateCheckedState,
       canCheckFolders,
       ...defaultConfig,
@@ -69,6 +92,7 @@ export const checkboxesFeature: FeatureImplementation = {
 
   stateHandlerNames: {
     checkedItems: "setCheckedItems",
+    loadingCheckPropagationItems: "setLoadingCheckPropagationItems",
   },
 
   treeInstance: {
@@ -123,38 +147,45 @@ export const checkboxesFeature: FeatureImplementation = {
     },
 
     setChecked: async ({ item, tree, itemId }) => {
-      const { propagateCheckedState, canCheckFolders } = tree.getConfig();
-      if (item.isFolder() && propagateCheckedState) {
-        const descendants = await getAllDescendants(
-          tree,
-          itemId,
-          canCheckFolders,
-        );
-        tree.applySubStateUpdate("checkedItems", (items) => [
-          ...items,
-          ...descendants,
-        ]);
-      } else if (!item.isFolder() || canCheckFolders) {
-        tree.applySubStateUpdate("checkedItems", (items) => [...items, itemId]);
-      }
+      await withLoadingState(tree, itemId, async () => {
+        const { propagateCheckedState, canCheckFolders } = tree.getConfig();
+        if (item.isFolder() && propagateCheckedState) {
+          const descendants = await getAllDescendants(
+            tree,
+            itemId,
+            canCheckFolders,
+          );
+          tree.applySubStateUpdate("checkedItems", (items) => [
+            ...items,
+            ...descendants,
+          ]);
+        } else if (!item.isFolder() || canCheckFolders) {
+          tree.applySubStateUpdate("checkedItems", (items) => [
+            ...items,
+            itemId,
+          ]);
+        }
+      });
     },
 
     setUnchecked: async ({ item, tree, itemId }) => {
-      const { propagateCheckedState, canCheckFolders } = tree.getConfig();
-      if (item.isFolder() && propagateCheckedState) {
-        const descendants = await getAllDescendants(
-          tree,
-          itemId,
-          canCheckFolders,
-        );
-        tree.applySubStateUpdate("checkedItems", (items) =>
-          items.filter((id) => !descendants.includes(id) && id !== itemId),
-        );
-      } else {
-        tree.applySubStateUpdate("checkedItems", (items) =>
-          items.filter((id) => id !== itemId),
-        );
-      }
+      await withLoadingState(tree, itemId, async () => {
+        const { propagateCheckedState, canCheckFolders } = tree.getConfig();
+        if (item.isFolder() && propagateCheckedState) {
+          const descendants = await getAllDescendants(
+            tree,
+            itemId,
+            canCheckFolders,
+          );
+          tree.applySubStateUpdate("checkedItems", (items) =>
+            items.filter((id) => !descendants.includes(id) && id !== itemId),
+          );
+        } else {
+          tree.applySubStateUpdate("checkedItems", (items) =>
+            items.filter((id) => id !== itemId),
+          );
+        }
+      });
     },
   },
 };
