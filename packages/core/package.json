@@ -18,6 +18,9 @@
     "./package.json": "./package.json"
   },
   "sideEffects": false,
+  "publishConfig": {
+    "provenance": true
+  },
   "scripts": {
     "build": "tsup ./src/index.ts --format esm,cjs --dts",
     "start": "tsup ./src/index.ts --format esm,cjs --dts --watch",
