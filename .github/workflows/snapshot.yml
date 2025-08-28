@@ -44,6 +44,12 @@ jobs:
       - run: yarn build:core
       - run: yarn build:web
 
+      - name: Copy readme.md to packages
+        run: |
+          for dir in $(find packages -type d -maxdepth 1); do
+            cp readme.md $dir/readme.md
+          done
+          
       - name: Snapshot Versioning
         run: yarn changeset version --snapshot
 
