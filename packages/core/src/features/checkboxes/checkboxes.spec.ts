@@ -1,9 +1,12 @@
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 import { TestTree } from "../../test-utils/test-tree";
 import { checkboxesFeature } from "./feature";
 import { CheckedState } from "./types";
 
-const factory = TestTree.default({}).withFeatures(checkboxesFeature);
+const factory = TestTree.default({
+  propagateCheckedState: true,
+  canCheckFolders: false,
+}).withFeatures(checkboxesFeature);
 
 describe("core-feature/checkboxes", () => {
   factory.forSuits((tree) => {
@@ -50,7 +53,7 @@ describe("core-feature/checkboxes", () => {
         await tree.item("x111").setChecked();
         const refObject = { indeterminate: undefined };
         tree.item("x11").getCheckboxProps().ref(refObject);
-        await vi.waitFor(() => expect(refObject.indeterminate).toBe(true));
+        expect(refObject.indeterminate).toBe(true);
       });
 
       it("should not create indeterminate state", async () => {
@@ -104,20 +107,22 @@ describe("core-feature/checkboxes", () => {
           canCheckFolders: false,
         })
         .createTestCaseTree();
-      await testTree.item("x11").setChecked();
-      await testTree.item("x12").setChecked();
-      await testTree.item("x13").setChecked();
+      testTree.do.selectItem("x14"); // all leafs must be loaded initially, checkpropagation check only respects visibly loaded items
+      // TODO ^ might be a restriction we want to avoid
+      await testTree.resolveAsyncVisibleItems();
+      await testTree.runWhileResolvingItems(testTree.item("x11").setChecked);
+      await testTree.runWhileResolvingItems(testTree.item("x12").setChecked);
+      await testTree.runWhileResolvingItems(testTree.item("x13").setChecked);
       expect(testTree.item("x1").getCheckedState()).toBe(
         CheckedState.Indeterminate,
       );
-      testTree.do.selectItem("x14");
-      await testTree.item("x141").setChecked();
-      await testTree.item("x142").setChecked();
-      await testTree.item("x143").setChecked();
+      await testTree.runWhileResolvingItems(testTree.item("x141").setChecked);
+      await testTree.runWhileResolvingItems(testTree.item("x142").setChecked);
+      await testTree.runWhileResolvingItems(testTree.item("x143").setChecked);
       expect(testTree.item("x1").getCheckedState()).toBe(
         CheckedState.Indeterminate,
       );
-      await testTree.item("x144").setChecked();
+      await testTree.runWhileResolvingItems(testTree.item("x144").setChecked);
       expect(testTree.item("x1").getCheckedState()).toBe(CheckedState.Checked);
     });
 

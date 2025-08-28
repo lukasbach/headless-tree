@@ -101,6 +101,17 @@ export class TestTree<T = string> {
     await TestTree.resolveAsyncLoaders();
   }
 
+  async runWhileResolvingItems(cb: () => Promise<void>) {
+    const interval = setInterval(() => {
+      TestTree.resolveAsyncLoaders();
+    }, 5);
+    try {
+      await cb();
+    } finally {
+      clearInterval(interval);
+    }
+  }
+
   static default(config: Partial<TreeConfig<string>>) {
     return new TestTree({
       rootItemId: "x",
