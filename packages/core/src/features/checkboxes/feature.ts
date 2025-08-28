@@ -1,7 +1,6 @@
 import { type FeatureImplementation, TreeInstance } from "../../types/core";
 import { makeStateUpdater } from "../../utils";
 import { CheckedState } from "./types";
-import { throwError } from "../../utilities/errors";
 
 const getAllLoadedDescendants = <T>(
   tree: TreeInstance<T>,
@@ -68,14 +67,7 @@ export const checkboxesFeature: FeatureImplementation = {
   }),
 
   getDefaultConfig: (defaultConfig, tree) => {
-    const hasAsyncLoader = defaultConfig.features?.some(
-      (f) => f.key === "async-data-loader",
-    );
-    if (hasAsyncLoader && defaultConfig.propagateCheckedState) {
-      throwError(`propagateCheckedState not supported with async trees`);
-    }
-    const propagateCheckedState =
-      defaultConfig.propagateCheckedState ?? !hasAsyncLoader;
+    const propagateCheckedState = defaultConfig.propagateCheckedState ?? true;
     const canCheckFolders =
       defaultConfig.canCheckFolders ?? !propagateCheckedState;
     return {
