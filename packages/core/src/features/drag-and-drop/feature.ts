@@ -332,6 +332,13 @@ export const dragAndDropFeature: FeatureImplementation = {
       return target ? target.item.getId() === item.getId() : false;
     },
 
+    isUnorderedDragTarget: ({ tree, item }) => {
+      const target = tree.getDragTarget();
+      return target
+        ? !isOrderedDragTarget(target) && target.item.getId() === item.getId()
+        : false;
+    },
+
     isDragTargetAbove: ({ tree, item }) => {
       const target = tree.getDragTarget();
 
