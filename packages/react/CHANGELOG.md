@@ -1,5 +1,11 @@
 # @headless-tree/react
 
+## 1.4.1
+
+### Patch Changes
+
+- 72e714b: all NPM deployments will now publish with provenance
+
 ## 1.4.0
 
 ## 1.3.0

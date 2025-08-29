@@ -1,5 +1,16 @@
 # @headless-tree/core
 
+## 1.4.1
+
+### Patch Changes
+
+- 72e714b: all NPM deployments will now publish with provenance
+- 215ab4b: add a new symbol that can be used in hotkey configurations "metaorcontrol" that will trigger if either any windows control key or mac meta key is pressed (#141)
+- 51b0dea: Added `isUnorderedDragTarget` as alternative to `isDragTarget` for easier detection of drag type
+- cf845d7: Added new state variable `loadingCheckPropagationItems` to indicate if, in async trees with checkboxes and state propagation enabled, data loading operations are currently loading due to a checkbox propagation taking place
+- 597faad: Checkbox propagation is now supported for trees with async data loaders!
+- b0ee382: triggering a data refetch will now always set the loadingItemData/loadingItemChildrens state variable to the associated items if they where not apart of the cache before
+
 ## 1.4.0
 
 ### Minor Changes
