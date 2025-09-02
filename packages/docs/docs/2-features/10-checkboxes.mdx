@@ -38,16 +38,23 @@ always be directly inferred from their leafs.
 
 :::warning
 
-Trees with `propagateCheckedState=true` is currently only supported for synchronous trees, not trees using the Async
-Data Loader feature.
+If you use asynchronous trees with `propagateCheckedState=true`, checking an item will trigger loading
+children recursively for all descendants.
 
 :::
-
-The default for `propagateCheckedState` is `true` for synchronous trees, and `false` for asynchronous trees.
 
 Below, you can experiment with the behavior for various combinations of `propagateCheckedState` and `canCheckFolders`:
 
 <DemoBox tags={["feature/checkbox"]} initialStory="react-checkboxes-configurability--configurability" />
+
+## Asynchronous checkbox propagation
+
+You can also use checkbox propagation with trees that use async data loaders. If a checkbox is clicked, all nested
+descendants IDs that are not yet loaded will be loaded via the `getChildren` or `getChildrenWithData` APIs, and
+their checkbox state will be updated accordingly. While they are loading, the state variable `loadingCheckPropagationItems`
+can be used to render a loading spinner on checkboxes that are loading.
+
+<DemoBox tags={["feature/checkbox"]} initialStory="react-checkboxes-async-configurability--async-configurability" />
 
 ## Further customizing checkbox behavior
 
