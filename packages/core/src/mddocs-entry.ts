@@ -10,6 +10,7 @@ import { SyncDataLoaderFeatureDef } from "./features/sync-data-loader/types";
 import { TreeFeatureDef } from "./features/tree/types";
 import { PropMemoizationFeatureDef } from "./features/prop-memoization/types";
 import { KeyboardDragAndDropFeatureDef } from "./features/keyboard-drag-and-drop/types";
+import type { CheckboxesFeatureDef } from "./features/checkboxes/types";
 
 export * from ".";
 
@@ -167,3 +168,15 @@ export type TreeFeatureTreeInstance<T> = TreeFeatureDef<T>["treeInstance"];
 /** @interface */
 export type TreeFeatureItemInstance<T> = TreeFeatureDef<T>["itemInstance"];
 export type TreeFeatureHotkeys<T> = TreeFeatureDef<T>["hotkeys"];
+
+/** @interface */
+export type CheckboxesFeatureConfig<T> = CheckboxesFeatureDef<T>["config"];
+/** @interface */
+export type CheckboxesFeatureState<T> = CheckboxesFeatureDef<T>["state"];
+/** @interface */
+export type CheckboxesFeatureTreeInstance<T> =
+  CheckboxesFeatureDef<T>["treeInstance"];
+/** @interface */
+export type CheckboxesFeatureItemInstance<T> =
+  CheckboxesFeatureDef<T>["itemInstance"];
+export type CheckboxesFeatureHotkeys<T> = CheckboxesFeatureDef<T>["hotkeys"];
