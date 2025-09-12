@@ -25,6 +25,7 @@
       "outputs": [
         "{projectRoot}/public",
         "{projectRoot}/build",
+        "{projectRoot}/static",
         "{projectRoot}/.docusaurus"
       ]
     },
