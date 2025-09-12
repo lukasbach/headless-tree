@@ -28,7 +28,6 @@ jobs:
       - run: yarn build:core
       - run: yarn build:sb
       - run: yarn llmtxt
-      - run: ls ./packages/docs/build
       - run: ls ./packages/docs/static
       - run: yarn build:web
       - run: ls ./packages/docs/build
