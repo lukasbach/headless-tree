@@ -24,8 +24,8 @@
         "default": "./dist/index.mjs"
       },
       "require": {
-        "types": "./dist/index.js",
-        "default": "./dist/index.d.ts"
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
       }
     },
     "./package.json": "./package.json"
