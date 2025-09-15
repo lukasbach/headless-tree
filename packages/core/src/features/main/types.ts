@@ -49,6 +49,8 @@ export type MainFeatureDef<T = any> = {
     /* @internal */
     getHotkeyPresets: () => HotkeysConfig<T>;
     rebuildTree: () => void;
+    /** @deprecated Experimental feature, might get removed or changed in the future. */
+    scheduleRebuildTree: () => void;
   };
   itemInstance: {
     registerElement: (element: HTMLElement | null) => void;

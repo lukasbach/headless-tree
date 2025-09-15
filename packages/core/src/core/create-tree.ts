@@ -92,6 +92,7 @@ export const createTree = <T>(
   let treeElement: HTMLElement | undefined | null;
   const treeDataRef: { current: any } = { current: {} };
 
+  let rebuildScheduled = false;
   const itemInstancesMap: Record<string, ItemInstance<T>> = {};
   let itemInstances: ItemInstance<T>[] = [];
   const itemElementsMap: Record<string, HTMLElement | undefined | null> = {};
@@ -140,6 +141,8 @@ export const createTree = <T>(
         itemInstances.push(itemInstancesMap[item.itemId]);
       }
     }
+
+    rebuildScheduled = false;
   };
 
   const eachFeature = (fn: (feature: FeatureImplementation<any>) => void) => {
@@ -174,6 +177,9 @@ export const createTree = <T>(
       rebuildTree: () => {
         rebuildItemMeta();
         config.setState?.(state);
+      },
+      scheduleRebuildTree: () => {
+        rebuildScheduled = true;
       },
       getConfig: () => config,
       setConfig: (_, updater) => {
@@ -210,7 +216,10 @@ export const createTree = <T>(
         }
         return existingInstance;
       },
-      getItems: () => itemInstances,
+      getItems: () => {
+        if (rebuildScheduled) rebuildItemMeta();
+        return itemInstances;
+      },
       registerElement: ({}, element) => {
         if (treeElement === element) {
           return;
