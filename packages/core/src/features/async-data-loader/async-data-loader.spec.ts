@@ -46,6 +46,7 @@ describe("core-feature/selections", () => {
       );
       const setLoadingItemData = tree.mockedHandler("setLoadingItemData");
       tree.do.selectItem("x12");
+      await tree.do.awaitNextTick();
       expect(setLoadingItemChildrens).toHaveBeenCalledWith(["x12"]);
       expect(setLoadingItemData).not.toHaveBeenCalled();
       await tree.resolveAsyncVisibleItems();

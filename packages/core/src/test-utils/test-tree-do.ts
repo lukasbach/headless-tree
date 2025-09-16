@@ -135,4 +135,10 @@ export class TestTreeDo<T> {
       "function called with inconsistent parameters",
     ).toBeOneOf([0, 1]);
   }
+
+  async awaitNextTick() {
+    await new Promise((r) => {
+      setTimeout(r);
+    });
+  }
 }
