@@ -118,7 +118,7 @@ export const asyncDataLoaderFeature: FeatureImplementation = {
       }
 
       if (!tree.getState().loadingItemData.includes(itemId) && !skipFetch) {
-        loadItemData(tree, itemId);
+        setTimeout(() => loadItemData(tree, itemId));
       }
 
       return config.createLoadingItemData?.() ?? null;
@@ -134,7 +134,7 @@ export const asyncDataLoaderFeature: FeatureImplementation = {
         return [];
       }
 
-      loadChildrenIds(tree, itemId);
+      setTimeout(() => loadChildrenIds(tree, itemId));
 
       return [];
     },
