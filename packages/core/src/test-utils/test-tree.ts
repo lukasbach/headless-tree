@@ -87,16 +87,9 @@ export class TestTree<T = string> {
 
   static async resolveAsyncLoaders() {
     do {
-      await new Promise<void>((r) => {
-        setTimeout(r);
-      });
+      await vi.advanceTimersToNextTimerAsync();
       TestTree.asyncLoaderResolvers.shift()?.();
-      await new Promise<void>((r) => {
-        setTimeout(r);
-      });
-      await new Promise<void>((r) => {
-        setTimeout(r);
-      });
+      await vi.advanceTimersToNextTimerAsync();
     } while (TestTree.asyncLoaderResolvers.length);
   }
 
