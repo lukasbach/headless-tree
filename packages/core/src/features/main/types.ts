@@ -10,6 +10,11 @@ import {
 } from "../../types/core";
 import { ItemMeta } from "../tree/types";
 
+export interface TreeDataRef {
+  isMounted?: boolean;
+  waitingForMount?: (() => void)[];
+}
+
 export type InstanceTypeMap = {
   itemInstance: ItemInstance<any>;
   treeInstance: TreeInstance<any>;
@@ -51,6 +56,8 @@ export type MainFeatureDef<T = any> = {
     rebuildTree: () => void;
     /** @deprecated Experimental feature, might get removed or changed in the future. */
     scheduleRebuildTree: () => void;
+    /** @internal */
+    setMounted: (isMounted: boolean) => void;
   };
   itemInstance: {
     registerElement: (element: HTMLElement | null) => void;

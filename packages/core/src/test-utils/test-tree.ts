@@ -78,6 +78,7 @@ export class TestTree<T = string> {
   get instance() {
     if (!this.treeInstance) {
       this.treeInstance = createTree(this.config);
+      this.treeInstance.setMounted(true);
       this.treeInstance.rebuildTree();
     }
     return this.treeInstance;

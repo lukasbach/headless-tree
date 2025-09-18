@@ -11,6 +11,7 @@ import { treeFeature } from "../features/tree/feature";
 import { ItemMeta } from "../features/tree/types";
 import { buildStaticInstance } from "./build-static-instance";
 import { throwError } from "../utilities/errors";
+import type { TreeDataRef } from "../features/main/types";
 
 const verifyFeatures = (features: FeatureImplementation[] | undefined) => {
   const loadedFeatures = features?.map((feature) => feature.key);
@@ -161,17 +162,34 @@ export const createTree = <T>(
         config.setState?.(state); // TODO this cant be right... This doesnt allow external state updates
         // TODO this is never used, remove
       },
+      setMounted: ({}, isMounted) => {
+        const ref = treeDataRef as TreeDataRef;
+        treeDataRef.current.isMounted = isMounted;
+        if (isMounted) {
+          ref.waitingForMount?.forEach((cb) => cb());
+          ref.waitingForMount = [];
+        }
+      },
       applySubStateUpdate: <K extends keyof TreeState<any>>(
         {},
         stateName: K,
         updater: Updater<TreeState<T>[K]>,
       ) => {
-        state[stateName] =
-          typeof updater === "function" ? updater(state[stateName]) : updater;
-        const externalStateSetter = config[
-          stateHandlerNames[stateName]
-        ] as Function;
-        externalStateSetter?.(state[stateName]);
+        const apply = () => {
+          state[stateName] =
+            typeof updater === "function" ? updater(state[stateName]) : updater;
+          const externalStateSetter = config[
+            stateHandlerNames[stateName]
+          ] as Function;
+          externalStateSetter?.(state[stateName]);
+        };
+        const ref = treeDataRef.current as TreeDataRef;
+        if (ref.isMounted) {
+          apply();
+        } else {
+          ref.waitingForMount ??= [];
+          ref.waitingForMount.push(apply);
+        }
       },
       // TODO rebuildSubTree: (itemId: string) => void;
       rebuildTree: () => {
