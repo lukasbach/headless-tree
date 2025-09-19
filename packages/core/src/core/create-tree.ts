@@ -166,7 +166,6 @@ export const createTree = <T>(
         const ref = treeDataRef.current as TreeDataRef;
         ref.isMounted = isMounted;
         if (isMounted) {
-          console.log("apply waiting", ref.waitingForMount?.length);
           ref.waitingForMount?.forEach((cb) => cb());
           ref.waitingForMount = [];
         }
@@ -186,10 +185,8 @@ export const createTree = <T>(
         };
         const ref = treeDataRef.current as TreeDataRef;
         if (ref.isMounted) {
-          console.log("apply substate now");
           apply();
         } else {
-          console.log("apply substate later");
           ref.waitingForMount ??= [];
           ref.waitingForMount.push(apply);
         }
@@ -200,14 +197,12 @@ export const createTree = <T>(
         if (ref.isMounted) {
           rebuildItemMeta();
           config.setState?.(state);
-          console.log("rebuild now");
         } else {
           ref.waitingForMount ??= [];
           ref.waitingForMount.push(() => {
             rebuildItemMeta();
             config.setState?.(state);
           });
-          console.log("rebuild later");
         }
       },
       scheduleRebuildTree: () => {
