@@ -38,33 +38,6 @@ rootItemId: "root",
 You still hook the tree up to your data source with `dataLoader`, but can now use asynchronous methods for
 retrieving your tree data.
 
-## Loading Items
-
-The Async Data Loader provides functionality for marking items as "loading" and displaying them as such. While item
-data is loading through the `getItem` function, it is considered "loading" and is intended to be displayed as such.
-The same goes for an items children, while their IDs are being fetched through the `getChildren` function.
-
-The Async Data Loader defines a state for loading items: `state.loadingItems` keeps an array of item IDs which are currently
-loading. For a given item, you can check if it is loading by calling `item.isLoading()`.
-<!-- TODO update to new async data loader api -->
-
-When an item is loading, its item data will be set to the value returned by `config.createLoadingItemData`. This
-way, you can customize how loading items are displayed.
-
-## Invalidating Item Data
-
-While the Sync Data Loader does not provide a data invalidation concept since it refetches all data during every render
-anyway, the Async Data Loader caches item data and does not refetch it unless it is invalidated. Methods for invalidating
-certain items are provided on the item instance:
-
-```ts
-item.invalidateItemData();
-
-item.invalidateChildrenIds();
-```
-
-The data loader will then refetch the respective data the next render.
-
 ## Fetching all children data at once
 
 The dataloader also specifies an alternative interface for fetching the payload for all children of an item
@@ -87,3 +60,67 @@ const dataLoader = {
 ```
 
 <DemoBox tags={["feature/async-data-loader"]} initialStory="react-async-async-get-children-with-data--async-get-children-with-data" />
+
+## Loading Items
+
+The Async Data Loader provides functionality for marking items as "loading" and displaying them as such. While item
+data is loading through the `getItem` function, it is considered "loading" and is intended to be displayed as such.
+The same goes for an items children, while their IDs are being fetched through the `getChildren` function.
+
+The Async Data Loader defines state properties for loading items: 
+
+- `state.loadingItems` keeps an array of item IDs which are currently loading (via `getItem` or `getChildrenWithData`)
+- `state.loadingItemChildren` keeps an array of item IDs whose children are currently loading (via `getChildren` or `getChildrenWithData`)
+
+For a given item, you can check if it is loading its item data or children by calling `item.isLoading()`.
+
+When an item is loading, its item data will be set to the value returned by `config.createLoadingItemData`. This
+way, you can customize how loading items are displayed.
+
+## Invalidating Item Data
+
+While the Sync Data Loader does not provide a data invalidation concept since it refetches all data during every render
+anyway, the Async Data Loader caches item data and does not refetch it unless it is invalidated. Methods for invalidating
+certain items are provided on the item instance:
+
+```ts
+item.invalidateItemData();
+item.invalidateChildrenIds();
+```
+
+The data loader will then refetch the respective data the next render.
+
+## Optimistic Item Data Invalidation
+
+Both `item.invalidateItemData()` and `item.invalidateChildrenIds()` also accept a boolean parameter `optimistic`. If set
+to true, the respective data property will be refetched using the data loader implementation, but the state properties 
+`loadingItems` and `loadingItemChildrens` will not be updated, meaning that the tree will not rerender and no items will
+change into a loading state, and instead continue displaying the old data. Once fetching completes, the new data will be applied
+into the cache and the tree will rerender with the new data.
+
+```ts
+item.invalidateItemData(true);
+item.invalidateChildrenIds(true);
+```
+
+## Optimistic Cache Updates
+
+Instead of invalidating and triggering a refetch, the cached item data can also be updated directly. This will not trigger 
+state updates to the state properties `loadingItems` and `loadingItemChildrens`, and the tree will rerender with the new data immediately.
+
+```ts
+item.updateCachedData({ newData: "abc" });
+item.updateCachedChildrenIds(["child-1", "child-2", "child-3"]);
+```
+
+## Loading unmounted items
+
+Headless Tree automatically schedules loading of items that are visibly mounted in the tree, i.e. items that are inside folders that are
+currently expanded. If you need to retrieve information about items that are not currently mounted, you can use the `tree.loadItemData(itemId)`
+or `tree.loadChildrenIds(itemId)` methods to trigger loading of specific items or their children. The methods will directly return
+a promise that resolves with the retrieved information, and the information will be inserted into the HT cache from where it can be used
+via methods like `item.getItemData()`, `item.getChildren()` or `item.getItemName()`.
+
+Note that `item.getItemMeta()` will only return information about items that are visibly mounted in the tree, even if the data was forcefully
+loaded via `tree.loadItemData(itemId)` or `tree.loadChildrenIds(itemId)`, since that method returns information that relies on the position
+of the item in the tree, which is not known for unmounted items.
