@@ -26,7 +26,7 @@ which make sense in the scope of your change have been completed:
 Feel free to reach out at any time during your contribution process if you 
 have any questions or need help. You can also collaborate in our Discord
 community to get help or discuss your ideas with other contributors:
-- https://discord.gg/WN85eMY3
+- https://discord.gg/KuZ6EezzVw
 
 There are some more detailed documentations available on contributing implementation
 changes to Headless Tree at the HT website: 
