@@ -93,11 +93,11 @@ type MayReturnNull<T extends (...x: any[]) => any> = (
   ...args: Parameters<T>
 ) => ReturnType<T> | null;
 
-export type ItemInstanceOpts<Key extends keyof ItemInstance<any>> = {
-  item: ItemInstance<any>;
-  tree: TreeInstance<any>;
+export type ItemInstanceOpts<T, Key extends keyof ItemInstance<any>> = {
+  item: ItemInstance<T>;
+  tree: TreeInstance<T>;
   itemId: string;
-  prev?: MayReturnNull<ItemInstance<any>[Key]>;
+  prev?: MayReturnNull<ItemInstance<T>[Key]>;
 };
 
 export type TreeInstanceOpts<Key extends keyof TreeInstance<any>> = {
@@ -131,7 +131,7 @@ export type FeatureImplementation<T = any> = {
 
   itemInstance?: {
     [key in keyof ItemInstance<T>]?: (
-      opts: ItemInstanceOpts<key>,
+      opts: ItemInstanceOpts<T, key>,
       ...args: Parameters<ItemInstance<T>[key]>
     ) => void;
   };
