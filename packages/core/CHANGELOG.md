@@ -1,5 +1,22 @@
 # @headless-tree/core
 
+## 1.5.0
+
+### Minor Changes
+
+- cbeaba6: all state updates (like setSelectedItems) will not propagate while the component is unmounted. This happened before for `tree.setState()` calls directly, but not individual state atoms like `setSelectedItems`. When calling `createTree()` directly (instead of `useTree()`), `tree.setMounted(true)` needs to be called once after mount. No changes are necessary when using the React-based `useTree()` integration. (#158)
+
+### Patch Changes
+
+- 72e714b: all NPM deployments will now publish with provenance
+- 6693986: fixed an issue where async data loaders cause calling `item.getItemData()` outside of the component calling `useTree()` to cause a React warning log (#158)
+- 7a7424f: fixed incorrect exports definition in package.json for require/cjs imports (#161)
+- 215ab4b: add a new symbol that can be used in hotkey configurations "metaorcontrol" that will trigger if either any windows control key or mac meta key is pressed (#141)
+- 51b0dea: Added `isUnorderedDragTarget` as alternative to `isDragTarget` for easier detection of drag type
+- cf845d7: Added new state variable `loadingCheckPropagationItems` to indicate if, in async trees with checkboxes and state propagation enabled, data loading operations are currently loading due to a checkbox propagation taking place
+- 597faad: Checkbox propagation is now supported for trees with async data loaders!
+- b0ee382: triggering a data refetch will now always set the loadingItemData/loadingItemChildrens state variable to the associated items if they where not apart of the cache before
+
 ## 1.4.0
 
 ### Minor Changes
