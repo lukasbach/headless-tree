@@ -14,6 +14,7 @@ const specialKeys: Record<string, RegExp> = {
   control: /^(ControlLeft|ControlRight)$/,
   shift: /^(ShiftLeft|ShiftRight)$/,
   metaorcontrol: /^(MetaLeft|MetaRight|ControlLeft|ControlRight)$/,
+  enter: /^(Enter|NumpadEnter)$/,
 };
 
 const testHotkeyMatch = (
