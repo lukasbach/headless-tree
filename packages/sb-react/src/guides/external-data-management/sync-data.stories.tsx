@@ -1,10 +1,11 @@
 import type { Meta } from "@storybook/react";
-import React, { Fragment, useState } from "react";
+import React, { Fragment } from "react";
 import {
   ItemInstance,
   createOnDropHandler,
   dragAndDropFeature,
   hotkeysCoreFeature,
+  insertItemsAtTarget,
   keyboardDragAndDropFeature,
   renamingFeature,
   searchFeature,
@@ -13,11 +14,11 @@ import {
 } from "@headless-tree/core";
 import { AssistiveTreeDescription, useTree } from "@headless-tree/react";
 import cn from "classnames";
-import { DemoItem, createDemoData } from "../utils/data";
+import { DemoItem, createDemoData } from "../../utils/data";
 
 const meta = {
-  title: "React/Guides/Data In React State",
-  tags: ["feature/dnd", "homepage"],
+  title: "React/Guides/External Data Management/Sync Data",
+  tags: ["guide", "external data"],
 } satisfies Meta;
 
 export default meta;
@@ -35,18 +36,10 @@ const getCssClass = (item: ItemInstance<DemoItem>) =>
   });
 
 // story-start
-export const DataInReactState = () => {
-  const [treeData, setTreeData] = useState(() => createDemoData().data);
+// Data is of type `Record<string, DemoItem>`
+const { syncDataLoader, data } = createDemoData();
 
-  const insertNewItem = (dataTransfer: DataTransfer) => {
-    const newId = `new-${newItemId++}`;
-    setTreeData((prev) => ({
-      ...prev,
-      [newId]: { name: dataTransfer.getData("text/plain") },
-    }));
-    return newId;
-  };
-
+export const SyncData = () => {
   const tree = useTree<DemoItem>({
     initialState: {
       expandedItems: ["fruit"],
@@ -57,27 +50,13 @@ export const DataInReactState = () => {
     isItemFolder: (item) => !!item.getItemData().children,
     canReorder: true,
     onDrop: createOnDropHandler((item, newChildren) => {
-      setTreeData((prev) => ({
-        ...prev,
-        [item.getId()]: {
-          ...prev[item.getId()],
-          children: newChildren,
-        },
-      }));
+      data[item.getId()].children = newChildren;
     }),
-    onRename: (item, value) =>
-      setTreeData((prev) => ({
-        ...prev,
-        [item.getId()]: {
-          ...prev[item.getId()],
-          name: value,
-        },
-      })),
-    indent: 20,
-    dataLoader: {
-      getItem: (id: string) => treeData[id],
-      getChildren: (id: string) => treeData[id]?.children ?? [],
+    onRename: (item, value) => {
+      data[item.getId()].name = value;
     },
+    indent: 20,
+    dataLoader: syncDataLoader,
     features: [
       syncDataLoaderFeature,
       selectionFeature,
@@ -87,6 +66,16 @@ export const DataInReactState = () => {
       renamingFeature,
       searchFeature,
     ],
+
+    // For dragging foreign items into the tree:
+    canDropForeignDragObject: (_, target) => target.item.isFolder(),
+    onDropForeignDragObject: async (dataTransfer, target) => {
+      const newId = `new-${newItemId++}`;
+      data[newId] = { name: dataTransfer.getData("text/plain") };
+      await insertItemsAtTarget([newId], target, (item, newChildrenIds) => {
+        data[item.getId()].children = newChildrenIds;
+      });
+    },
   });
 
   return (
@@ -109,12 +98,28 @@ export const DataInReactState = () => {
                 <input {...item.getRenameInputProps()} />
               </div>
             ) : (
-              <button
-                {...item.getProps()}
-                style={{ paddingLeft: `${item.getItemMeta().level * 20}px` }}
-              >
-                <div className={getCssClass(item)}>{item.getItemName()}</div>
-              </button>
+              <div className="outeritem">
+                <button
+                  {...item.getProps()}
+                  style={{ paddingLeft: `${item.getItemMeta().level * 20}px` }}
+                >
+                  <div className={getCssClass(item)}>{item.getItemName()}</div>
+                </button>
+                <button
+                  onClick={() => {
+                    const parent = item.getParent()?.getId();
+                    if (!parent) return;
+                    delete data[item.getId()];
+                    data[parent].children = data[parent].children?.filter(
+                      (id) => id !== item.getId(),
+                    );
+                    tree.rebuildTree();
+                  }}
+                >
+                  delete
+                </button>
+                <button onClick={() => item.startRenaming()}>rename</button>
+              </div>
             )}
           </Fragment>
         ))}
@@ -136,21 +141,37 @@ export const DataInReactState = () => {
           onClick={() => {
             const parent = tree.getItemInstance("fruit").getParent()?.getId();
             if (!parent) return;
-            setTreeData((prev) => {
-              const newData = { ...prev };
-              delete newData.fruit;
-              newData[parent].children = newData[parent].children?.filter(
-                (id) => id !== "fruit",
-              );
-              return newData;
-            });
-            tree.scheduleRebuildTree();
+            delete data.fruit;
+            data[parent].children = data[parent].children?.filter(
+              (id) => id !== "fruit",
+            );
+            tree.rebuildTree();
           }}
         >
           Delete Fruit
         </button>
+        <button
+          className="actionbtn"
+          onClick={() => {
+            if (!data.fruit) return;
+            const newId = `new-${newItemId++}`;
+            data[newId] = { name: "New item" };
+            data.fruit.children = [...(data.fruit.children || []), newId];
+            tree.rebuildTree();
+          }}
+        >
+          Insert new item into fruit
+        </button>
+        <div
+          className="foreign-dragsource"
+          draggable
+          onDragStart={(e) => {
+            e.dataTransfer.setData("text/plain", "hello world");
+          }}
+        >
+          Drag me into the tree!
+        </div>
       </div>
-      <pre>{JSON.stringify(treeData, null, 2)}</pre>
     </>
   );
 };
