@@ -4,6 +4,8 @@ title: "Handling external state updates"
 category: recipe
 ---
 
+import { DemoBox } from "../../src/components/demo/demo-box";
+
 Generally, Headless Tree loads the tree structure once when it is loaded, and loads subsequent substructures
 whenever parts of the visual tree change, e.g. because a folder is expanded that was collapsed before.
 Headless Tree provides ways to mutate the tree via drag events or renaming, and makes sure that it reloads
@@ -44,7 +46,17 @@ const addNode = () => {
   items["item3"] = { name: "Item 3", children: [] };
   tree.rebuildTree();
 };
+
+const removeNode = () => {
+  delete items["item2"];
+  items["item1"].children = items["item1"].children.filter(id => id !== "item2");
+  tree.rebuildTree();
+};
 ```
+
+The following sample shows how to add and delete items from a synchronous tree, as well mutating their data by renaming them.
+
+<DemoBox tags={["guide/externaldata"]} initialStory={"react-guides-external-data-management-sync-data--sync-data"} />
 
 ## Asynchronous Trees
 
@@ -63,3 +75,34 @@ item.invalidateChildrenIds();
 
 You will not have to additionally call `tree.rebuildTree()`, as this is done automatically by the async
 data loader feature once it has refetched the data.
+
+Instead of invalidating and waiting for a refetch, you can also directly update the cached data of an item
+or its cached children ids, if you already have the new data available:
+
+```ts
+const item = tree.getItemInstance("item1");
+item.updateCachedData({ ...item.getItemData(), name: "New name" });
+item.updateCachedChildrenIds(["child1", "child2"]);
+```
+
+In the demo below, you can see the same samples for adding and deleting data as above, but with 
+an async data loader instead. In this sample, the cache is updated with `item.updateCachedChildrenIds()`
+and `item.updateCachedData()`. Note that you do need to call `tree.rebuildTree()` after mutating
+the data this way.
+
+<DemoBox tags={["guide/externaldata"]} initialStory={"react-guides-external-data-management-async-data--async-data"} />
+
+## Managing tree data in a React state
+
+Most samples in the documentation use a data loader implementation that lives outside of React, since in most
+cases the data loader will directly interface with your backend or other external data source to provide
+tree data to Headless Tree.
+
+The sample below demonstrates how to manage the tree data in a React state. The most relevant gotcha is that calling
+`rebuildTree()` may behave unexpectedly in cases where data is stored in a React state. If you mutate your tree data
+by updating the React state, the `useState` getter will only reflect the new state during the next rerender. 
+Calling `rebuildTree()` immediately after you made your changes, will result in the rebuild logic running on the old
+data from before the rerender. To combat this, you can use `tree.scheduleRebuildTree()` instead, trigger a rebuild
+the next time `tree.getItems()` is called, which will be after the next rerender.
+
+<DemoBox tags={["guide/externaldata"]} initialStory={"react-guides-external-data-management-data-in-react-state--data-in-react-state"} />

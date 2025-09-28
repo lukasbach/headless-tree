@@ -18,7 +18,7 @@ import { DemoItem, createDemoData } from "../../utils/data";
 
 const meta = {
   title: "React/Guides/External Data Management/Async Data",
-  tags: ["guide", "external data"],
+  tags: ["guide", "guide/externaldata"],
 } satisfies Meta;
 
 export default meta;
@@ -55,7 +55,7 @@ export const AsyncData = () => {
     }),
     onRename: (item, value) => {
       data[item.getId()].name = value;
-      item.updateCachedData({ ...item.getItemData(), name: value }); // TODO mention in rename docs
+      item.updateCachedData({ ...item.getItemData(), name: value });
     },
     indent: 20,
     dataLoader: asyncDataLoader,

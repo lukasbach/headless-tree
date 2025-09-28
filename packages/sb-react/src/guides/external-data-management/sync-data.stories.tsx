@@ -18,7 +18,7 @@ import { DemoItem, createDemoData } from "../../utils/data";
 
 const meta = {
   title: "React/Guides/External Data Management/Sync Data",
-  tags: ["guide", "external data"],
+  tags: ["guide", "guide/externaldata"],
 } satisfies Meta;
 
 export default meta;
