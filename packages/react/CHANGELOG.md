@@ -1,5 +1,16 @@
 # @headless-tree/react
 
+## 1.5.0
+
+### Minor Changes
+
+- cbeaba6: all state updates (like setSelectedItems) will not propagate while the component is unmounted. This happened before for `tree.setState()` calls directly, but not individual state atoms like `setSelectedItems`. When calling `createTree()` directly (instead of `useTree()`), `tree.setMounted(true)` needs to be called once after mount. No changes are necessary when using the React-based `useTree()` integration. (#158)
+
+### Patch Changes
+
+- 72e714b: all NPM deployments will now publish with provenance
+- 7a7424f: fixed incorrect exports definition in package.json for require/cjs imports (#161)
+
 ## 1.4.0
 
 ## 1.3.0
