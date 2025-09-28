@@ -11,6 +11,10 @@
 - 72e714b: all NPM deployments will now publish with provenance
 - 7a7424f: fixed incorrect exports definition in package.json for require/cjs imports (#161)
 
+### Sponsorship appreciation
+
+Thanks for [Docmost](https://docmost.com/), who have supported the development of Headless Tree with a sponsor contribution. Docmost is a wiki-software that can be self-hosted or used in cloud. Thank you!
+
 ## 1.4.0
 
 ## 1.3.0

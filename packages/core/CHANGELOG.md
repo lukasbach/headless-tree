@@ -17,6 +17,10 @@
 - 597faad: Checkbox propagation is now supported for trees with async data loaders!
 - b0ee382: triggering a data refetch will now always set the loadingItemData/loadingItemChildrens state variable to the associated items if they where not apart of the cache before
 
+### Sponsorship appreciation
+
+Thanks for [Docmost](https://docmost.com/), who have supported the development of Headless Tree with a sponsor contribution. Docmost is a wiki-software that can be self-hosted or used in cloud. Thank you!
+
 ## 1.4.0
 
 ### Minor Changes
