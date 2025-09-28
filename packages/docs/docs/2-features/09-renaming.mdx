@@ -46,3 +46,16 @@ if (item.isRenaming()) {
 You can also customize which items can be renamed by providing a `canRename` function in the tree configuration.
 
 <DemoBox tags={["feature/renaming"]} initialStory="react-renaming-can-rename-configurability--can-rename-configurability" />
+
+## Updating the cache of async data loaders
+
+Async data loaders cache item information to avoid reloading items that have already been loaded. If you are using
+an async data loader, you will need to update the cached item information when an item is renamed. You can do this
+by calling `item.updateCachedData(newItemData)` on the item that was renamed:
+
+```ts
+item.updateCachedData({ ...item.getItemData(), name: value });
+```
+
+Alternatively, you can also invalidate the cache for the item by calling `item.invalidateItemData()`, which will
+make sure that the item data is reloaded from the data loader the next time it is rendered.
