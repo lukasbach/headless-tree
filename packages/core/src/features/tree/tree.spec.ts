@@ -327,15 +327,22 @@ describe("core-feature/tree", () => {
         expect(tree.instance.getItemInstance("x1").isFolder()).toBe(true);
       });
 
-      it("returns correct isFolder for hidden items", () => {
+      it("returns correct isFolder for hidden items", async () => {
         if (title.toLocaleLowerCase().includes("async")) {
           // async test tree defaults to "loading" item names
           return;
         }
+        const testTree = await tree
+          .with({
+            isItemFolder: (item: any) => item.getItemData().length < 4,
+          })
+          .createTestCaseTree();
 
         // Reference: https://github.com/lukasbach/headless-tree/issues/166
-        expect(tree.instance.getItemInstance("x44").isFolder()).toBe(true);
-        expect(tree.instance.getItemInstance("x444").isFolder()).toBe(false);
+        expect(testTree.instance.getItemInstance("x44").isFolder()).toBe(true);
+        expect(testTree.instance.getItemInstance("x444").isFolder()).toBe(
+          false,
+        );
       });
 
       it("returns isFolder=true for root item", () => {

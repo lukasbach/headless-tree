@@ -122,7 +122,7 @@ export class TestTree<T = string> {
       },
       getItemName: (item) => item.getItemData(),
       indent: 20,
-      isItemFolder: (item) => item.getItemData().length < 4,
+      isItemFolder: (item) => item.getItemMeta().level < 2,
       initialState: {
         expandedItems: ["x1", "x11"],
       },
