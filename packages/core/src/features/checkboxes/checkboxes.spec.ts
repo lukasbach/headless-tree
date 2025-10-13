@@ -102,7 +102,6 @@ describe("core-feature/checkboxes", () => {
     it("should turn folder checked if all children are checked", async () => {
       const testTree = await tree
         .with({
-          isItemFolder: (item: any) => item.getItemData().length < 4,
           propagateCheckedState: true,
           canCheckFolders: false,
         })

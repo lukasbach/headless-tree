@@ -4,8 +4,8 @@ import { propMemoizationFeature } from "../prop-memoization/feature";
 
 const factory = TestTree.default({}).withFeatures(propMemoizationFeature);
 
-describe("core-feature/selections", () => {
-  factory.forSuits((tree) => {
+describe("core-feature/tree", () => {
+  factory.forSuits((tree, title) => {
     describe("expanded items", () => {
       it("can expand via tree instance", () => {
         const setExpandedItems = tree.mockedHandler("setExpandedItems");
@@ -149,6 +149,17 @@ describe("core-feature/selections", () => {
         expect(tree.instance.getItemInstance("x").getItemMeta()).toEqual({
           index: -1,
           itemId: "x",
+          level: -1,
+          parentId: null,
+          posInSet: 0,
+          setSize: 1,
+        });
+      });
+
+      it("unloaded item", () => {
+        expect(tree.instance.getItemInstance("x444").getItemMeta()).toEqual({
+          index: -1,
+          itemId: "x444",
           level: -1,
           parentId: null,
           posInSet: 0,
@@ -312,8 +323,23 @@ describe("core-feature/selections", () => {
         expect(tree.instance.getItemInstance("x1").isFolder()).toBe(true);
       });
 
-      it("returns correctly for false cases of isFolder()", () => {
-        expect(tree.instance.getItemInstance("x111").isFolder()).toBe(false);
+      it("returns correctly for true cases of isFolder() ", () => {
+        expect(tree.instance.getItemInstance("x1").isFolder()).toBe(true);
+      });
+
+      it("returns correct isFolder for hidden items", () => {
+        if (title.toLocaleLowerCase().includes("async")) {
+          // async test tree defaults to "loading" item names
+          return;
+        }
+
+        // Reference: https://github.com/lukasbach/headless-tree/issues/166
+        expect(tree.instance.getItemInstance("x44").isFolder()).toBe(true);
+        expect(tree.instance.getItemInstance("x444").isFolder()).toBe(false);
+      });
+
+      it("returns isFolder=true for root item", () => {
+        expect(tree.instance.getItemInstance("x").isFolder()).toBe(true);
       });
 
       it("returns correctly for getParent()", () => {

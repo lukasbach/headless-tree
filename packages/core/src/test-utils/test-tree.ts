@@ -63,15 +63,15 @@ export class TestTree<T = string> {
     }),
   };
 
-  forSuits(runSuite: (tree: TestTree<T>) => void) {
+  forSuits(runSuite: (tree: TestTree<T>, title: string) => void) {
     describe.for([
       this.suits.sync(),
       this.suits.async(),
       this.suits.proxifiedSync(),
       this.suits.proxifiedAsync(),
-    ])("$title", ({ tree }) => {
+    ])("$title", ({ tree, title }) => {
       tree.resetBeforeEach();
-      runSuite(tree);
+      runSuite(tree, title);
     });
   }
 
@@ -122,7 +122,7 @@ export class TestTree<T = string> {
       },
       getItemName: (item) => item.getItemData(),
       indent: 20,
-      isItemFolder: (item) => item.getItemMeta().level < 2,
+      isItemFolder: (item) => item.getItemData().length < 4,
       initialState: {
         expandedItems: ["x1", "x11"],
       },
