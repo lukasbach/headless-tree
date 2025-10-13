@@ -1,5 +1,7 @@
 # @headless-tree/react
 
+## 1.5.1
+
 ## 1.5.0
 
 ### Minor Changes

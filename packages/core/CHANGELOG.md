@@ -1,5 +1,11 @@
 # @headless-tree/core
 
+## 1.5.1
+
+### Patch Changes
+
+- 08f10f1: Fixed an issue where `isFolder` returns incorrect values for leafs if they are not visibly rendered (#166)
+
 ## 1.5.0
 
 ### Minor Changes
