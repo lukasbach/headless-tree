@@ -144,6 +144,7 @@ export const treeFeature: FeatureImplementation<any> = {
         "aria-selected": "false",
         "aria-label": item.getItemName(),
         "aria-level": itemMeta.level + 1,
+        "aria-expanded": item.isFolder() ? item.isExpanded() : undefined,
         tabIndex: item.isFocused() ? 0 : -1,
         onClick: (e: MouseEvent) => {
           item.setFocused();
