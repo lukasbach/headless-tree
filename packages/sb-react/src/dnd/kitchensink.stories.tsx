@@ -6,6 +6,7 @@ import {
   keyboardDragAndDropFeature,
   selectionFeature,
   syncDataLoaderFeature,
+  TreeItemInstance,
 } from "@headless-tree/core";
 import { AssistiveTreeDescription, useTree } from "@headless-tree/react";
 import { action } from "storybook/actions";
@@ -36,13 +37,91 @@ const meta = {
 
 export default meta;
 
-// story-start
+const STATIC_FEATURES = [
+  syncDataLoaderFeature,
+  selectionFeature,
+  hotkeysCoreFeature,
+  dragAndDropFeature,
+  keyboardDragAndDropFeature,
+];
+
+const mockDataLoader = {
+  getItem: (itemId: string) => itemId,
+  getChildren: (itemId: string) => [
+    `${itemId}-1`,
+    `${itemId}-2`,
+    `${itemId}-3`,
+    `${itemId}-4`,
+    `${itemId}-5`,
+    `${itemId}-6`,
+  ],
+};
+
+const createForeignDragObject = (items: TreeItemInstance<string>[]) => ({
+  format: "text/plain",
+  data: `custom foreign drag object: ${items.map((item) => item.getId()).join(",")}`,
+});
+
+const handleDropAction = action("onDrop");
+const handleDropForeignDragObjectAction = action("onDropForeignDragObject");
+const handleExternalDropAction = action("onDropExternally");
+
+interface TreeItemRowProps {
+  item: TreeItemInstance<string>;
+}
+
+const TreeItemRow = React.memo(({ item }: TreeItemRowProps) => {
+  return (
+    <button
+      {...item.getProps()}
+      style={{ paddingLeft: `${item.getItemMeta().level * 20}px` }}
+    >
+      <div
+        className={cn("treeitem", {
+          focused: item.isFocused(),
+          expanded: item.isExpanded(),
+          selected: item.isSelected(),
+          folder: item.isFolder(),
+          drop: item.isDragTarget(),
+        })}
+      >
+        {item.getItemName()}
+      </div>
+    </button>
+  );
+});
+
+TreeItemRow.displayName = "TreeItemRow";
+
+const ExternalDropTarget = () => (
+  <div
+    style={{ marginTop: "40px" }}
+    onDrop={(e) => handleExternalDropAction(e.dataTransfer.getData("text/plain"))}
+    onDragOver={(e) => e.preventDefault()}
+  >
+    Drop items here!
+  </div>
+);
+
+const ExternalDraggableSource = () => (
+  <div
+    style={{ marginTop: "10px" }}
+    draggable
+    onDragStart={(e) => {
+      e.dataTransfer.setData("text/plain", "hello world");
+    }}
+  >
+    Or drag me into the tree!
+  </div>
+);
+
 export const KitchenSink = ({
   canReorder,
   canDropForeignDragObject,
   reorderAreaPercentage,
 }: PropsOfArgtype<typeof meta>) => {
   const [state, setState] = useState({});
+
   const tree = useTree<string>({
     state,
     setState,
@@ -50,80 +129,32 @@ export const KitchenSink = ({
     getItemName: (item) => item.getItemData(),
     isItemFolder: () => true,
     canReorder,
-    onDrop: action("onDrop"),
-    onDropForeignDragObject: action("onDropForeignDragObject"),
-    createForeignDragObject: (items) => ({
-      format: "text/plain",
-      data: `custom foreign drag object: ${items
-        .map((item) => item.getId())
-        .join(",")}`,
-    }),
-    canDropForeignDragObject: () => canDropForeignDragObject,
     reorderAreaPercentage,
+    canDropForeignDragObject: () => canDropForeignDragObject ?? false,
+    createForeignDragObject,
+    onDrop: handleDropAction,
+    onDropForeignDragObject: handleDropForeignDragObjectAction,
     indent: 20,
-    dataLoader: {
-      getItem: (itemId) => itemId,
-      getChildren: (itemId) => [
-        `${itemId}-1`,
-        `${itemId}-2`,
-        `${itemId}-3`,
-        `${itemId}-4`,
-        `${itemId}-5`,
-        `${itemId}-6`,
-      ],
-    },
-    features: [
-      syncDataLoaderFeature,
-      selectionFeature,
-      hotkeysCoreFeature,
-      dragAndDropFeature,
-      keyboardDragAndDropFeature,
-    ],
+    dataLoader: mockDataLoader,
+    features: STATIC_FEATURES,
   });
+
+  const dragLineStyle = tree.getDragLineStyle();
 
   return (
     <>
       <div {...tree.getContainerProps()} className="tree">
         <AssistiveTreeDescription tree={tree} />
+        
         {tree.getItems().map((item) => (
-          <button
-            {...item.getProps()}
-            key={item.getId()}
-            style={{ paddingLeft: `${item.getItemMeta().level * 20}px` }}
-          >
-            <div
-              className={cn("treeitem", {
-                focused: item.isFocused(),
-                expanded: item.isExpanded(),
-                selected: item.isSelected(),
-                folder: item.isFolder(),
-                drop: item.isDragTarget(),
-              })}
-            >
-              {item.getItemName()}
-            </div>
-          </button>
+          <TreeItemRow key={item.getId()} item={item} />
         ))}
-        <div style={tree.getDragLineStyle()} className="dragline" />
+        
+        <div style={dragLineStyle} className="dragline" />
       </div>
-      <div
-        style={{ marginTop: "40px" }}
-        onDrop={(e) =>
-          action("onDropExternally")(e.dataTransfer.getData("text/plain"))
-        }
-        onDragOver={(e) => e.preventDefault()}
-      >
-        Drop items here!
-      </div>
-      <div
-        style={{ marginTop: "10px" }}
-        draggable
-        onDragStart={(e) => {
-          e.dataTransfer.setData("text/plain", "hello world");
-        }}
-      >
-        Or drag me into the tree!
-      </div>
+
+      <ExternalDropTarget />
+      <ExternalDraggableSource />
     </>
   );
 };
