@@ -1,5 +1,5 @@
 import type { Meta } from "@storybook/react";
-import React from "react";
+import React, { JSX } from "react";
 import {
   CheckedState,
   type FeatureImplementation,
@@ -54,6 +54,36 @@ const checkboxOverride: FeatureImplementation<DemoItem> = {
   },
 };
 
+
+interface TreeViewProps {
+  tree: TreeInstance<DemoItem>;
+}
+
+const TreeView: React.FC<TreeViewProps> = ({ tree }) => (
+  <div {...tree.getContainerProps()} className="tree">
+    {tree.getItems().map((item: TreeInstance<DemoItem>["getItems"][number]) => (
+      <div className="outeritem" key={item.getId()}>
+        <button
+          {...item.getProps()}
+          style={{ paddingLeft: `${item.getItemMeta().level * 20}px` }}
+        >
+          <div
+            className={cx("treeitem", {
+              focused: item.isFocused(),
+              expanded: item.isExpanded(),
+              selected: item.isSelected(),
+              folder: item.isFolder(),
+            })}
+          >
+            {item.getItemName()}
+          </div>
+        </button>
+        <input type="checkbox" {...item.getCheckboxProps()} />
+      </div>
+    ))}
+  </div>
+);
+
 export const CheckedStateAsRadioButtons = () => {
   const tree = useTree<DemoItem>({
     rootItemId: "root",
@@ -61,8 +91,8 @@ export const CheckedStateAsRadioButtons = () => {
       expandedItems: ["fruit", "berries", "red"],
       checkedItems: ["fruit", "banana", "berries", "strawberry"],
     },
-    getItemName: (item) => item.getItemData().name,
-    isItemFolder: (item) => !!item.getItemData().children,
+    getItemName: (item: TreeInstance<DemoItem>["getItems"][number]) => item.getItemData().name,
+    isItemFolder: (item: TreeInstance<DemoItem>["getItems"][number]) => !!item.getItemData().children,
     dataLoader: syncDataLoader,
     canCheckFolders: true,
     propagateCheckedState: false,
@@ -82,31 +112,8 @@ export const CheckedStateAsRadioButtons = () => {
         In this sample, a custom "toggleCheckedState" implementation is used to
         enforce that for each folder, only one child can be checked.
       </p>
-
-      <div {...tree.getContainerProps()} className="tree">
-        {tree.getItems().map((item) => (
-          <div className="outeritem" key={item.getId()}>
-            <button
-              {...item.getProps()}
-              style={{ paddingLeft: `${item.getItemMeta().level * 20}px` }}
-            >
-              <div
-                className={cx("treeitem", {
-                  focused: item.isFocused(),
-                  expanded: item.isExpanded(),
-                  selected: item.isSelected(),
-                  folder: item.isFolder(),
-                })}
-              >
-                {item.getItemName()}
-              </div>
-            </button>
-            <input type="checkbox" {...item.getCheckboxProps()} />
-          </div>
-        ))}
-      </div>
-
+      <TreeView tree={tree} />
       <pre>{JSON.stringify(tree.getState().checkedItems)}</pre>
     </>
   );
-};
+}
