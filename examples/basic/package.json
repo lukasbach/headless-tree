@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "vite",
     "start": "vite",
-    "build": "tsc -b && vite build"
+    "build:sample": "tsc -b && vite build"
   },
   "dependencies": {
     "@headless-tree/core": "latest",
