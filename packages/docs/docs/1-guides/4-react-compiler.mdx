@@ -1,0 +1,85 @@
+---
+slug: "/guides/react-compiler"
+title: "React Compiler"
+category: guide
+---
+
+At the moment, Headless Tree is compatible with project setups running React compiler only
+with certain workarounds. Headless Tree makes some implementation choices to improve performance,
+which are unfortunately not compatible with some of the assumption that React compiler makes.
+
+There are two ways to use Headless Tree with React compiler:
+
+- Use an alternative entrypoint for Headless Tree optimized for usage with React compiler
+- Disable automatic memoization in components that use Headless Tree
+
+## Use an alternative entrypoint
+
+Instead of importing `useTree` from `@headless-tree/react`, you can import it from
+`@headless-tree/react/react-compiler`. The interface of the hook from `@headless-tree/react/react-compiler`
+works slightly different, as it doesn't return a reference to the tree instance directly, but instead
+returns a function that can be called to get the current tree instance.
+
+```tsx
+import { useTree } from "@headless-tree/react/react-compiler"; // alternative entrypoint
+
+const MyTreeComponent = () => {
+  const tree = useTree({
+    // ...tree config
+  });
+
+  // call tree() to get the current tree instance
+  return (
+    <div {...tree().getContainerProps()}>
+        {tree().getItems().map((item) => (
+            // render item
+        ))}
+    </div>
+  );
+};
+```
+
+## Disable automatic memoization
+
+You can simply opt out of using React Compiler in components that use Headless Tree by adding the
+`"use no memo";` directive at the top of the component file:
+
+```tsx
+const MyTreeComponent = () => {
+  "use no memo"; // opt out of React Compiler
+
+  const tree = useTree({
+    // ...tree config
+  });
+
+  return (
+    <div {...tree.getContainerProps()}>
+        {tree.getItems().map((item) => (
+            // render item
+        ))}
+    </div>
+  );
+};
+```
+
+This doesn't disable the benefits of React Compiler for the rest of your application, but only for the specific component where you use Headless Tree.
+
+## Nature of the problem
+
+Headless Tree is motivated in implementation and architecture by Tanstack Table, and Headless Tree
+is limited by the same constraints that prevent Tanstack Table from being currently compatible with React Compiler. Details can be found in [this issue in `facebook/react`](https://github.com/facebook/react/issues/33057) 
+and [this issue in `tanstack/table`](https://github.com/TanStack/table/issues/5567).
+
+The underlying issue is that React Compiler will transform `const items = tree.getItems();` into something like
+`const items = useMemo(() => tree.getItems(), [tree]);`. However, Headless Tree maintains a stable reference
+to `tree`, so invocations to the `tree` instance methods will return stale values. The expectation by React
+Compiler is that all methods are pure in regards to their reference and their parameters. However, in order
+to support use cases with many tree items and virtualization, Headless Tree benefits from not maintaining
+large data sets in React state, and instead keeps them in internal data structures that can be accessed via
+instance methods.
+
+The alternative entrypoint `@headless-tree/react/react-compiler` works almost identically to the normal
+entrypoint, but hides the tree instance behind a function call, which forces React Compiler not to memoize
+its child methods return values. This should not have performance disadvantages compared to normal 
+integrations of Headless Tree into non-Compiler projects, since calls tree methods like `tree.getItems()`
+have very low overhead anyway.

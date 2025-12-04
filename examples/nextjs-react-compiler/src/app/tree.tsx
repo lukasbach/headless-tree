@@ -1,8 +1,9 @@
 "use client";
 
-import { useTree } from "@headless-tree/react";
+import { useTree } from "@headless-tree/react/react-compiler";
 import {
   asyncDataLoaderFeature,
+  buildProxiedInstance,
   hotkeysCoreFeature,
   selectionFeature,
 } from "@headless-tree/core";
@@ -12,45 +13,26 @@ import { DemoItem, asyncDataLoader } from "@/data";
 import "../style.css";
 import { useState } from "react";
 
-const useNoMemo = <const T,>(factory: () => T): T => {
-  "use no memo";
-
-  return factory();
-};
-
-function useStore<T>(store: T) {
-  return () => store;
-}
-
 export const Tree = () => {
-  "use no memo";
+  // "use no memo"; // can be used instead of the useTree instance of @headless-tree/react/react-compiler
 
   const [loadingItemData, setLoadingItemData] = useState<string[]>([]);
   const [loadingItemChildrens, setLoadingItemChildrens] = useState<string[]>(
     [],
   );
-  const tree = useStore(
-    useTree<DemoItem>({
-      state: { loadingItemData, loadingItemChildrens },
-      setLoadingItemData,
-      setLoadingItemChildrens,
-      // instanceBuilder: buildProxiedInstance,
-      rootItemId: "root",
-      getItemName: (item) => item.getItemData()?.name,
-      createLoadingItemData: () => ({ name: "Loading..." }),
-      isItemFolder: () => true,
-      dataLoader: asyncDataLoader,
-      indent: 20,
-      features: [asyncDataLoaderFeature, selectionFeature, hotkeysCoreFeature],
-    }),
-  );
-
-  console.log(
-    "items",
-    tree()
-      .getItems()
-      .map((item) => item.getId()),
-  );
+  const tree = useTree<DemoItem>({
+    state: { loadingItemData, loadingItemChildrens },
+    setLoadingItemData,
+    setLoadingItemChildrens,
+    instanceBuilder: buildProxiedInstance,
+    rootItemId: "root",
+    getItemName: (item) => item.getItemData()?.name,
+    createLoadingItemData: () => ({ name: "Loading..." }),
+    isItemFolder: () => true,
+    dataLoader: asyncDataLoader,
+    indent: 20,
+    features: [asyncDataLoaderFeature, selectionFeature, hotkeysCoreFeature],
+  });
 
   return (
     <>
@@ -84,20 +66,6 @@ export const Tree = () => {
       <p>Loading:</p>
       <pre>
         {JSON.stringify({ loadingItemData, loadingItemChildrens }, null, 2)}
-      </pre>
-      <pre>
-        1
-        {JSON.stringify(
-          tree()
-            .getItems()
-            .map((item) => item.getItemData()),
-        )}
-      </pre>
-      <pre>
-        2
-        {tree()
-          .getItems()
-          .map((item) => item.getId())}
       </pre>
     </>
   );

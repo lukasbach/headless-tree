@@ -38,6 +38,16 @@
         "default": "./dist/react17/index.js"
       }
     },
+    "./react-compiler": {
+      "import": {
+        "types": "./dist/react-compiler/index.d.mts",
+        "default": "./dist/react-compiler/index.mjs"
+      },
+      "require": {
+        "types": "./dist/react-compiler/index.d.ts",
+        "default": "./dist/react-compiler/index.js"
+      }
+    },
     "./package.json": "./package.json"
   },
   "sideEffects": false,
@@ -45,7 +55,7 @@
     "provenance": true
   },
   "scripts": {
-    "build": "tsup ./src/index.ts ./src/react17/index.tsx --format esm,cjs --dts",
+    "build": "tsup ./src/index.ts ./src/react17/index.tsx ./src/react-compiler/index.tsx --format esm,cjs --dts",
     "start": "tsup ./src/index.ts --format esm,cjs --dts --watch"
   },
   "repository": {
