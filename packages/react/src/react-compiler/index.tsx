@@ -3,7 +3,7 @@ import {
   type TreeState,
   createTree,
 } from "@headless-tree/core";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 export const useTree = <T,>(config: TreeConfig<T>) => {
   const [tree] = useState(() => ({ current: createTree(config) }));
@@ -33,5 +33,5 @@ export const useTree = <T,>(config: TreeConfig<T>) => {
     },
   }));
 
-  return useCallback(() => () => tree.current, [tree]);
+  return () => tree.current;
 };
