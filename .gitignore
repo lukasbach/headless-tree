@@ -28,4 +28,6 @@ storybook-static
 
 .vscode
 
+lerna-debug.log
+
 examples/repro*

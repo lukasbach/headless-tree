@@ -6,7 +6,8 @@
     "examples/basic",
     "examples/comprehensive",
     "examples/nextjs",
-    "examples/react-compiler"
+    "examples/react-compiler",
+    "examples/nextjs-react-compiler"
   ],
   "scripts": {
     "lint": "eslint . --fix",
