@@ -4,6 +4,11 @@ import { SyncDataLoaderFeatureDef } from "../sync-data-loader/types";
 export interface AsyncDataLoaderDataRef<T = any> {
   itemData: Record<string, T>;
   childrenIds: Record<string, string[]>;
+
+  // If an item load is requested while it is already loading, we reuse the existing load promise
+  // and store callbacks to be called when the load completes
+  loadingDataSubs: Record<string, (() => void)[]>;
+  loadingChildrenSubs: Record<string, (() => void)[]>;
 }
 
 /**
@@ -50,6 +55,7 @@ export type AsyncDataLoaderFeatureDef<T> = {
     /** Set to undefined to clear cache without triggering automatic refetch. Use @invalidateItemData to clear and triggering refetch. */
     updateCachedData: (data: T | undefined) => void;
     updateCachedChildrenIds: (childrenIds: string[]) => void;
+    hasLoadedData: () => boolean;
     isLoading: () => boolean;
   };
   hotkeys: SyncDataLoaderFeatureDef<T>["hotkeys"];

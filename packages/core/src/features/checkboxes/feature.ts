@@ -22,8 +22,11 @@ const getAllDescendants = async <T>(
   itemId: string,
   includeFolders = false,
 ): Promise<string[]> => {
-  await tree.loadItemData(itemId);
-  if (!tree.getConfig().isItemFolder(tree.getItemInstance(itemId))) {
+  const item = tree.getItemInstance(itemId);
+  if (!item.hasLoadedData()) {
+    await tree.loadItemData(itemId);
+  }
+  if (!tree.getConfig().isItemFolder(item)) {
     return [itemId];
   }
   const childrenIds = await tree.loadChildrenIds(itemId);
@@ -42,16 +45,22 @@ const withLoadingState = async <T>(
   itemId: string,
   callback: () => Promise<void>,
 ) => {
-  tree.applySubStateUpdate("loadingCheckPropagationItems", (items) => [
-    ...items,
-    itemId,
-  ]);
-  try {
-    await callback();
-  } finally {
-    tree.applySubStateUpdate("loadingCheckPropagationItems", (items) =>
-      items.filter((id) => id !== itemId),
-    );
+  const prom = callback();
+  const immediate = {};
+  const firstCompleted = await Promise.race([prom, immediate]);
+  if (firstCompleted !== immediate) {
+    // don't update loading state if load is immediate
+    tree.applySubStateUpdate("loadingCheckPropagationItems", (items) => [
+      ...items,
+      itemId,
+    ]);
+    try {
+      await prom;
+    } finally {
+      tree.applySubStateUpdate("loadingCheckPropagationItems", (items) =>
+        items.filter((id) => id !== itemId),
+      );
+    }
   }
 };
 

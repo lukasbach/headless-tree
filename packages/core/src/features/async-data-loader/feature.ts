@@ -6,12 +6,24 @@ const getDataRef = <T>(tree: TreeInstance<T>) => {
   const dataRef = tree.getDataRef<AsyncDataLoaderDataRef>();
   dataRef.current.itemData ??= {};
   dataRef.current.childrenIds ??= {};
+  dataRef.current.loadingDataSubs ??= {};
+  dataRef.current.loadingChildrenSubs ??= {};
   return dataRef;
 };
 
 const loadItemData = async <T>(tree: TreeInstance<T>, itemId: string) => {
   const config = tree.getConfig();
   const dataRef = getDataRef(tree);
+
+  if (tree.getState().loadingItemData.includes(itemId)) {
+    // if currently loading, await existing load
+    return new Promise<T>((resolve) => {
+      dataRef.current.loadingDataSubs[itemId] ??= [];
+      dataRef.current.loadingDataSubs[itemId].push(() => {
+        resolve(dataRef.current.itemData[itemId]);
+      });
+    });
+  }
 
   if (!dataRef.current.itemData[itemId]) {
     tree.applySubStateUpdate("loadingItemData", (loadingItemData) => [
@@ -26,6 +38,7 @@ const loadItemData = async <T>(tree: TreeInstance<T>, itemId: string) => {
   tree.applySubStateUpdate("loadingItemData", (loadingItemData) =>
     loadingItemData.filter((id) => id !== itemId),
   );
+  dataRef.current.loadingDataSubs[itemId]?.forEach((cb) => cb());
 
   return item;
 };
@@ -34,6 +47,16 @@ const loadChildrenIds = async <T>(tree: TreeInstance<T>, itemId: string) => {
   const config = tree.getConfig();
   const dataRef = getDataRef(tree);
   let childrenIds: string[];
+
+  if (tree.getState().loadingItemChildrens.includes(itemId)) {
+    // if currently loading, await existing load
+    return new Promise<string[]>((resolve) => {
+      dataRef.current.loadingChildrenSubs[itemId] ??= [];
+      dataRef.current.loadingChildrenSubs[itemId].push(() => {
+        resolve(dataRef.current.childrenIds[itemId]);
+      });
+    });
+  }
 
   if (!dataRef.current.childrenIds[itemId]) {
     tree.applySubStateUpdate("loadingItemChildrens", (loadingItemChildrens) => [
@@ -66,6 +89,7 @@ const loadChildrenIds = async <T>(tree: TreeInstance<T>, itemId: string) => {
   tree.applySubStateUpdate("loadingItemChildrens", (loadingItemChildrens) =>
     loadingItemChildrens.filter((id) => id !== itemId),
   );
+  dataRef.current.loadingChildrenSubs[itemId]?.forEach((cb) => cb());
 
   return childrenIds;
 };
@@ -165,6 +189,10 @@ export const asyncDataLoaderFeature: FeatureImplementation = {
       const dataRef = tree.getDataRef<AsyncDataLoaderDataRef>();
       dataRef.current.itemData[itemId] = data;
       tree.rebuildTree();
+    },
+    hasLoadedData: ({ tree, itemId }) => {
+      const dataRef = tree.getDataRef<AsyncDataLoaderDataRef>();
+      return dataRef.current.itemData[itemId] !== undefined;
     },
   },
 };
