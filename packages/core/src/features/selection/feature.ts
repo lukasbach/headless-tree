@@ -1,5 +1,6 @@
 import { FeatureImplementation } from "../../types/core";
 import { makeStateUpdater } from "../../utils";
+import type { SelectionDataRef } from "./types";
 
 export const selectionFeature: FeatureImplementation = {
   key: "selection",
@@ -50,8 +51,12 @@ export const selectionFeature: FeatureImplementation = {
 
     selectUpTo: ({ tree, item }, ctrl: boolean) => {
       const indexA = item.getItemMeta().index;
-      // TODO dont use focused item as anchor, but last primary-clicked item
-      const indexB = tree.getFocusedItem().getItemMeta().index;
+      const { selectUpToAnchorId } =
+        tree.getDataRef<SelectionDataRef>().current;
+      const itemB = selectUpToAnchorId
+        ? tree.getItemInstance(selectUpToAnchorId)
+        : tree.getFocusedItem();
+      const indexB = itemB.getItemMeta().index;
       const [a, b] = indexA < indexB ? [indexA, indexB] : [indexB, indexA];
       const newSelectedItems = tree
         .getItems()
@@ -88,6 +93,11 @@ export const selectionFeature: FeatureImplementation = {
           item.toggleSelect();
         } else {
           tree.setSelectedItems([item.getItemMeta().itemId]);
+        }
+
+        if (!e.shiftKey) {
+          tree.getDataRef<SelectionDataRef>().current.selectUpToAnchorId =
+            item.getId();
         }
 
         prev?.()?.onClick?.(e);

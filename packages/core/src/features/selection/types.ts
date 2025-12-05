@@ -1,5 +1,9 @@
 import { ItemInstance, SetStateFn } from "../../types/core";
 
+export interface SelectionDataRef {
+  selectUpToAnchorId?: string | null;
+}
+
 export type SelectionFeatureDef<T> = {
   state: {
     selectedItems: string[];
