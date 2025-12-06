@@ -61,6 +61,9 @@ const withLoadingState = async <T>(
         items.filter((id) => id !== itemId),
       );
     }
+  } else {
+    // immediately completed, await anyway to keep errors in the same execution flow
+    await prom;
   }
 };
 

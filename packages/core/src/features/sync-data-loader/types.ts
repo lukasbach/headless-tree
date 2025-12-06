@@ -27,7 +27,10 @@ export type SyncDataLoaderFeatureDef<T> = {
     retrieveChildrenIds: (itemId: string, skipFetch?: boolean) => string[];
   };
   itemInstance: {
+    /** Returns false. Provided for consistency with async data loader */
     isLoading: () => boolean;
+    /** Returns true. Provided for consistency with async data loader */
+    hasLoadedData: () => boolean;
   };
   hotkeys: never;
 };

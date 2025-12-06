@@ -58,5 +58,6 @@ export const syncDataLoaderFeature: FeatureImplementation = {
 
   itemInstance: {
     isLoading: () => false,
+    hasLoadedData: () => true,
   },
 };
