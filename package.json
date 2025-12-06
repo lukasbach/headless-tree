@@ -62,7 +62,8 @@
     "ignorePatterns": [
       "lib",
       "dist",
-      "*.js"
+      "*.js",
+      "**/next-env.d.ts"
     ]
   },
   "devDependencies": {
