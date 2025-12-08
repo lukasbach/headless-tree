@@ -34,7 +34,11 @@ jobs:
             **/node_modules
             ./.yarn/cache
           key: ${{ runner.os }}-deps-${{ hashFiles('**/yarn.lock') }}
-      - run: curl https://get.volta.sh | bash
+      - run: corepack enable
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "23.6.1"
+          cache: 'yarn'
       - run: yarn
       - run: yarn lint:test
       - run: yarn test
