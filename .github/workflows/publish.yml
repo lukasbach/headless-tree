@@ -34,9 +34,7 @@ jobs:
             **/node_modules
             ./.yarn/cache
           key: ${{ runner.os }}-deps-${{ hashFiles('**/yarn.lock') }}
-      - uses: volta-cli/action@v4.1.1
-        with:
-          registry-url: "https://registry.npmjs.org"
+      - run: curl https://get.volta.sh | bash
 
       - name: Delete NODE_AUTH_TOKEN env variable
         run: unset NODE_AUTH_TOKEN
