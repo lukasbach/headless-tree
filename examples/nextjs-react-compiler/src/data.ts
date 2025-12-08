@@ -90,5 +90,5 @@ export const syncDataLoader = {
 export const asyncDataLoader = {
   getItem: (itemId: string) => wait(500).then(() => data[itemId]),
   getChildren: (itemId: string) =>
-    wait(900).then(() => data[itemId]?.children ?? []),
+    wait(800).then(() => data[itemId]?.children ?? []),
 };

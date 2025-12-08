@@ -1,4 +1,4 @@
-# Nextjs Integration example with React compiler of Headless Tree with React
+# Nextjs Integration example of Headless Tree with React Compiler enabled
 
 To run this example:
 

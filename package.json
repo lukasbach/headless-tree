@@ -23,7 +23,7 @@
     "verify": "yarn lint && lerna run build,build:esm,test --stream"
   },
   "dependencies": {
-    "@changesets/cli": "^2.27.5",
+    "@changesets/cli": "patch:@changesets/cli@npm%3A2.29.7#~/.yarn/patches/@changesets-cli-npm-2.29.7-d06a80abdb.patch",
     "@lukasbach/eslint-config-deps": "^1.0.7",
     "@types/node": "22.10.7",
     "@types/react": "18.2.66",

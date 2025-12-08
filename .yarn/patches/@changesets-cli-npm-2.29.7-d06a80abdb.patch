@@ -1,0 +1,32 @@
+diff --git a/dist/changesets-cli.cjs.js b/dist/changesets-cli.cjs.js
+index 53fc925f8aa492e7333033483e9f3e45839963ad..51b62bf79155a1c8c1028a03fbb4ff373c8c1f01 100644
+--- a/dist/changesets-cli.cjs.js
++++ b/dist/changesets-cli.cjs.js
+@@ -662,7 +662,10 @@ async function getTokenIsRequired() {
+   // Due to a super annoying issue in yarn, we have to manually override this env variable
+   // See: https://github.com/yarnpkg/yarn/issues/2935#issuecomment-355292633
+   const envOverride = {
+-    [scope ? `npm_config_${scope}:registry` : "npm_config_registry"]: registry
++    [scope ? `npm_config_${scope}:registry` : "npm_config_registry"]: registry,
++    // Don't pass through any npm auth tokens so that we use trusted publishers
++    // https://github.com/changesets/changesets/issues/1152#issuecomment-3594830777
++    NODE_AUTH_TOKEN: "",
+   };
+   let result = await spawn__default["default"]("npm", ["profile", "get", "--json"], {
+     env: Object.assign({}, process.env, envOverride)
+diff --git a/dist/changesets-cli.esm.js b/dist/changesets-cli.esm.js
+index 6c363c0551d7a5b69e2e48be0bcd757699609094..b69a447cd2606eeeed85ac834026f48cddc6ab8a 100644
+--- a/dist/changesets-cli.esm.js
++++ b/dist/changesets-cli.esm.js
+@@ -624,7 +624,10 @@ async function getTokenIsRequired() {
+   // Due to a super annoying issue in yarn, we have to manually override this env variable
+   // See: https://github.com/yarnpkg/yarn/issues/2935#issuecomment-355292633
+   const envOverride = {
+-    [scope ? `npm_config_${scope}:registry` : "npm_config_registry"]: registry
++    [scope ? `npm_config_${scope}:registry` : "npm_config_registry"]: registry,
++    // Don't pass through any npm auth tokens so that we use trusted publishers
++    // https://github.com/changesets/changesets/issues/1152#issuecomment-3594830777
++    NODE_AUTH_TOKEN: "",
+   };
+   let result = await spawn$1("npm", ["profile", "get", "--json"], {
+     env: Object.assign({}, process.env, envOverride)
