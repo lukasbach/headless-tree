@@ -14,7 +14,7 @@ jobs:
   snapshot:
     if: ${{ !contains(github.event.commits[0].message, 'nosnapshot') }}
     runs-on: ubuntu-latest
-    name: Publish
+    name: Snapshot
     steps:
       - uses: actions/checkout@v3
         with:
@@ -38,6 +38,8 @@ jobs:
         with:
           registry-url: "https://registry.npmjs.org"
 
+      - name: Delete NODE_AUTH_TOKEN env variable
+        run: unset NODE_AUTH_TOKEN
       - run: yarn
       - run: yarn lint:test
       - run: yarn test
