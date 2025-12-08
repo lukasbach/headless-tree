@@ -34,11 +34,10 @@ jobs:
             **/node_modules
             ./.yarn/cache
           key: ${{ runner.os }}-deps-${{ hashFiles('**/yarn.lock') }}
-      - run: corepack enable
-      - uses: actions/setup-node@v4
+      - uses: volta-cli/action@v4.1.1
         with:
-          node-version: "23.6.1"
-          cache: 'yarn'
+          registry-url: "https://registry.npmjs.org"
+
       - run: yarn
       - run: yarn lint:test
       - run: yarn test
@@ -64,6 +63,9 @@ jobs:
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
 
   publish:
     runs-on: ubuntu-latest
@@ -103,4 +105,7 @@ jobs:
           publish: yarn changeset publish
           commit: "chore: release [nosnapshot]"
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
