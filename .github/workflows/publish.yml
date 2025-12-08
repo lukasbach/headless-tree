@@ -35,9 +35,6 @@ jobs:
             ./.yarn/cache
           key: ${{ runner.os }}-deps-${{ hashFiles('**/yarn.lock') }}
       - run: curl https://get.volta.sh | bash
-
-      - name: Delete NODE_AUTH_TOKEN env variable
-        run: unset NODE_AUTH_TOKEN
       - run: yarn
       - run: yarn lint:test
       - run: yarn test
