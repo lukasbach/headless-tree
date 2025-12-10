@@ -1,5 +1,11 @@
 # @headless-tree/react
 
+## 1.6.0
+
+### Patch Changes
+
+- e2c256d: Added alternative entrypoint for setups using React Compiler. Details on https://headless-tree.lukasbach.com/guides/react-compiler
+
 ## 1.5.1
 
 ## 1.5.0

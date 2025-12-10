@@ -4,7 +4,7 @@
   "author": "Lukas Bach <npm@lukasbach.com>",
   "funding": "https://github.com/sponsors/lukasbach",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "scripts": {
     "dev": "next dev",
     "build:sample": "next build",

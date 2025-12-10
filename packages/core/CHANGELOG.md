@@ -1,5 +1,16 @@
 # @headless-tree/core
 
+## 1.6.0
+
+### Minor Changes
+
+- 297b575: The anchor for shift-selecting (`item.selectUpTo()`) is now the last item that was clicked while not holding shift, or alternatively the focused item if that didn't exist. The previous behavior was always using the focused item as anchor, which doesn't match common multi-select behaviors in similar applications (#176)
+
+### Patch Changes
+
+- 287fe40: Added missing `aria-expanded` attribute to tree items (thanks to @gordey4doronin for the contribution) (#171)
+- 7158afe: Improve rerendering behavior by skipping changes to the item loading state when items are already loading, and skipping changes to loading state in case of checkbox click propagation if items are loaded immediately (#173)
+
 ## 1.5.1
 
 ### Patch Changes
