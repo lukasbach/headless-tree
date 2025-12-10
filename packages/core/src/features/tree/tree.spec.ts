@@ -250,6 +250,7 @@ describe("core-feature/tree", () => {
           "aria-posinset": 2,
           "aria-selected": "false",
           "aria-setsize": 4,
+          "aria-expanded": false,
           onClick: expect.any(Function),
           ref: expect.any(Function),
           role: "treeitem",
@@ -264,11 +265,28 @@ describe("core-feature/tree", () => {
           "aria-posinset": 1,
           "aria-selected": "false",
           "aria-setsize": 4,
+          "aria-expanded": true,
           onClick: expect.any(Function),
           ref: expect.any(Function),
           role: "treeitem",
           tabIndex: 0,
         });
+      });
+
+      it("generates aria-expanded for non expanded folder", () => {
+        expect(tree.instance.getItemInstance("x3").getProps()).toEqual(
+          expect.objectContaining({
+            "aria-expanded": false,
+          }),
+        );
+      });
+
+      it("generates aria-expanded for leaf", () => {
+        expect(tree.instance.getItemInstance("x111").getProps()).toEqual(
+          expect.objectContaining({
+            "aria-expanded": undefined,
+          }),
+        );
       });
     });
 
