@@ -51,11 +51,15 @@ export const selectionFeature: FeatureImplementation = {
 
     selectUpTo: ({ tree, item }, ctrl: boolean) => {
       const indexA = item.getItemMeta().index;
-      const { selectUpToAnchorId } =
-        tree.getDataRef<SelectionDataRef>().current;
-      const itemB = selectUpToAnchorId
-        ? tree.getItemInstance(selectUpToAnchorId)
-        : tree.getFocusedItem();
+      const dataRef = tree.getDataRef<SelectionDataRef>();
+
+      if (!dataRef.current.selectUpToAnchorId) {
+        dataRef.current.selectUpToAnchorId = item.getId();
+        tree.setSelectedItems([item.getId()]);
+        return;
+      }
+
+      const itemB = tree.getItemInstance(dataRef.current.selectUpToAnchorId);
       const indexB = itemB.getItemMeta().index;
       const [a, b] = indexA < indexB ? [indexA, indexB] : [indexB, indexA];
       const newSelectedItems = tree
