@@ -4381,8 +4381,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@headless-tree/example-nextjs-react-compiler@workspace:examples/nextjs-react-compiler"
   dependencies:
-    "@headless-tree/core": "workspace:*"
-    "@headless-tree/react": "workspace:*"
+    "@headless-tree/core": "npm:latest"
+    "@headless-tree/react": "npm:latest"
     "@types/node": "npm:^20"
     "@types/react": "npm:^19"
     "@types/react-dom": "npm:^19"
