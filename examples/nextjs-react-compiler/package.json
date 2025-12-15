@@ -11,8 +11,8 @@
     "start": "next start"
   },
   "dependencies": {
-    "@headless-tree/core": "workspace:*",
-    "@headless-tree/react": "workspace:*",
+    "@headless-tree/core": "latest",
+    "@headless-tree/react": "latest",
     "classnames": "^2.5.1",
     "next": "16.0.0",
     "react": "19.2.0",
