@@ -49,13 +49,13 @@ export const selectionFeature: FeatureImplementation = {
       return selectedItems.includes(itemId);
     },
 
-    selectUpTo: ({ tree, item }, ctrl: boolean) => {
+    selectUpTo: ({ tree, item, itemId }, ctrl: boolean) => {
       const indexA = item.getItemMeta().index;
       const dataRef = tree.getDataRef<SelectionDataRef>();
 
       if (!dataRef.current.selectUpToAnchorId) {
-        dataRef.current.selectUpToAnchorId = item.getId();
-        tree.setSelectedItems([item.getId()]);
+        dataRef.current.selectUpToAnchorId = itemId;
+        tree.setSelectedItems([itemId]);
         return;
       }
 
@@ -87,7 +87,7 @@ export const selectionFeature: FeatureImplementation = {
       }
     },
 
-    getProps: ({ tree, item, prev }) => ({
+    getProps: ({ tree, item, itemId, prev }) => ({
       ...prev?.(),
       "aria-selected": item.isSelected() ? "true" : "false",
       onClick: (e: MouseEvent) => {
@@ -96,12 +96,12 @@ export const selectionFeature: FeatureImplementation = {
         } else if (e.ctrlKey || e.metaKey) {
           item.toggleSelect();
         } else {
-          tree.setSelectedItems([item.getItemMeta().itemId]);
+          tree.setSelectedItems([itemId]);
         }
 
         if (!e.shiftKey) {
           tree.getDataRef<SelectionDataRef>().current.selectUpToAnchorId =
-            item.getId();
+            itemId;
         }
 
         prev?.()?.onClick?.(e);

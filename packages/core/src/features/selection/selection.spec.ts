@@ -176,9 +176,8 @@ describe("core-feature/selections", () => {
 
         it("should handle selectUpTo without ctrl", () => {
           const setSelectedItems = tree.mockedHandler("setSelectedItems");
-          tree.instance.getItemInstance("x111").toggleSelect();
-          tree.instance.getItemInstance("x112").toggleSelect();
-          tree.instance.getItemInstance("x112").setFocused();
+          tree.do.ctrlSelectItem("x111");
+          tree.do.ctrlSelectItem("x112");
           tree.instance.getItemInstance("x114").selectUpTo(false);
           expect(setSelectedItems).toHaveBeenCalledWith([
             "x112",
@@ -190,9 +189,8 @@ describe("core-feature/selections", () => {
 
         it("should handle selectUpTo with ctrl", () => {
           const setSelectedItems = tree.mockedHandler("setSelectedItems");
-          tree.instance.getItemInstance("x111").toggleSelect();
-          tree.instance.getItemInstance("x112").toggleSelect();
-          tree.instance.getItemInstance("x112").setFocused();
+          tree.do.ctrlSelectItem("x111");
+          tree.do.ctrlSelectItem("x112");
           tree.instance.getItemInstance("x114").selectUpTo(true);
           expect(setSelectedItems).toHaveBeenCalledWith([
             "x111",
