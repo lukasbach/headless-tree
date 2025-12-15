@@ -1,5 +1,11 @@
 # @headless-tree/core
 
+## 1.6.1
+
+### Patch Changes
+
+- 4ddeaf3: Fixed behavior where shift-selecting an item with no previously selected or focused item would multiselect all items from the top to the clicked item. Now, shift-selecting an item with no previously clicked items will only select the clicked item (#176)
+
 ## 1.6.0
 
 ### Minor Changes
