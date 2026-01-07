@@ -39,6 +39,7 @@ export type AsyncDataLoaderFeatureDef<T> = {
     waitForItemChildrenLoaded: (itemId: string) => Promise<void>;
     loadItemData: (itemId: string) => Promise<T>;
     loadChildrenIds: (itemId: string) => Promise<string[]>;
+
     /* idea: recursiveLoadItems: (itemId: string, cancelToken?: { current: boolean }, onLoad: (itemIds: string[]) => void) => Promise<T[]> */
   };
   itemInstance: SyncDataLoaderFeatureDef<T>["itemInstance"] & {
@@ -52,9 +53,16 @@ export type AsyncDataLoaderFeatureDef<T> = {
      * the tree will continue to display the old data until the new data has loaded. */
     invalidateChildrenIds: (optimistic?: boolean) => Promise<void>;
 
-    /** Set to undefined to clear cache without triggering automatic refetch. Use @invalidateItemData to clear and triggering refetch. */
-    updateCachedData: (data: T | undefined) => void;
-    updateCachedChildrenIds: (childrenIds: string[]) => void;
+    /** Set to undefined to clear cache without triggering automatic refetch. Use @invalidateItemData to clear and triggering refetch.
+     * @param skipUpdateTree If true, the tree will not rebuild the tree structure cache afterwards by calling `tree.rebuildTree()`. */
+    updateCachedData: (data: T | undefined, skipUpdateTree?: boolean) => void;
+
+    /** @param skipUpdateTree If true, the tree will not rebuild the tree structure cache afterwards by calling `tree.rebuildTree()`. */
+    updateCachedChildrenIds: (
+      childrenIds: string[],
+      skipUpdateTree?: boolean,
+    ) => void;
+
     hasLoadedData: () => boolean;
     isLoading: () => boolean;
   };

@@ -180,15 +180,21 @@ export const asyncDataLoaderFeature: FeatureImplementation = {
       }
       await loadChildrenIds(tree, itemId);
     },
-    updateCachedChildrenIds: ({ tree, itemId }, childrenIds) => {
-      const dataRef = tree.getDataRef<AsyncDataLoaderDataRef>();
-      dataRef.current.childrenIds[itemId] = childrenIds;
-      tree.rebuildTree();
+    updateCachedChildrenIds: (
+      { tree, itemId },
+      childrenIds,
+      skipUpdateTree,
+    ) => {
+      getDataRef(tree).current.childrenIds[itemId] = childrenIds;
+      if (!skipUpdateTree) {
+        tree.rebuildTree();
+      }
     },
-    updateCachedData: ({ tree, itemId }, data) => {
-      const dataRef = tree.getDataRef<AsyncDataLoaderDataRef>();
-      dataRef.current.itemData[itemId] = data;
-      tree.rebuildTree();
+    updateCachedData: ({ tree, itemId }, data, skipUpdateTree) => {
+      getDataRef(tree).current.itemData[itemId] = data;
+      if (!skipUpdateTree) {
+        tree.rebuildTree();
+      }
     },
     hasLoadedData: ({ tree, itemId }) => {
       const dataRef = tree.getDataRef<AsyncDataLoaderDataRef>();
