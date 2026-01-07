@@ -28,6 +28,9 @@ export type TreeFeatureDef<T> = {
 
     setExpandedItems?: SetStateFn<string[]>;
     setFocusedItem?: SetStateFn<string | null>;
+
+    /** @experimental */
+    cacheCollapsedItems?: boolean;
   };
   treeInstance: {
     /** @internal */

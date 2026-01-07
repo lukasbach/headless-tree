@@ -25,7 +25,8 @@ export const treeFeature: FeatureImplementation<any> = {
 
   treeInstance: {
     getItemsMeta: ({ tree }) => {
-      const { rootItemId } = tree.getConfig();
+      const { rootItemId, cacheCollapsedItems, isItemFolder } =
+        tree.getConfig();
       const { expandedItems } = tree.getState();
       const flatItems: ItemMeta[] = [];
       const expandedItemsSet = new Set(expandedItems); // TODO support setting state expandedItems as set instead of array
@@ -51,7 +52,10 @@ export const treeFeature: FeatureImplementation<any> = {
           posInSet,
         });
 
-        if (expandedItemsSet.has(itemId)) {
+        if (
+          (cacheCollapsedItems && isItemFolder(itemId)) ||
+          expandedItemsSet.has(itemId)
+        ) {
           const children = tree.retrieveChildrenIds(itemId) ?? [];
           let i = 0;
           for (const childId of children) {
@@ -179,7 +183,9 @@ export const treeFeature: FeatureImplementation<any> = {
         ...expandedItems,
         itemId,
       ]);
-      tree.rebuildTree();
+      if (tree.getConfig().cacheCollapsedItems) {
+        tree.rebuildTree();
+      }
     },
     collapse: ({ tree, item, itemId }) => {
       if (!item.isFolder()) {
@@ -189,7 +195,9 @@ export const treeFeature: FeatureImplementation<any> = {
       tree.applySubStateUpdate("expandedItems", (expandedItems) =>
         expandedItems.filter((id) => id !== itemId),
       );
-      tree.rebuildTree();
+      if (tree.getConfig().cacheCollapsedItems) {
+        tree.rebuildTree();
+      }
     },
     getItemData: ({ tree, itemId }) => tree.retrieveItemData(itemId),
     equals: ({ item }, other) => item.getId() === other?.getId(),
@@ -217,7 +225,7 @@ export const treeFeature: FeatureImplementation<any> = {
     primaryAction: ({ tree, item }) =>
       tree.getConfig().onPrimaryAction?.(item as ItemInstance<any>),
     getParent: ({ tree, item }) =>
-      item.getItemMeta().parentId
+      item.getItemMeta().parentId // TODO feature for keeping entire meta structure in cache?
         ? tree.getItemInstance(item.getItemMeta().parentId)
         : undefined,
     getIndexInParent: ({ item }) => item.getItemMeta().posInSet,

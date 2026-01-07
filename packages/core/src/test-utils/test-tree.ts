@@ -61,6 +61,12 @@ export class TestTree<T = string> {
       }),
       title: "Proxified Asynchronous Data Loader",
     }),
+    cacheCollapsedItems: () => ({
+      tree: this.withFeatures(syncDataLoaderFeature).with({
+        cacheCollapsedItems: true,
+      }),
+      title: "Cache Collapsed Items",
+    }),
   };
 
   forSuits(runSuite: (tree: TestTree<T>, title: string) => void) {
@@ -69,6 +75,7 @@ export class TestTree<T = string> {
       this.suits.async(),
       this.suits.proxifiedSync(),
       this.suits.proxifiedAsync(),
+      this.suits.cacheCollapsedItems(),
     ])("$title", ({ tree, title }) => {
       tree.resetBeforeEach();
       runSuite(tree, title);
