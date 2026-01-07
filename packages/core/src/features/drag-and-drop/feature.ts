@@ -322,9 +322,13 @@ export const dragAndDropFeature: FeatureImplementation = {
 
         if (draggedItems) {
           await config.onDrop?.(draggedItems, target);
+          draggedItems[0].setFocused();
         } else if (e.dataTransfer) {
           await config.onDropForeignDragObject?.(e.dataTransfer, target);
         }
+
+        tree.applySubStateUpdate("dnd", null);
+        tree.updateDomFocus();
       },
     }),
 
