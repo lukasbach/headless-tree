@@ -64,5 +64,6 @@ export const poll = (fn: () => boolean, interval = 100, timeout = 1000) =>
     }, interval);
     clear = setTimeout(() => {
       clearInterval(i);
+      resolve();
     }, timeout);
   });

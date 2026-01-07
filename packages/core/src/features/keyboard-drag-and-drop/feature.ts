@@ -254,6 +254,7 @@ export const keyboardDragAndDropFeature: FeatureImplementation = {
           await config.onDropForeignDragObject?.(dataTransfer, target);
         }
 
+        tree.updateDomFocus();
         tree.applySubStateUpdate(
           "assistiveDndState",
           AssistiveDndState.Completed,

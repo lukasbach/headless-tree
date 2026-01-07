@@ -107,9 +107,13 @@ export const treeFeature: FeatureImplementation<any> = {
       setTimeout(async () => {
         const focusedItem = tree.getFocusedItem();
         tree.getConfig().scrollToItem?.(focusedItem);
-        await poll(() => focusedItem.getElement() !== null, 20);
+        await poll(() => focusedItem.getElement() !== null, 20, 500);
         const focusedElement = focusedItem.getElement();
-        if (!focusedElement) return;
+        if (!focusedElement) {
+          tree.getItems()[0]?.setFocused();
+          tree.getItems()[0]?.getElement()?.focus();
+          return;
+        }
         focusedElement.focus();
       });
     },
