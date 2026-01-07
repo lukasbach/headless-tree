@@ -29,6 +29,8 @@ export type TargetPlacement =
 export const isOrderedDragTarget = <T>(dragTarget: DragTarget<T>) =>
   "childIndex" in dragTarget;
 
+/** @param dataTransfer - If the data transfer object should not be considered, e.g. because the event is
+ * onDragOver where the browser does not allow reading the payload, pass null */
 export const canDrop = (
   dataTransfer: DataTransfer | null,
   target: DragTarget<any>,
@@ -197,21 +199,25 @@ export const getReparentTarget = <T>(
   };
 };
 
+/** @param hasDataTransferPayload - If the data transfer object should not be considered, e.g. because the event is
+ * onDragOver where the browser does not allow reading the payload, pass false */
 export const getDragTarget = (
   e: any,
   item: ItemInstance<any>,
   tree: TreeInstance<any>,
+  hasDataTransferPayload: boolean,
   canReorder = tree.getConfig().canReorder,
 ): DragTarget<any> => {
+  const dataTransfer = hasDataTransferPayload ? e.dataTransfer : null;
   const draggedItems = tree.getState().dnd?.draggedItems;
   const itemMeta = item.getItemMeta();
   const parent = item.getParent();
   const itemTarget: DragTarget<any> = { item };
   const parentTarget: DragTarget<any> | null = parent ? { item: parent } : null;
   const canBecomeSibling =
-    parentTarget && canDrop(e.dataTransfer, parentTarget, tree);
+    parentTarget && canDrop(dataTransfer, parentTarget, tree);
 
-  const canMakeChild = canDrop(e.dataTransfer, itemTarget, tree);
+  const canMakeChild = canDrop(dataTransfer, itemTarget, tree);
   const placement = getTargetPlacement(e, item, tree, canMakeChild);
 
   if (
@@ -229,7 +235,7 @@ export const getDragTarget = (
 
   if (!canReorder && parent && !canBecomeSibling) {
     // TODO! this breaks in story DND/Can Drop. Maybe move this logic into a composable DragTargetStrategy[] ?
-    return getDragTarget(e, parent, tree, false);
+    return getDragTarget(e, parent, tree, hasDataTransferPayload, false);
   }
 
   if (!parent) {
@@ -242,7 +248,7 @@ export const getDragTarget = (
   }
 
   if (!canBecomeSibling) {
-    return getDragTarget(e, parent, tree, false);
+    return getDragTarget(e, parent, tree, hasDataTransferPayload, false);
   }
 
   if (placement.type === PlacementType.Reparent) {

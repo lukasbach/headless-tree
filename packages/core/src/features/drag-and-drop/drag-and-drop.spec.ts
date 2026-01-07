@@ -328,8 +328,7 @@ describe("core-feature/drag-and-drop", () => {
           "onDropForeignDragObject",
         );
         const event = tree.createBottomDragEvent(2);
-        tree.setElementBoundingBox("x212");
-        tree.setElementBoundingBox("x213");
+        tree.setElementBoundingBox("x112");
         tree.do.dragOver("x112", event);
         tree.do.drop("x112", event);
         expect(onDropForeignDragObject).toHaveBeenCalledWith(
@@ -356,6 +355,38 @@ describe("core-feature/drag-and-drop", () => {
         tree.do.dragOverNotAllowed("x11", event);
         tree.do.drop("x11", event);
         expect(onDropForeignDragObject).not.toHaveBeenCalled();
+      });
+
+      it("calls canDragForeignDragObjectOver in drag over events, not canDropForeignDragObject", () => {
+        const canDropForeignDragObject = tree
+          .mockedHandler("canDropForeignDragObject")
+          .mockReturnValue(true);
+        const canDragForeignDragObjectOver = tree
+          .mockedHandler("canDragForeignDragObjectOver")
+          .mockReturnValue(true);
+        const event = TestTree.dragEvent();
+        tree.do.dragOver("x11", event);
+        expect(canDragForeignDragObjectOver).toHaveBeenCalledWith(
+          event.dataTransfer,
+          { item: tree.item("x11") },
+        );
+        expect(canDropForeignDragObject).not.toHaveBeenCalled();
+      });
+
+      it("calls canDropForeignDragObject in drop events, not canDragForeignDragObjectOver", () => {
+        const canDropForeignDragObject = tree
+          .mockedHandler("canDropForeignDragObject")
+          .mockReturnValue(true);
+        const canDragForeignDragObjectOver = tree
+          .mockedHandler("canDragForeignDragObjectOver")
+          .mockReturnValue(true);
+        const event = TestTree.dragEvent();
+        tree.do.drop("x11", event);
+        expect(canDropForeignDragObject).toHaveBeenCalledWith(
+          event.dataTransfer,
+          { item: tree.item("x11") },
+        );
+        expect(canDragForeignDragObjectOver).not.toHaveBeenCalled();
       });
     });
 

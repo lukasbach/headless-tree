@@ -236,7 +236,7 @@ export const dragAndDropFeature: FeatureImplementation = {
 
         handleAutoOpenFolder(dataRef, tree, item, placement);
 
-        const target = getDragTarget(e, item, tree);
+        const target = getDragTarget(e, item, tree, false);
 
         if (
           !tree.getState().dnd?.draggedItems &&
@@ -249,7 +249,8 @@ export const dragAndDropFeature: FeatureImplementation = {
           return;
         }
 
-        if (!canDrop(e.dataTransfer, target, tree)) {
+        // dataTransfer.payload is not accessible in onDragOver, so just skip entirely here. It'll be checked again in onDrop
+        if (!canDrop(null, target, tree)) {
           dataRef.current.lastAllowDrop = false;
           return;
         }
@@ -285,7 +286,7 @@ export const dragAndDropFeature: FeatureImplementation = {
           return;
         }
 
-        const target = getDragTarget(e, item, tree);
+        const target = getDragTarget(e, item, tree, false);
         if (
           canDragForeignDragObjectOver &&
           e.dataTransfer &&
@@ -300,7 +301,7 @@ export const dragAndDropFeature: FeatureImplementation = {
       onDrop: async (e: DragEvent) => {
         e.stopPropagation();
         const dataRef = tree.getDataRef<DndDataRef>();
-        const target = getDragTarget(e, item, tree);
+        const target = getDragTarget(e, item, tree, true);
         const draggedItems = tree.getState().dnd?.draggedItems;
         const isValidDrop = canDrop(e.dataTransfer, target, tree);
 
