@@ -57,6 +57,7 @@ export const dragAndDropFeature: FeatureImplementation = {
     setDndState: makeStateUpdater("dnd", tree),
     canReorder: true,
     openOnDropDelay: 800,
+    draggedItemOverwritesSelection: true,
     ...defaultConfig,
   }),
 
@@ -280,13 +281,16 @@ export const dragAndDropFeature: FeatureImplementation = {
       draggable: true,
 
       onDragStart: (e: DragEvent) => {
+        const { draggedItemOverwritesSelection } = tree.getConfig();
         const selectedItems = tree.getSelectedItems
           ? tree.getSelectedItems()
           : [tree.getFocusedItem()];
-        const items = selectedItems.includes(item) ? selectedItems : [item];
+        const overwriteSelection =
+          !selectedItems.includes(item) && draggedItemOverwritesSelection;
+        const items = overwriteSelection ? [item] : selectedItems;
         const config = tree.getConfig();
 
-        if (!selectedItems.includes(item)) {
+        if (overwriteSelection) {
           tree.setSelectedItems?.([item.getItemMeta().itemId]);
         }
 

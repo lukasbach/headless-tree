@@ -787,5 +787,99 @@ describe("core-feature/drag-and-drop", () => {
         expect(canDrop).toBeCalledTimes(3);
       });
     });
+
+    describe("draggedItemOverwritesSelection", () => {
+      it("overwrites selection when dragging unselected item with draggedItemOverwritesSelection=true", () => {
+        tree.do.selectItem("x111");
+        tree.do.ctrlSelectItem("x112");
+        tree.do.ctrlSelectItem("x113");
+
+        expect(tree.instance.getItemInstance("x111").isSelected()).toBe(true);
+        expect(tree.instance.getItemInstance("x112").isSelected()).toBe(true);
+        expect(tree.instance.getItemInstance("x113").isSelected()).toBe(true);
+        expect(tree.instance.getItemInstance("x114").isSelected()).toBe(false);
+
+        tree.do.startDrag("x114");
+
+        expect(tree.instance.getItemInstance("x111").isSelected()).toBe(false);
+        expect(tree.instance.getItemInstance("x112").isSelected()).toBe(false);
+        expect(tree.instance.getItemInstance("x113").isSelected()).toBe(false);
+        expect(tree.instance.getItemInstance("x114").isSelected()).toBe(true);
+      });
+
+      it("preserves selection when dragging unselected item with draggedItemOverwritesSelection=false", async () => {
+        const testTree = await tree
+          .with({ draggedItemOverwritesSelection: false })
+          .createTestCaseTree();
+
+        testTree.do.selectItem("x111");
+        testTree.do.ctrlSelectItem("x112");
+        testTree.do.ctrlSelectItem("x113");
+
+        expect(testTree.item("x111").isSelected()).toBe(true);
+        expect(testTree.item("x112").isSelected()).toBe(true);
+        expect(testTree.item("x113").isSelected()).toBe(true);
+        expect(testTree.item("x114").isSelected()).toBe(false);
+        testTree.do.startDrag("x114");
+
+        expect(testTree.item("x111").isSelected()).toBe(true);
+        expect(testTree.item("x112").isSelected()).toBe(true);
+        expect(testTree.item("x113").isSelected()).toBe(true);
+        expect(testTree.item("x114").isSelected()).toBe(false);
+      });
+
+      it("does not overwrite selection when dragging selected item with draggedItemOverwritesSelection=true", () => {
+        tree.do.selectItem("x111");
+        tree.do.ctrlSelectItem("x112");
+        tree.do.ctrlSelectItem("x113");
+
+        expect(tree.item("x111").isSelected()).toBe(true);
+        expect(tree.item("x112").isSelected()).toBe(true);
+        expect(tree.item("x113").isSelected()).toBe(true);
+
+        tree.do.startDrag("x111");
+
+        expect(tree.item("x111").isSelected()).toBe(true);
+        expect(tree.item("x112").isSelected()).toBe(true);
+        expect(tree.item("x113").isSelected()).toBe(true);
+      });
+
+      it("does not overwrite selection when dragging selected item with draggedItemOverwritesSelection=false", async () => {
+        const testTree = await tree
+          .with({ draggedItemOverwritesSelection: false })
+          .createTestCaseTree();
+
+        testTree.do.selectItem("x111");
+        testTree.do.ctrlSelectItem("x112");
+        testTree.do.ctrlSelectItem("x113");
+
+        expect(testTree.item("x111").isSelected()).toBe(true);
+        expect(testTree.item("x112").isSelected()).toBe(true);
+        expect(testTree.item("x113").isSelected()).toBe(true);
+
+        testTree.do.startDrag("x111");
+
+        expect(testTree.item("x111").isSelected()).toBe(true);
+        expect(testTree.item("x112").isSelected()).toBe(true);
+        expect(testTree.item("x113").isSelected()).toBe(true);
+      });
+
+      it("drags all selected items when draggedItemOverwritesSelection=false", async () => {
+        const testTree = await tree
+          .with({ draggedItemOverwritesSelection: false })
+          .createTestCaseTree();
+
+        testTree.do.selectItem("x111");
+        testTree.do.ctrlSelectItem("x112");
+        testTree.do.ctrlSelectItem("x113");
+
+        testTree.do.startDrag("x111");
+        testTree.do.dragOverAndDrop("x21");
+
+        testTree.expect.dropped(["x111", "x112", "x113"], {
+          item: testTree.item("x21"),
+        });
+      });
+    });
   });
 });

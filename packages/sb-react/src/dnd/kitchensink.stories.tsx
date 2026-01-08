@@ -27,10 +27,14 @@ const meta = {
       control: { type: "number", min: 0, max: 1, step: 0.1 },
       defaultValue: 0.2,
     },
+    draggedItemOverwritesSelection: {
+      type: "boolean",
+    },
   },
   args: {
     canReorder: true,
     canDropForeignDragObject: true,
+    draggedItemOverwritesSelection: true,
   },
 } satisfies Meta;
 
@@ -41,6 +45,7 @@ export const KitchenSink = ({
   canReorder,
   canDropForeignDragObject,
   reorderAreaPercentage,
+  draggedItemOverwritesSelection,
 }: PropsOfArgtype<typeof meta>) => {
   const [state, setState] = useState({});
   const tree = useTree<string>({
@@ -50,6 +55,7 @@ export const KitchenSink = ({
     getItemName: (item) => item.getItemData(),
     isItemFolder: () => true,
     canReorder,
+    draggedItemOverwritesSelection,
     onDrop: action("onDrop"),
     onDropForeignDragObject: action("onDropForeignDragObject"),
     createForeignDragObject: (items) => ({

@@ -100,6 +100,10 @@ export type DragAndDropFeatureDef<T> = {
 
     /** If true, `item.getProps()` will not include drag event handlers. Use `item.getDragHandleProps()` on the handler element. */
     seperateDragHandle?: boolean;
+
+    /** If true, the item that is dragged is not selected, the selected items will be overwritten to just the dragged item.
+     * Defaults to true */
+    draggedItemOverwritesSelection?: boolean;
   };
   treeInstance: {
     getDragTarget: () => DragTarget<T> | null;
