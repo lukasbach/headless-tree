@@ -1,5 +1,14 @@
 # @headless-tree/core
 
+## 1.6.2
+
+### Patch Changes
+
+- 39a8b44: Add skipUpdateTree parameter to `updateCachedChildrenIds` and `updateCachedData` in async tree loader
+- 26ecc1b: Fixed an issue where dropping items inside a collapsed folder will make the tree become un-focusable until a new item is clicked with mouse again. This could break usage with keyboard-only drag operations.
+- 0108b7a: Fixed a bug where some hotkeys (like up/down navigation, search and renaming) doesn't work after items are dragged within the tree (#179)
+- ffd2619: Fixed an issue where `canDropForeignDragObject` was being called in `onDragOver` events without payload. `canDropForeignDragObject` should never be called in `onDragOver` events since there, browsers do not allow access to the data transfer payload. Now, `canDropForeignDragObject` is only called in onDrop events, and `canDragForeignDragObjectOver` is always called in `onDragOver` events.
+
 ## 1.6.1
 
 ### Patch Changes
