@@ -64,3 +64,35 @@ The provided element does not have to be an image element, but if it is not, it 
 In this case, you will want to move it with CSS off-screen to hide it whenever the user is not dragging anything.
 
 <DemoBox tags={["feature/dnd"]} initialStory="react-drag-and-drop-drag-preview--drag-preview" />
+
+## Separate Drag Handle
+
+By default, drag-and-drop is initiated when the user clicks and drags anywhere on a tree item. If you want more precise
+control over where users can initiate dragging, you can set [`seperateDragHandle`](/api/core/interface/DragAndDropFeatureConfig#seperateDragHandle)
+to `true` in your tree configuration.
+
+When enabled, the drag event handlers are removed from `item.getProps()` and you must manually apply them to a specific
+drag handle element using `item.getDragHandleProps()`. This allows you to create dedicated drag handles (like icons or grip handles)
+while keeping the rest of the item interactive for other purposes like selection or expansion.
+
+```tsx
+const tree = useTree({
+  // ... other config
+  seperateDragHandle: true,
+});
+
+// In your render:
+<div {...item.getProps()}>
+  <span {...item.getDragHandleProps()} className="drag-handle">
+    ⋮⋮
+  </span>
+  <span>{item.getItemName()}</span>
+</div>
+```
+
+This is particularly useful when you want to:
+- Provide a clear visual indicator of where to drag
+- Keep clickable content (like buttons or links) in the item that shouldn't trigger dragging
+- Create more precise drag interactions in complex item layouts
+
+<DemoBox tags={["feature/dnd"]} initialStory="react-drag-and-drop-seperate-drag-handle--seperate-drag-handle" />

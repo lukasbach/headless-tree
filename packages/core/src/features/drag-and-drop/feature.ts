@@ -178,46 +178,9 @@ export const dragAndDropFeature: FeatureImplementation = {
   itemInstance: {
     getProps: ({ tree, item, prev }) => ({
       ...prev?.(),
-
-      draggable: true,
+      ...(tree.getConfig().seperateDragHandle ? {} : item.getDragHandleProps()),
 
       onDragEnter: (e: DragEvent) => e.preventDefault(),
-
-      onDragStart: (e: DragEvent) => {
-        const selectedItems = tree.getSelectedItems
-          ? tree.getSelectedItems()
-          : [tree.getFocusedItem()];
-        const items = selectedItems.includes(item) ? selectedItems : [item];
-        const config = tree.getConfig();
-
-        if (!selectedItems.includes(item)) {
-          tree.setSelectedItems?.([item.getItemMeta().itemId]);
-        }
-
-        if (!(config.canDrag?.(items) ?? true)) {
-          e.preventDefault();
-          return;
-        }
-
-        if (config.setDragImage) {
-          const { imgElement, xOffset, yOffset } = config.setDragImage(items);
-          e.dataTransfer?.setDragImage(imgElement, xOffset ?? 0, yOffset ?? 0);
-        }
-
-        if (config.createForeignDragObject && e.dataTransfer) {
-          const { format, data, dropEffect, effectAllowed } =
-            config.createForeignDragObject(items);
-          e.dataTransfer.setData(format, data);
-
-          if (dropEffect) e.dataTransfer.dropEffect = dropEffect;
-          if (effectAllowed) e.dataTransfer.effectAllowed = effectAllowed;
-        }
-
-        tree.applySubStateUpdate("dnd", {
-          draggedItems: items,
-          draggingOverItem: tree.getFocusedItem(),
-        });
-      },
 
       onDragOver: (e: DragEvent) => {
         e.stopPropagation(); // don't bubble up to container dragover
@@ -277,27 +240,6 @@ export const dragAndDropFeature: FeatureImplementation = {
         }, 100);
       },
 
-      onDragEnd: (e: DragEvent) => {
-        const { onCompleteForeignDrop, canDragForeignDragObjectOver } =
-          tree.getConfig();
-        const draggedItems = tree.getState().dnd?.draggedItems;
-
-        if (e.dataTransfer?.dropEffect === "none" || !draggedItems) {
-          return;
-        }
-
-        const target = getDragTarget(e, item, tree, false);
-        if (
-          canDragForeignDragObjectOver &&
-          e.dataTransfer &&
-          !canDragForeignDragObjectOver(e.dataTransfer, target)
-        ) {
-          return;
-        }
-
-        onCompleteForeignDrop?.(draggedItems);
-      },
-
       onDrop: async (e: DragEvent) => {
         e.stopPropagation();
         const dataRef = tree.getDataRef<DndDataRef>();
@@ -329,6 +271,69 @@ export const dragAndDropFeature: FeatureImplementation = {
 
         tree.applySubStateUpdate("dnd", null);
         tree.updateDomFocus();
+      },
+    }),
+
+    getDragHandleProps: ({ tree, item, prev }) => ({
+      ...prev?.(),
+
+      draggable: true,
+
+      onDragStart: (e: DragEvent) => {
+        const selectedItems = tree.getSelectedItems
+          ? tree.getSelectedItems()
+          : [tree.getFocusedItem()];
+        const items = selectedItems.includes(item) ? selectedItems : [item];
+        const config = tree.getConfig();
+
+        if (!selectedItems.includes(item)) {
+          tree.setSelectedItems?.([item.getItemMeta().itemId]);
+        }
+
+        if (!(config.canDrag?.(items) ?? true)) {
+          e.preventDefault();
+          return;
+        }
+
+        if (config.setDragImage) {
+          const { imgElement, xOffset, yOffset } = config.setDragImage(items);
+          e.dataTransfer?.setDragImage(imgElement, xOffset ?? 0, yOffset ?? 0);
+        }
+
+        if (config.createForeignDragObject && e.dataTransfer) {
+          const { format, data, dropEffect, effectAllowed } =
+            config.createForeignDragObject(items);
+          e.dataTransfer.setData(format, data);
+
+          if (dropEffect) e.dataTransfer.dropEffect = dropEffect;
+          if (effectAllowed) e.dataTransfer.effectAllowed = effectAllowed;
+        }
+
+        tree.applySubStateUpdate("dnd", {
+          draggedItems: items,
+          draggingOverItem: tree.getFocusedItem(),
+        });
+      },
+
+      onDragEnd: (e: DragEvent) => {
+        const { onCompleteForeignDrop, canDragForeignDragObjectOver } =
+          tree.getConfig();
+        const draggedItems = tree.getState().dnd?.draggedItems;
+
+        if (e.dataTransfer?.dropEffect === "none" || !draggedItems) {
+          return;
+        }
+
+        const target = getDragTarget(e, item, tree, false);
+        if (
+          canDragForeignDragObjectOver &&
+          e.dataTransfer &&
+          !canDragForeignDragObjectOver(e.dataTransfer, target)
+        ) {
+          return;
+        }
+
+        onCompleteForeignDrop?.(draggedItems);
       },
     }),
 

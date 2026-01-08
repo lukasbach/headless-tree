@@ -59,6 +59,14 @@ export const propMemoizationFeature: FeatureImplementation = {
       return memoize(props, dataRef.current.memo.item);
     },
 
+    getDragHandleProps: ({ item, prev }) => {
+      const dataRef = item.getDataRef<PropMemoizationDataRef>();
+      const props = prev?.() ?? {};
+      dataRef.current.memo ??= {};
+      dataRef.current.memo.drag ??= {};
+      return memoize(props, dataRef.current.memo.drag);
+    },
+
     getRenameInputProps: ({ item, prev }) => {
       const dataRef = item.getDataRef<PropMemoizationDataRef>();
       const props = prev?.() ?? {};

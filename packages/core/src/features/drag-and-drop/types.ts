@@ -97,6 +97,9 @@ export type DragAndDropFeatureDef<T> = {
 
     /** When dragging for this many ms on a closed folder, the folder will automatically open. Set to zero to disable. */
     openOnDropDelay?: number;
+
+    /** If true, `item.getProps()` will not include drag event handlers. Use `item.getDragHandleProps()` on the handler element. */
+    seperateDragHandle?: boolean;
   };
   treeInstance: {
     getDragTarget: () => DragTarget<T> | null;
@@ -118,6 +121,10 @@ export type DragAndDropFeatureDef<T> = {
     isDragTargetAbove: () => boolean;
     isDragTargetBelow: () => boolean;
     isDraggingOver: () => boolean;
+
+    /** Note that `item.getProps()` already passes in all drag event handlers by default. Set `seperateDragHandle` to true to
+     * disable the default behavior and use this on the handler element instead. */
+    getDragHandleProps: () => Record<string, any>;
   };
   hotkeys: never;
 };

@@ -2,6 +2,7 @@ export interface PropMemoizationDataRef {
   memo?: {
     tree?: Record<string, any>;
     item?: Record<string, any>;
+    drag?: Record<string, any>;
     search?: Record<string, any>;
     rename?: Record<string, any>;
   };

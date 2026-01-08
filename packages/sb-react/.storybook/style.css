@@ -203,6 +203,15 @@ button:focus-visible .treeitem.focused, .treeitem.searchmatch.focused {
     background-color: #f6f6f6;
 }
 
+.drag-handle {
+    cursor: grab;
+    padding: 4px 8px;
+    background: #e0e0e0;
+    border-radius: 4px;
+    font-size: 12px;
+    user-select: none;
+}
+
 .visible-assistive-text {
     position: unset !important;
     width: unset !important;

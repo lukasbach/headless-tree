@@ -729,6 +729,54 @@ describe("core-feature/drag-and-drop", () => {
       });
     });
 
+    describe("seperateDragHandle", () => {
+      it("includes all drag handlers in getProps() when seperateDragHandle is false", () => {
+        const props = tree.instance.getItemInstance("x111").getProps();
+        expect(props.draggable).toBe(true);
+        expect(props.onDragStart).toBeDefined();
+        expect(props.onDragEnd).toBeDefined();
+        expect(props.onDragEnter).toBeDefined();
+        expect(props.onDragOver).toBeDefined();
+        expect(props.onDragLeave).toBeDefined();
+        expect(props.onDrop).toBeDefined();
+      });
+
+      it("includes drag handle handlers in getDragHandleProps() when seperateDragHandle is false", () => {
+        const props = tree.instance
+          .getItemInstance("x111")
+          .getDragHandleProps();
+        expect(props.draggable).toBe(true);
+        expect(props.onDragStart).toBeDefined();
+        expect(props.onDragEnd).toBeDefined();
+      });
+
+      it("excludes drag handle handlers from getProps() but includes drop handlers when seperateDragHandle is true", async () => {
+        const testTree = await tree
+          .with({ seperateDragHandle: true })
+          .createTestCaseTree();
+        const props = testTree.instance.getItemInstance("x111").getProps();
+        expect(props.draggable).toBeUndefined();
+        expect(props.onDragStart).toBeUndefined();
+        expect(props.onDragEnd).toBeUndefined();
+        expect(props.onDragEnter).toBeDefined();
+        expect(props.onDragOver).toBeDefined();
+        expect(props.onDragLeave).toBeDefined();
+        expect(props.onDrop).toBeDefined();
+      });
+
+      it("includes drag handle handlers in getDragHandleProps() when seperateDragHandle is true", async () => {
+        const testTree = await tree
+          .with({ seperateDragHandle: true })
+          .createTestCaseTree();
+        const props = testTree.instance
+          .getItemInstance("x111")
+          .getDragHandleProps();
+        expect(props.draggable).toBe(true);
+        expect(props.onDragStart).toBeDefined();
+        expect(props.onDragEnd).toBeDefined();
+      });
+    });
+
     describe("retains last drag state with dragcode", () => {
       it("uses constant number of calls to canDrop", () => {
         const canDrop = tree.mockedHandler("canDrop").mockReturnValue(true);
