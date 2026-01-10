@@ -34,8 +34,8 @@ const consumeMdx = async (file) => {
         return `\`\`\`ts jsx\n${code}\`\`\``;
     });
 
-    await fs.ensureDir(path.dirname(path.join(__dirname, "../packages/docs/static/llm", `${attributes.slug}.md`)));
-    await fs.writeFile(path.join(__dirname, "../packages/docs/static/llm", `${attributes.slug}.md`), bodyWithFixedDemoBox, { encoding: "utf8" });
+    await fs.ensureDir(path.dirname(path.join(__dirname, "../packages/docs/build/llm", `${attributes.slug}.md`)));
+    await fs.writeFile(path.join(__dirname, "../packages/docs/build/llm", `${attributes.slug}.md`), bodyWithFixedDemoBox, { encoding: "utf8" });
 
     entryFull += `\n---\n<!-- ${attributes.slug } -->\n# ${attributes.title}\n\n${bodyWithFixedDemoBox}\n`;
     entrySmall += `\n- [${attributes.title}](${prefix}${attributes.slug}.md)${attributes.subtitle ? ": " : ""}${attributes.subtitle ?? ""}`;
@@ -51,7 +51,7 @@ for (const file of files) {
 for (const file of files) {
     await consumeMdx(file);
 }
-await fs.writeFile(path.join(__dirname, "../packages/docs/static/llms.txt"), entrySmall, { encoding: "utf8" });
-await fs.writeFile(path.join(__dirname, "../packages/docs/static/llm.txt"), entrySmall, { encoding: "utf8" });
-await fs.writeFile(path.join(__dirname, "../packages/docs/static/llm-full.txt"), entryFull, { encoding: "utf8" });
-await fs.writeFile(path.join(__dirname, "../packages/docs/static/llms-full.txt"), entryFull, { encoding: "utf8" });
+await fs.writeFile(path.join(__dirname, "../packages/docs/build/llms.txt"), entrySmall, { encoding: "utf8" });
+await fs.writeFile(path.join(__dirname, "../packages/docs/build/llm.txt"), entrySmall, { encoding: "utf8" });
+await fs.writeFile(path.join(__dirname, "../packages/docs/build/llm-full.txt"), entryFull, { encoding: "utf8" });
+await fs.writeFile(path.join(__dirname, "../packages/docs/build/llms-full.txt"), entryFull, { encoding: "utf8" });
