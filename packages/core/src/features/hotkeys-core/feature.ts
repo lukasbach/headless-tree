@@ -5,6 +5,11 @@ import {
 } from "../../types/core";
 import { HotkeyConfig, HotkeysCoreDataRef } from "./types";
 
+// e.code may be empty or "Unidentified" on mobile virtual keyboards
+// or during IME composition, so we fall back to e.key
+const resolveKeyCode = (e: KeyboardEvent): string =>
+  e.code !== "" && e.code !== "Unidentified" ? e.code : e.key;
+
 const specialKeys: Record<string, RegExp> = {
   // TODO:breaking deprecate auto-lowercase
   letter: /^Key[A-Z]$/,
@@ -71,9 +76,11 @@ export const hotkeysCoreFeature: FeatureImplementation = {
         return;
       }
 
+      const resolvedCode = resolveKeyCode(e);
+
       data.current.pressedKeys ??= new Set();
-      const newMatch = !data.current.pressedKeys.has(e.code);
-      data.current.pressedKeys.add(e.code);
+      const newMatch = !data.current.pressedKeys.has(resolvedCode);
+      data.current.pressedKeys.add(resolvedCode);
 
       const hotkeyName = findHotkeyMatch(
         data.current.pressedKeys,
@@ -85,7 +92,7 @@ export const hotkeysCoreFeature: FeatureImplementation = {
       if (e.target instanceof HTMLInputElement) {
         // JS respects composite keydowns while input elements are focused, and
         // doesnt send the associated keyup events with the same key name
-        data.current.pressedKeys.delete(e.code);
+        data.current.pressedKeys.delete(resolvedCode);
       }
 
       if (!hotkeyName) return;
@@ -110,7 +117,7 @@ export const hotkeysCoreFeature: FeatureImplementation = {
 
     const keyup = (e: KeyboardEvent) => {
       data.current.pressedKeys ??= new Set();
-      data.current.pressedKeys.delete(e.code);
+      data.current.pressedKeys.delete(resolveKeyCode(e));
     };
 
     const reset = () => {
