@@ -5,6 +5,7 @@ import { selectionFeature } from "../selection/feature";
 import { ItemInstance } from "../../types/core";
 import { createOnDropHandler } from "../../utilities/create-on-drop-handler";
 import { propMemoizationFeature } from "../prop-memoization/feature";
+import { getDragTarget } from "./utils";
 
 const isItem = (item: unknown): item is ItemInstance<any> =>
   !!item && typeof item === "object" && "getId" in item;
@@ -607,6 +608,26 @@ describe("core-feature/drag-and-drop", () => {
           insertionIndex: 2,
           item: tree.item("x21"),
         });
+      });
+
+      it("does not redirect away from a valid make-child target when the parent target is invalid and reordering is disabled", async () => {
+        const testTree = await tree
+          .with({
+            canReorder: false,
+            canDrop: (_, target) => target.item.getId() === "x11",
+          })
+          .createTestCaseTree();
+
+        testTree.do.startDrag("x211");
+
+        const dragTarget = getDragTarget(
+          TestTree.dragEvent(),
+          testTree.item("x11"),
+          testTree.instance,
+          false,
+        );
+
+        expect(dragTarget.item.getId()).toBe("x11");
       });
     });
 
