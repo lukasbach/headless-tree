@@ -233,6 +233,10 @@ export const getDragTarget = (
     return parentTarget;
   }
 
+  if (placement.type === PlacementType.MakeChild) {
+    return itemTarget;
+  }
+
   if (!canReorder && parent && !canBecomeSibling) {
     // TODO! this breaks in story DND/Can Drop. Maybe move this logic into a composable DragTargetStrategy[] ?
     return getDragTarget(e, parent, tree, hasDataTransferPayload, false);
@@ -240,10 +244,6 @@ export const getDragTarget = (
 
   if (!parent) {
     // Shouldn't happen, but if dropped "next" to root item, just drop it inside
-    return itemTarget;
-  }
-
-  if (placement.type === PlacementType.MakeChild) {
     return itemTarget;
   }
 
