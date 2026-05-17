@@ -1,5 +1,16 @@
 # @headless-tree/core
 
+## 1.7.0
+
+### Minor Changes
+
+- ac3bc1c: Add experimental `reactNativeFeature` to remap generated props and hotkey input for React Native and `react-native-web` renderers.
+
+### Patch Changes
+
+- fc2dc4d: Fix drag target resolution when a valid MakeChild target has an invalid parent target and reordering is disabled.
+- c1bc48e: Clear stale hotkey state after modifier key releases to keep single-key shortcuts working on macOS. [Issue report on Discord](https://discord.com/channels/1356978226643337236/1356988946114154592/1503377208465686538)
+
 ## 1.6.3
 
 ### Patch Changes
