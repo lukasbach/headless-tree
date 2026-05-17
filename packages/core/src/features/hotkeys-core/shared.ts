@@ -17,6 +17,21 @@ const specialKeys: Record<string, RegExp> = {
   enter: /^(Enter|NumpadEnter)$/,
 };
 
+const modifierKeyCodes = new Set([
+  "MetaLeft",
+  "MetaRight",
+  "Meta",
+  "ControlLeft",
+  "ControlRight",
+  "Control",
+  "AltLeft",
+  "AltRight",
+  "Alt",
+  "ShiftLeft",
+  "ShiftRight",
+  "Shift",
+]);
+
 const testHotkeyMatch = (
   pressedKeys: Set<string>,
   tree: TreeInstance<any>,
@@ -141,6 +156,14 @@ export const hotkeysCoreController = {
     }
 
     dataRef.current.pressedKeys ??= new Set();
+    if (modifierKeyCodes.has(resolvedCode)) {
+      dataRef.current.pressedKeys = new Set(
+        [...dataRef.current.pressedKeys].filter((pressedKey) =>
+          modifierKeyCodes.has(pressedKey),
+        ),
+      );
+    }
+
     dataRef.current.pressedKeys.delete(resolvedCode);
   },
 };
