@@ -14,6 +14,7 @@ import { ExpandAllFeatureDef } from "../features/expand-all/types";
 import { PropMemoizationFeatureDef } from "../features/prop-memoization/types";
 import { KeyboardDragAndDropFeatureDef } from "../features/keyboard-drag-and-drop/types";
 import { CheckboxesFeatureDef } from "../features/checkboxes/types";
+import { ReactNativeFeatureDef } from "../features/react-native-feature/types";
 
 export type Updater<T> = T | ((old: T) => T);
 export type SetStateFn<T> = (updaterOrValue: Updater<T>) => void;
@@ -63,7 +64,8 @@ export type RegisteredFeatures<T> =
   | SearchFeatureDef<T>
   | RenamingFeatureDef<T>
   | ExpandAllFeatureDef
-  | PropMemoizationFeatureDef;
+  | PropMemoizationFeatureDef
+  | ReactNativeFeatureDef<T>;
 
 type TreeStateType<T> = MergedFeatures<RegisteredFeatures<T>>["state"];
 export interface TreeState<T> extends TreeStateType<T> {}

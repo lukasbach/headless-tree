@@ -1,69 +1,6 @@
-import {
-  FeatureImplementation,
-  HotkeysConfig,
-  TreeInstance,
-} from "../../types/core";
-import { HotkeyConfig, HotkeysCoreDataRef } from "./types";
-
-// e.code may be empty or "Unidentified" on mobile virtual keyboards
-// or during IME composition, so we fall back to e.key
-const resolveKeyCode = (e: KeyboardEvent): string =>
-  e.code !== "" && e.code !== "Unidentified" ? e.code : e.key;
-
-const specialKeys: Record<string, RegExp> = {
-  // TODO:breaking deprecate auto-lowercase
-  letter: /^Key[A-Z]$/,
-  letterornumber: /^(Key[A-Z]|Digit[0-9])$/,
-  plus: /^(NumpadAdd|Plus)$/,
-  minus: /^(NumpadSubtract|Minus)$/,
-  control: /^(ControlLeft|ControlRight)$/,
-  shift: /^(ShiftLeft|ShiftRight)$/,
-  metaorcontrol: /^(MetaLeft|MetaRight|ControlLeft|ControlRight)$/,
-  enter: /^(Enter|NumpadEnter)$/,
-};
-
-const testHotkeyMatch = (
-  pressedKeys: Set<string>,
-  tree: TreeInstance<any>,
-  hotkey: HotkeyConfig<any>,
-) => {
-  const supposedKeys = hotkey.hotkey.toLowerCase().split("+"); // TODO:breaking deprecate auto-lowercase
-  const doKeysMatch = supposedKeys.every((key) => {
-    if (key in specialKeys) {
-      return [...pressedKeys].some((pressedKey) =>
-        specialKeys[key].test(pressedKey),
-      );
-    }
-
-    const pressedKeysLowerCase = [...pressedKeys] // TODO:breaking deprecate auto-lowercase
-      .map((k) => k.toLowerCase());
-
-    if (pressedKeysLowerCase.includes(key.toLowerCase())) {
-      return true;
-    }
-
-    if (pressedKeysLowerCase.includes(`key${key.toLowerCase()}`)) {
-      // TODO:breaking deprecate e.key character matching
-      return true;
-    }
-
-    return false;
-  });
-  const isEnabled = !hotkey.isEnabled || hotkey.isEnabled(tree);
-  const equalCounts = pressedKeys.size === supposedKeys.length;
-  return doKeysMatch && isEnabled && equalCounts;
-};
-
-const findHotkeyMatch = (
-  pressedKeys: Set<string>,
-  tree: TreeInstance<any>,
-  config1: HotkeysConfig<any>,
-  config2: HotkeysConfig<any>,
-) => {
-  return Object.entries({ ...config1, ...config2 }).find(([, hotkey]) =>
-    testHotkeyMatch(pressedKeys, tree, hotkey),
-  )?.[0] as keyof HotkeysConfig<any> | undefined;
-};
+import { FeatureImplementation } from "../../types/core";
+import { HotkeysCoreDataRef } from "./types";
+import { hotkeysCoreController } from "./shared";
 
 export const hotkeysCoreFeature: FeatureImplementation = {
   key: "hotkeys-core",
@@ -71,57 +8,19 @@ export const hotkeysCoreFeature: FeatureImplementation = {
   onTreeMount: (tree, element) => {
     const data = tree.getDataRef<HotkeysCoreDataRef>();
     const keydown = (e: KeyboardEvent) => {
-      const { ignoreHotkeysOnInputs, onTreeHotkey, hotkeys } = tree.getConfig();
-      if (e.target instanceof HTMLInputElement && ignoreHotkeysOnInputs) {
-        return;
-      }
-
-      const resolvedCode = resolveKeyCode(e);
-
-      data.current.pressedKeys ??= new Set();
-      const newMatch = !data.current.pressedKeys.has(resolvedCode);
-      data.current.pressedKeys.add(resolvedCode);
-
-      const hotkeyName = findHotkeyMatch(
-        data.current.pressedKeys,
-        tree as any,
-        tree.getHotkeyPresets(),
-        hotkeys as HotkeysConfig<any>,
-      );
-
-      if (e.target instanceof HTMLInputElement) {
-        // JS respects composite keydowns while input elements are focused, and
-        // doesnt send the associated keyup events with the same key name
-        data.current.pressedKeys.delete(resolvedCode);
-      }
-
-      if (!hotkeyName) return;
-
-      const hotkeyConfig: HotkeyConfig<any> = {
-        ...tree.getHotkeyPresets()[hotkeyName],
-        ...hotkeys?.[hotkeyName],
-      };
-
-      if (!hotkeyConfig) return;
-      if (
-        !hotkeyConfig.allowWhenInputFocused &&
-        e.target instanceof HTMLInputElement
-      )
-        return;
-      if (!hotkeyConfig.canRepeat && !newMatch) return;
-      if (hotkeyConfig.preventDefault) e.preventDefault();
-
-      hotkeyConfig.handler(e, tree as any);
-      onTreeHotkey?.(hotkeyName, e);
+      const isInputFocused = e.target instanceof HTMLInputElement;
+      hotkeysCoreController.dispatchKeyDown(tree, data, e, {
+        isInputFocused,
+        releaseAfterDispatch: isInputFocused,
+      });
     };
 
     const keyup = (e: KeyboardEvent) => {
-      data.current.pressedKeys ??= new Set();
-      data.current.pressedKeys.delete(resolveKeyCode(e));
+      hotkeysCoreController.dispatchKeyUp(data, e);
     };
 
     const reset = () => {
-      data.current.pressedKeys = new Set();
+      hotkeysCoreController.clearPressedKeys(data);
     };
 
     // keyup is registered on document, because some hotkeys shift

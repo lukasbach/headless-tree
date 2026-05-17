@@ -1,0 +1,65 @@
+---
+slug: "/features/react-native"
+title: "React Native"
+subtitle: "Remaps generated Headless Tree props for React Native renderers"
+hide_title: true
+---
+
+# React Native
+
+The React Native feature adapts Headless Tree's prop-generating APIs for React Native style renderers.
+It remaps DOM-oriented props like `onClick`, `onChange`, `aria-*`, and `checked` to React Native
+friendly props like `onPress`, `onChangeText`, `accessibility*`, and `value`, and it forwards
+React Native key input into the shared hotkey handling.
+
+Add `reactNativeFeature` as the last feature in your tree config, after the features whose props it
+should adapt. In React Native renderers, use it instead of `hotkeysCoreFeature`.
+
+```tsx
+import {
+  dragAndDropFeature,
+  keyboardDragAndDropFeature,
+  reactNativeFeature,
+  renamingFeature,
+  searchFeature,
+  selectionFeature,
+  syncDataLoaderFeature,
+} from "@headless-tree/core";
+import { useTree } from "@headless-tree/react";
+
+const tree = useTree({
+  // ...remaining tree config
+  features: [
+    syncDataLoaderFeature,
+    selectionFeature,
+    dragAndDropFeature,
+    keyboardDragAndDropFeature,
+    searchFeature,
+    renamingFeature,
+    reactNativeFeature,
+  ],
+});
+```
+
+When rendering, spread the remapped props onto your React Native components:
+
+```tsx
+<View {...tree.getContainerProps()}>
+  {tree.isSearchOpen() ? (
+    <TextInput {...tree.getSearchInputElementProps()} />
+  ) : null}
+
+  {tree.getItems().map((item) => (
+    <Pressable {...item.getProps()} key={item.getId()}>
+      <Text>{item.getItemName()}</Text>
+      {item.isRenaming() ? (
+        <TextInput {...item.getRenameInputProps()} />
+      ) : null}
+    </Pressable>
+  ))}
+</View>
+```
+
+If you use checkboxes, also spread `item.getCheckboxProps()`. This feature is especially useful with
+`react-native-web`, where keyboard interaction and accessibility props still need to be adapted away
+from the default DOM-oriented output.

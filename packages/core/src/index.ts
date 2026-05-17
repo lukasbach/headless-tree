@@ -14,6 +14,7 @@ export * from "./features/search/types";
 export * from "./features/renaming/types";
 export * from "./features/expand-all/types";
 export * from "./features/prop-memoization/types";
+export * from "./features/react-native-feature/types";
 
 export * from "./features/selection/feature";
 export * from "./features/checkboxes/feature";
@@ -26,6 +27,7 @@ export * from "./features/search/feature";
 export * from "./features/renaming/feature";
 export * from "./features/expand-all/feature";
 export * from "./features/prop-memoization/feature";
+export * from "./features/react-native-feature/feature";
 
 export * from "./utilities/create-on-drop-handler";
 export * from "./utilities/insert-items-at-target";
