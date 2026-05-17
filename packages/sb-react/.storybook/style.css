@@ -209,6 +209,7 @@ button:focus-visible .treeitem.focused, .treeitem.searchmatch.focused {
     background: #e0e0e0;
     border-radius: 4px;
     font-size: 12px;
+    -webkit-user-select: none;
     user-select: none;
 }
 

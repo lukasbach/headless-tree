@@ -1,0 +1,32 @@
+.delayed-drag-hidden-image {
+    position: fixed;
+    top: -9999px;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.delayed-drag-cursor-preview {
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform: translate(-9999px, -9999px);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(17, 24, 39, 0.92);
+    color: white;
+    pointer-events: none;
+    opacity: 0;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.2);
+    transition: opacity 0.12s ease;
+    z-index: 1000;
+}
+
+.delayed-drag-cursor-preview.visible {
+    opacity: 1;
+}
