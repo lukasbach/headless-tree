@@ -33,7 +33,7 @@ export const FeaturePageHeader: FC<
           <td>Import</td>
           <td className={styles.code}>
             import{" "}
-            {`{ ${cases.camel(feature)}Feature } from "@headless-tree/core`}
+            {`{ ${cases.camel(feature)}Feature } from "@headless-tree/core"`}
           </td>
         </tr>
       )}
