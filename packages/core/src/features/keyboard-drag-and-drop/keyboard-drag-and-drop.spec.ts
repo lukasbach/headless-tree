@@ -367,6 +367,19 @@ describe("core-feature/keyboard-drag-and-drop", () => {
         tree.expect.substate("assistiveDndState", undefined);
       });
 
+      it("doesnt offer inbetween targets when canReorder=false", async () => {
+        const testTree = await tree.with({ canReorder: false }).createTestCaseTree();
+        testTree.item("x111").setFocused();
+        testTree.do.hotkey("startDrag");
+
+        const target = testTree.instance.getDragTarget();
+        expect(target).not.toBeNull();
+        expect(isOrderedDragTarget(target!)).toBe(false);
+
+        testTree.do.hotkey("completeDrag");
+        testTree.expect.dropped(["x111"], target!);
+      });
+
       it("skips positions during arrowing that have canDrop=false", () => {
         // note that, with mocked canDrop, non-folders are viable targets
         const canDrop = tree.mockedHandler("canDrop").mockReturnValue(true);

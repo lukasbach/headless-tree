@@ -99,6 +99,9 @@ const getNextValidDragTarget = <T>(
   const dataTransfer =
     tree.getDataRef<KDndDataRef>().current.kDndDataTransfer ?? null;
   if (!nextTarget) return undefined;
+  if (!tree.getConfig().canReorder && isOrderedDragTarget(nextTarget)) {
+    return getNextValidDragTarget(tree, isUp, nextTarget);
+  }
   if (canDrop(dataTransfer, nextTarget, tree)) {
     return nextTarget;
   }
