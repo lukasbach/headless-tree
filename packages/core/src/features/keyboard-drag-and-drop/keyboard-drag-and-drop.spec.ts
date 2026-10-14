@@ -368,7 +368,9 @@ describe("core-feature/keyboard-drag-and-drop", () => {
       });
 
       it("doesnt offer inbetween targets when canReorder=false", async () => {
-        const testTree = await tree.with({ canReorder: false }).createTestCaseTree();
+        const testTree = await tree
+          .with({ canReorder: false })
+          .createTestCaseTree();
         testTree.item("x111").setFocused();
         testTree.do.hotkey("startDrag");
 
