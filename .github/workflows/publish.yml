@@ -4,17 +4,25 @@ on:
     branches:
       - main
   workflow_dispatch:
+    inputs:
+      snapshot_only:
+        description: Run the snapshot publishing job without the regular release job
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: write
   pull-requests: write
-  id-token: write
 
 jobs:
   snapshot:
     if: ${{ !contains(github.event.commits[0].message, 'nosnapshot') }}
     runs-on: ubuntu-latest
     name: Snapshot
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - uses: actions/checkout@v4
         with:
@@ -34,7 +42,15 @@ jobs:
             **/node_modules
             ./.yarn/cache
           key: ${{ runner.os }}-deps-${{ hashFiles('**/yarn.lock') }}
-      - uses: volta-cli/action@v4.1.1
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          package-manager-cache: false
+
+      - name: Set up Yarn
+        run: |
+          corepack enable
+          corepack prepare yarn@4.1.1 --activate
 
       - run: yarn
       - run: yarn lint:test
@@ -64,8 +80,13 @@ jobs:
 
 
   publish:
+    if: ${{ !inputs.snapshot_only && !contains(github.event.head_commit.message, '[snapshot-only]') }}
     runs-on: ubuntu-latest
     name: Publish
+    permissions:
+      contents: write
+      pull-requests: write
+      id-token: write
     steps:
       - uses: actions/checkout@v4
         with:
@@ -78,7 +99,15 @@ jobs:
             **/node_modules
             ./.yarn/cache
           key: ${{ runner.os }}-deps-${{ hashFiles('**/yarn.lock') }}
-      - uses: volta-cli/action@v4.1.1
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          package-manager-cache: false
+
+      - name: Set up Yarn
+        run: |
+          corepack enable
+          corepack prepare yarn@4.1.1 --activate
 
       - run: yarn
       - run: yarn lint:test
@@ -100,4 +129,3 @@ jobs:
           commit: "chore: release [nosnapshot]"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
