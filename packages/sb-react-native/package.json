@@ -1,7 +1,7 @@
 {
   "name": "@headless-tree/sb-react-native",
   "private": true,
-  "version": "0.0.2",
+  "version": "0.0.3",
   "scripts": {
     "start:sb": "storybook dev -p 6007",
     "build:sb": "storybook build"

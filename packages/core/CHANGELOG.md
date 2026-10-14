@@ -1,5 +1,16 @@
 # @headless-tree/core
 
+## 1.8.0
+
+### Minor Changes
+
+- 51d6dd0: Point the legacy `main` entry at the CommonJS runtime output so server bundlers do not try to load declaration files.
+
+### Patch Changes
+
+- 7ddda1d: Fix keyboard drag-and-drop targets respecting `canReorder: false` (#196).
+- 5b23c67: Configure npm publishing through GitHub Actions Trusted Publishing with OIDC, removing the need for long-lived npm publish tokens.
+
 ## 1.7.0
 
 ### Minor Changes
