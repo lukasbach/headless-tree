@@ -38,6 +38,7 @@ describe("core-feature/tree", () => {
         tree.do.selectItem("x2");
         expect(setExpandedItems).toHaveBeenCalledWith(["x1", "x11", "x2"]);
       });
+
     });
 
     describe("collapsed items", () => {

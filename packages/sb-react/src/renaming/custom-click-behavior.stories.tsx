@@ -2,6 +2,7 @@ import type { Meta } from "@storybook/react";
 import React, { Fragment } from "react";
 import {
   type FeatureImplementation,
+  type TreeInstance,
   hotkeysCoreFeature,
   renamingFeature,
   selectionFeature,
@@ -17,13 +18,67 @@ const meta = {
 
 export default meta;
 
-const renameOnRightClickFeature: FeatureImplementation = {
+const doubleClickDelay = 200;
+
+type CustomClickBehaviorDataRef = {
+  pendingExpansionTimers?: Map<string, ReturnType<typeof setTimeout>>;
+};
+
+const getExpansionTimers = (tree: TreeInstance<any>) => {
+  const dataRef = tree.getDataRef<CustomClickBehaviorDataRef>();
+  if (!dataRef.current.pendingExpansionTimers) {
+    dataRef.current.pendingExpansionTimers = new Map();
+  }
+  return dataRef.current.pendingExpansionTimers;
+};
+
+const customClickBehaviorFeature: FeatureImplementation = {
   itemInstance: {
-    getProps: ({ prev, item }) => {
+    getProps: ({ prev, item, tree }) => {
       const props = prev?.() ?? {};
+      const expansionTimers = getExpansionTimers(tree);
+      const itemId = item.getId();
+      const cancelPendingExpansion = () => {
+        const timer = expansionTimers.get(itemId);
+        if (timer) {
+          clearTimeout(timer);
+          expansionTimers.delete(itemId);
+        }
+      };
 
       return {
         ...props,
+        onClick: (event: MouseEvent) => {
+          if (
+            !item.isFolder() ||
+            event.ctrlKey ||
+            event.shiftKey ||
+            event.metaKey
+          ) {
+            props.onClick?.(event);
+            return;
+          }
+
+          if (expansionTimers.has(itemId)) {
+            cancelPendingExpansion();
+            return;
+          }
+
+          (event as MouseEvent & { persist?: () => void }).persist?.();
+          expansionTimers.set(
+            itemId,
+            setTimeout(() => {
+              expansionTimers.delete(itemId);
+              props.onClick?.(event);
+            }, doubleClickDelay),
+          );
+        },
+        onDoubleClick: (event: MouseEvent) => {
+          cancelPendingExpansion();
+          props.onDoubleClick?.(event);
+          item.setFocused();
+          item.startRenaming();
+        },
         onContextMenu: (event: MouseEvent) => {
           event.preventDefault();
           props.onContextMenu?.(event);
@@ -31,6 +86,11 @@ const renameOnRightClickFeature: FeatureImplementation = {
         },
       };
     },
+  },
+  onTreeUnmount: (tree: TreeInstance<any>) => {
+    const dataRef = tree.getDataRef<CustomClickBehaviorDataRef>();
+    dataRef.current.pendingExpansionTimers?.forEach(clearTimeout);
+    delete dataRef.current.pendingExpansionTimers;
   },
 };
 
@@ -52,17 +112,18 @@ export const CustomClickBehavior = () => {
     },
     features: [
       syncDataLoaderFeature,
+      customClickBehaviorFeature,
       selectionFeature,
       hotkeysCoreFeature,
       renamingFeature,
-      renameOnRightClickFeature,
     ],
   });
 
   return (
     <>
       <p className="description">
-        Double click any item button or right click it to start renaming.
+        Click an item to select it and toggle folders. Double click any item or
+        right click it to start renaming.
       </p>
       <div {...tree.getContainerProps()} className="tree">
         {tree.getItems().map((item) => (
@@ -77,7 +138,6 @@ export const CustomClickBehavior = () => {
             ) : (
               <button
                 {...item.getProps()}
-                onDoubleClick={() => item.startRenaming()}
                 style={{ paddingLeft: `${item.getItemMeta().level * 20}px` }}
               >
                 <div
