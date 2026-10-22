@@ -13,6 +13,8 @@ const specialKeys: Record<string, RegExp> = {
   minus: /^(NumpadSubtract|Minus)$/,
   control: /^(ControlLeft|ControlRight)$/,
   shift: /^(ShiftLeft|ShiftRight)$/,
+  alt: /^(AltLeft|AltRight)$/,
+  meta: /^(MetaLeft|MetaRight)$/,
   metaorcontrol: /^(MetaLeft|MetaRight|ControlLeft|ControlRight)$/,
   enter: /^(Enter|NumpadEnter)$/,
 };
