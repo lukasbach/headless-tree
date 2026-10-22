@@ -47,12 +47,16 @@ hotkey names and any names that are prefixed with `custom` to avoid mistakes.
 
 <DemoBox stories={["react-hotkeys-custom-hotkeys--custom-hotkeys"]} />
 
-The names of keys are based on the [HTML Key value](https://developer.mozilla.org/en-US/docs/Web/API/UI_Events/Keyboard_event_key_values).
-The following additional key names are supported:
+The names of keys are based on the [HTML Key code value](https://developer.mozilla.org/en-US/docs/Web/API/UI_Events/Keyboard_event_code_values),
+e.g. `KeyA`, `Digit1` or `ArrowDown`. The following additional key names are supported:
 
-- `LetterOrNumber`: Any letter or number key, `/^[a-z0-9]$/`
-- `Letter`: Any letter key, `/^[a-z]$/`
-- `Plus`: The symbol plus, `/^\+$/`. Useful since the "+" symbol is used in keybinding strings to concatenate individual keys.
+- `Control`, `Shift`, `Alt`, `Meta`: The left or right variant of the respective modifier key
+- `MetaOrControl`: Either the meta or the control key, so that a shortcut like `MetaOrControl+KeyC` works with both Cmd and Ctrl
+- `LetterOrNumber`: Any letter or number key, `/^(Key[A-Z]|Digit[0-9])$/`
+- `Letter`: Any letter key, `/^Key[A-Z]$/`
+- `Plus`: The plus key, `/^(NumpadAdd|Plus)$/`. Useful since the "+" symbol is used in keybinding strings to concatenate individual keys.
+- `Minus`: The minus key, `/^(NumpadSubtract|Minus)$/`
+- `Enter`: The enter key, including the one on the numpad
 
 ## Available Hotkeys
 

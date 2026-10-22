@@ -70,4 +70,38 @@ describe("hotkeys-core shared controller", () => {
 
     expect(handler).toHaveBeenCalledTimes(1);
   });
+
+  it.each([
+    ["Alt+KeyC", "AltLeft", "Alt"],
+    ["Alt+KeyC", "AltRight", "Alt"],
+    ["Meta+KeyC", "MetaLeft", "Meta"],
+    ["Meta+KeyC", "MetaRight", "Meta"],
+  ])(
+    "matches %s when %s is pressed",
+    async (hotkey, modifierCode, modifierKey) => {
+      const handler = vi.fn();
+      const tree = await TestTree.default({
+        hotkeys: {
+          customModifierHotkey: {
+            hotkey,
+            handler,
+          },
+        },
+      })
+        .withFeatures(syncDataLoaderFeature)
+        .createTestCaseTree();
+      const dataRef = tree.instance.getDataRef<HotkeysCoreDataRef>();
+
+      hotkeysCoreController.dispatchKeyDown(tree.instance, dataRef, {
+        code: modifierCode,
+        key: modifierKey,
+      });
+      hotkeysCoreController.dispatchKeyDown(tree.instance, dataRef, {
+        code: "KeyC",
+        key: "c",
+      });
+
+      expect(handler).toHaveBeenCalledTimes(1);
+    },
+  );
 });
