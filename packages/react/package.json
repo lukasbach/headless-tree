@@ -13,7 +13,7 @@
     "checkbox",
     "hook"
   ],
-  "version": "1.8.0",
+  "version": "1.8.1",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.mts",
