@@ -1,5 +1,11 @@
 # @headless-tree/core
 
+## 1.8.1
+
+### Patch Changes
+
+- 37fcfd9: Support `Alt` and `Meta` as modifier key names in hotkey strings (e.g. `Alt+KeyC` or `Meta+KeyC`), which previously never matched
+
 ## 1.8.0
 
 ### Minor Changes
