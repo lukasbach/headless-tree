@@ -205,6 +205,76 @@ describe("core-feature/drag-and-drop", () => {
 
     describe.todo("insertion indices");
 
+    describe("rtl layouts", () => {
+      const setRtlElementBoundingBox = (
+        targetTree: TestTree<string>,
+        itemId: string,
+      ) => {
+        const element = document.createElement("div");
+        element.style.direction = "rtl";
+        element.getBoundingClientRect = () =>
+          ({
+            left: 0,
+            right: 100,
+            width: 100,
+            top: 0,
+            height: 20,
+          }) as DOMRect;
+        targetTree.item(itemId).registerElement(element);
+      };
+
+      // in RTL the indent grows from the right edge, so a drop one indent
+      // level deep sits 20px left of the row's right edge (100)
+      const createRtlBottomDragEvent = (indent = 0) =>
+        TestTree.dragEvent(100 - indent * 20, 19);
+
+      it("drop reparented one level", async () => {
+        tree.item("x14").expand();
+        await tree.resolveAsyncVisibleItems();
+        tree.do.ctrlSelectItem("x111");
+        tree.do.startDrag("x111");
+        setRtlElementBoundingBox(tree, "x144");
+        tree.do.dragOverAndDrop("x144", createRtlBottomDragEvent(1));
+        tree.expect.dropped(["x111"], {
+          dragLineIndex: 13,
+          dragLineLevel: 1,
+          childIndex: 4,
+          insertionIndex: 4,
+          item: tree.item("x1"),
+        });
+      });
+
+      it("drop reparented two levels", async () => {
+        tree.item("x14").expand();
+        await tree.resolveAsyncVisibleItems();
+        tree.do.ctrlSelectItem("x111");
+        tree.do.startDrag("x111");
+        setRtlElementBoundingBox(tree, "x144");
+        tree.do.dragOverAndDrop("x144", createRtlBottomDragEvent(0));
+        tree.expect.dropped(["x111"], {
+          dragLineIndex: 13,
+          dragLineLevel: 0,
+          childIndex: 1,
+          insertionIndex: 1,
+          item: tree.item("x"),
+        });
+      });
+
+      it("drop not reparented", () => {
+        tree.do.ctrlSelectItem("x111");
+        tree.do.startDrag("x111");
+        setRtlElementBoundingBox(tree, "x114");
+        tree.do.dragOverAndDrop("x114", createRtlBottomDragEvent(2));
+        tree.expect.dropped(["x111"], {
+          dragLineIndex: 6,
+          dragLineLevel: 2,
+          childIndex: 4,
+          insertionIndex: 3,
+          item: tree.item("x11"),
+        });
+      });
+    });
+
     describe("drag lines for happy paths", () => {
       it("drop on expanded folder", () => {
         tree.do.ctrlSelectItem("x111");
