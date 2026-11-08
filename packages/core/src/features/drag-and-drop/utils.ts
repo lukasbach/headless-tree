@@ -111,9 +111,16 @@ export const getTargetPlacement = (
       : { type: PlacementType.ReorderBelow };
   }
 
-  const bb = item.getElement()?.getBoundingClientRect();
+  const element = item.getElement();
+  const bb = element?.getBoundingClientRect();
   const topPercent = bb ? (e.clientY - bb.top) / bb.height : 0.5;
-  const leftPixels = bb ? e.clientX - bb.left : 0;
+  const isRtl =
+    element?.ownerDocument?.defaultView?.getComputedStyle(element).direction ===
+    "rtl";
+  let inlineStartPixels = 0;
+  if (bb) {
+    inlineStartPixels = isRtl ? bb.right - e.clientX : e.clientX - bb.left;
+  }
   const targetDropCategory = getItemDropCategory(item);
   const reorderAreaPercentage = !canMakeChild
     ? 0.5
@@ -131,17 +138,20 @@ export const getTargetPlacement = (
   }
 
   if (targetDropCategory === ItemDropCategory.LastInGroup) {
-    if (leftPixels < item.getItemMeta().level * indent) {
+    if (inlineStartPixels < item.getItemMeta().level * indent) {
       if (topPercent < 0.5) {
         return { type: PlacementType.ReorderAbove };
       }
       const minLevel = item.getItemBelow()?.getItemMeta().level ?? 0;
       return {
         type: PlacementType.Reparent,
-        reparentLevel: Math.max(minLevel, Math.floor(leftPixels / indent)),
+        reparentLevel: Math.max(
+          minLevel,
+          Math.floor(inlineStartPixels / indent),
+        ),
       };
     }
-    // if not at left of item area, treat as if it was a normal item
+    // if not at inline start of item area, treat as if it was a normal item
   }
 
   // targetDropCategory === ItemDropCategory.Item
