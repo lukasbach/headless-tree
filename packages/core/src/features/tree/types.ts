@@ -26,6 +26,10 @@ export type TreeFeatureDef<T> = {
     onPrimaryAction?: (item: ItemInstance<T>) => void;
     scrollToItem?: (item: ItemInstance<T>) => void;
 
+    /** Whether the tree is rendered in a right-to-left layout. If not set, the direction is
+     * inferred from the computed style of the item element. */
+    isRtl?: boolean;
+
     setExpandedItems?: SetStateFn<string[]>;
     setFocusedItem?: SetStateFn<string | null>;
   };

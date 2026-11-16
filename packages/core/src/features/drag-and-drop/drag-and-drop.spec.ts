@@ -273,6 +273,34 @@ describe("core-feature/drag-and-drop", () => {
           item: tree.item("x11"),
         });
       });
+
+      it("uses the isRtl config over the computed direction", async () => {
+        tree.instance.setConfig((prev) => ({ ...prev, isRtl: true }));
+        tree.item("x14").expand();
+        await tree.resolveAsyncVisibleItems();
+        tree.do.ctrlSelectItem("x111");
+        tree.do.startDrag("x111");
+        // element is not styled as RTL, so only the config makes this a
+        // one-level reparent from the right edge
+        tree.item("x144").registerElement({
+          getBoundingClientRect: () =>
+            ({
+              left: 0,
+              right: 100,
+              width: 100,
+              top: 0,
+              height: 20,
+            }) as DOMRect,
+        } as any);
+        tree.do.dragOverAndDrop("x144", createRtlBottomDragEvent(1));
+        tree.expect.dropped(["x111"], {
+          dragLineIndex: 13,
+          dragLineLevel: 1,
+          childIndex: 4,
+          insertionIndex: 4,
+          item: tree.item("x1"),
+        });
+      });
     });
 
     describe("drag lines for happy paths", () => {
