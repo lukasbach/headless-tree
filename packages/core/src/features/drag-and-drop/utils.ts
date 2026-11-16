@@ -115,8 +115,11 @@ export const getTargetPlacement = (
   const bb = element?.getBoundingClientRect();
   const topPercent = bb ? (e.clientY - bb.top) / bb.height : 0.5;
   const isRtl =
-    element?.ownerDocument?.defaultView?.getComputedStyle(element).direction ===
-    "rtl";
+    config.isRtl ??
+    (element
+      ? element.ownerDocument?.defaultView?.getComputedStyle(element)
+          .direction === "rtl"
+      : false);
   let inlineStartPixels = 0;
   if (bb) {
     inlineStartPixels = isRtl ? bb.right - e.clientX : e.clientX - bb.left;
