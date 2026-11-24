@@ -116,10 +116,10 @@ export type DragAndDropFeatureDef<T> = {
   };
   itemInstance: {
     /** Checks if the user is dragging in a way which makes this the new parent of the dragged items, either by dragging on top of
-     * this item, or by dragging inbetween children of this item. See @{isUnorderedDragTarget} if the latter is undesirable. */
+     * this item, or by dragging in between children of this item. See @{isUnorderedDragTarget} if the latter is undesirable. */
     isDragTarget: () => boolean;
 
-    /** As opposed to @{isDragTarget}, this will not be true if the target is inbetween children of this item. This returns only true
+    /** As opposed to @{isDragTarget}, this will not be true if the target is in between children of this item. This returns only true
      * if the user is dragging directly on top of this item. */
     isUnorderedDragTarget: () => boolean;
     isDragTargetAbove: () => boolean;
