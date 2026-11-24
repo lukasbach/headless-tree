@@ -1,5 +1,12 @@
 # @headless-tree/core
 
+## 1.8.1
+
+### Patch Changes
+
+- 37fcfd9: Support `Alt` and `Meta` as modifier key names in hotkey strings (e.g. `Alt+KeyC` or `Meta+KeyC`), which previously never matched
+- 247e11d: Fix drag-and-drop reparent levels in right-to-left layouts: the drop position is now measured from the inline start of the row (the right edge in RTL) instead of always from the left edge. The new `isRtl` config option can be set on the tree feature to override the direction that is otherwise inferred from the computed style.
+
 ## 1.8.0
 
 ### Minor Changes
