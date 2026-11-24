@@ -54,6 +54,11 @@ descendants IDs that are not yet loaded will be loaded via the `getChildren` or 
 their checkbox state will be updated accordingly. While they are loading, the state variable `loadingCheckPropagationItems`
 can be used to render a loading spinner on checkboxes that are loading.
 
+You can also call `item.isLoadingCheckPropagation()` to check whether that item's
+checkbox propagation is pending. The loading state clears when propagation
+finishes or rejects, and remains set until all overlapping operations on the same
+item finish. Immediate leaf changes do not trigger loading-state updates.
+
 <DemoBox tags={["feature/checkbox"]} initialStory="react-checkboxes-async-configurability--async-configurability" />
 
 ## Further customizing checkbox behavior

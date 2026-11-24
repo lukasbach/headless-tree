@@ -48,18 +48,33 @@ const withLoadingState = async <T>(
   const prom = callback();
   const immediate = {};
   const firstCompleted = await Promise.race([prom, immediate]);
-  if (firstCompleted !== immediate) {
+  if (firstCompleted === immediate) {
     // don't update loading state if load is immediate
-    tree.applySubStateUpdate("loadingCheckPropagationItems", (items) => [
-      ...items,
-      itemId,
-    ]);
+    const dataRef = tree.getDataRef<{
+      checkPropagationCounts?: Map<string, number>;
+    }>();
+    dataRef.current.checkPropagationCounts ??= new Map();
+    const counts = dataRef.current.checkPropagationCounts;
+    const count = counts.get(itemId) ?? 0;
+    counts.set(itemId, count + 1);
+    if (count === 0) {
+      tree.applySubStateUpdate("loadingCheckPropagationItems", (items) => [
+        ...items,
+        itemId,
+      ]);
+    }
     try {
       await prom;
     } finally {
-      tree.applySubStateUpdate("loadingCheckPropagationItems", (items) =>
-        items.filter((id) => id !== itemId),
-      );
+      const remaining = counts.get(itemId)! - 1;
+      if (remaining === 0) {
+        counts.delete(itemId);
+        tree.applySubStateUpdate("loadingCheckPropagationItems", (items) =>
+          items.filter((id) => id !== itemId),
+        );
+      } else {
+        counts.set(itemId, remaining);
+      }
     }
   } else {
     // immediately completed, await anyway to keep errors in the same execution flow
@@ -106,6 +121,9 @@ export const checkboxesFeature: FeatureImplementation = {
   },
 
   itemInstance: {
+    isLoadingCheckPropagation: ({ tree, itemId }) =>
+      tree.getState().loadingCheckPropagationItems.includes(itemId),
+
     getCheckboxProps: ({ item }) => {
       const checkedState = item.getCheckedState();
       return {
